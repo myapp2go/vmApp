@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alignmentMode="alignBounds"
+    android:columnCount="2"
+    android:columnOrderPreserved="false"
+    android:useDefaultMargins="true" >
+
+    <TextView
+        android:layout_column="0"
+        android:layout_gravity="left"
+        android:layout_row="0"
+        android:text="@string/myEmail"
+        android:textSize="24dip" />
+
+    <EditText
+        android:id="@+id/myEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_row="0"
+        android:editable="true"
+        android:enabled="true"
+        android:hint="@string/emailAddressHint"
+        android:inputType="textEmailAddress"
+        android:padding="5dp"
+        android:text="@string/mailAccount"
+        android:textColor="#000000" >
+    </EditText>
+
+    <TextView
+        android:layout_column="0"
+        android:layout_gravity="left"
+        android:layout_row="1"
+        android:text="@string/myPassword"
+        android:textSize="24dip" />
+
+    <EditText
+        android:id="@+id/myPassword"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:editable="true"
+        android:enabled="true"
+        android:inputType="textPassword"
+        android:padding="5dp"
+        android:text="@string/mailPassword"
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/readMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/readMail" />
+
+</GridLayout>
