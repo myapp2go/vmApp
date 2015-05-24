@@ -2,8 +2,11 @@ package com.pc.vm;
 
 import java.util.HashMap;
 
+import javax.mail.Flags;
+import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Store;
 
 import android.speech.tts.TextToSpeech;
 import android.widget.TextView;
@@ -14,11 +17,14 @@ public class ReadMailMainActivity extends MainActivity {
 	private String[] mailMessages;
 	private int msgLength;
 	
+	private Store emailStore = null;
+	private Folder emailFolder = null;
+	
 	protected void doReadMail() {
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%9999 doReadMail Number ");
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
 		String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
 		String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
-		new ReadMailTask(ReadMailMainActivity.this).execute(msgCount, tts, myEmail, myPassword);		
+		new ReadMailTask(ReadMailMainActivity.this).execute(myEmail, myPassword);		
 	}
 
 	public void setMessages(Message[] messages) {
@@ -26,16 +32,22 @@ public class ReadMailMainActivity extends MainActivity {
 		for (int i = 0; i < messages.length; i++) {
 			try {
 				mailMessages[i] = messages[i].getSubject();
+				String str = mailMessages[i];
+				 if (!(messages[i].getFlags() == null))
+				        System.out.println("FLAG " + messages[i].getSubject());
+//				System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getFlags() + " " + messages[i].getFlags().getUserFlags().length);
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		System.out.print("^^^^^^^^^^^^^^^^^setMessages*********** " + mailMessages + " " + messages);
+
+		System.out.println("^^^^^^^^^^^^^^^^^setMessages*********** " + mailMessages + " " + messages);
 	}
 
 	public void ReadMailDone() {
-//		int msgLength = mailMessages.length;
+		int msgLength = mailMessages.length;
+
 		System.out.println("^^^^^^^^^^^^^^^^^ReadMailDone*********** ");
 			readMessage(0, msgLength);
 
@@ -44,6 +56,7 @@ public class ReadMailMainActivity extends MainActivity {
 	private void readMessage(int count, int msgLength) {
 		System.out.println("^^^^^^^^^^^^^^^^^readMessage*********** ");
 		
+//		for (int i = count; i < msgLength; i++) {
 		for (int i = count; (i < count+increment); i++) {
 	
 //			Message message = mailMessages[i];
@@ -59,7 +72,9 @@ public class ReadMailMainActivity extends MainActivity {
 			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
 			    
 //			tts.speak("mail number :" + (i + 1) + message.getSubject(), TextToSpeech.QUEUE_ADD, null);
-			tts.speak("mail number :" + (i + 1), TextToSpeech.QUEUE_ADD, map);
+
+				tts.speak("mail number :" + (i + 1)  + mailMessages[i], TextToSpeech.QUEUE_ADD, map);
+	
 /*			
 			Object msgContent = message.getContent();
 			String content = "";

@@ -9,6 +9,8 @@ import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.Flags;
+import javax.mail.search.FlagTerm;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -44,7 +46,7 @@ public class ReadMailTask extends AsyncTask {
 	@Override
 	protected Object doInBackground(Object... params) {
 		// TODO Auto-generated method stub
-//				readEmailByIMAP(params[2].toString(), params[3].toString());
+				readEmailByIMAP(params[0].toString(), params[1].toString());
 		return null;
 	}
 
@@ -65,8 +67,12 @@ public class ReadMailTask extends AsyncTask {
 			emailFolder = emailStore.getFolder("INBOX");
 			emailFolder.open(Folder.READ_ONLY);
 
+		    Flags seen = new Flags(Flags.Flag.SEEN);
+		    FlagTerm unseenFlagTerm = new FlagTerm(seen, true);
+		    Message messages1[] = emailFolder.search(unseenFlagTerm);
+		    System.out.println("SEEEEEEEEEEEEEEEE " +messages1.length );
 			Message[] messages = emailFolder.getMessages();
-			readMailActivity.setMessages(messages);
+			readMailActivity.setMessages(messages1);
 //			readMessage(0);
 			
 //			readMessage();
@@ -75,6 +81,7 @@ public class ReadMailTask extends AsyncTask {
 			emailFolder = null;
 			emailStore.close();
 			emailStore = null;
+			
 		} catch (NoSuchProviderException e) {
 			e.printStackTrace();
 		} catch (MessagingException e) {
@@ -96,7 +103,7 @@ public class ReadMailTask extends AsyncTask {
 					e1.printStackTrace();
 				}
 	      }
-		
+
 		// TODO Auto-generated method stub
 		System.out.println("************************** PWD " + mailAccount + " " + password);
 	}

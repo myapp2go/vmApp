@@ -36,10 +36,15 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 	public TextToSpeech tts;
 	HashMap<String, String> map;
 	
-	public static String COMMAND_READ = "READ";
-	public static String COMMAND_WRITE = "WRITE";
-	public static String COMMAND_SETTING = "SETTING";
-
+	public static String COMMAND_GREETING = "Please speak read, write or setting";
+	public static String COMMAND_READ_GREETING = "Please speak next or stop";
+	
+	public String currentCommand = "init";
+	public static String COMMAND_READ = "read";
+	public static String COMMAND_WRITE = "write";
+	public static String COMMAND_SETTING = "setting";
+	public static String COMMAND_NEXT = "next";
+	
 	private boolean initRecognizerFlag = false;
 	private Intent intent;
 	
@@ -57,12 +62,16 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 				if (!initRecognizerFlag) {
 					initRecognizer();
 					initRecognizerFlag = true;
+				} 
+				
+				if (COMMAND_READ.equals(currentCommand)) {
+					ttsCount++;
+					if (ttsCount == increment) {
+						tts.speak(COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
+						startRecognizer();
+						ttsCount = 0;
+					}
 				}
-//				ttsCount++;
-//				if (ttsCount == increment) {
-//					startRecognizer();
-//					ttsCount = 0;
-//				}
 			}
 
 			@Override
@@ -93,14 +102,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 			}
 		});
 	}
-/*
-	private void doReadMail() {
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%5555 doReadMail Number ");
-		String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
-		String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
-		new ReadMailTask(MainActivity.this).execute(msgCount, tts, myEmail, myPassword);		
-	}
-*/
+	
 	public void initRecognizer() {	
 		intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);  
 	    intent.putExtra(
@@ -141,7 +143,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 		map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
 		    
 //		tts.speak("mail number :" + (i + 1) + message.getSubject(), TextToSpeech.QUEUE_ADD, null);
-		tts.speak("Hello Paul Chen :", TextToSpeech.QUEUE_ADD, map);
+		tts.speak(COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
 		
 	}
 	
@@ -162,8 +164,12 @@ public abstract class MainActivity extends Activity implements OnInitListener {
             }
             System.out.println("************ " );
             */
-            if ("read".equals(matches.get(0))) {
+            if (COMMAND_READ.equals(matches.get(0))) {
+            	currentCommand = COMMAND_READ;
             	doReadMail();
+            } else {
+        		tts.speak(COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+            	startRecognizer();
             }
             
 //            if ("stop".equals(matches.get(0))) {
