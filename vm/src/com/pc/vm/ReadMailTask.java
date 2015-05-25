@@ -20,7 +20,7 @@ import android.speech.tts.TextToSpeech;
 public class ReadMailTask extends AsyncTask {
 
 	private ProgressDialog statusDialog;
-	private ReadMailMainActivity readMailActivity;
+	private ReadMailActivity readMailActivity;
 
 	private static String host = "pop.gmail.com";
 	private static String port = "995";
@@ -31,7 +31,7 @@ public class ReadMailTask extends AsyncTask {
 	private static String imapHost = "imap.gmail.com";
 	private static String imapStoreType = "imaps";
 	
-	public ReadMailTask(ReadMailMainActivity mainActivity) {
+	public ReadMailTask(ReadMailActivity mainActivity) {
 		readMailActivity = mainActivity;
 	}
 

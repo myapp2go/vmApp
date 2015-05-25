@@ -11,7 +11,7 @@ import javax.mail.Store;
 import android.speech.tts.TextToSpeech;
 import android.widget.TextView;
 
-public class ReadMailMainActivity extends MainActivity {
+public abstract class ReadMailActivity extends MainActivity {
 
 	private int msgCount = 0;
 	private String[] mailMessages;
@@ -24,7 +24,7 @@ public class ReadMailMainActivity extends MainActivity {
 		System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
 		String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
 		String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
-		new ReadMailTask(ReadMailMainActivity.this).execute(myEmail, myPassword);		
+		new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);		
 	}
 
 	public void setMessages(Message[] messages) {

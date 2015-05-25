@@ -27,27 +27,24 @@ import android.widget.TextView;
 public abstract class MainActivity extends Activity implements OnInitListener {
 
 	abstract protected void doReadMail();
+	abstract protected void doWriteMail();
+	abstract protected void doSetting();
 	
-	public static int increment = 10;
+	protected static int increment = 10;
 	private static int msgCount = 0;
 	private static final int VOICE_RECOGNITION = 1234;
 	private static int ttsCount = 0;
 
-	public TextToSpeech tts;
-	HashMap<String, String> map;
-	
-	public static String COMMAND_GREETING = "Please speak read, write or setting";
-	public static String COMMAND_READ_GREETING = "Please speak next or stop";
-	
-	public String currentCommand = "init";
-	public static String COMMAND_READ = "read";
-	public static String COMMAND_WRITE = "write";
-	public static String COMMAND_SETTING = "setting";
-	public static String COMMAND_NEXT = "next";
-	
+	protected TextToSpeech tts;
+	protected HashMap<String, String> map;
+		
 	private boolean initRecognizerFlag = false;
 	private Intent intent;
 	
+//	public String currentCommand = "init";
+    private String command = Constants.COMMAND_NONE;
+    protected String subCommand = Constants.COMMAND_NONE;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,10 +61,10 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 					initRecognizerFlag = true;
 				} 
 				
-				if (COMMAND_READ.equals(currentCommand)) {
+				if (Constants.COMMAND_READ.equals(command)) {
 					ttsCount++;
 					if (ttsCount == increment) {
-						tts.speak(COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
+						tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
 						startRecognizer();
 						ttsCount = 0;
 					}
@@ -143,7 +140,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 		map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
 		    
 //		tts.speak("mail number :" + (i + 1) + message.getSubject(), TextToSpeech.QUEUE_ADD, null);
-		tts.speak(COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
 		
 	}
 	
@@ -157,21 +154,97 @@ public abstract class MainActivity extends Activity implements OnInitListener {
         {  
             ArrayList<String> matches = data.getStringArrayListExtra
             		(RecognizerIntent.EXTRA_RESULTS); 
-            /*
-            System.out.print("************ " );
-            for (int i = 0; i < matches.size(); i++) {
-            System.out.print(" " + matches.get(i));
-            }
-            System.out.println("************ " );
-            */
-            if (COMMAND_READ.equals(matches.get(0))) {
-            	currentCommand = COMMAND_READ;
-            	doReadMail();
-            } else {
-        		tts.speak(COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
-            	startRecognizer();
+           
+            System.out.println("************ " + command);
+            boolean found = false;
+
+            switch (command) {
+            case Constants.COMMAND_WRITE : 
+            	found = true;
+            	break;
+            case Constants.COMMAND_READ:
+            	break;
+            case Constants.COMMAND_SETTING:
+            	break;
+            case Constants.COMMAND_STOP:
+            	break;	
+            default :
+                for (int i = 0; !found && (i < matches.size()); i++) {
+                	switch (matches.get(i)) {
+                	case Constants.COMMAND_READ:
+                		command = Constants.COMMAND_READ;
+                		ttsCount = 0;
+                		found = true;
+                		break;
+                	case Constants.COMMAND_WRITE:
+                		command = Constants.COMMAND_WRITE;
+                		ttsCount = 0;
+                		found = true;
+                		break; 
+                	case Constants.COMMAND_STOP:
+                		command = Constants.COMMAND_STOP;
+                		ttsCount = 0;
+                		found = true;
+                		break; 
+                    case Constants.COMMAND_SETTING:
+                		command = Constants.COMMAND_SETTING;
+                		ttsCount = 0;
+                		found = true;
+                    	break;		
+                	}
+                    System.out.print(" " + matches.get(i)); 
+                }
+            	break;
             }
             
+            System.out.println("***********CMD* " + command + " " + found);
+            if (!found) {
+        		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+        		startRecognizer();
+            } else {
+                switch (command) {
+                case Constants.COMMAND_WRITE :  
+                	doWriteMail();
+//            		tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);
+//            		startRecognizer();
+                	break;
+                case Constants.COMMAND_READ:
+                	doReadMail();
+                	break;
+                case Constants.COMMAND_STOP:
+                	break;
+                case Constants.COMMAND_SETTING:
+                	break;
+                	/*
+                default :
+                	if (command.equals(Constants.COMMAND_WRITE)) {
+                		System.out.println("************SUBJECT " + matches.get(0));
+                		tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);
+                		startRecognizer();
+                	} else {
+                		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+                		startRecognizer();
+                	}
+                	break;
+                	*/
+                }            	
+            }
+/*            
+
+            
+            if (Constants.COMMAND_READ.equals(matches.get(0))) {
+            	currentCommand = Constants.COMMAND_READ;
+            	doReadMail();
+            } else if (Constants.COMMAND_STOP.equals(matches.get(0))) {
+            } else {
+            	if (currentCommand.equals(Constants.COMMAND_WRITE)) {
+            		System.out.println("************SUBJECT " + matches.get(0));
+            	} else {
+            		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+            		startRecognizer();
+            	}
+            }
+            */
 //            if ("stop".equals(matches.get(0))) {
 //            	msgCount += increment;
 //            	readMessage(msgCount, msgLength);
