@@ -1,5 +1,6 @@
 package com.pc.vm;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.mail.Flags;
@@ -35,7 +36,12 @@ public abstract class ReadMailActivity extends MainActivity {
 				String str = mailMessages[i];
 				 if (!(messages[i].getFlags() == null))
 				        System.out.println("FLAG " + messages[i].getSubject());
-//				System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getFlags() + " " + messages[i].getFlags().getUserFlags().length);
+				try {
+					System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContent().toString());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

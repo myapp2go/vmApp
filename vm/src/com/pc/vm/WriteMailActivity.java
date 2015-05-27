@@ -42,6 +42,9 @@ public abstract class WriteMailActivity extends ReadMailActivity {
 				startRecognizer();				
 				break;
 			case Constants.COMMAND_NO :	
+				subCommand = Constants.SUBCOMMAND_TO;
+	    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
+	    		startRecognizer();
 				break;
 			case Constants.COMMAND_NONE :	
 				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
@@ -52,6 +55,7 @@ public abstract class WriteMailActivity extends ReadMailActivity {
 			break;
 		case Constants.SUBCOMMAND_SUBJECFT :
 			mailSubject = matches.get(0);
+			System.out.println("*************SUBJECT " + mailSubject);
     		subCommand = Constants.SUBCOMMAND_BODY;
     		tts.speak(Constants.COMMAND_BODY_GREETING, TextToSpeech.QUEUE_ADD, map);
     		startRecognizer();			
@@ -66,7 +70,7 @@ public abstract class WriteMailActivity extends ReadMailActivity {
 		case Constants.SUBCOMMAND_DONE :
 			switch (answer) {
 			case Constants.SUBCOMMAND_SEND :
-				new WriteMailTask(WriteMailActivity.this).execute(myEmail, myPassword);
+				new WriteMailTask(WriteMailActivity.this).execute(myEmail, myPassword, mailSubject, mailBody);
 				break;
 			}	
 		}

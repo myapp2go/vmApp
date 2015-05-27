@@ -73,9 +73,6 @@ public class ReadMailTask extends AsyncTask {
 		    System.out.println("SEEEEEEEEEEEEEEEE " +messages1.length );
 			Message[] messages = emailFolder.getMessages();
 			readMailActivity.setMessages(messages1);
-//			readMessage(0);
-			
-//			readMessage();
 			
 			emailFolder.close(false);
 			emailFolder = null;

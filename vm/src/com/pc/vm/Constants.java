@@ -2,6 +2,8 @@ package com.pc.vm;
 
 public final class Constants {
 
+	private static final String GIT_LOC = "https://github.com/myapp2go/vmApp.git";
+	
 	public static final String EMPTY_STRING = "";
 
 	public static String COMMAND_GREETING = "Please speak read, write or setting";
