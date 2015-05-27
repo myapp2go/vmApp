@@ -27,13 +27,12 @@ import android.widget.TextView;
 public abstract class MainActivity extends Activity implements OnInitListener {
 
 	abstract protected void doReadMail();
-	abstract protected void doWriteMail();
+	abstract protected void doWriteMail(ArrayList<String> matches);
 	abstract protected void doSetting();
 	
 	protected static int increment = 10;
-	private static int msgCount = 0;
-	private static final int VOICE_RECOGNITION = 1234;
-	private static int ttsCount = 0;
+	private final int VOICE_RECOGNITION = 1234;
+	private int ttsCount = 0;
 
 	protected TextToSpeech tts;
 	protected HashMap<String, String> map;
@@ -41,9 +40,16 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 	private boolean initRecognizerFlag = false;
 	private Intent intent;
 	
-//	public String currentCommand = "init";
-    private String command = Constants.COMMAND_NONE;
-    protected String subCommand = Constants.COMMAND_NONE;
+    private String command = Constants.COMMAND_INIT;
+    protected String subCommand = Constants.COMMAND_INIT;
+    protected String answer = Constants.COMMAND_INIT;
+    
+    protected String mailTo ="";
+    protected String mailSubject = "";
+    protected String mailBody = "";
+   
+    protected boolean checkYesNo = false;
+    protected String strLastGreeting = "";
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -147,20 +153,16 @@ public abstract class MainActivity extends Activity implements OnInitListener {
     @Override  
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
-//    	super.onActivityResult(requestCode, resultCode, data);
     	super.onActivityResult(requestCode, resultCode, data);
-    	System.out.print("onActivityResult*********** " );
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
             ArrayList<String> matches = data.getStringArrayListExtra
             		(RecognizerIntent.EXTRA_RESULTS); 
-           
-            System.out.println("************ " + command);
+      
             boolean found = false;
-
             switch (command) {
             case Constants.COMMAND_WRITE : 
-            	found = true;
+            	doWriteMail(matches);
             	break;
             case Constants.COMMAND_READ:
             	break;
@@ -168,99 +170,77 @@ public abstract class MainActivity extends Activity implements OnInitListener {
             	break;
             case Constants.COMMAND_STOP:
             	break;	
-            default :
-                for (int i = 0; !found && (i < matches.size()); i++) {
-                	switch (matches.get(i)) {
-                	case Constants.COMMAND_READ:
-                		command = Constants.COMMAND_READ;
-                		ttsCount = 0;
-                		found = true;
-                		break;
-                	case Constants.COMMAND_WRITE:
-                		command = Constants.COMMAND_WRITE;
-                		ttsCount = 0;
-                		found = true;
-                		break; 
-                	case Constants.COMMAND_STOP:
-                		command = Constants.COMMAND_STOP;
-                		ttsCount = 0;
-                		found = true;
-                		break; 
-                    case Constants.COMMAND_SETTING:
-                		command = Constants.COMMAND_SETTING;
-                		ttsCount = 0;
-                		found = true;
-                    	break;		
-                	}
-                    System.out.print(" " + matches.get(i)); 
+            default :								// INIT
+            	found = matchCommand(matches);
+                if (!found) {
+            		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+            		startRecognizer();
+                } else {
+                	procNewCommand(matches);
                 }
             	break;
             }
-            
-            System.out.println("***********CMD* " + command + " " + found);
-            if (!found) {
-        		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
-        		startRecognizer();
-            } else {
-                switch (command) {
-                case Constants.COMMAND_WRITE :  
-                	doWriteMail();
-//            		tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);
-//            		startRecognizer();
-                	break;
-                case Constants.COMMAND_READ:
-                	doReadMail();
-                	break;
-                case Constants.COMMAND_STOP:
-                	break;
-                case Constants.COMMAND_SETTING:
-                	break;
-                	/*
-                default :
-                	if (command.equals(Constants.COMMAND_WRITE)) {
-                		System.out.println("************SUBJECT " + matches.get(0));
-                		tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);
-                		startRecognizer();
-                	} else {
-                		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
-                		startRecognizer();
-                	}
-                	break;
-                	*/
-                }            	
-            }
-/*            
-
-            
-            if (Constants.COMMAND_READ.equals(matches.get(0))) {
-            	currentCommand = Constants.COMMAND_READ;
-            	doReadMail();
-            } else if (Constants.COMMAND_STOP.equals(matches.get(0))) {
-            } else {
-            	if (currentCommand.equals(Constants.COMMAND_WRITE)) {
-            		System.out.println("************SUBJECT " + matches.get(0));
-            	} else {
-            		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
-            		startRecognizer();
-            	}
-            }
-            */
-//            if ("stop".equals(matches.get(0))) {
-//            	msgCount += increment;
-//            	readMessage(msgCount, msgLength);
-            	
-//				startRecognizer();
-            	//            	rmTask.cancel(true);
-            	
-//            	for (int j = 0; j < 10; j++)
-//            	if (!rmTask.isCancelled()) rmTask.cancel(true);
-//            	System.out.println("******************************Cancel: " + rmTask.isCancelled());
-//            }
-            
-//            SystemClock.sleep(7000);
-//            createRecognizer();
-            System.out.println("******************************Restart: ");
         }
     }
+
+    private void procNewCommand(ArrayList<String> matches) {
+        switch (command) {
+        case Constants.COMMAND_WRITE : 
+        	doWriteMail(matches);
+        	break;
+        case Constants.COMMAND_READ:
+        	doReadMail();
+        	break;
+        case Constants.COMMAND_STOP:
+        	break;
+        case Constants.COMMAND_SETTING:
+        	break;
+        } 
+    }
     
+    protected void matchYesNo(ArrayList<String> matches) {
+    	if (Constants.COMMAND_YES.equals(matches.get(0))) {
+    		answer = Constants.COMMAND_YES;
+    	} else {
+    		if (Constants.COMMAND_NO.equals(matches.get(0))) {
+    			answer = Constants.COMMAND_NO;
+    		} else {
+    			answer = Constants.COMMAND_NONE;
+    		}
+    	}
+    	
+//    	checkYesNo = false;
+	}
+    
+	private boolean matchCommand(ArrayList<String> matches) {
+        boolean found = false;
+
+        for (int i = 0; !found && (i < matches.size()); i++) {
+        	switch (matches.get(i)) {
+        	case Constants.COMMAND_READ:
+        		command = Constants.COMMAND_READ;
+        		ttsCount = 0;
+        		found = true;
+        		break;
+        	case Constants.COMMAND_WRITE:
+        		command = Constants.COMMAND_WRITE;
+        		ttsCount = 0;
+        		found = true;
+        		break; 
+        	case Constants.COMMAND_STOP:
+        		command = Constants.COMMAND_STOP;
+        		ttsCount = 0;
+        		found = true;
+        		break; 
+            case Constants.COMMAND_SETTING:
+        		command = Constants.COMMAND_SETTING;
+        		ttsCount = 0;
+        		found = true;
+            	break;		
+        	}
+            System.out.print(" " + matches.get(i)); 
+        }
+        System.out.println(" ");
+        return found;
+    }
 }
