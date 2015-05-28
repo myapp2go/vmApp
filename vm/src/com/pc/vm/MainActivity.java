@@ -44,7 +44,9 @@ public abstract class MainActivity extends Activity implements OnInitListener {
    
     protected boolean checkYesNo = false;
     protected String strLastGreeting = "";
-    
+
+	protected HashMap<String, String> contacts = new HashMap<String, String>();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -126,6 +128,9 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 
 	@Override
 	public void onInit(int status) {
+// PC522 only for testing		
+		doSetting();
+		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
 		    

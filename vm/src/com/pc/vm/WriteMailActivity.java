@@ -30,23 +30,31 @@ public abstract class WriteMailActivity extends ReadMailActivity {
 		case Constants.SUBCOMMAND_TO :
 			switch (answer) {
 			case Constants.COMMAND_INIT :	
-				mailTo = matches.get(0);
+				String name = matches.get(0);
+				System.out.println("GGGGGGGGGGGGGGGGG " + name);
+				mailTo = matchName(name);
+				System.out.println("FFFFFFFFFFFFFFFFFFFF " + mailTo);
 				checkYesNo = true;
 				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
 				startRecognizer();
 				break;
 			case Constants.COMMAND_YES :
+				System.out.println("YESGGGGGGGGGGGGGGGGG " + mailTo);
 				checkYesNo = false;
 				subCommand = Constants.SUBCOMMAND_SUBJECFT;
 				tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);
 				startRecognizer();				
 				break;
 			case Constants.COMMAND_NO :	
+				System.out.println("NOGGGGGGGGGGGGGGGGG " + mailTo);
 				subCommand = Constants.SUBCOMMAND_TO;
+				checkYesNo = false;
+				answer = Constants.COMMAND_INIT;
 	    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
 	    		startRecognizer();
 				break;
 			case Constants.COMMAND_NONE :	
+				System.out.println("NONEGGGGGGGGGGGGGGGGG " + mailTo);
 				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
 				checkYesNo = true;
 				startRecognizer();
@@ -70,10 +78,18 @@ public abstract class WriteMailActivity extends ReadMailActivity {
 		case Constants.SUBCOMMAND_DONE :
 			switch (answer) {
 			case Constants.SUBCOMMAND_SEND :
-				new WriteMailTask(WriteMailActivity.this).execute(myEmail, myPassword, mailSubject, mailBody);
+				new WriteMailTask(WriteMailActivity.this).execute(myEmail, myPassword, mailTo, mailSubject, mailBody);
 				break;
 			}	
 		}
+	}
+
+	private String matchName(String mailTo) {
+		// TODO Auto-generated method stub
+		String toLow = mailTo.toLowerCase();
+		String ret = contacts.get(toLow);
+		return ret;
+//		return contacts.get(mailTo);
 	}
 
 	private void matchWriteMode(ArrayList<String> matches) {

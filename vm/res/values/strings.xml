@@ -11,5 +11,7 @@
     <string name="myPassword">My Password</string>
     <string name="mailPassword">Tanan1559</string>
     <string name="readMail">Read Email</string>
-    
+    <string name="contact">contact</string>
+    <string name="addContact">add</string>
+            
 </resources>

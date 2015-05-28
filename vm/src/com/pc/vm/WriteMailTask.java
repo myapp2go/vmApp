@@ -38,11 +38,11 @@ public class WriteMailTask extends AsyncTask {
 		// TODO Auto-generated method stub
 		System.out
 				.println("************WriteMailTaskWriteMailTaskWriteMailTask ");
-		writeMail(params[0].toString(), params[1].toString(), params[2].toString(), params[3].toString());
+		writeMail(params[0].toString(), params[1].toString(), params[2].toString(), params[3].toString(), params[4].toString());
 		return null;
 	}
 
-	private void writeMail(String mailAccount, String password, String mailSubject, String mailBody) {
+	private void writeMail(String mailAccount, String password, String mailTo, String mailSubject, String mailBody) {
 		// TODO Auto-generated method stub
 		String host = "smtp.gmail.com";
 
@@ -66,11 +66,12 @@ public class WriteMailTask extends AsyncTask {
 
 			message.setFrom(new InternetAddress("tapaulchen@gmail.com", "NoReply-JD"));
 
+			System.out.println("MMMMMMMMMMMMMMMMMMMMMM " + mailTo);
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					"paultchan@yahoo.com"));
+					mailTo));
 
-			message.addRecipient(Message.RecipientType.CC, new InternetAddress(
-					"tapaulchen@yahoo.com"));
+//			message.addRecipient(Message.RecipientType.CC, new InternetAddress(
+//					"tapaulchen@yahoo.com"));
 			message.setSubject(mailSubject);
 			String body = mailBody;
 			message.setContent(body, "text/html");

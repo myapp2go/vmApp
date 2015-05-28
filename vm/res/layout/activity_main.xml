@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alignmentMode="alignBounds"
-    android:columnCount="2"
+    android:columnCount="3"
     android:columnOrderPreserved="false"
     android:useDefaultMargins="true" >
 
@@ -18,7 +18,7 @@
         android:id="@+id/myEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_column="1"
+        android:layout_column="2"
         android:layout_row="0"
         android:editable="true"
         android:enabled="true"
@@ -38,7 +38,7 @@
 
     <EditText
         android:id="@+id/myPassword"
-        android:layout_column="1"
+        android:layout_column="2"
         android:layout_row="1"
         android:editable="true"
         android:enabled="true"
@@ -47,10 +47,43 @@
         android:text="@string/mailPassword"
         android:textColor="#000000" />
 
+        <TextView
+        android:layout_column="0"
+        android:layout_gravity="left"
+        android:layout_row="2"
+        android:text="@string/contact"
+        android:textSize="24dip" />
+
+    <EditText
+        android:id="@+id/contactName"
+        android:layout_column="1"
+        android:layout_row="2"
+        android:editable="true"
+        android:enabled="true"
+        android:width="250dp"
+        android:padding="5dp"
+        android:textColor="#000000" />
+
+        <EditText
+        android:id="@+id/contactEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="2"
+        android:layout_row="2"
+        android:editable="true"
+        android:enabled="true"
+        android:hint="@string/emailAddressHint"
+        android:inputType="textEmailAddress"
+        android:padding="5dp"
+        android:textColor="#000000" >
+    </EditText>
+    
     <Button
         android:id="@+id/readMail"
+         android:layout_column="0"
+        android:layout_row="3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/readMail" />
+        android:text="@string/addContact" />
 
 </GridLayout>
