@@ -20,7 +20,7 @@ import android.widget.Button;
 
 public abstract class MainActivity extends Activity implements OnInitListener {
 
-	abstract protected void doReadMail();
+	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void doWriteMail(ArrayList<String> matches);
 	abstract protected void doSetting();
 	
@@ -34,7 +34,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 	private boolean initRecognizerFlag = false;
 	private Intent intent;
 	
-    private String command = Constants.COMMAND_INIT;
+	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
     protected String answer = Constants.COMMAND_INIT;
     
@@ -46,7 +46,9 @@ public abstract class MainActivity extends Activity implements OnInitListener {
     protected String strLastGreeting = "";
 
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
-	
+
+    protected boolean checkReadMode = false;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,6 +59,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
+				System.out.println("ONDONE");
 				if (!initRecognizerFlag) {
 					initRecognizer();
 					initRecognizerFlag = true;
@@ -152,6 +155,8 @@ public abstract class MainActivity extends Activity implements OnInitListener {
             	doWriteMail(matches);
             	break;
             case Constants.COMMAND_READ:
+            	checkReadMode = true;
+            	doReadMail(matches);
             	break;
             case Constants.COMMAND_SETTING:
             	break;
@@ -167,6 +172,8 @@ public abstract class MainActivity extends Activity implements OnInitListener {
                 }
             	break;
             }
+        } else {
+        	System.out.println("********PC522 ERROR");
         }
     }
 
@@ -176,7 +183,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
         	doWriteMail(matches);
         	break;
         case Constants.COMMAND_READ:
-        	doReadMail();
+        	doReadMail(matches);
         	break;
         case Constants.COMMAND_STOP:
         	break;

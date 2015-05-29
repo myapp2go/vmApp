@@ -25,6 +25,7 @@ public final class Constants {
 	public static final String COMMAND_READ = "read";
 	public static final String SBCOMMAND_UP = "up";
 	public static final String SBCOMMAND_DOWN = "down";
+	public static final String SBCOMMAND_NEXT = "next";
 	
 	public static final String COMMAND_WRITE = "write";
 	public static final String SUBCOMMAND_TO = "to";

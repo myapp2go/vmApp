@@ -1,12 +1,14 @@
 package com.pc.vm;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Store;
 
 import android.speech.tts.TextToSpeech;
@@ -20,12 +22,28 @@ public abstract class ReadMailActivity extends MainActivity {
 	
 	private Store emailStore = null;
 	private Folder emailFolder = null;
+	  
+	protected void doReadMail(ArrayList<String> matches) {
+		if (checkReadMode) {
+			matchReadMode(matches);
+			checkReadMode = false;
+        }
+		
+		switch (subCommand) {
+		case Constants.COMMAND_INIT :
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
+			String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
+			String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
+			new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);	
+			break;
+		case Constants.COMMAND_STOP :
+			command = Constants.COMMAND_INIT;
+			subCommand = Constants.COMMAND_INIT;
+    		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+    		startRecognizer();
+			break;
+		}
 	
-	protected void doReadMail() {
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
-		String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
-		String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
-		new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);		
 	}
 
 	public void setMessages(Message[] messages) {
@@ -34,10 +52,17 @@ public abstract class ReadMailActivity extends MainActivity {
 			try {
 				mailMessages[i] = messages[i].getSubject();
 				String str = mailMessages[i];
+				String type = "TEXT/HTML";
 				 if (!(messages[i].getFlags() == null))
 				        System.out.println("FLAG " + messages[i].getSubject());
 				try {
-					System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContent().toString());
+					if (!(messages[i].getContent() instanceof Multipart)) {
+//					System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContent());
+						System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContentType());
+						if (!(messages[i].getContentType().matches("HTML"))) {
+							System.out.println("%%%%%%%%%%%%%%%CONTENT " + messages[i].getContent());
+						}
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -55,7 +80,7 @@ public abstract class ReadMailActivity extends MainActivity {
 		int msgLength = mailMessages.length;
 
 		System.out.println("^^^^^^^^^^^^^^^^^ReadMailDone*********** ");
-			readMessage(0, msgLength);
+		readMessage(0, msgLength);
 
 	}
 
@@ -109,6 +134,31 @@ public abstract class ReadMailActivity extends MainActivity {
 			}
 		}
 		*/
+		}
+	}
+	
+	private void matchReadMode(ArrayList<String> matches) {
+		boolean found = false;
+		
+		for (int i = 0; !found && (i < matches.size()); i++) {
+			switch (matches.get(i)) {
+			case Constants.SBCOMMAND_NEXT:
+				found = true;
+				subCommand = Constants.SBCOMMAND_NEXT;
+				break;
+			case Constants.SBCOMMAND_UP:
+				found = true;
+				subCommand = Constants.SBCOMMAND_UP;
+				break;
+			case Constants.SUBCOMMAND_ADD:
+				found = true;
+				subCommand = Constants.SUBCOMMAND_ADD;
+				break;
+			case Constants.COMMAND_STOP:
+				found = true;
+				subCommand = Constants.COMMAND_STOP;
+				break;
+			}
 		}
 	}
 }
