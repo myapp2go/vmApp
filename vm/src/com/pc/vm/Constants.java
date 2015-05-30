@@ -2,18 +2,20 @@ package com.pc.vm;
 
 public final class Constants {
 
-	private static final String GIT_LOC = "https://github.com/myapp2go/vmApp.git";
+	private static final String Activity_Recognition = "https://github.com/myapp2go/vmApp.git";
 	
 	public static final String EMPTY_STRING = "";
 
 	public static String COMMAND_GREETING = "Please speak read, write or setting";
 	public static String COMMAND_READ_GREETING = "Please speak next or stop";
-	public static final String COMMAND_TO_GREETING = "Where you want to send";
+	public static final String COMMAND_TO_GREETING = "Who you want to send";
 	public static final String COMMAND_SUBJECT_GREETING = "Please speak subject";
 	public static final String COMMAND_BODY_GREETING = "Please speak message";
 	public static final String COMMAND_DONE_GREETING = "Please speak send or add or save or stop";
 	public static final String COMMAND_ECHO_HEADER_GREETING = "You say ";
 	public static final String COMMAND_ECHO_FOOTER_GREETING = " yes or no ";
+	public static final String COMMAND_ADVERTISE_GREETING = "Timebyte IT outsourcing, Delivers total solutions that satisfy both quality, efficiency and cost reduction requirements.";
+
 	
 	public static final String COMMAND_INIT = "init";
 	public static final String COMMAND_NONE = "none";

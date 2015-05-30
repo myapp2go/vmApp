@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech;
 public abstract class WriteMailActivity extends ReadMailActivity {
 
     protected boolean checkWriteMode = false;
+    private String mode = Constants.COMMAND_INIT;
     
 	protected void doWriteMail(ArrayList<String> matches) {
 		String myEmail = "tapaulchen@gmail.com";
@@ -19,7 +20,7 @@ public abstract class WriteMailActivity extends ReadMailActivity {
         	matchWriteMode(matches);
         }
 
-		 System.out.println("ANSWER " + answer);
+		 System.out.println("ANSWER " + answer + " SUB " + subCommand);
 		 
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
@@ -34,9 +35,16 @@ public abstract class WriteMailActivity extends ReadMailActivity {
 				System.out.println("GGGGGGGGGGGGGGGGG " + name);
 				mailTo = matchName(name);
 				System.out.println("FFFFFFFFFFFFFFFFFFFF " + mailTo);
-				checkYesNo = true;
-				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
-				startRecognizer();
+				mailTo = "paultchan@yahoo.com";
+				if (mailTo != null) {
+					checkYesNo = true;
+					tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
+					startRecognizer();
+				} else {
+					checkYesNo = false;
+		    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
+		    		startRecognizer();
+				}	
 				break;
 			case Constants.COMMAND_YES :
 				System.out.println("YESGGGGGGGGGGGGGGGGG " + mailTo);
@@ -76,8 +84,10 @@ public abstract class WriteMailActivity extends ReadMailActivity {
     		startRecognizer();	
 			break;
 		case Constants.SUBCOMMAND_DONE :
-			switch (answer) {
+			System.out.println("*************PCMODE " + mode);
+			switch (mode) {
 			case Constants.SUBCOMMAND_SEND :
+				System.out.println("*************PCMODESEND " + mode);
 				new WriteMailTask(WriteMailActivity.this).execute(myEmail, myPassword, mailTo, mailSubject, mailBody);
 				break;
 			}	
@@ -87,19 +97,29 @@ public abstract class WriteMailActivity extends ReadMailActivity {
 	private String matchName(String mailTo) {
 		// TODO Auto-generated method stub
 		String toLow = mailTo.toLowerCase();
+//		System.out.println("*************matchName " + toLow + " SIZE " + contacts);
 		String ret = contacts.get(toLow);
+		System.out.println("*************matchName1 " + ret);
 		return ret;
 //		return contacts.get(mailTo);
 	}
 
 	private void matchWriteMode(ArrayList<String> matches) {
-		switch (matches.get(0)) {
-		case Constants.SUBCOMMAND_SEND :
-			answer = Constants.SUBCOMMAND_SEND;
-			break;
-		case Constants.SUBCOMMAND_ADD :
-			answer = Constants.SUBCOMMAND_ADD;
-			break;	
+        boolean found = false;
+
+        for (int i = 0; !found && (i < matches.size()); i++) {
+        	switch (matches.get(i)) {
+        	case Constants.SUBCOMMAND_SEND :
+        		mode = Constants.SUBCOMMAND_SEND;
+        		found = true;
+        		break;
+        	case Constants.SUBCOMMAND_ADD :
+        		mode = Constants.SUBCOMMAND_ADD;
+        		found = true;
+        		break;
+        	}
 		}
+// PC 522        
+        mode = Constants.SUBCOMMAND_SEND;
 	}
 }

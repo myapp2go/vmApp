@@ -23,10 +23,12 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void doWriteMail(ArrayList<String> matches);
 	abstract protected void doSetting();
+	abstract protected void doSettingRead();
+	abstract protected void doSettingWrite();
 	
 	protected static int increment = 10;
 	private final int VOICE_RECOGNITION = 1234;
-	private int ttsCount = 0;
+	protected int ttsCount = 0;
 
 	protected TextToSpeech tts;
 	protected HashMap<String, String> map;
@@ -96,6 +98,9 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 			public void onClick(View v) {
 			}
 		});
+		
+		String str = getApplicationContext().getFilesDir().toString();
+System.out.println("************************URL " + str);
 	}
 	
 	public void initRecognizer() {	
@@ -133,6 +138,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 	public void onInit(int status) {
 // PC522 only for testing		
 		doSetting();
+		doSettingRead();
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
@@ -193,15 +199,26 @@ public abstract class MainActivity extends Activity implements OnInitListener {
     }
     
     protected void matchYesNo(ArrayList<String> matches) {
-    	if (Constants.COMMAND_YES.equals(matches.get(0))) {
-    		answer = Constants.COMMAND_YES;
-    	} else {
-    		if (Constants.COMMAND_NO.equals(matches.get(0))) {
-    			answer = Constants.COMMAND_NO;
-    		} else {
-    			answer = Constants.COMMAND_NONE;
-    		}
-    	}
+        boolean found = false;
+        answer = Constants.COMMAND_NONE;
+		System.out.println("matchYesNo " );
+		
+        for (int i = 0; !found && (i < matches.size()); i++) {
+    		System.out.println("matchYesNoanswerRECCCC " + matches.get(i));
+        	switch (matches.get(i)) {
+        	case Constants.COMMAND_YES :
+        		found = true;
+        		answer = Constants.COMMAND_YES;
+        		break;
+        	case Constants.COMMAND_NO :
+        		found = true;
+        		answer = Constants.COMMAND_NO;
+        		break;	
+        	}
+        }
+// PC522        
+        answer = Constants.COMMAND_YES;
+		System.out.println("matchYesNoanswer " + answer);
 	}
     
 	private boolean matchCommand(ArrayList<String> matches) {

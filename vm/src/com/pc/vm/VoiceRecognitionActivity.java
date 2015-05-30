@@ -1,10 +1,14 @@
 package com.pc.vm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
+import android.speech.tts.UtteranceProgressListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +21,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class VoiceRecognitionActivity extends Activity implements
-		RecognitionListener {
+		RecognitionListener, OnInitListener {
 
 	private TextView returnedText;
 	private ToggleButton toggleButton;
@@ -26,6 +30,17 @@ public class VoiceRecognitionActivity extends Activity implements
 	private Intent recognizerIntent;
 	private String LOG_TAG = "VoiceRecognitionActivity";
 
+	protected TextToSpeech tts;
+	protected HashMap<String, String> map;
+
+	protected String command = Constants.COMMAND_INIT;
+    protected String subCommand = Constants.COMMAND_INIT;
+    protected String answer = Constants.COMMAND_INIT;
+    
+	protected static int increment = 10;
+	private final int VOICE_RECOGNITION = 1234;
+	private int ttsCount = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +61,34 @@ public class VoiceRecognitionActivity extends Activity implements
 				RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
 		recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
 
+		tts = new TextToSpeech(this, this);
+		tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+
+			@Override
+			public synchronized void onDone(String utteranceId) {
+				System.out.println("ONDONE");
+				speech.startListening(recognizerIntent);
+				
+				if (Constants.COMMAND_READ.equals(command)) {
+					ttsCount++;
+					if (ttsCount == increment) {
+						tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
+//						startRecognizer();
+						ttsCount = 0;
+					}
+				}
+			}
+
+			@Override
+			public void onStart(String utteranceId) {
+			}
+
+			@Override
+			@Deprecated
+			public void onError(String utteranceId) {
+			}
+		});
+		
 		toggleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -175,6 +218,15 @@ public class VoiceRecognitionActivity extends Activity implements
 			break;
 		}
 		return message;
+	}
+
+	@Override
+	public void onInit(int status) {
+		// TODO Auto-generated method stub
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
+		    
+		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);			
 	}
 
 }

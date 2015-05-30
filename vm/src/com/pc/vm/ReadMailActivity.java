@@ -34,7 +34,12 @@ public abstract class ReadMailActivity extends MainActivity {
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
 			String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
 			String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
+// PC522			
+			subCommand = Constants.COMMAND_STOP;
 			new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);	
+			break;
+		case Constants.COMMAND_NEXT :
+			readMessage(ttsCount+10, 100);
 			break;
 		case Constants.COMMAND_STOP :
 			command = Constants.COMMAND_INIT;
@@ -47,8 +52,9 @@ public abstract class ReadMailActivity extends MainActivity {
 	}
 
 	public void setMessages(Message[] messages) {
-		mailMessages = new String[messages.length];
-		for (int i = 0; i < messages.length; i++) {
+		mailMessages = new String[messages.length+1];
+		mailMessages[0] = Constants.COMMAND_ADVERTISE_GREETING;
+		for (int i = 1; i < messages.length; i++) {
 			try {
 				mailMessages[i] = messages[i].getSubject();
 				String str = mailMessages[i];
@@ -58,8 +64,11 @@ public abstract class ReadMailActivity extends MainActivity {
 				try {
 					if (!(messages[i].getContent() instanceof Multipart)) {
 //					System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContent());
+					
 						System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContentType());
-						if (!(messages[i].getContentType().matches("HTML"))) {
+						System.out.println("%%%%%%%%%%%%%%%FLAGINDEX " + messages[i].getContentType().indexOf("HTML"));
+						int pos = messages[i].getContentType().indexOf("HTML");
+						if (pos == -1) {
 							System.out.println("%%%%%%%%%%%%%%%CONTENT " + messages[i].getContent());
 						}
 					}
@@ -104,7 +113,7 @@ public abstract class ReadMailActivity extends MainActivity {
 			    
 //			tts.speak("mail number :" + (i + 1) + message.getSubject(), TextToSpeech.QUEUE_ADD, null);
 
-				tts.speak("mail number :" + (i + 1)  + mailMessages[i], TextToSpeech.QUEUE_ADD, map);
+				tts.speak("mail number" + (i + 1)  + " " + mailMessages[i], TextToSpeech.QUEUE_ADD, map);
 	
 /*			
 			Object msgContent = message.getContent();
@@ -141,6 +150,7 @@ public abstract class ReadMailActivity extends MainActivity {
 		boolean found = false;
 		
 		for (int i = 0; !found && (i < matches.size()); i++) {
+			System.out.println("77777777777777777777777777777CHECK " +matches.get(i) );
 			switch (matches.get(i)) {
 			case Constants.SBCOMMAND_NEXT:
 				found = true;
@@ -160,5 +170,6 @@ public abstract class ReadMailActivity extends MainActivity {
 				break;
 			}
 		}
+		System.out.println("77777777777777777777777777777CHECsubCommandK " + subCommand);
 	}
 }

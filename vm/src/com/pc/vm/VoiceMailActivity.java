@@ -1,5 +1,14 @@
 package com.pc.vm;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+
+import android.content.Context;
+
 public class VoiceMailActivity extends WriteMailActivity {
 
 	protected void doSetting() {
@@ -19,5 +28,48 @@ public class VoiceMailActivity extends WriteMailActivity {
 		contacts.put("joe", "davidchennk@yahoo.com");
 		contacts.put("josh", "davischennk@yahoo.com");		
 		contacts.put("tom", "tapaulchen@gmail.com");
+	}
+	
+	protected void doSettingRead() {
+		//Get the text file
+		String FILENAME = "pcVoiceMail";
+		File file = new File("/data/data/com.pc.vm/files", FILENAME);
+
+		//Read text from file
+		StringBuilder text = new StringBuilder();
+
+		try {
+		    BufferedReader br = new BufferedReader(new FileReader(file));
+		    String line;
+
+		    while ((line = br.readLine()) != null) {
+		        text.append(line);
+		        text.append('\n');
+		    }
+		    br.close();
+		    System.out.println("************************TEXT " + text);
+		}
+		catch (IOException e) {
+		    //You'll need to add proper error handling here
+			e.printStackTrace();
+		}
+	}
+	
+	protected void doSettingWrite() {
+		String FILENAME = "pcVoiceMail";
+		String string = "hello world!";
+				
+
+		FileOutputStream fos;
+		try {
+			fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+			fos.write(string.getBytes());
+			fos.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
