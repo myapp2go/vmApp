@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -74,6 +75,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 						ttsCount = 0;
 						System.out.println("before sp");
 						tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
+//						SystemClock.sleep(2000);
 						System.out.println("after sp");
 						startRecognizer();						
 					}
@@ -117,6 +119,7 @@ System.out.println("************************URL " + str);
 	}
 	
 	public void startRecognizer() {	
+		SystemClock.sleep(2000);
 	    startActivityForResult(intent, VOICE_RECOGNITION); 
 	}
 	

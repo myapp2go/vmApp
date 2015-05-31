@@ -37,7 +37,6 @@ public abstract class WriteMailActivity extends ReadMailActivity {
 				System.out.println("GGGGGGGGGGGGGGGGG " + name);
 				mailTo = matchName(name);
 				System.out.println("FFFFFFFFFFFFFFFFFFFF " + mailTo);
-				mailTo = "paultchan@yahoo.com";
 				if (mailTo != null) {
 					checkYesNo = true;
 					tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
