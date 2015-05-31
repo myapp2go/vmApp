@@ -10,6 +10,8 @@ public abstract class WriteMailActivity extends ReadMailActivity {
     private String mode = Constants.COMMAND_INIT;
     
 	protected void doWriteMail(ArrayList<String> matches) {
+	      System.out.println("*** doWriteMail " + command + " * " + subCommand + " * " + answer + " * " + checkWriteMode + " * " + checkYesNo);
+
 		String myEmail = "tapaulchen@gmail.com";
 		String myPassword = "Tsnsn1559";
 

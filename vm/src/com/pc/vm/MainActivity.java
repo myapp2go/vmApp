@@ -70,20 +70,25 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 				if (Constants.COMMAND_READ.equals(command)) {
 					ttsCount++;
 					if (ttsCount == increment) {
-						tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
-						startRecognizer();
+						checkReadMode = true;
 						ttsCount = 0;
+						System.out.println("before sp");
+						tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
+						System.out.println("after sp");
+						startRecognizer();						
 					}
 				}
 			}
 
 			@Override
 			public void onStart(String utteranceId) {
+				System.out.println("onStart");
 			}
 
 			@Override
 			@Deprecated
 			public void onError(String utteranceId) {
+				System.out.println("onError");
 			}
 		});
        
@@ -145,7 +150,7 @@ System.out.println("************************URL " + str);
 		    
 		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);		
 	}
-	
+    
     @Override  
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
@@ -156,6 +161,7 @@ System.out.println("************************URL " + str);
             		(RecognizerIntent.EXTRA_RESULTS); 
       
             boolean found = false;
+            System.out.println("*** COMMAND " + command + " * " + subCommand + " * " + answer);
             switch (command) {
             case Constants.COMMAND_WRITE : 
             	doWriteMail(matches);
@@ -224,6 +230,7 @@ System.out.println("************************URL " + str);
 	private boolean matchCommand(ArrayList<String> matches) {
         boolean found = false;
 
+        System.out.println("MATCH " + matches);
         for (int i = 0; !found && (i < matches.size()); i++) {
         	switch (matches.get(i)) {
         	case Constants.COMMAND_READ:
@@ -251,4 +258,11 @@ System.out.println("************************URL " + str);
 
         return found;
     }
+	
+	protected void commandReset() {
+		command = Constants.COMMAND_INIT;
+		subCommand = Constants.COMMAND_INIT;
+		checkYesNo = false;
+		answer = Constants.COMMAND_INIT;
+	}
 }

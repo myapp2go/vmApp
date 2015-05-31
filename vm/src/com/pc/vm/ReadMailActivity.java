@@ -24,10 +24,13 @@ public abstract class ReadMailActivity extends MainActivity {
 	private Folder emailFolder = null;
 	  
 	protected void doReadMail(ArrayList<String> matches) {
+        System.out.println("*** doReadMail " + command + " * " + subCommand + " * " + answer + " * " + checkReadMode);
+        
 		if (checkReadMode) {
 			matchReadMode(matches);
 			checkReadMode = false;
         }
+        System.out.println("*** doReadMail AFTER " + command + " * " + subCommand + " * " + answer + " * " + checkReadMode);
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
@@ -35,15 +38,14 @@ public abstract class ReadMailActivity extends MainActivity {
 			String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
 			String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
 // PC522			
-			subCommand = Constants.COMMAND_STOP;
+//			subCommand = Constants.COMMAND_STOP;
 			new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);	
 			break;
 		case Constants.COMMAND_NEXT :
 			readMessage(ttsCount+10, 100);
 			break;
 		case Constants.COMMAND_STOP :
-			command = Constants.COMMAND_INIT;
-			subCommand = Constants.COMMAND_INIT;
+			commandReset();
     		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
     		startRecognizer();
 			break;
@@ -59,17 +61,17 @@ public abstract class ReadMailActivity extends MainActivity {
 				mailMessages[i] = messages[i].getSubject();
 				String str = mailMessages[i];
 				String type = "TEXT/HTML";
-				 if (!(messages[i].getFlags() == null))
-				        System.out.println("FLAG " + messages[i].getSubject());
+//				 if (!(messages[i].getFlags() == null))
+//				        System.out.println("FLAG " + messages[i].getSubject());
 				try {
 					if (!(messages[i].getContent() instanceof Multipart)) {
 //					System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContent());
 					
-						System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContentType());
-						System.out.println("%%%%%%%%%%%%%%%FLAGINDEX " + messages[i].getContentType().indexOf("HTML"));
+//						System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContentType());
+//						System.out.println("%%%%%%%%%%%%%%%FLAGINDEX " + messages[i].getContentType().indexOf("HTML"));
 						int pos = messages[i].getContentType().indexOf("HTML");
 						if (pos == -1) {
-							System.out.println("%%%%%%%%%%%%%%%CONTENT " + messages[i].getContent());
+//							System.out.println("%%%%%%%%%%%%%%%CONTENT " + messages[i].getContent());
 						}
 					}
 				} catch (IOException e) {
