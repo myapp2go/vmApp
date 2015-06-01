@@ -8,6 +8,9 @@ public final class Constants {
 
 	public static String COMMAND_GREETING = "Please speak read, write or setting";
 
+	public static String MAIL_BODY_NOT_SUPPORT = "This mail message in not readable";
+
+	
 	public static final String COMMAND_TO_GREETING = "Who you want to send";
 	public static final String COMMAND_SUBJECT_GREETING = "Please speak subject";
 	public static final String COMMAND_BODY_GREETING = "Please speak message";

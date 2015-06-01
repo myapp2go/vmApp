@@ -11,6 +11,7 @@ public abstract class SettingActivity extends WriteMailActivity {
 		editor.putString("myEmail", "tapaulchen@gmail.com");
 		editor.putString("myPassword", "Tanan1559");
 		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
+		editor.putInt("increment", 10);
 		editor.commit();	
 	}
 }
