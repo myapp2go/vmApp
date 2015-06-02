@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 import android.speech.tts.TextToSpeech;
 
-public abstract class WriteMailActivity extends ReadMailActivity {
+public class WriteMailActivity extends ReadMailActivity {
 	
-	protected HashMap<String, String> contacts = new HashMap<String, String>();
+//	protected HashMap<String, String> contacts = new HashMap<String, String>();
 
     protected String mailTo ="";
     protected String mailSubject = "";

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.speech.RecognizerIntent;
@@ -21,7 +22,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void doWriteMail(ArrayList<String> matches);
-	abstract protected void doSetting();
+//	abstract protected void doSetting();
 
 	private final int VOICE_RECOGNITION = 1234;
 	protected SharedPreferences sharedPreferences;
@@ -36,6 +37,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
     protected boolean speanOn = false;
     
+	protected HashMap<String, String> contacts = new HashMap<String, String>();
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,7 +52,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		readMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				command = Constants.COMMAND_READ;
-				subCommand = Constants.SUBCOMMAND_TO;
+				subCommand = Constants.COMMAND_INIT;
 				speanOn = true;
 				
 				tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);		
@@ -61,6 +64,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				command = Constants.COMMAND_WRITE;
+				subCommand = Constants.SUBCOMMAND_TO;
 				speanOn = true;
 				
 				tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
@@ -212,4 +216,32 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             System.out.println("onActivityResult " + matches.size());
         }
     }    
+    
+	protected void doSetting() {
+//		SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
+		Editor editor = sharedPreferences.edit();
+		editor.putString("myEmail", "tapaulchen@gmail.com");
+		editor.putString("myPassword", "Tanan1559");
+		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
+		editor.putInt("increment", 10);
+		editor.commit();	
+	
+		contacts.put("paul", "paultchan@yahoo.com");		
+		contacts.put("tony", "paulchennk@yahoo.com");
+		contacts.put("david", "davidchennk@gmail.com");		
+		contacts.put("davis", "davischennk@gmail.com");
+		contacts.put("san", "samchennk@gmail.com");		
+		contacts.put("tanan", "tananpaulchen@gmail.com");
+		contacts.put("allen", "paulchen1559@gmail.com");		
+		contacts.put("pilot", "pilotstockfirst@gmail.com");
+		contacts.put("chen", "tonychennk@gmail.com");		
+		contacts.put("john", "johnchennk@yahoo.com");
+		contacts.put("andy", "andy1chennk@yahoo.com");		
+		contacts.put("lee", "andy2chennk@yahoo.com");
+		contacts.put("ken", "samchennk@yahoo.com");		
+		contacts.put("joe", "davidchennk@yahoo.com");
+		contacts.put("josh", "davischennk@yahoo.com");		
+		contacts.put("tom", "tapaulchen@gmail.com");
+		
+	}
 }

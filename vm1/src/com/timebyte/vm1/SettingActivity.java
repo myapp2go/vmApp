@@ -1,19 +1,20 @@
 package com.timebyte.vm1;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-public abstract class SettingActivity extends WriteMailActivity {
+public class SettingActivity extends Activity {
 	
 	protected void doSetting() {
-//		SharedPreferences pref = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
+		SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		Editor editor = sharedPreferences.edit();
 		editor.putString("myEmail", "tapaulchen@gmail.com");
 		editor.putString("myPassword", "Tanan1559");
 		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
 		editor.putInt("increment", 10);
 		editor.commit();	
-		
+/*		
 		contacts.put("paul", "paultchan@yahoo.com");		
 		contacts.put("tony", "paulchennk@yahoo.com");
 		contacts.put("david", "davidchennk@gmail.com");		
@@ -30,5 +31,6 @@ public abstract class SettingActivity extends WriteMailActivity {
 		contacts.put("joe", "davidchennk@yahoo.com");
 		contacts.put("josh", "davischennk@yahoo.com");		
 		contacts.put("tom", "tapaulchen@gmail.com");
+		*/
 	}
 }
