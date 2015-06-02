@@ -3,9 +3,16 @@ package com.timebyte.vm1;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
 
 public class SettingActivity extends Activity {
-	
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.settings_activity);
+    }
+    
 	protected void doSetting() {
 		SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		Editor editor = sharedPreferences.edit();

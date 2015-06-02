@@ -74,10 +74,18 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button settings = (Button) this.findViewById(R.id.settings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				startSettings();
 			}
 		});
 	}
 
+	public void startSettings() {
+	    // Do something in response to button
+		Intent ttsIntent = new Intent(this, SettingActivity.class);
+		
+		startActivity(ttsIntent);
+	}
+	
 	public void initRecognizer() {	
 		intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);  
 	    intent.putExtra(

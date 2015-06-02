@@ -9,5 +9,13 @@
     <string name="writeMail">Write Mail</string>
     <string name="settings">Settings</string>
     <string name="greeting">Welcome to Speak Mail</string>
-        
+
+    <string name="myEmail">My eMail</string>
+    <string name="mailAccount">tapaulchen@gmail.com</string>
+    <string name="emailAddressHint">my eMail address</string>
+    <string name="myPassword">My Password</string>
+    <string name="mailPassword">Tanan1559</string>
+    <string name="contact">contact</string>
+    <string name="addContact">add</string>
+    
 </resources>
