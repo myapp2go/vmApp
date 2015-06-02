@@ -49,6 +49,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		readMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				command = Constants.COMMAND_READ;
+				subCommand = Constants.SUBCOMMAND_TO;
 				speanOn = true;
 				
 				tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);		
@@ -59,6 +60,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				command = Constants.COMMAND_WRITE;
+				speanOn = true;
+				
+				tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
 			}
 		});
 		
@@ -97,6 +102,21 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					startRecognizer(0);
 				}
 				
+	            switch (command) {
+	            case Constants.COMMAND_WRITE : 
+
+	            	break;
+	            case Constants.COMMAND_READ:
+
+	            	break;
+	            case Constants.COMMAND_SETTING:
+	            	break;
+	            case Constants.COMMAND_STOP:
+	            	break;	
+	            default :								// INIT
+	            	System.out.println("*** ERROR ");
+	            	break;
+	            }
 				/*
 				if (!initRecognizerFlag) {
 					initRecognizer();

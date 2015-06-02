@@ -39,6 +39,7 @@ public final class Constants {
 	
 	public static final String COMMAND_WRITE = "write";
 	public static final String SUBCOMMAND_TO = "to";
+	public static final String SUBCOMMAND_VERIFY_TO = "verifyTo";
 	public static final String SUBCOMMAND_SUBJECFT = "subject";
 	public static final String SUBCOMMAND_BODY = "body";
 	public static final String SUBCOMMAND_DONE = "done";
