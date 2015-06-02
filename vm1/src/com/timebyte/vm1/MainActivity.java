@@ -22,7 +22,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void doWriteMail(ArrayList<String> matches);
-//	abstract protected void doSetting();
+	abstract protected void doSetting();
 
 	private final int VOICE_RECOGNITION = 1234;
 	protected SharedPreferences sharedPreferences;
@@ -224,7 +224,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             System.out.println("onActivityResult " + matches.size());
         }
     }    
-    
+/*    
 	protected void doSetting() {
 //		SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		Editor editor = sharedPreferences.edit();
@@ -252,4 +252,5 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		contacts.put("tom", "tapaulchen@gmail.com");
 		
 	}
+	*/
 }

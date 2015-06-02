@@ -10,7 +10,7 @@ import javax.mail.Multipart;
 
 import android.speech.tts.TextToSpeech;
 import android.widget.TextView;
-public abstract class ReadMailActivity extends MainActivity {
+public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 	private String[] mailSubject;
 	private String[] mailBody;
