@@ -12,7 +12,7 @@
         android:layout_gravity="left"
         android:layout_row="0"
         android:text="@string/myEmail"
-        android:textSize="12dip" />
+        android:textSize="16dip" />
 
     <EditText
         android:id="@+id/myEmail"
@@ -20,8 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_column="1"
         android:layout_row="0"
-        android:editable="true"
-        android:enabled="true"
         android:hint="@string/emailAddressHint"
         android:inputType="textEmailAddress"
         android:padding="5dp"
@@ -34,7 +32,7 @@
         android:layout_gravity="left"
         android:layout_row="1"
         android:text="@string/myPassword"
-        android:textSize="12dip" />
+        android:textSize="16dip" />
 
     <EditText
         android:id="@+id/myPassword"
@@ -47,7 +45,7 @@
         android:text="@string/mailPassword"
         android:textColor="#000000" />
 
-        <TextView
+    <TextView
         android:layout_column="0"
         android:layout_gravity="left"
         android:layout_row="2"
@@ -60,11 +58,12 @@
         android:layout_row="3"
         android:editable="true"
         android:enabled="true"
-        android:width="250dp"
         android:padding="5dp"
-        android:textColor="#000000" />
+        android:text="paul"
+        android:textColor="#000000"
+        android:width="100dp" />
 
-        <EditText
+    <EditText
         android:id="@+id/contactEmail1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,6 +74,7 @@
         android:hint="@string/emailAddressHint"
         android:inputType="textEmailAddress"
         android:padding="5dp"
+        android:text="paultchan@yahoo.com"
         android:textColor="#000000" >
     </EditText>
 
@@ -84,11 +84,12 @@
         android:layout_row="4"
         android:editable="true"
         android:enabled="true"
-        android:width="250dp"
         android:padding="5dp"
-        android:textColor="#000000" />
+        android:text="tony"
+        android:textColor="#000000"
+        android:width="100dp" />
 
-        <EditText
+    <EditText
         android:id="@+id/contactEmail2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,6 +100,7 @@
         android:hint="@string/emailAddressHint"
         android:inputType="textEmailAddress"
         android:padding="5dp"
+        android:text="paulchennk@yahoo.com"
         android:textColor="#000000" >
     </EditText>
 
@@ -108,11 +110,12 @@
         android:layout_row="5"
         android:editable="true"
         android:enabled="true"
-        android:width="250dp"
         android:padding="5dp"
-        android:textColor="#000000" />
+        android:text="david"
+        android:textColor="#000000"
+        android:width="100dp" />
 
-        <EditText
+    <EditText
         android:id="@+id/contactEmail3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,6 +126,7 @@
         android:hint="@string/emailAddressHint"
         android:inputType="textEmailAddress"
         android:padding="5dp"
+        android:text="davidchennk@gmail.com"
         android:textColor="#000000" >
     </EditText>
 
@@ -132,11 +136,12 @@
         android:layout_row="6"
         android:editable="true"
         android:enabled="true"
-        android:width="250dp"
         android:padding="5dp"
-        android:textColor="#000000" />
+        android:text="davis"
+        android:textColor="#000000"
+        android:width="100dp" />
 
-        <EditText
+    <EditText
         android:id="@+id/contactEmail4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -147,6 +152,7 @@
         android:hint="@string/emailAddressHint"
         android:inputType="textEmailAddress"
         android:padding="5dp"
+        android:text="davischennk@gmail.com"
         android:textColor="#000000" >
     </EditText>
 
@@ -156,11 +162,12 @@
         android:layout_row="7"
         android:editable="true"
         android:enabled="true"
-        android:width="250dp"
         android:padding="5dp"
-        android:textColor="#000000" />
+        android:text="allen"
+        android:textColor="#000000"
+        android:width="100dp" />
 
-        <EditText
+    <EditText
         android:id="@+id/contactEmail5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -171,9 +178,9 @@
         android:hint="@string/emailAddressHint"
         android:inputType="textEmailAddress"
         android:padding="5dp"
+        android:text="allen.kuo@timebyte.com"
         android:textColor="#000000" >
     </EditText>
-    
 
     <EditText
         android:id="@+id/contactName6"
@@ -181,11 +188,12 @@
         android:layout_row="8"
         android:editable="true"
         android:enabled="true"
-        android:width="250dp"
         android:padding="5dp"
-        android:textColor="#000000" />
+        android:text=""
+        android:textColor="#000000"
+        android:width="100dp" />
 
-        <EditText
+    <EditText
         android:id="@+id/contactEmail6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -196,39 +204,16 @@
         android:hint="@string/emailAddressHint"
         android:inputType="textEmailAddress"
         android:padding="5dp"
+        android:text=""
         android:textColor="#000000" >
     </EditText>
-    
-    <EditText
-        android:id="@+id/contactName7"
-        android:layout_column="0"
-        android:layout_row="9"
-        android:editable="true"
-        android:enabled="true"
-        android:width="250dp"
-        android:padding="5dp"
-        android:textColor="#000000" />
 
-        <EditText
-        android:id="@+id/contactEmail7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_row="9"
-        android:editable="true"
-        android:enabled="true"
-        android:hint="@string/emailAddressHint"
-        android:inputType="textEmailAddress"
-        android:padding="5dp"
-        android:textColor="#000000" >
-    </EditText>
-            
     <Button
-        android:id="@+id/readMail"
-         android:layout_column="0"
-        android:layout_row="10"
+        android:id="@+id/setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_row="9"
         android:text="@string/addContact" />
 
 </GridLayout>

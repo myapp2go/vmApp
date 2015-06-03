@@ -1,43 +1,85 @@
 package com.timebyte.vm1;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Environment;
+import android.speech.tts.TextToSpeech;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class SettingActivity extends Activity {
 
+	protected SharedPreferences sharedPreferences;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
+		
+		final Button settingButton = (Button) this.findViewById(R.id.setting);
+		settingButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				savePreference();
+			}
+		});
     }
     
-	protected void doSetting() {
-		SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
+	private void savePreference() {
+		// TODO Auto-generated method stub
+		String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
+		String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
+		
 		Editor editor = sharedPreferences.edit();
-		editor.putString("myEmail", "tapaulchen@gmail.com");
-		editor.putString("myPassword", "Tanan1559");
+		editor.putString("myEmail", myEmail);
+		editor.putString("myPassword", myPassword);
 		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
 		editor.putInt("increment", 10);
-		editor.commit();	
-/*		
-		contacts.put("paul", "paultchan@yahoo.com");		
-		contacts.put("tony", "paulchennk@yahoo.com");
-		contacts.put("david", "davidchennk@gmail.com");		
-		contacts.put("davis", "davischennk@gmail.com");
-		contacts.put("san", "samchennk@gmail.com");		
-		contacts.put("tanan", "tananpaulchen@gmail.com");
-		contacts.put("allen", "paulchen1559@gmail.com");		
-		contacts.put("pilot", "pilotstockfirst@gmail.com");
-		contacts.put("chen", "tonychennk@gmail.com");		
-		contacts.put("john", "johnchennk@yahoo.com");
-		contacts.put("andy", "andy1chennk@yahoo.com");		
-		contacts.put("lee", "andy2chennk@yahoo.com");
-		contacts.put("ken", "samchennk@yahoo.com");		
-		contacts.put("joe", "davidchennk@yahoo.com");
-		contacts.put("josh", "davischennk@yahoo.com");		
-		contacts.put("tom", "tapaulchen@gmail.com");
-		*/
+		editor.commit();
+
+		String FILENAME = "pcVoiceMail";
+		String string = "hello  world!";
+		String del = "_____";
+		
+		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
+		folder.mkdirs();
+         
+		FileOutputStream fos;
+		try {
+			folder.createNewFile();
+//			fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+	        fos = new FileOutputStream(new File(folder, FILENAME));
+	        string = "myEmail:" + myEmail + del;
+			fos.write(string.getBytes());
+	        string = "myPassword:" + myPassword + del;
+			fos.write(string.getBytes());
+			string = ((TextView) findViewById(R.id.contactName1)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail1)).getText().toString() + del;
+			fos.write(string.getBytes());
+			string = ((TextView) findViewById(R.id.contactName2)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail2)).getText().toString() + del;
+			fos.write(string.getBytes());
+			string = ((TextView) findViewById(R.id.contactName3)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail3)).getText().toString() + del;
+			fos.write(string.getBytes());
+			string = ((TextView) findViewById(R.id.contactName4)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail4)).getText().toString() + del;
+			fos.write(string.getBytes());
+			string = ((TextView) findViewById(R.id.contactName5)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail5)).getText().toString() + del;
+			fos.write(string.getBytes());
+
+			fos.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
+
 }
