@@ -22,7 +22,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void doWriteMail(ArrayList<String> matches);
-	abstract protected void doSetting();
+	abstract protected void getPreferenceFromFile();
 
 	private final int VOICE_RECOGNITION = 1234;
 	protected SharedPreferences sharedPreferences;
@@ -194,7 +194,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		// TODO Auto-generated method stub
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 // PCDEBUG
-		doSetting();
+		getPreferenceFromFile();
 	}
 	
     @Override  
