@@ -113,7 +113,7 @@ public class ReadMailTask extends AsyncTask {
 	public void onPostExecute(Object result) {
 		statusDialog.dismiss();
 		
-		readMailActivity.ReadMailDone();
+		readMailActivity.readMailDone();
 	}
 	
 }

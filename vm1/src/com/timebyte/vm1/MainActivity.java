@@ -56,7 +56,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				speanOn = true;
 				
 				tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);		
-//				startRecognizer(5000);
 			}
 		});
 		
@@ -90,8 +89,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);  
 	    intent.putExtra(
 	    	RecognizerIntent.EXTRA_LANGUAGE_MODEL, 
-	        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM); 
-//	    startActivityForResult(intent, VOICE_RECOGNITION); 
+	        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);  
 	}
 
 	public void startRecognizer(int ms) {
@@ -129,12 +127,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	            	System.out.println("*** ERROR ");
 	            	break;
 	            }
-				/*
-				if (!initRecognizerFlag) {
-					initRecognizer();
-					initRecognizerFlag = true;
-				} 
-				*/
+
 /*				
 				if (Constants.COMMAND_READ.equals(command)) {
 					ttsCount++;
@@ -193,7 +186,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
-// PCDEBUG
+
 		getPreferenceFromFile();
 	}
 	
@@ -221,7 +214,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             	System.out.println("*** ERROR ");
             	break;
             }
-            System.out.println("onActivityResult " + matches.size());
         }
     }    
 

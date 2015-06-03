@@ -108,17 +108,16 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
         }
 	}
 	
-	public void ReadMailDone() {
+	public void readMailDone() {
+		speanOn = false;
 		int msgLength = mailSubject.length;
 
 		System.out.println("^^^^^^^^^^^^^^^^^ReadMailDone*********** ");
 		readMessage(0, msgLength);
-
 	}
 
 	private void readMessage(int count, int msgLength) {
 		System.out.println("^^^^^^^^^^^^^^^^^readMessage*********** ");
-		speanOn = false;
 		
 //		for (int i = count; i < msgLength; i++) {
 		for (int i = count; (i < count+increment); i++) {
