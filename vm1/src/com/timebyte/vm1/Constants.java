@@ -3,6 +3,8 @@ package com.timebyte.vm1;
 public final class Constants {
 
 	private static final String Activity_Recognition = "https://github.com/myapp2go/vmApp.git";
+
+	public static final int MAIL_PER_PAGE = 5;
 	
 	public static final String EMPTY_STRING = "";
 

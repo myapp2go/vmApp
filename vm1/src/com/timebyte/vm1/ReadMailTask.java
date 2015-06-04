@@ -64,11 +64,15 @@ public class ReadMailTask extends AsyncTask {
 			emailStore = (Store) emailSession.getStore(imapStoreType);	
 			emailStore.connect(imapHost, mailAccount, password);			
 			emailFolder = emailStore.getFolder("INBOX");
+//			emailFolder.open(Folder.READ_WRITE);
 			emailFolder.open(Folder.READ_ONLY);
-
+			
 		    Flags seen = new Flags(Flags.Flag.SEEN);
 		    FlagTerm unseenFlagTerm = new FlagTerm(seen, true);
-		    Message messages1[] = emailFolder.search(unseenFlagTerm);
+		    
+//		    Message messages1[] = emailFolder.search(unseenFlagTerm);
+		    Message messages1[] = emailFolder.getMessages();
+		    
 		    System.out.println("SEEEEEEEEEEEEEEEE " +messages1.length );
 			Message[] messages = emailFolder.getMessages();
 			readMailActivity.setMessages(messages1);

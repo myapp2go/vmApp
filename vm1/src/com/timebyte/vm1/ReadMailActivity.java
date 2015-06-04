@@ -14,10 +14,10 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 	private String[] mailSubject;
 	private String[] mailBody;
-	private int increment;
+	private int increment = 3;
 	
 	protected void doReadMail(ArrayList<String> matches) {
-		increment = sharedPreferences.getInt("increment", 0);
+//		increment = sharedPreferences.getInt("increment", 0);
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
 			matchReadCommand(matches);
@@ -55,13 +55,17 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		mailSubject = new String[messages.length+1];
 		mailBody = new String[messages.length+1];
 		mailSubject[0] = Constants.COMMAND_ADVERTISE_GREETING;
+
+		System.out.println("9999 PCCCFLAG " + messages.length);
+		//		for (int i = messages.length; i < 1; i--) {
+
 		for (int i = 1; i < messages.length; i++) {
 			try {
 				mailSubject[i] = messages[i].getSubject();
 //				String str = mailSubject[i];
 				String type = "TEXT/HTML";
 //				 if (!(messages[i].getFlags() == null))
-//				        System.out.println("FLAG " + messages[i].getSubject());
+				        System.out.println("99FLAG " + messages[i].getSubject());
 				try {
 //					if (!(messages[i].getContent() instanceof Multipart)) {
 //					System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContent());
@@ -86,7 +90,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			}
 		}
 
-		System.out.println("^^^^^^^^^^^^^^^^^setMessages*********** " + mailSubject + " " + messages);
+//		System.out.println("^^^^^^^^^^^^^^^^^setMessages*********** " + mailSubject + " " + messages);
 	}
 
 	private void matchReadCommand(ArrayList<String> matches) {
