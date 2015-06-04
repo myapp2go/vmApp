@@ -9,16 +9,18 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 
 import android.speech.tts.TextToSpeech;
-import android.widget.TextView;
+
 public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 	private String[] mailSubject;
 	private String[] mailBody;
-	private int increment = 3;
 	private boolean subjectOnly = true;
+	protected int mailCount = 0;
 	
 	protected void doReadMail(ArrayList<String> matches) {
 //		increment = sharedPreferences.getInt("increment", 0);
+		String cmd = matchReadMode(matches);
+		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
 			matchReadCommand(matches);
@@ -44,7 +46,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 //			new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);	
 			break;
 		case Constants.COMMAND_NEXT :
-//			readMessage(ttsCount+10, 100);
+			speanOn = false;
+			readMessage();
 			break;
 		case Constants.COMMAND_STOP :
 //			commandReset();
@@ -70,7 +73,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 //				String str = mailSubject[i];
 				String type = "TEXT/HTML";
 //				 if (!(msg.getFlags() == null))
-				        System.out.println("99FLAG " + msg.getSubject());
+//				        System.out.println("99FLAG " + msg.getSubject());
 				try {
 //					if (!(msg.getContent() instanceof Multipart)) {
 //					System.out.println("%%%%%%%%%%%%%%%FLAG " + msg.getContent());
@@ -128,11 +131,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private void readMessage() {
 		System.out.println("^^^^^^^^^^^^^^^^^readMessage*********** ");
 		
+		int start = mailCount;
 		int count = mailCount + Constants.MAIL_PER_PAGE;
 		if (count > mailSubject.length) {
 			count = mailSubject.length;
 		}
-		for (int i = mailCount; i < count; i++) {
+		for (int i = start; i < count; i++) {
+			mailCount++;
 //			Message message = mailSubject[i];
 			/*
 			System.out.println("----------------------------------");
@@ -180,6 +185,33 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 		*/
 		}
-		mailCount += count;
+	}
+	
+	private String matchReadMode(ArrayList<String> matches) {
+		boolean found = false;
+		
+		for (int i = 0; !found && (i < matches.size()); i++) {
+			switch (matches.get(i)) {
+			case Constants.SBCOMMAND_NEXT:
+				found = true;
+				subCommand = Constants.SBCOMMAND_NEXT;
+				break;
+			case Constants.SBCOMMAND_UP:
+				found = true;
+				subCommand = Constants.SBCOMMAND_UP;
+				break;
+			case Constants.SUBCOMMAND_ADD:
+				found = true;
+				subCommand = Constants.SUBCOMMAND_ADD;
+				break;
+			case Constants.COMMAND_STOP:
+				found = true;
+				subCommand = Constants.COMMAND_STOP;
+				break;
+			}
+		}
+		
+		System.out.println("77777777777777777777777777777CHECsubCommandK " + subCommand);
+		return subCommand;
 	}
 }

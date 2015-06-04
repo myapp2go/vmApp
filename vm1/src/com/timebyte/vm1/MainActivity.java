@@ -31,7 +31,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected Intent intent;
 	HashMap<String, String> map = new HashMap<String, String>();
 	
-	protected int mailCount = 0;
+	private int ttsCount = 0;
 	
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
@@ -109,7 +109,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				System.out.println("ONDONE");
+				System.out.println("ONDONE " + ttsCount);
 				if (speanOn) {
 					startRecognizer(0);
 				}
@@ -119,7 +119,14 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	            	break;
 	            case Constants.COMMAND_READ:
-
+	            	if (ttsCount == Constants.MAIL_PER_PAGE) {
+	            		System.out.println("READDDDD ONDONE " + ttsCount);
+	            		ttsCount = 0;
+	            		tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
+	            		speanOn = true;
+	            	} else {
+	            		ttsCount++;
+	            	}
 	            	break;
 	            case Constants.COMMAND_SETTING:
 	            	break;
