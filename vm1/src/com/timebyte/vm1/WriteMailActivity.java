@@ -24,7 +24,7 @@ public class WriteMailActivity extends ReadMailActivity {
 			break;
 		case Constants.SUBCOMMAND_TO :
 			String name = matches.get(0);
-			System.out.println("GGGGGGGGGGGGGGGGG " + name);
+			System.out.println("DUMP " + matches);
 			mailTo = matchName(name);
 			System.out.println("FFFFFFFFFFFFFFFFFFFF " + mailTo);
 			if (mailTo != null) {

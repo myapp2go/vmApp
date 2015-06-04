@@ -57,6 +57,25 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		initTTS();
+       
+		PackageManager pm = getPackageManager();
+		List<ResolveInfo> listResolveInfo = pm.queryIntentActivities(
+				new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+		if (listResolveInfo.size() == 0) {
+			System.out.println("Recognize Error");
+		}		
+		final Button sendMail = (Button) this.findViewById(R.id.readMail);
+		sendMail.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+			}
+		});
+		
+		String str = getApplicationContext().getFilesDir().toString();
+System.out.println("************************URL " + str);
+	}
+
+	private void initTTS() {
 		tts = new TextToSpeech(this, this);
 		tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
 
@@ -93,21 +112,6 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 				System.out.println("onError");
 			}
 		});
-       
-		PackageManager pm = getPackageManager();
-		List<ResolveInfo> listResolveInfo = pm.queryIntentActivities(
-				new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
-		if (listResolveInfo.size() == 0) {
-			System.out.println("Recognize Error");
-		}		
-		final Button sendMail = (Button) this.findViewById(R.id.readMail);
-		sendMail.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-			}
-		});
-		
-		String str = getApplicationContext().getFilesDir().toString();
-System.out.println("************************URL " + str);
 	}
 	
 	public void initRecognizer() {	

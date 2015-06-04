@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alignmentMode="alignBounds"
+    android:columnCount="3"
+    android:columnOrderPreserved="false"
+    android:useDefaultMargins="true" >
+
+    <TextView
+        android:layout_column="0"
+        android:layout_gravity="left"
+        android:layout_row="0"
+        android:text="@string/greeting"
+        android:textSize="20dip" />
+        
+    <Button
+        android:id="@+id/verifySpeeck"
+         android:layout_column="0"
+        android:layout_row="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/verifySpeeck" />
+        
+    <Button
+        android:id="@+id/writeMail"
+         android:layout_column="0"
+        android:layout_row="2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/training" />
+    
+    <TextView 
+	    android:id="@+id/list"
+	    android:layout_column="0"
+        android:layout_row="3"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	</TextView>
+
+</GridLayout>
