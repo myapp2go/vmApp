@@ -15,6 +15,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private String[] mailSubject;
 	private String[] mailBody;
 	private int increment = 3;
+	private boolean subjectOnly = true;
 	
 	protected void doReadMail(ArrayList<String> matches) {
 //		increment = sharedPreferences.getInt("increment", 0);
@@ -23,9 +24,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			matchReadCommand(matches);
 			switch (answer) {
 			case Constants.ANSWER_1 :
+				subjectOnly = true;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				break;
 			case Constants.ANSWER_2 :
+				subjectOnly = false;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				break;
 			case Constants.COMMAND_NONE :
@@ -59,23 +62,25 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		System.out.println("9999 PCCCFLAG " + messages.length);
 		//		for (int i = messages.length; i < 1; i--) {
 
-		for (int i = 1; i < messages.length; i++) {
+		int len = messages.length;
+		for (int i = 1; i < len; i++) {
 			try {
-				mailSubject[i] = messages[i].getSubject();
+				Message msg = messages[len-i];
+				mailSubject[i] = msg.getSubject();
 //				String str = mailSubject[i];
 				String type = "TEXT/HTML";
-//				 if (!(messages[i].getFlags() == null))
-				        System.out.println("99FLAG " + messages[i].getSubject());
+//				 if (!(msg.getFlags() == null))
+				        System.out.println("99FLAG " + msg.getSubject());
 				try {
-//					if (!(messages[i].getContent() instanceof Multipart)) {
-//					System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContent());
+//					if (!(msg.getContent() instanceof Multipart)) {
+//					System.out.println("%%%%%%%%%%%%%%%FLAG " + msg.getContent());
 					
-//						System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContentType());
-//						System.out.println("%%%%%%%%%%%%%%%FLAGINDEX " + messages[i].getContentType().indexOf("HTML"));
-						int pos = messages[i].getContentType().indexOf("HTML");
+//						System.out.println("%%%%%%%%%%%%%%%FLAG " + msg.getContentType());
+//						System.out.println("%%%%%%%%%%%%%%%FLAGINDEX " + msg.getContentType().indexOf("HTML"));
+						int pos = msg.getContentType().indexOf("HTML");
 						if (pos == -1) {
-//							System.out.println("%%%%%%%%%%%%%%%CONTENT " + messages[i].getContent());
-							mailBody[i] = messages[i].getContent().toString();
+//							System.out.println("%%%%%%%%%%%%%%%CONTENT " + msg.getContent());
+							mailBody[i] = msg.getContent().toString();
 						} else {
 							mailBody[i] = Constants.MAIL_BODY_NOT_SUPPORT;
 						}
@@ -139,9 +144,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
 			    
 //			tts.speak("mail number :" + (i + 1) + message.getSubject(), TextToSpeech.QUEUE_ADD, null);
-
-				tts.speak("mail number" + (i + 1)  + " " + mailSubject[i] + mailBody[i], TextToSpeech.QUEUE_ADD, map);
-	
+			if (subjectOnly) {
+				tts.speak("mail number" + (i + 1)  + " " + mailSubject[i], TextToSpeech.QUEUE_ADD, map);
+			} else {
+				tts.speak("mail number" + (i + 1)  + " " + mailSubject[i] + mailBody[i], TextToSpeech.QUEUE_ADD, map);				
+			}
 /*			
 			Object msgContent = message.getContent();
 			String content = "";
