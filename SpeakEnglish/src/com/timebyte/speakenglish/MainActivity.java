@@ -1,7 +1,12 @@
 package com.timebyte.speakenglish;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
@@ -31,6 +36,8 @@ public class MainActivity extends Activity implements OnInitListener {
     private String[] phase;
     private String speakMode = Constants.SPEAK_MODE_TEAINING;
     private int phaseNo = 0;
+    protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
+    private List<String> listPhase;
     
 	protected TextToSpeech tts;
 	protected Intent intent;
@@ -67,6 +74,7 @@ public class MainActivity extends Activity implements OnInitListener {
 		training.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				speakMode = Constants.SPEAK_MODE_TEAINING;
+				listPhase = mapOfList.get("iy_i");
 				startTraining();
 			}
 		});
@@ -100,7 +108,7 @@ public class MainActivity extends Activity implements OnInitListener {
 	}
 
 	private void startTraining() {
-		tts.speak(phase[phaseNo], TextToSpeech.QUEUE_ADD, map);	
+		tts.speak(listPhase.get(phaseNo), TextToSpeech.QUEUE_ADD, map);	
 		speanOn = true;	
 	}
 	
@@ -187,6 +195,8 @@ public class MainActivity extends Activity implements OnInitListener {
 	@Override
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
+		readData();
+		
 		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
 	}
 	
@@ -205,7 +215,7 @@ public class MainActivity extends Activity implements OnInitListener {
             } else {
             	String text = compareSpeak(matches.get(0).toString());
             
-            	mEcho.setText(phase[phaseNo]);
+            	mEcho.setText(listPhase.get(phaseNo));
             	mySpeak.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
         	}
         }  
@@ -214,7 +224,7 @@ public class MainActivity extends Activity implements OnInitListener {
     private String compareSpeak(String fromRec) {
     	String text = "";
 
-		StringTokenizer echo = new StringTokenizer(phase[phaseNo], del);
+		StringTokenizer echo = new StringTokenizer(listPhase.get(phaseNo), del);
 		StringTokenizer matched = new StringTokenizer(fromRec.toString(), del);
 		
 		boolean reachEnd = false;
@@ -245,4 +255,43 @@ public class MainActivity extends Activity implements OnInitListener {
 		
     	return text;
     }
+    
+	protected void readData() {
+		InputStream inputStream = null;
+		
+		try {
+			inputStream = getResources().openRawResource(R.raw.speakdata);
+			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+			String line;
+
+			List<String> responseData = null;
+			String key = "";
+			while ((line = in.readLine()) != null) {
+				System.out.println("DDD " + line);
+				if (line.charAt(0) == '[') {
+					if (responseData == null) {
+						responseData = new ArrayList<String>();
+					} else {
+						mapOfList.put(key, responseData);
+						responseData = new ArrayList<String>();
+					}
+					key = line.substring(1, line.length()-1);
+				} else {
+					responseData.add(line);
+				}
+			}
+			mapOfList.put(key, responseData);
+			} catch(IOException e) {
+
+			} finally {
+				if (inputStream != null) {
+					try {
+						inputStream.close();
+					} catch (IOException e) {
+
+					}
+				}
+			}
+		
+	}
 }
