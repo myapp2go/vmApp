@@ -199,20 +199,15 @@ public class MainActivity extends Activity implements OnInitListener {
         {  
             ArrayList<String> matches = data.getStringArrayListExtra
             		(RecognizerIntent.EXTRA_RESULTS); 
-            /*
-            mList.setAdapter(new ArrayAdapter<String>(
-            		this, android.R.layout.simple_list_item_1, matches));  
-            		*/
-            String text = compareSpeak(matches.get(0).toString());
-            
-            mEcho.setText(phase[phaseNo]);
-            mySpeak.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
 
- /*
-            String text = "This is <font color='red'>red</font>. This is <font color='blue'>blue</font>.";
-            mText.setText(text);
-            mText.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
- */
+            if (Constants.SPEAK_MODE_VERIFY.equals(speakMode)) {
+            	mEcho.setText(matches.get(0).toString());
+            } else {
+            	String text = compareSpeak(matches.get(0).toString());
+            
+            	mEcho.setText(phase[phaseNo]);
+            	mySpeak.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+        	}
         }  
     } 
     
