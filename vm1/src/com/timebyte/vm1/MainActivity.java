@@ -31,6 +31,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected Intent intent;
 	HashMap<String, String> map = new HashMap<String, String>();
 	
+	protected int mailCount = 0;
+	
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
     protected String answer = Constants.COMMAND_INIT;

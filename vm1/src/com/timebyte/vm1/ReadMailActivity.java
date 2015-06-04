@@ -122,15 +122,17 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		int msgLength = mailSubject.length;
 
 		System.out.println("^^^^^^^^^^^^^^^^^ReadMailDone*********** ");
-		readMessage(0, msgLength);
+		readMessage();
 	}
 
-	private void readMessage(int count, int msgLength) {
+	private void readMessage() {
 		System.out.println("^^^^^^^^^^^^^^^^^readMessage*********** ");
 		
-//		for (int i = count; i < msgLength; i++) {
-		for (int i = count; (i < count+increment); i++) {
-	
+		int count = mailCount + Constants.MAIL_PER_PAGE;
+		if (count > mailSubject.length) {
+			count = mailSubject.length;
+		}
+		for (int i = mailCount; i < count; i++) {
 //			Message message = mailSubject[i];
 			/*
 			System.out.println("----------------------------------");
@@ -178,5 +180,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 		*/
 		}
+		mailCount += count;
 	}
 }
