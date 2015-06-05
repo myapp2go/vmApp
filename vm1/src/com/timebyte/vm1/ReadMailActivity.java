@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.activation.DataHandler;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -58,47 +60,48 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 	
 	public void setMessages(Message[] messages) {
-		mailSubject = new String[messages.length+1];
-		mailBody = new String[messages.length+1];
+		mailSubject = new String[messages.length + 1];
+		mailBody = new String[messages.length + 1];
 		mailSubject[0] = Constants.COMMAND_ADVERTISE_GREETING;
 
-		System.out.println("9999 PCCCFLAG " + messages.length);
-		//		for (int i = messages.length; i < 1; i--) {
-
 		int len = messages.length;
-		for (int i = 1; i < len; i++) {
+		for (int i = 1; i <= len; i++) {
 			try {
-				Message msg = messages[len-i];
+				Message msg = messages[len - i];
 				mailSubject[i] = msg.getSubject();
-//				String str = mailSubject[i];
-				String type = "TEXT/HTML";
-//				 if (!(msg.getFlags() == null))
-//				        System.out.println("99FLAG " + msg.getSubject());
-				try {
-//					if (!(msg.getContent() instanceof Multipart)) {
-//					System.out.println("%%%%%%%%%%%%%%%FLAG " + msg.getContent());
+
+				Object msgContent = msg.getContent();
+				if (msgContent instanceof Multipart) {
+					Multipart multipart = (Multipart) msgContent;
+					boolean found = false;
 					
-//						System.out.println("%%%%%%%%%%%%%%%FLAG " + msg.getContentType());
-//						System.out.println("%%%%%%%%%%%%%%%FLAGINDEX " + msg.getContentType().indexOf("HTML"));
-						int pos = msg.getContentType().indexOf("HTML");
-						if (pos == -1) {
-//							System.out.println("%%%%%%%%%%%%%%%CONTENT " + msg.getContent());
-							mailBody[i] = msg.getContent().toString();
-						} else {
-							mailBody[i] = Constants.MAIL_BODY_NOT_SUPPORT;
+					for (int j = 0; j < multipart.getCount(); j++) {
+						BodyPart bodyPart = multipart.getBodyPart(j);
+						int pos = bodyPart.getContentType().indexOf("PLAIN");
+						if (pos > 0) {
+							found = true;
+							mailBody[i] = bodyPart.getContent().toString();
 						}
-//					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					}
+					
+					if (!found) {
+						mailBody[i] = Constants.MAIL_BODY_NOT_SUPPORT;
+					}
+				} else {
+					int pos = msg.getContentType().indexOf("PLAIN");
+					if (pos == -1) {
+						mailBody[i] = Constants.MAIL_BODY_IS_HTML;
+					} else {
+						mailBody[i] = msg.getContent().toString();
+					}					
 				}
+			} catch (IOException e) {	
+				
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
-//		System.out.println("^^^^^^^^^^^^^^^^^setMessages*********** " + mailSubject + " " + messages);
 	}
 
 	private void matchReadCommand(ArrayList<String> matches) {
@@ -122,15 +125,10 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	
 	public void readMailDone() {
 		speanOn = false;
-		int msgLength = mailSubject.length;
-
-		System.out.println("^^^^^^^^^^^^^^^^^ReadMailDone*********** ");
 		readMessage();
 	}
 
 	private void readMessage() {
-		System.out.println("^^^^^^^^^^^^^^^^^readMessage*********** ");
-		
 		int start = mailCount;
 		int count = mailCount + Constants.MAIL_PER_PAGE;
 		if (count > mailSubject.length) {
@@ -152,38 +150,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			    
 //			tts.speak("mail number :" + (i + 1) + message.getSubject(), TextToSpeech.QUEUE_ADD, null);
 			if (subjectOnly) {
+				System.out.println("111111 Email Number ");
 				tts.speak("mail number" + (i + 1)  + " " + mailSubject[i], TextToSpeech.QUEUE_ADD, map);
 			} else {
+				System.out.println("222222111111 Email Number ");
 				tts.speak("mail number" + (i + 1)  + " " + mailSubject[i] + mailBody[i], TextToSpeech.QUEUE_ADD, map);				
 			}
-/*			
-			Object msgContent = message.getContent();
-			String content = "";
-	
-			if (msgContent instanceof Multipart) {
-				Multipart multipart = (Multipart) msgContent;
-				System.out.println("BodyPart" + "MultiPartCount: " + multipart.getCount());
-
-				for (int j = 0; j < multipart.getCount(); j++) {
-					BodyPart bodyPart = multipart.getBodyPart(j);
-
-					String disposition = bodyPart.getDisposition();
-
-					if (j == 0) {
-					if (disposition != null
-						&& (disposition.equalsIgnoreCase("ATTACHMENT"))) {
-						System.out.println("Mail have some attachment");
-
-						DataHandler handler = bodyPart.getDataHandler();
-						System.out.println("file name : " + handler.getName());
-					} else {
-						content = bodyPart.getContent().toString();
-						System.out.println("getText " + content);
-					}
-				}
-			}
-		}
-		*/
 		}
 	}
 	
@@ -211,7 +183,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			}
 		}
 		
-		System.out.println("77777777777777777777777777777CHECsubCommandK " + subCommand);
 		return subCommand;
 	}
 }

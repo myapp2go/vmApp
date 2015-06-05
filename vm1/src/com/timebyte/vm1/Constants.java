@@ -11,7 +11,8 @@ public final class Constants {
 	public static String COMMAND_GREETING = "Please speak read, write or setting";
 
 	public static String MAIL_BODY_NOT_SUPPORT = "This mail message in not readable";
-
+	public static String MAIL_BODY_IS_HTML = "This mail message type is html";
+	public static String MAIL_BODY_IS_MULTIPART = "This mail message is multipart";
 	
 	public static final String COMMAND_TO_GREETING = "Who you want to send";
 	public static final String COMMAND_SUBJECT_GREETING = "Please speak subject";
