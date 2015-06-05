@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
@@ -37,7 +38,10 @@ public class MainActivity extends Activity implements OnInitListener {
     private String speakMode = Constants.SPEAK_MODE_TEAINING;
     private int phaseNo = 0;
     protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
+    private String[] keyArray;
+    private int keyIndex = 0;
     private List<String> listPhase;
+    private int phaseSize = 0;    
     
 	protected TextToSpeech tts;
 	protected Intent intent;
@@ -56,7 +60,7 @@ public class MainActivity extends Activity implements OnInitListener {
 		
 		initRecognizer();
 		
-		initTraining();
+//		initTraining();
 		
 //		mList = (ListView) findViewById(R.id.list);
 		mEcho = (TextView) findViewById(R.id.echo);
@@ -74,7 +78,8 @@ public class MainActivity extends Activity implements OnInitListener {
 		training.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				speakMode = Constants.SPEAK_MODE_TEAINING;
-				listPhase = mapOfList.get("iy_i");
+				listPhase = mapOfList.get(keyArray[keyIndex++]);
+				phaseSize = listPhase.size();
 				startTraining();
 			}
 		});
@@ -84,6 +89,11 @@ public class MainActivity extends Activity implements OnInitListener {
 			public void onClick(View v) {
 				speakMode = Constants.SPEAK_MODE_TEAINING;
 				phaseNo++;
+				if (phaseNo ==phaseSize) {
+					phaseNo = 0;
+					listPhase = mapOfList.get(keyArray[keyIndex++]);
+					phaseSize = listPhase.size();	
+				}
 				startTraining();
 			}
 		});
@@ -281,17 +291,18 @@ public class MainActivity extends Activity implements OnInitListener {
 				}
 			}
 			mapOfList.put(key, responseData);
-			} catch(IOException e) {
+		} catch(IOException e) {
 
-			} finally {
-				if (inputStream != null) {
-					try {
-						inputStream.close();
-					} catch (IOException e) {
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
 
-					}
 				}
 			}
-		
+		}
+		Set<String> keySet = mapOfList.keySet();
+		keyArray = keySet.toArray(new String[keySet.size()]);
 	}
 }
