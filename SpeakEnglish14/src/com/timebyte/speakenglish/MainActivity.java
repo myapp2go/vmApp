@@ -223,7 +223,7 @@ public class MainActivity extends Activity implements OnInitListener {
             if (Constants.SPEAK_MODE_VERIFY.equals(speakMode)) {
             	mEcho.setText(matches.get(0).toString());
             } else {
-            	String text = compareSpeak(matches.get(0).toString());
+            	String text = compareSpeak(matches.get(0).toLowerCase());
             
             	mEcho.setText(listPhase.get(phaseNo));
             	mySpeak.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
