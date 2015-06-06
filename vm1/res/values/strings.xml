@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="readMail">Read Mail</string>
+    <string name="skipMail">Skip Mail</string>
     <string name="writeMail">Write Mail</string>
     <string name="settings">Settings</string>
     <string name="greeting">Welcome to Speak Mail</string>

@@ -21,7 +21,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/readMail" />
-        
+
+            
+    <Button
+        android:id="@+id/skipMail"
+         android:layout_column="1"
+        android:layout_row="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/skipMail" />
+    
     <Button
         android:id="@+id/writeMail"
          android:layout_column="0"

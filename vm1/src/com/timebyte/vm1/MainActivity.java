@@ -60,6 +60,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);		
 			}
 		});
+
+		final Button skipMail = (Button) this.findViewById(R.id.skipMail);
+		skipMail.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				tts.speak(Constants.COMMAND_SKIP_GREETING, TextToSpeech.QUEUE_FLUSH, map);
+			}
+		});
 		
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {

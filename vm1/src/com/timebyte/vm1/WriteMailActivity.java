@@ -7,8 +7,6 @@ import android.speech.tts.TextToSpeech;
 
 public class WriteMailActivity extends ReadMailActivity {
 	
-//	protected HashMap<String, String> contacts = new HashMap<String, String>();
-
     protected String mailTo ="";
     protected String mailSubject = "";
     protected String mailBody = "";
@@ -20,55 +18,43 @@ public class WriteMailActivity extends ReadMailActivity {
 		case Constants.COMMAND_INIT :
     		subCommand = Constants.SUBCOMMAND_TO;
     		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
- //   		startRecognizer();
 			break;
 		case Constants.SUBCOMMAND_TO :
 			String name = matches.get(0);
 			System.out.println("DUMP " + matches);
 			mailTo = matchName(name);
-			System.out.println("FFFFFFFFFFFFFFFFFFFF " + mailTo);
 			if (mailTo != null) {
 				checkYesNo = true;
 				subCommand = Constants.SUBCOMMAND_VERIFY_TO;
 				speanOn = true;
 				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
-//				startRecognizer();
 			} else {
 				checkYesNo = false;
 	    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
-//	    		startRecognizer();
 			}
 			break;
 		case Constants.SUBCOMMAND_VERIFY_TO :	
 			String answer = matchYesNo(matches);
 			switch (answer) {
 			case Constants.ANSWER_YES :
-//				System.out.println("YESGGGGGGGGGGGGGGGGG " + mailTo);
-//				checkYesNo = false;
 				subCommand = Constants.SUBCOMMAND_SUBJECFT;
 				speanOn = true;
-				tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);
-//				startRecognizer();				
+				tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);				
 				break;
 			case Constants.ANSWER_NO :	
-//				System.out.println("NOGGGGGGGGGGGGGGGGG " + mailTo);
 				subCommand = Constants.SUBCOMMAND_TO;
-//				checkYesNo = false;
 				answer = Constants.COMMAND_INIT;
 	    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
-//	    		startRecognizer();
 				break;
 			case Constants.COMMAND_NONE :	
 //				System.out.println("NONEGGGGGGGGGGGGGGGGG " + mailTo);
 //				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
 //				checkYesNo = true;
-//				startRecognizer();
 				break;				
 			}
 			break;
 		case Constants.SUBCOMMAND_SUBJECFT :
 			mailSubject = matches.get(0);
-			System.out.println("*************SUBJECT " + mailSubject);
     		subCommand = Constants.SUBCOMMAND_BODY;
     		tts.speak(Constants.COMMAND_BODY_GREETING, TextToSpeech.QUEUE_ADD, map);
     		break;
@@ -78,11 +64,9 @@ public class WriteMailActivity extends ReadMailActivity {
     		tts.speak(Constants.COMMAND_DONE_GREETING, TextToSpeech.QUEUE_ADD, map);
 			break;
 		case Constants.SUBCOMMAND_DONE :
-			System.out.println("*************PCMODE ");
 			String mode = matchWriteMode(matches);
 			switch (mode) {
 			case Constants.SUBCOMMAND_SEND :
-				System.out.println("*************PCMODESEND " + mode);
 				new WriteMailTask(WriteMailActivity.this).execute(sharedPreferences, mailTo, mailSubject, mailBody);
 				break;
 			}	
@@ -91,14 +75,11 @@ public class WriteMailActivity extends ReadMailActivity {
 		}
 	}
 
-	private String matchName(String mailTo) {
+	private String matchName(String name) {
 		// TODO Auto-generated method stub
-		String toLow = mailTo.toLowerCase();
-//		System.out.println("*************matchName " + toLow + " SIZE " + contacts);
+		String toLow = name.toLowerCase();
 		String ret = contacts.get(toLow);
-		System.out.println("*************matchName1 " + ret);
 		return ret;
-//		return contacts.get(mailTo);
 	}
 	
     protected String matchYesNo(ArrayList<String> matches) {
@@ -120,7 +101,6 @@ public class WriteMailActivity extends ReadMailActivity {
         	}
         }
 
-		System.out.println("matchYesNoanswer " + answer);
 		return answer;
 	}
     
