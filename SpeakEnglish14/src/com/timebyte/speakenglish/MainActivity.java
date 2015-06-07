@@ -34,12 +34,15 @@ public class MainActivity extends Activity implements OnInitListener {
     private TextView mEcho;
     private TextView mySpeak;
     
-    private String[] phase;
     private String speakMode = Constants.SPEAK_MODE_TEAINING;
     private int phaseNo = 0;
-    protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
+    private ArrayList<List<String>> arrayOfList = new ArrayList<List<String>>(75);
+    private int arrayIndex = 0;
+    
+//    protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
     private String[] keyArray;
     private int keyIndex = 0;
+    
     private List<String> listPhase;
     private int phaseSize = 0;    
     
@@ -78,7 +81,8 @@ public class MainActivity extends Activity implements OnInitListener {
 		training.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				speakMode = Constants.SPEAK_MODE_TEAINING;
-				listPhase = mapOfList.get(keyArray[keyIndex++]);
+//				listPhase = mapOfList.get(keyArray[keyIndex++]); // map
+				listPhase = arrayOfList.get(arrayIndex++);
 				phaseSize = listPhase.size();
 				startTraining();
 			}
@@ -91,7 +95,8 @@ public class MainActivity extends Activity implements OnInitListener {
 				phaseNo++;
 				if (phaseNo ==phaseSize) {
 					phaseNo = 0;
-					listPhase = mapOfList.get(keyArray[keyIndex++]);
+//					listPhase = mapOfList.get(keyArray[keyIndex++]);	// map
+					listPhase =  arrayOfList.get(arrayIndex++);
 					phaseSize = listPhase.size();	
 				}
 				startTraining();
@@ -105,16 +110,6 @@ public class MainActivity extends Activity implements OnInitListener {
 				startTraining();
 			}
 		});
-	}
-
-	private void initTraining() {
-		phase = new String[10];
-		
-		phase[0] = "please sit in this seat";
-		phase[1] = "these shoes should fit your feet";
-		phase[2] = "do you still steal";
-		phase[3] = "those bins are for beans";
-		phase[4] = "they ship sheep";
 	}
 
 	private void startTraining() {
@@ -154,8 +149,6 @@ public class MainActivity extends Activity implements OnInitListener {
 				if (speanOn) {
 					switch (speakMode) {
 					case Constants.SPEAK_MODE_TEAINING :
-//						startTraining();
-//						phaseNo++;
 						startRecognizer(0);
 						break;
 					case Constants.SPEAK_MODE_VERIFY :
@@ -273,7 +266,8 @@ public class MainActivity extends Activity implements OnInitListener {
 			inputStream = getResources().openRawResource(R.raw.speakdata);
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			String line;
-
+			int index = 0;
+			
 			List<String> responseData = null;
 			String key = "";
 			while ((line = in.readLine()) != null) {
@@ -282,7 +276,8 @@ public class MainActivity extends Activity implements OnInitListener {
 					if (responseData == null) {
 						responseData = new ArrayList<String>();
 					} else {
-						mapOfList.put(key, responseData);
+//						mapOfList.put(key, responseData);	// map
+						arrayOfList.add(index++, responseData);
 						responseData = new ArrayList<String>();
 					}
 					key = line.substring(1, line.length()-1);
@@ -290,7 +285,8 @@ public class MainActivity extends Activity implements OnInitListener {
 					responseData.add(line);
 				}
 			}
-			mapOfList.put(key, responseData);
+//			mapOfList.put(key, responseData);	// map
+			arrayOfList.add(index, responseData);
 		} catch(IOException e) {
 
 		} finally {
@@ -302,7 +298,7 @@ public class MainActivity extends Activity implements OnInitListener {
 				}
 			}
 		}
-		Set<String> keySet = mapOfList.keySet();
-		keyArray = keySet.toArray(new String[keySet.size()]);
+//		Set<String> keySet = mapOfList.keySet();
+//		keyArray = keySet.toArray(new String[keySet.size()]);
 	}
 }
