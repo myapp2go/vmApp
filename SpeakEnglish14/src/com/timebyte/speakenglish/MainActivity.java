@@ -32,17 +32,15 @@ public class MainActivity extends Activity implements OnInitListener {
 	private final int VOICE_RECOGNITION = 1234;
 //    private ListView mList;
     private TextView mEcho;
+    private TextView mKey;
     private TextView mySpeak;
     
+    private String[] phase;
     private String speakMode = Constants.SPEAK_MODE_TEAINING;
     private int phaseNo = 0;
-    private ArrayList<List<String>> arrayOfList = new ArrayList<List<String>>(75);
-    private int arrayIndex = 0;
-    
-//    protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
-    private String[] keyArray;
+    protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
+    private String[] keyArray = new String[75];
     private int keyIndex = 0;
-    
     private List<String> listPhase;
     private int phaseSize = 0;    
     
@@ -67,12 +65,16 @@ public class MainActivity extends Activity implements OnInitListener {
 		
 //		mList = (ListView) findViewById(R.id.list);
 		mEcho = (TextView) findViewById(R.id.echo);
+		mKey = (TextView) findViewById(R.id.key);
 		mySpeak = (TextView) findViewById(R.id.mySpeak);
 		
 		final Button verifySpeeck = (Button) this.findViewById(R.id.verifySpeeck);
 		verifySpeeck.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				speakMode = Constants.SPEAK_MODE_VERIFY;
+				mKey.setText(" ");
+				mEcho.setText(" ");
+				mySpeak.setText(" ");
 				startSpeak();
 			}
 		});
@@ -81,8 +83,8 @@ public class MainActivity extends Activity implements OnInitListener {
 		training.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				speakMode = Constants.SPEAK_MODE_TEAINING;
-//				listPhase = mapOfList.get(keyArray[keyIndex++]); // map
-				listPhase = arrayOfList.get(arrayIndex++);
+				mKey.setText(keyArray[keyIndex]);
+				listPhase = mapOfList.get(keyArray[keyIndex++]);
 				phaseSize = listPhase.size();
 				startTraining();
 			}
@@ -95,8 +97,8 @@ public class MainActivity extends Activity implements OnInitListener {
 				phaseNo++;
 				if (phaseNo ==phaseSize) {
 					phaseNo = 0;
-//					listPhase = mapOfList.get(keyArray[keyIndex++]);	// map
-					listPhase =  arrayOfList.get(arrayIndex++);
+					mKey.setText(keyArray[keyIndex]);
+					listPhase = mapOfList.get(keyArray[keyIndex++]);
 					phaseSize = listPhase.size();	
 				}
 				startTraining();
@@ -110,6 +112,16 @@ public class MainActivity extends Activity implements OnInitListener {
 				startTraining();
 			}
 		});
+	}
+
+	private void initTraining() {
+		phase = new String[10];
+		
+		phase[0] = "please sit in this seat";
+		phase[1] = "these shoes should fit your feet";
+		phase[2] = "do you still steal";
+		phase[3] = "those bins are for beans";
+		phase[4] = "they ship sheep";
 	}
 
 	private void startTraining() {
@@ -149,6 +161,8 @@ public class MainActivity extends Activity implements OnInitListener {
 				if (speanOn) {
 					switch (speakMode) {
 					case Constants.SPEAK_MODE_TEAINING :
+//						startTraining();
+//						phaseNo++;
 						startRecognizer(0);
 						break;
 					case Constants.SPEAK_MODE_VERIFY :
@@ -266,27 +280,26 @@ public class MainActivity extends Activity implements OnInitListener {
 			inputStream = getResources().openRawResource(R.raw.speakdata);
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			String line;
-			int index = 0;
-			
+
 			List<String> responseData = null;
 			String key = "";
+			int ind = 0;
 			while ((line = in.readLine()) != null) {
 				System.out.println("DDD " + line);
 				if (line.charAt(0) == '[') {
 					if (responseData == null) {
 						responseData = new ArrayList<String>();
 					} else {
-//						mapOfList.put(key, responseData);	// map
-						arrayOfList.add(index++, responseData);
+						mapOfList.put(key, responseData);
 						responseData = new ArrayList<String>();
 					}
 					key = line.substring(1, line.length()-1);
+					keyArray[ind++] = key;
 				} else {
 					responseData.add(line);
 				}
 			}
-//			mapOfList.put(key, responseData);	// map
-			arrayOfList.add(index, responseData);
+			mapOfList.put(key, responseData);
 		} catch(IOException e) {
 
 		} finally {

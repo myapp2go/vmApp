@@ -29,11 +29,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/training" />
-    
+      
+    <TextView 
+	    android:id="@+id/key"
+	    android:layout_column="0"
+        android:layout_row="3"
+        android:textSize="20dip"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	</TextView>
+	
     <TextView 
 	    android:id="@+id/echo"
 	    android:layout_column="0"
-        android:layout_row="3"
+        android:layout_row="4"
+        android:textSize="18dip"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
 	</TextView>
@@ -41,7 +51,8 @@
     <TextView 
 	    android:id="@+id/mySpeak"
 	    android:layout_column="0"
-        android:layout_row="4"
+        android:layout_row="5"
+        android:textSize="18dip"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
 	</TextView>
@@ -49,7 +60,7 @@
     <Button
         android:id="@+id/next"
          android:layout_column="0"
-        android:layout_row="5"
+        android:layout_row="6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next" />
@@ -57,7 +68,7 @@
     <Button
         android:id="@+id/tryAgain"
          android:layout_column="0"
-        android:layout_row="6"
+        android:layout_row="7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tryAgain" />    	

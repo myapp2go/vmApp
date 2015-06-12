@@ -25,25 +25,26 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080012;
-        public static final int contactEmail1=0x7f080006;
-        public static final int contactEmail2=0x7f080008;
-        public static final int contactEmail3=0x7f08000a;
-        public static final int contactEmail4=0x7f08000c;
-        public static final int contactEmail5=0x7f08000e;
-        public static final int contactEmail6=0x7f080010;
-        public static final int contactName1=0x7f080005;
-        public static final int contactName2=0x7f080007;
-        public static final int contactName3=0x7f080009;
-        public static final int contactName4=0x7f08000b;
-        public static final int contactName5=0x7f08000d;
-        public static final int contactName6=0x7f08000f;
-        public static final int myEmail=0x7f080003;
-        public static final int myPassword=0x7f080004;
+        public static final int action_settings=0x7f080013;
+        public static final int contactEmail1=0x7f080007;
+        public static final int contactEmail2=0x7f080009;
+        public static final int contactEmail3=0x7f08000b;
+        public static final int contactEmail4=0x7f08000d;
+        public static final int contactEmail5=0x7f08000f;
+        public static final int contactEmail6=0x7f080011;
+        public static final int contactName1=0x7f080006;
+        public static final int contactName2=0x7f080008;
+        public static final int contactName3=0x7f08000a;
+        public static final int contactName4=0x7f08000c;
+        public static final int contactName5=0x7f08000e;
+        public static final int contactName6=0x7f080010;
+        public static final int myEmail=0x7f080004;
+        public static final int myPassword=0x7f080005;
         public static final int readMail=0x7f080000;
-        public static final int setting=0x7f080011;
-        public static final int settings=0x7f080002;
-        public static final int writeMail=0x7f080001;
+        public static final int setting=0x7f080012;
+        public static final int settings=0x7f080003;
+        public static final int skipMail=0x7f080001;
+        public static final int writeMail=0x7f080002;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -54,19 +55,20 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f050002;
-        public static final int addContact=0x7f05000d;
+        public static final int addContact=0x7f05000e;
         public static final int app_name=0x7f050000;
-        public static final int contact=0x7f05000c;
-        public static final int emailAddressHint=0x7f050009;
-        public static final int greeting=0x7f050006;
+        public static final int contact=0x7f05000d;
+        public static final int emailAddressHint=0x7f05000a;
+        public static final int greeting=0x7f050007;
         public static final int hello_world=0x7f050001;
-        public static final int mailAccount=0x7f050008;
-        public static final int mailPassword=0x7f05000b;
-        public static final int myEmail=0x7f050007;
-        public static final int myPassword=0x7f05000a;
+        public static final int mailAccount=0x7f050009;
+        public static final int mailPassword=0x7f05000c;
+        public static final int myEmail=0x7f050008;
+        public static final int myPassword=0x7f05000b;
         public static final int readMail=0x7f050003;
-        public static final int settings=0x7f050005;
-        public static final int writeMail=0x7f050004;
+        public static final int settings=0x7f050006;
+        public static final int skipMail=0x7f050004;
+        public static final int writeMail=0x7f050005;
     }
     public static final class style {
         /** 
