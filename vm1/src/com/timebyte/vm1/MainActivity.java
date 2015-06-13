@@ -33,6 +33,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	private int ttsCount = 0;
 	protected boolean subjectOnly = true;
+	protected int mailCount = 0;
 	
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
@@ -57,6 +58,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				command = Constants.COMMAND_READ;
 				subCommand = Constants.COMMAND_INIT;
 				speakOn = true;
+				ttsCount = 0;
+				mailCount = 0;
 				
 				tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);		
 			}
