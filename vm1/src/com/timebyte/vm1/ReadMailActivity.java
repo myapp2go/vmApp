@@ -16,12 +16,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 	private String[] mailSubject;
 	private String[] mailBody;
-	private boolean subjectOnly = true;
 	protected int mailCount = 0;
 	
 	protected void doReadMail(ArrayList<String> matches) {
 //		increment = sharedPreferences.getInt("increment", 0);
 		String cmd = matchReadMode(matches);
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail matchReadMode " + cmd);
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
@@ -48,12 +48,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 //			new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);	
 			break;
 		case Constants.COMMAND_NEXT :
-			speanOn = false;
+			speakOn = false;
 			readMessage();
 			break;
 		case Constants.COMMAND_STOP :
+			mailCount = 0;
 //			commandReset();
-    		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+//    		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
 //    		startRecognizer();
 			break;
 		}
@@ -124,16 +125,20 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 	
 	public void readMailDone() {
-		speanOn = false;
+		speakOn = false;
 		readMessage();
 	}
 
 	private void readMessage() {
-		int start = mailCount;
-		int count = mailCount + Constants.MAIL_PER_PAGE;
-		if (count > mailSubject.length) {
-			count = mailSubject.length;
+		int start = mailCount;		
+		int count = mailCount + 1;
+		if (subjectOnly) {
+			count = mailCount + Constants.MAIL_PER_PAGE;
+			if (count > mailSubject.length) {
+				count = mailSubject.length;
+			}
 		}
+
 		for (int i = start; i < count; i++) {
 			mailCount++;
 //			Message message = mailSubject[i];

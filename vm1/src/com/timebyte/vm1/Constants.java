@@ -10,7 +10,7 @@ public final class Constants {
 
 	public static String COMMAND_GREETING = "Please speak read, write or setting";
 
-	public static String MAIL_BODY_NOT_SUPPORT = "This mail message in not readable";
+	public static String MAIL_BODY_NOT_SUPPORT = "This mail message in not plain text";
 	public static String MAIL_BODY_IS_HTML = "This mail message type is html";
 	public static String MAIL_BODY_IS_MULTIPART = "This mail message is multipart";
 
@@ -27,6 +27,7 @@ public final class Constants {
 	// READ
 	public static String COMMAND_READ_GREETING = "Please speak 1 for reading subject, 2 for reading subject and message";
 	public static String COMMAND_READ_ACTION = "Please speak next or stop";
+	public static String COMMAND_READ_BODY_GREETING = "Please speak 1 for continue, 2 for skip This is Debugging";
 	
 	
 	public static final String COMMAND_INIT = "init";

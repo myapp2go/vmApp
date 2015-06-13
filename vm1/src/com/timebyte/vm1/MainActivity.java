@@ -32,12 +32,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	HashMap<String, String> map = new HashMap<String, String>();
 	
 	private int ttsCount = 0;
+	protected boolean subjectOnly = true;
 	
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
     protected String answer = Constants.COMMAND_INIT;
     
-    protected boolean speanOn = false;
+    protected boolean speakOn = false;
     
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
     
@@ -55,25 +56,25 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public void onClick(View v) {
 				command = Constants.COMMAND_READ;
 				subCommand = Constants.COMMAND_INIT;
-				speanOn = true;
+				speakOn = true;
 				
 				tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);		
 			}
 		});
-
+/*
 		final Button skipMail = (Button) this.findViewById(R.id.skipMail);
 		skipMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				tts.speak(Constants.COMMAND_SKIP_GREETING, TextToSpeech.QUEUE_FLUSH, map);
 			}
 		});
-		
+*/		
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				command = Constants.COMMAND_WRITE;
 				subCommand = Constants.SUBCOMMAND_TO;
-				speanOn = true;
+				speakOn = true;
 				
 				tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
 			}
@@ -116,8 +117,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				System.out.println("ONDONE " + ttsCount);
-				if (speanOn) {
+				System.out.println("ONDONE " + ttsCount + " * " + speakOn );
+				if (speakOn) {
 					startRecognizer(0);
 				}
 				
@@ -126,13 +127,18 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	            	break;
 	            case Constants.COMMAND_READ:
-	            	if (ttsCount == Constants.MAIL_PER_PAGE) {
-	            		System.out.println("READDDDD ONDONE " + ttsCount);
-	            		ttsCount = 0;
-	            		tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
-	            		speanOn = true;
+	            	if (!subjectOnly) {
+//            			tts.speak(Constants.COMMAND_READ_BODY_GREETING, TextToSpeech.QUEUE_ADD, map);
+//            			speakOn = true;
 	            	} else {
-	            		ttsCount++;
+	            		if (ttsCount == Constants.MAIL_PER_PAGE) {
+	            			System.out.println("READDDDD ONDONE " + ttsCount);
+	            			ttsCount = 0;
+	            			tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
+	            			speakOn = true;
+	            		} else {
+	            			ttsCount++;
+	            		}
 	            	}
 	            	break;
 	            case Constants.COMMAND_SETTING:

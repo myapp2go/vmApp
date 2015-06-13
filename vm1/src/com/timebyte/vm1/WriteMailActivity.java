@@ -26,7 +26,7 @@ public class WriteMailActivity extends ReadMailActivity {
 			if (mailTo != null) {
 				checkYesNo = true;
 				subCommand = Constants.SUBCOMMAND_VERIFY_TO;
-				speanOn = true;
+				speakOn = true;
 				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
 			} else {
 				checkYesNo = false;
@@ -38,7 +38,7 @@ public class WriteMailActivity extends ReadMailActivity {
 			switch (answer) {
 			case Constants.ANSWER_YES :
 				subCommand = Constants.SUBCOMMAND_SUBJECFT;
-				speanOn = true;
+				speakOn = true;
 				tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);				
 				break;
 			case Constants.ANSWER_NO :	
