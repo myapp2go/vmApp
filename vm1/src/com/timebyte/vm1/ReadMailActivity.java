@@ -16,36 +16,46 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 	private String[] mailSubject;
 	private String[] mailBody;
-
 	
 	protected void doReadMail(ArrayList<String> matches) {
 //		increment = sharedPreferences.getInt("increment", 0);
-		String cmd = matchReadMode(matches);
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail matchReadMode " + cmd);
+		System.out.println("doReadMail " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + speakOn);
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
-			matchReadCommand(matches);
+			String answer = matchReadCommand(matches);
 			switch (answer) {
 			case Constants.ANSWER_1 :
-				subjectOnly = true;
+				readMode = Constants.READ_OPTION_SUBJECT_ONLY;
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				break;
 			case Constants.ANSWER_2 :
-				subjectOnly = false;
+				readMode = Constants.READ_OPTION_SUBJECT_BODY;
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				break;
 			case Constants.COMMAND_NONE :
 				break;	
 			}
 			break;
-		case Constants.SUBCOMMAND_RETRIEVE :
+		case Constants.SUBCOMMAND_MORE_SKIP :
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
-//			String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
-//			String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
-// PC522			
-//			subCommand = Constants.COMMAND_STOP;
-//			new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);	
+			String cmd = matchReadMode(matches);
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail matchReadMode " + cmd + " * " + subCommand);
+			switch (cmd) {
+			case Constants.COMMAND_NEXT :
+				speakOn = false;
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+				readMessage();
+				break;
+			case Constants.SUBCOMMAND_SKIP :
+				speakOn = false;
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+				mailCount++;
+				readMessage();
+				break;
+			}
 			break;
 		case Constants.COMMAND_NEXT :
 			speakOn = false;
@@ -105,23 +115,25 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 	}
 
-	private void matchReadCommand(ArrayList<String> matches) {
+	private String matchReadCommand(ArrayList<String> matches) {
 		// TODO Auto-generated method stub
         boolean found = false;
-        answer = Constants.COMMAND_NONE;
+        String ans = Constants.COMMAND_NONE;
 		
         for (int i = 0; !found && (i < matches.size()); i++) {
         	switch (matches.get(i)) {
         	case Constants.ANSWER_1 :
         		found = true;
-        		answer = Constants.ANSWER_1;
+        		ans = Constants.ANSWER_1;
         		break;
         	case Constants.ANSWER_2 :
         		found = true;
-        		answer = Constants.ANSWER_2;
+        		ans = Constants.ANSWER_2;
         		break;	
         	}
         }
+        
+        return ans;
 	}
 	
 	public void readMailDone() {
@@ -132,7 +144,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private void readMessage() {
 		int start = mailCount;		
 		int count = mailCount + 1;
-		if (subjectOnly) {
+		if (Constants.READ_OPTION_SUBJECT_ONLY.equals(readMode)) {
 			count = mailCount + Constants.MAIL_PER_PAGE;
 			if (count > mailSubject.length) {
 				count = mailSubject.length;
@@ -154,11 +166,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
 			    
 //			tts.speak("mail number :" + (i + 1) + message.getSubject(), TextToSpeech.QUEUE_ADD, null);
-			if (subjectOnly) {
-				System.out.println("111111 Email Number ");
+			if (Constants.READ_OPTION_SUBJECT_ONLY.equals(readMode)) {
 				tts.speak("mail number" + (i + 1)  + " " + mailSubject[i], TextToSpeech.QUEUE_ADD, map);
 			} else {
-				System.out.println("222222111111 Email Number ");
 				tts.speak("mail number" + (i + 1)  + " " + mailSubject[i] + mailBody[i], TextToSpeech.QUEUE_ADD, map);				
 			}
 		}
@@ -166,28 +176,28 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	
 	private String matchReadMode(ArrayList<String> matches) {
 		boolean found = false;
+		String sub = Constants.COMMAND_NONE;
 		
 		for (int i = 0; !found && (i < matches.size()); i++) {
 			switch (matches.get(i)) {
-			case Constants.SBCOMMAND_NEXT:
+			case Constants.ANSWER_1:
 				found = true;
-				subCommand = Constants.SBCOMMAND_NEXT;
+				sub = Constants.SBCOMMAND_NEXT;
 				break;
 			case Constants.SBCOMMAND_UP:
 				found = true;
-				subCommand = Constants.SBCOMMAND_UP;
+				sub = Constants.SBCOMMAND_UP;
 				break;
 			case Constants.SUBCOMMAND_ADD:
 				found = true;
-				subCommand = Constants.SUBCOMMAND_ADD;
-				break;
-			case Constants.COMMAND_STOP:
+				sub = Constants.SUBCOMMAND_ADD;
+			case Constants.ANSWER_2:
 				found = true;
-				subCommand = Constants.COMMAND_STOP;
+				sub = Constants.SUBCOMMAND_SKIP;
 				break;
 			}
 		}
 		
-		return subCommand;
+		return sub;
 	}
 }

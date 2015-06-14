@@ -27,7 +27,7 @@ public final class Constants {
 	// READ
 	public static String COMMAND_READ_GREETING = "Please speak 1 for reading subject, 2 for reading subject and message";
 	public static String COMMAND_READ_ACTION = "Please speak next or stop";
-	public static String COMMAND_READ_BODY_GREETING = "Please speak 1 for continue, 2 for skip This is Debugging";
+	public static String COMMAND_READ_BODY_GREETING = "Please speak 1 for continue, 2 for skip";
 	
 	
 	public static final String COMMAND_INIT = "init";
@@ -38,10 +38,13 @@ public final class Constants {
 	
 	public static final String COMMAND_READ = "read";
 	public static final String SUBCOMMAND_RETRIEVE = "retrieve";
+	public static final String SUBCOMMAND_MORE_SKIP = "moreSkip";
+	public static final String SUBCOMMAND_SKIP = "skip";
 	public static final String SBCOMMAND_UP = "up";
 	public static final String SBCOMMAND_DOWN = "down";
 	public static final String SBCOMMAND_NEXT = "next";
-	public static final String READ_OPTION_SUBJECT_ONLY = "subject only";
+	public static final String READ_OPTION_SUBJECT_ONLY = "subjectOnly";
+	public static final String READ_OPTION_SUBJECT_BODY = "subjectBody";
 	
 	public static final String COMMAND_WRITE = "write";
 	public static final String SUBCOMMAND_TO = "to";

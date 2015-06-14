@@ -31,14 +31,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected Intent intent;
 	HashMap<String, String> map = new HashMap<String, String>();
 	
-	private int ttsCount = 0;
-	protected boolean subjectOnly = true;
+	protected int ttsCount = 0;
 	protected int mailCount = 0;
 	
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
-    protected String answer = Constants.COMMAND_INIT;
-    
+	protected String readMode = Constants.COMMAND_INIT;    
+	
     protected boolean speakOn = false;
     
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
@@ -120,9 +119,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				System.out.println("ONDONE " + ttsCount + " * " + speakOn );
+				System.out.println("ONDONE " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + speakOn);
 				if (speakOn) {
 					startRecognizer(0);
+					speakOn = false;
 				}
 				
 	            switch (command) {
@@ -130,20 +130,28 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	            	break;
 	            case Constants.COMMAND_READ:
-	            	if (!subjectOnly) {
-//            			tts.speak(Constants.COMMAND_READ_BODY_GREETING, TextToSpeech.QUEUE_ADD, map);
-//            			speakOn = true;
-	            	} else {
-	            		if (ttsCount == Constants.MAIL_PER_PAGE) {
-	            			System.out.println("READDDDD ONDONE " + ttsCount);
-	            			ttsCount = 0;
-	            			tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
-	            			speakOn = true;
-	            		} else {
-	            			ttsCount++;
-	            		}
-	            	}
-	            	break;
+					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
+						switch (readMode) {
+						case Constants.READ_OPTION_SUBJECT_ONLY:
+							if (ttsCount == Constants.MAIL_PER_PAGE) {
+								System.out.println("READDDDD ONDONE "
+										+ ttsCount);
+								ttsCount = 0;
+								tts.speak(Constants.COMMAND_READ_ACTION,
+										TextToSpeech.QUEUE_ADD, map);
+								speakOn = true;
+							} else {
+								ttsCount++;
+							}
+							break;
+						case Constants.READ_OPTION_SUBJECT_BODY:
+							speakOn = true;
+							subCommand = Constants.SUBCOMMAND_MORE_SKIP;
+							tts.speak(Constants.COMMAND_READ_BODY_GREETING,
+									TextToSpeech.QUEUE_ADD, map);
+							break;
+						}
+					}
 	            case Constants.COMMAND_SETTING:
 	            	break;
 	            case Constants.COMMAND_STOP:
@@ -152,21 +160,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	            	System.out.println("*** ERROR ");
 	            	break;
 	            }
-
-/*				
-				if (Constants.COMMAND_READ.equals(command)) {
-					ttsCount++;
-					if (ttsCount == increment) {
-						checkReadMode = true;
-						ttsCount = 0;
-						System.out.println("before sp");
-						tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
-//						SystemClock.sleep(2000);
-						System.out.println("after sp");
-						startRecognizer();						
-					}
-				}
-				*/
 			}
 
 			@Override
@@ -182,8 +175,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public void onError(String arg0) {
 				// TODO Auto-generated method stub
-				System.out.println("onError");
-				
+				System.out.println("onError");				
 			}
 		});
 	}
@@ -219,6 +211,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
+		System.out.println("onActivityResult " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + speakOn);
+    	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
             ArrayList<String> matches = data.getStringArrayListExtra
