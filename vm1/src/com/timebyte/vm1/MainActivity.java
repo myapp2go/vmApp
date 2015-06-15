@@ -58,10 +58,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public void onClick(View v) {
 				command = Constants.COMMAND_READ;
 				subCommand = Constants.COMMAND_INIT;
-				microphoneOn = true;
 				ttsCount = 0;
 				mailCount = 0;
-				
+
+				microphoneOn = true;
 				tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);		
 			}
 		});
@@ -78,8 +78,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public void onClick(View v) {
 				command = Constants.COMMAND_WRITE;
 				subCommand = Constants.SUBCOMMAND_TO;
-				microphoneOn = true;
 				
+				microphoneOn = true;
 				tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
 			}
 		});
@@ -147,15 +147,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							if (readBodyDone) {
 								if (ttsCount == Constants.MAIL_PER_PAGE) {
 									ttsCount = 0;
-									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
 									microphoneOn = true;
+									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
 								} else {
 									ttsCount++;
 									readMessageBody();
 								}
 							} else {
-								microphoneOn = true;
 								subCommand = Constants.SUBCOMMAND_MORE_SKIP;
+								microphoneOn = true;								
 								tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
 							}
 							break;

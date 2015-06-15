@@ -17,6 +17,7 @@ public class WriteMailActivity extends ReadMailActivity {
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
     		subCommand = Constants.SUBCOMMAND_TO;
+    		microphoneOn = true;
     		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
 			break;
 		case Constants.SUBCOMMAND_TO :
@@ -44,6 +45,7 @@ public class WriteMailActivity extends ReadMailActivity {
 			case Constants.ANSWER_NO :	
 				subCommand = Constants.SUBCOMMAND_TO;
 				answer = Constants.COMMAND_INIT;
+				microphoneOn = true;
 	    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
 				break;
 			case Constants.COMMAND_NONE :	
@@ -56,11 +58,13 @@ public class WriteMailActivity extends ReadMailActivity {
 		case Constants.SUBCOMMAND_SUBJECFT :
 			mailSubject = matches.get(0);
     		subCommand = Constants.SUBCOMMAND_BODY;
+    		microphoneOn = true;
     		tts.speak(Constants.COMMAND_BODY_GREETING, TextToSpeech.QUEUE_ADD, map);
     		break;
 		case Constants.SUBCOMMAND_BODY :
 			mailBody = matches.get(0);
     		subCommand = Constants.SUBCOMMAND_DONE;
+    		microphoneOn = true;
     		tts.speak(Constants.COMMAND_DONE_GREETING, TextToSpeech.QUEUE_ADD, map);
 			break;
 		case Constants.SUBCOMMAND_DONE :
