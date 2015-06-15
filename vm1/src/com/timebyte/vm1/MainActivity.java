@@ -32,7 +32,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected Intent intent;
 	HashMap<String, String> map = new HashMap<String, String>();
 	
-	protected int ttsCount = 0;
+	protected int ttsCount = 1;
 	protected int mailCount = 0;
     protected boolean readBodyDone = false;
     
@@ -58,7 +58,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public void onClick(View v) {
 				command = Constants.COMMAND_READ;
 				subCommand = Constants.COMMAND_INIT;
-				ttsCount = 0;
+				ttsCount = 1;
 				mailCount = 0;
 
 				microphoneOn = true;
@@ -121,7 +121,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				System.out.println("ONDONE " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + microphoneOn);
+				System.out.println("ONDONE " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + microphoneOn + " * " + readBodyDone);
 				if (microphoneOn) {
 					startRecognizer(0);
 					microphoneOn = false;

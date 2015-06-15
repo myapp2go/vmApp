@@ -17,15 +17,18 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private String[] mailSubject;
 	private String[] mailBody;
 	private int maxLen = 200;
+	private int maxRetry = 2;	
+	private int retry = 0;
 	private int bodyReaded = 0;
 	
 	protected void doReadMail(ArrayList<String> matches) {
 //		increment = sharedPreferences.getInt("increment", 0);
 		System.out.println("doReadMail " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + microphoneOn);
+		String answer = Constants.COMMAND_NONE;
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
-			String answer = matchReadCommand(matches);
+			answer = matchReadCommand(matches);
 			switch (answer) {
 			case Constants.ANSWER_1 :
 				readMode = Constants.READ_OPTION_SUBJECT_ONLY;
@@ -41,6 +44,19 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				break;	
 			}
 			break;
+		case Constants.SUBCOMMAND_RETRIEVE :
+			answer = matchReadCommand(matches);
+			switch (answer) {
+			case Constants.ANSWER_1 :
+				readMessage();
+				break;
+			case Constants.ANSWER_2 :
+				mailCount = 0;
+				break;
+			case Constants.COMMAND_NONE :
+				break;	
+			}
+			break;			
 		case Constants.SUBCOMMAND_MORE_SKIP :
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
 			String cmd = matchReadMode(matches);
@@ -56,6 +72,15 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				mailCount++;
 				readMessageBody();
+				break;
+			case Constants.COMMAND_NONE :
+				if (retry < maxRetry) {
+					microphoneOn = true;	
+					retry++;
+					tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
+				} else {
+					retry = 0;
+				}
 				break;
 			}
 			break;
@@ -76,8 +101,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	public void setMessages(Message[] messages) {
 		mailSubject = new String[messages.length + 1];
 		mailBody = new String[messages.length + 1];
-		mailSubject[0] = Constants.COMMAND_ADVERTISE_GREETING;
-
+		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
+		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;
+		
 		int len = messages.length;
 		for (int i = 1; i <= len; i++) {
 			try {
@@ -149,17 +175,20 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 
 	protected void readMessageBody() {
-		mailCount++;
-		String body = mailBody[mailCount];
+		int count = mailCount;
+		
+		String body = mailBody[count];
 		if (body.length() > maxLen) {
 			int ind = body.indexOf(" ", (bodyReaded+maxLen));
-			body = mailBody[mailCount].substring(bodyReaded, ind);
+			body = mailBody[count].substring(bodyReaded, ind);
 			bodyReaded = ind;
+			readBodyDone = false;
 		} else {
+			mailCount++;
 			readBodyDone = true;
 		}
 		
-		tts.speak("mail number" + (mailCount + 1)  + " " + mailSubject[mailCount] + body, TextToSpeech.QUEUE_ADD, map);						
+		tts.speak("mail number" + (count + 1)  + " " + mailSubject[count] + body, TextToSpeech.QUEUE_ADD, map);						
 	}
 	
 	private void readMessage() {

@@ -22,11 +22,12 @@ public final class Constants {
 	public static final String COMMAND_DONE_GREETING = "Please speak send or add or save or stop";
 	public static final String COMMAND_ECHO_HEADER_GREETING = "You say ";
 	public static final String COMMAND_ECHO_FOOTER_GREETING = " yes or no ";
-	public static final String COMMAND_ADVERTISE_GREETING = "Timebyte IT outsourcing, Delivers total solutions that satisfy both quality, efficiency and cost reduction requirements.";
+	public static final String COMMAND_ADVERTISE_SUBJECT = "Timebyte IT outsourcing";
+	public static final String COMMAND_ADVERTISE_BODY = "Delivers total solutions that satisfy both quality, efficiency and cost reduction requirements.";
 
 	// READ
 	public static String COMMAND_READ_GREETING = "Please speak 1 for reading subject, 2 for reading subject and message";
-	public static String COMMAND_READ_ACTION = "Please speak next or stop";
+	public static String COMMAND_READ_ACTION = "Please speak 1 for continue, 2 for stop";
 	public static String COMMAND_READ_BODY_MORE_SKIP = "Please speak 1 for continue, 2 for skip";
 	
 	
