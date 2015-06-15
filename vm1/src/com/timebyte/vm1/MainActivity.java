@@ -35,6 +35,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected int ttsCount = 1;
 	protected int mailCount = 0;
     protected boolean readBodyDone = false;
+    protected boolean waitBodyCommand = false;
     
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
@@ -147,13 +148,19 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							if (readBodyDone) {
 								if (ttsCount == Constants.MAIL_PER_PAGE) {
 									ttsCount = 0;
+									waitBodyCommand = true;
 									microphoneOn = true;
+									System.out.println("***********SP CMD ");
 									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
 								} else {
-									ttsCount++;
-									readMessageBody();
+									if (!waitBodyCommand) {
+										ttsCount++;
+										System.out.println("***********SP CMD1 ");
+										readMessageBody();
+									}
 								}
 							} else {
+								ttsCount = 0;
 								subCommand = Constants.SUBCOMMAND_MORE_SKIP;
 								microphoneOn = true;								
 								tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);

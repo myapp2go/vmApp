@@ -63,13 +63,17 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			switch (cmd) {
 			case Constants.SUBCOMMAND_MORE :
 				microphoneOn = false;
+				waitBodyCommand = false;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+				System.out.println("***********SP CMD12 ");
 				readMessageBody();
 				break;
 			case Constants.SUBCOMMAND_SKIP :
 				microphoneOn = false;
+				waitBodyCommand = false;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				mailCount++;
+				System.out.println("***********SP CMD13 ");
 				readMessageBody();
 				break;
 			case Constants.COMMAND_NONE :
@@ -167,6 +171,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	public void readMailDone() {
 		microphoneOn = false;
 		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+			System.out.println("***********SP CMD14 ");
 			readMessageBody();
 		} else {
 			readMessage();
