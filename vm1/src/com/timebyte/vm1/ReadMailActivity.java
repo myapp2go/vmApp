@@ -58,7 +58,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			}
 			break;			
 		case Constants.SUBCOMMAND_MORE_SKIP :
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
 			String cmd = matchReadMode(matches);
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail matchReadMode " + cmd + " * " + subCommand);
 			switch (cmd) {

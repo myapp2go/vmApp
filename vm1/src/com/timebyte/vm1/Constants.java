@@ -22,7 +22,7 @@ public final class Constants {
 	public static final String COMMAND_DONE_GREETING = "Please speak send or add or save or stop";
 	public static final String COMMAND_ECHO_HEADER_GREETING = "You say ";
 	public static final String COMMAND_ECHO_FOOTER_GREETING = " yes or no ";
-	public static final String COMMAND_ADVERTISE_SUBJECT = "Timebyte IT outsourcing";
+	public static final String COMMAND_ADVERTISE_SUBJECT = "Timebyte IT outsourcing ";
 	public static final String COMMAND_ADVERTISE_BODY = "Delivers total solutions that satisfy both quality, efficiency and cost reduction requirements.";
 
 	// READ

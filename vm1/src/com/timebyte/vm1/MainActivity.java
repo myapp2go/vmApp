@@ -173,7 +173,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public void onStart(String utteranceId) {
-				System.out.println("onStart");
+				System.out.println("onStart ");
 			}
 
 //			@Override
