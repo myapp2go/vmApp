@@ -26,7 +26,7 @@ public class WriteMailActivity extends ReadMailActivity {
 			if (mailTo != null) {
 				checkYesNo = true;
 				subCommand = Constants.SUBCOMMAND_VERIFY_TO;
-				speakOn = true;
+				microphoneOn = true;
 				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
 			} else {
 				checkYesNo = false;
@@ -38,7 +38,7 @@ public class WriteMailActivity extends ReadMailActivity {
 			switch (answer) {
 			case Constants.ANSWER_YES :
 				subCommand = Constants.SUBCOMMAND_SUBJECFT;
-				speakOn = true;
+				microphoneOn = true;
 				tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);				
 				break;
 			case Constants.ANSWER_NO :	
@@ -84,7 +84,7 @@ public class WriteMailActivity extends ReadMailActivity {
 	
     protected String matchYesNo(ArrayList<String> matches) {
         boolean found = false;
-        answer = Constants.COMMAND_NONE;
+        String ans = Constants.COMMAND_NONE;
 		System.out.println("matchYesNo " );
 		
         for (int i = 0; !found && (i < matches.size()); i++) {
@@ -92,16 +92,16 @@ public class WriteMailActivity extends ReadMailActivity {
         	switch (matches.get(i)) {
         	case Constants.ANSWER_YES :
         		found = true;
-        		answer = Constants.ANSWER_YES;
+        		ans = Constants.ANSWER_YES;
         		break;
         	case Constants.ANSWER_NO :
         		found = true;
-        		answer = Constants.ANSWER_NO;
+        		ans = Constants.ANSWER_NO;
         		break;	
         	}
         }
 
-		return answer;
+		return ans;
 	}
     
 	private String matchWriteMode(ArrayList<String> matches) {
