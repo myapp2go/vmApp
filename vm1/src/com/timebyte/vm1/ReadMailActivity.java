@@ -22,8 +22,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private int bodyReaded = 0;
 	
 	protected void doReadMail(ArrayList<String> matches) {
-//		increment = sharedPreferences.getInt("increment", 0);
-		System.out.println("doReadMail " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + microphoneOn);
 		String answer = Constants.COMMAND_NONE;
 		
 		switch (subCommand) {
@@ -64,13 +62,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			break;			
 		case Constants.SUBCOMMAND_MORE_SKIP :
 			String cmd = matchReadMode(matches);
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail matchReadMode " + cmd + " * " + subCommand);
 			switch (cmd) {
 			case Constants.SUBCOMMAND_MORE :
 				microphoneOn = false;
 				waitBodyCommand = false;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
-				System.out.println("***********SP CMD12 ");
 				readMessageBody();
 				break;
 			case Constants.SUBCOMMAND_SKIP :
@@ -78,7 +74,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				waitBodyCommand = false;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				mailCount++;
-				System.out.println("***********SP CMD13 ");
 				readMessageBody();
 				break;
 			case Constants.COMMAND_NONE :
@@ -176,7 +171,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	public void readMailDone() {
 		microphoneOn = false;
 		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
-			System.out.println("***********SP CMD14 ");
 			readMessageBody();
 		} else {
 			readMessage();
@@ -187,13 +181,21 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		int count = mailCount;
 		
 		String body = mailBody[count];
-		if (body.length() > maxLen) {
-			int ind = body.indexOf(" ", (bodyReaded+maxLen));
-			body = mailBody[count].substring(bodyReaded, ind);
-			bodyReaded = ind;
-			readBodyDone = false;
+		int len = body.length();
+		System.out.println("*****LEN ");
+		if (len > maxLen) {
+			if ((len - bodyReaded) >= maxLen) {
+				int ind = body.indexOf(" ", (bodyReaded+maxLen));
+				body = mailBody[count].substring(bodyReaded, ind);
+				bodyReaded = ind;
+				readBodyDone = false;
+			} else {
+				body = mailBody[count].substring(bodyReaded, len-1);
+				readBodyDone = true;
+			}			
 		} else {
 			mailCount++;
+			bodyReaded = 0;
 			readBodyDone = true;
 		}
 		

@@ -150,12 +150,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 									ttsCount = 0;
 									waitBodyCommand = true;
 									microphoneOn = true;
-									System.out.println("***********SP CMD ");
 									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
 								} else {
 									if (!waitBodyCommand) {
 										ttsCount++;
-										System.out.println("***********SP CMD1 ");
 										readMessageBody();
 									}
 								}
@@ -227,7 +225,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
-		System.out.println("onActivityResult " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + microphoneOn);
     	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
