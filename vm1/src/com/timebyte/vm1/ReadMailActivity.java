@@ -48,7 +48,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			answer = matchReadCommand(matches);
 			switch (answer) {
 			case Constants.ANSWER_1 :
-				readMessage();
+				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+					waitBodyCommand = false;
+					readMessageBody();
+				} else {
+					readMessage();
+				}
 				break;
 			case Constants.ANSWER_2 :
 				mailCount = 0;
