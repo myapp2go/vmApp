@@ -9,6 +9,7 @@ import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.Part;
 
 import android.speech.tts.TextToSpeech;
 
@@ -125,7 +126,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 							found = true;
 							mailBody[i] = bodyPart.getContent().toString();
 						}
+						String disposition = bodyPart.getDisposition();
+						if (disposition != null && (disposition.equals(Part.ATTACHMENT) || disposition.equals(Part.INLINE))) {	
+							mailBody[i] += Constants.MAIL_BODY_HAVE_ATTACHMENT;
+						}
 					}
+					
+
 					
 					if (!found) {
 						mailBody[i] = Constants.MAIL_BODY_NOT_SUPPORT;
