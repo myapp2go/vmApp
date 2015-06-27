@@ -90,7 +90,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					mailCount = 0;
 
 					ArrayList<String> localArrayList = new ArrayList<String>();
-					localArrayList.add("2"); 
+					localArrayList.add("2");
 			        doReadMail(localArrayList);
 				}
 			}

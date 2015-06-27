@@ -24,7 +24,7 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 
 	protected void doSetting() {
 //		doSettingWrite();
-//		doSettingRead() ;
+//		doSettingRead();
 	}
 
 	protected void getPreferenceFromFile() {

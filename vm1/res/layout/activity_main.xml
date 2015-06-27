@@ -36,7 +36,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/readMail"
         android:textColor="#ff0000"
-        android:textSize="30dip" />
+        android:textSize="30dip" />    
     
     <Button
         android:id="@+id/writeMail"
