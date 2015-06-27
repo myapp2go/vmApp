@@ -70,7 +70,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					ArrayList<String> localArrayList = new ArrayList<String>();
 					localArrayList.add("1");
 			        doReadMail(localArrayList);
-			        /*
+			        /* 
 					microphoneOn = true;
 					tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
 					*/
