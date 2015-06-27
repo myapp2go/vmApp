@@ -24,7 +24,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	abstract protected void readMessageBody();
 	abstract protected void doWriteMail(ArrayList<String> matches);
 	abstract protected void getPreferenceFromFile();
-
+	abstract protected void settingNotice();
+	
 	private final int VOICE_RECOGNITION = 1234;
 	protected SharedPreferences sharedPreferences;
 	
@@ -42,7 +43,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected String readMode = Constants.COMMAND_INIT;  
 	
     protected boolean microphoneOn = false;
-  
+    protected boolean isSetting = false;
+    
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
     
 	@Override
@@ -57,13 +59,40 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				command = Constants.COMMAND_READ;
-				subCommand = Constants.COMMAND_INIT;
-				ttsCount = 1;
-				mailCount = 0;
+				if (!isSetting) {
+					settingNotice();
+				} else {
+					command = Constants.COMMAND_READ;
+					subCommand = Constants.COMMAND_INIT;
+					ttsCount = 1;
+					mailCount = 0;
 
-				microphoneOn = true;
-				tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);		
+					ArrayList<String> localArrayList = new ArrayList<String>();
+					localArrayList.add("1");
+			        doReadMail(localArrayList);
+			        /*
+					microphoneOn = true;
+					tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
+					*/
+				}
+			}
+		});
+		
+		final Button readBodyMail = (Button) this.findViewById(R.id.readBodyMail);
+		readBodyMail.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if (!isSetting) {
+					settingNotice();
+				} else {
+					command = Constants.COMMAND_READ;
+					subCommand = Constants.COMMAND_INIT;
+					ttsCount = 1;
+					mailCount = 0;
+
+					ArrayList<String> localArrayList = new ArrayList<String>();
+					localArrayList.add("2");
+			        doReadMail(localArrayList);
+				}
 			}
 		});
 /*
@@ -89,6 +118,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		settings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				startSettings();
+				isSetting = true;
 			}
 		});
 	}
