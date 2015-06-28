@@ -95,6 +95,9 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 				switch (name) {
 				case "myEmail" :
 					editor.putString("myEmail", value);
+					if (value != null) {
+						isSetting = true;
+					}
 					break;
 				case "myPassword" :
 					editor.putString("myPassword", value);

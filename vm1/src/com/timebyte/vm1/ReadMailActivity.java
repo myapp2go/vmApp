@@ -21,6 +21,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private int maxRetry = 2;	
 	private int retry = 0;
 	private int bodyReaded = 0;
+	private boolean skipLink = true;
 	
 	protected void doReadMail(ArrayList<String> matches) {
 		String answer = Constants.COMMAND_NONE;
@@ -124,16 +125,14 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 						int pos = bodyPart.getContentType().indexOf("PLAIN");
 						if (pos > 0) {
 							found = true;
-							mailBody[i] = bodyPart.getContent().toString();
+							mailBody[i] = parseMessage(bodyPart.getContent().toString());
 						}
 						String disposition = bodyPart.getDisposition();
 						if (disposition != null && (disposition.equals(Part.ATTACHMENT) || disposition.equals(Part.INLINE))) {	
 							mailBody[i] += Constants.MAIL_BODY_HAVE_ATTACHMENT;
 						}
 					}
-					
-
-					
+									
 					if (!found) {
 						mailBody[i] = Constants.MAIL_BODY_NOT_SUPPORT;
 					}
@@ -142,7 +141,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					if (pos == -1) {
 						mailBody[i] = Constants.MAIL_BODY_IS_HTML;
 					} else {
-						mailBody[i] = msg.getContent().toString();
+						mailBody[i] =parseMessage(msg.getContent().toString());
 					}					
 				}
 			} catch (IOException e) {	
@@ -152,8 +151,20 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				e.printStackTrace();
 			}
 		}
+		
+		dump();
 	}
 
+	private void dump() {
+		System.out.println("****************************************START***********************");
+		for (int i = 0; i < mailBody.length; i++) {
+			System.out.println("****************************************ind***********************" + i);
+			System.out.println(mailBody[i]);
+		}
+		System.out.println("***************************************************************");
+
+	}
+	
 	private String matchReadCommand(ArrayList<String> matches) {
 		// TODO Auto-generated method stub
         boolean found = false;
@@ -261,5 +272,34 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 		
 		return sub;
+	}
+	
+	private String parseMessage(String paramString) {
+	    int start = paramString.indexOf("http", 0);
+	    StringBuffer localStringBuffer = new StringBuffer();
+
+	//    System.out.println("&&& SOURCE " + paramString);
+	    int ind = 0;
+	    int end = paramString.length();
+	    while (start >= 0) {
+	    	if (("http:".equals(paramString.substring(start, start + 5))) || ("https:".equals(paramString.substring(start, start + 6)))) {
+	    		localStringBuffer.append(paramString.substring(ind, start) + "  link skip");
+	    		ind = paramString.indexOf(" ", start);
+	    		if (ind == -1) {
+	    			ind = start;
+	    			start = -1;
+	    		} else {
+	    			start = paramString.indexOf("http", ind);
+//	    			System.out.println("&&& IND " + start + " * " + ind);
+	    		}
+	        } else {
+//	    	    System.out.println("&&& ELSE " + start + " * " + ind);
+	        	start = paramString.indexOf("http", start+5);
+	        }
+	    }
+//	    System.out.println("&&& END " + start + " * " + ind);
+	    localStringBuffer.append(paramString.substring(ind, end));
+	    
+	    return localStringBuffer.toString();
 	}
 }

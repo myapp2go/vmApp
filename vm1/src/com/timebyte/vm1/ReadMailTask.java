@@ -72,9 +72,11 @@ public class ReadMailTask extends AsyncTask {
 		    
 //		    Message messages1[] = emailFolder.search(unseenFlagTerm);
 		    Message messages1[] = emailFolder.getMessages();
-		    
-		    System.out.println("SEEEEEEEEEEEEEEEE " +messages1.length );
+
+//		    System.out.println("&&&&&&&&&&&&&&&&&&SEEEEEEEEEEEEEEEE&&&&&&& " +emailFolder.getMessageCount() );
+//		    System.out.println("&&&&&&&&&&&&&&&&&&SEEEEEEEEEEEEEEEE " +messages1.length );
 			Message[] messages = emailFolder.getMessages();
+//			System.out.println("&&&&&&&&&&&&&&&&&&SDDDDDDDDDDDDDDDD " +messages1.length );
 			readMailActivity.setMessages(messages1);
 			
 			emailFolder.close(false);

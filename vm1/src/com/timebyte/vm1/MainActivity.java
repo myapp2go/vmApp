@@ -106,11 +106,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				command = Constants.COMMAND_WRITE;
-				subCommand = Constants.SUBCOMMAND_TO;
+				if (!isSetting) {
+					settingNotice();
+				} else {
+					command = Constants.COMMAND_WRITE;
+					subCommand = Constants.SUBCOMMAND_TO;
 				
-				microphoneOn = true;
-				tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
+					microphoneOn = true;
+					tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
+				}
 			}
 		});
 		

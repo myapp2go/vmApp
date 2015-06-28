@@ -32,9 +32,9 @@
         android:id="@+id/readBodyMail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/readBodyMail"
+        android:layout_below="@id/readMail"
         android:layout_centerHorizontal="true"
-        android:text="@string/readMail"
+        android:text="@string/readBodyMail"
         android:textColor="#ff0000"
         android:textSize="30dip" />    
     
