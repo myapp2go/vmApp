@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -82,6 +83,12 @@ public class MainActivity extends Activity implements OnInitListener {
 		final Button training = (Button) this.findViewById(R.id.training);
 		training.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				EditText lesson = (EditText) findViewById(R.id.lesson);
+				int i = Integer.parseInt(lesson.getText().toString());
+		        if (i >= 0) {
+		        	keyIndex = i;
+		        }
+		        
 				speakMode = Constants.SPEAK_MODE_TEAINING;
 				mKey.setText(keyArray[keyIndex]);
 				listPhase = mapOfList.get(keyArray[keyIndex++]);
