@@ -104,12 +104,15 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 	
 	public void setMessages(Message[] messages) {
-		mailSubject = new String[messages.length + 1];
-		mailBody = new String[messages.length + 1];
-		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
-		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;
-		
 		int len = messages.length;
+		if (len > maxReadCount) {
+			len = maxReadCount;
+		}
+		mailSubject = new String[len + 1];
+		mailBody = new String[len + 1];
+		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
+		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;	
+
 		for (int i = 1; i <= len; i++) {
 			try {
 				Message msg = messages[len - i];
