@@ -127,6 +127,23 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 							found = true;
 							mailBody[i] = parseMessage(bodyPart.getContent().toString());
 						}
+						
+						pos = bodyPart.getContentType().indexOf("ALTERNATIVE");
+						if (pos > 0) {
+							found = true;
+							if (bodyPart.getContent() instanceof Multipart) {
+								Multipart nestpart = (Multipart) bodyPart.getContent();
+								String content = "";
+								for (int k = 0; k < nestpart.getCount(); k++) {
+									BodyPart nestBodyPart = nestpart.getBodyPart(j);
+									int nestpos =nestBodyPart.getContentType().indexOf("PLAIN");
+									if ((nestpos > 0) && (nestBodyPart.getContent() != null) && !nestBodyPart.getContent().toString().equals("null")) {
+										content = nestBodyPart.getContent().toString();
+									}
+								}
+								mailBody[i] += content;
+							}
+						}
 						String disposition = bodyPart.getDisposition();
 						if (disposition != null && (disposition.equals(Part.ATTACHMENT) || disposition.equals(Part.INLINE))) {	
 							mailBody[i] += Constants.MAIL_BODY_HAVE_ATTACHMENT;
