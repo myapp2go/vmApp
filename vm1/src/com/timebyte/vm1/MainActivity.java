@@ -156,7 +156,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				System.out.println("ONDONE " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + microphoneOn + " * " + readBodyDone);
+//				System.out.println("ONDONE " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + microphoneOn + " * " + readBodyDone);
 				if (microphoneOn) {
 					startRecognizer(0);
 					microphoneOn = false;
@@ -212,7 +212,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public void onStart(String utteranceId) {
-				System.out.println("onStart ");
+//				System.out.println("onStart ");
 			}
 
 //			@Override

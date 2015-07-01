@@ -120,12 +120,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					Multipart multipart = (Multipart) msgContent;
 					boolean found = false;
 					
+					mailBody[i] = "";
 					for (int j = 0; j < multipart.getCount(); j++) {
 						BodyPart bodyPart = multipart.getBodyPart(j);
-						int pos = bodyPart.getContentType().indexOf("PLAIN");
+						int pos = bodyPart.getContentType().indexOf("PLAIN");						
 						if (pos > 0) {
 							found = true;
-							mailBody[i] = parseMessage(bodyPart.getContent().toString());
+							mailBody[i] += parseMessage(bodyPart.getContent().toString());
 						}
 						
 						pos = bodyPart.getContentType().indexOf("ALTERNATIVE");
@@ -151,14 +152,14 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					}
 									
 					if (!found) {
-						mailBody[i] = Constants.MAIL_BODY_NOT_SUPPORT;
+						mailBody[i] += Constants.MAIL_BODY_NOT_SUPPORT;
 					}
 				} else {
 					int pos = msg.getContentType().indexOf("PLAIN");
 					if (pos == -1) {
-						mailBody[i] = Constants.MAIL_BODY_IS_HTML;
+						mailBody[i] += Constants.MAIL_BODY_IS_HTML;
 					} else {
-						mailBody[i] =parseMessage(msg.getContent().toString());
+						mailBody[i] += parseMessage(msg.getContent().toString());
 					}					
 				}
 			} catch (IOException e) {	
@@ -217,7 +218,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
 		String body = mailBody[count];
 		int len = body.length();
-		System.out.println("*****LEN ");
+
 		if (len > maxLen) {
 			if ((len - bodyReaded) >= maxLen) {
 				int ind = body.indexOf(" ", (bodyReaded+maxLen));
