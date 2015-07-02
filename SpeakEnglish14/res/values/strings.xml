@@ -5,10 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="greeting">Welcome to Speak English</string>
-    <string name="verifySpeeck">Verify Speech</string>
-    <string name="training">Repeat After Me</string>
+    <string name="greeting">Pronunciation in English</string>
+    <string name="verifySpeeck">Speech to Text</string>
+    <string name="training">Start</string>
     <string name="next">Next</string>
-  	<string name="tryAgain">try Again</string>
-                        
+  	<string name="tryAgain">Retry</string>
+    <string name="lesson">Lesson</string>
+    <string name="lessonNum">0</string>
+               
 </resources>

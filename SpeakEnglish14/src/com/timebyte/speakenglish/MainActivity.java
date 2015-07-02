@@ -65,10 +65,12 @@ public class MainActivity extends Activity implements OnInitListener {
 //		initTraining();
 		
 //		mList = (ListView) findViewById(R.id.list);
+		
 		mEcho = (TextView) findViewById(R.id.echo);
 		mKey = (TextView) findViewById(R.id.key);
 		mySpeak = (TextView) findViewById(R.id.mySpeak);
 		
+/*		
 		final Button verifySpeeck = (Button) this.findViewById(R.id.verifySpeeck);
 		verifySpeeck.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -79,11 +81,11 @@ public class MainActivity extends Activity implements OnInitListener {
 				startSpeak();
 			}
 		});
-		
+*/		
 		final Button training = (Button) this.findViewById(R.id.training);
 		training.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				EditText lesson = (EditText) findViewById(R.id.lesson);
+				EditText lesson = (EditText) findViewById(R.id.lessonNum);
 				int i = Integer.parseInt(lesson.getText().toString());
 		        if (i >= 0) {
 		        	keyIndex = i;
@@ -119,6 +121,7 @@ public class MainActivity extends Activity implements OnInitListener {
 				startTraining();
 			}
 		});
+		
 	}
 
 	private void initTraining() {
