@@ -86,7 +86,7 @@
     <TextView 
 	    android:id="@+id/echo"
 	    android:layout_below="@+id/key"
-        android:textSize="24dip"
+        android:textSize="20dip"
         android:padding="5dip"
         android:background="#FFFF00"
 	    android:layout_width="match_parent"
@@ -96,13 +96,119 @@
     <TextView 
 	    android:id="@+id/mySpeak"
 	    android:layout_below="@+id/echo"
-        android:textSize="24dip"
+        android:textSize="20dip"
         android:padding="5dip"
         android:background="#FFFFFF"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
-	 </TextView>
-	    	
+	</TextView>
+
+    <TextView
+        android:id="@+id/errorWord"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mySpeak"
+        android:textSize="20dip" />
+
+    <TextView
+        android:id="@+id/mouth1"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/errorWord"
+        android:textSize="20dip" />
+          
+     <TextView
+        android:id="@+id/mouth1Type"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/errorWord"
+        android:layout_toRightOf="@+id/mouth1"
+        android:textSize="20dip" />
+
+    <TextView
+        android:id="@+id/mouth2"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mouth1"
+        android:textSize="20dip" />
+          
+     <TextView
+        android:id="@+id/mouth2Type"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mouth1"
+        android:layout_toRightOf="@+id/mouth2"
+        android:textSize="20dip" />
+     
+    <TextView
+        android:id="@+id/mouth3"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mouth2"
+        android:textSize="20dip" />
+          
+     <TextView
+        android:id="@+id/mouth3Type"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mouth2"
+        android:layout_toRightOf="@+id/mouth3"
+        android:textSize="20dip" />
+     
+     
+    <TextView
+        android:id="@+id/mouth4"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mouth3"
+        android:textSize="20dip" />
+          
+     <TextView
+        android:id="@+id/mouth4Type"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mouth3"
+        android:layout_toRightOf="@+id/mouth4"
+        android:textSize="20dip" />
+     
+     
+    <TextView
+        android:id="@+id/mouth5"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mouth4"
+        android:textSize="20dip" />
+          
+     <TextView
+        android:id="@+id/mouth5Type"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="word"
+        android:layout_below="@+id/mouth4"
+        android:layout_toRightOf="@+id/mouth5"
+        android:textSize="20dip" />
+        
 </RelativeLayout>
 
 </ScrollView>

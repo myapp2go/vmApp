@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -40,12 +42,13 @@ public class MainActivity extends Activity implements OnInitListener {
     private String speakMode = Constants.SPEAK_MODE_TEAINING;
     private int phaseNo = 0;
     protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
-    protected HashMap<String, List<String>> mapPronunciation = new HashMap<String, List<String>>();
+    protected HashMap<String, String> mapPronunciation = new HashMap<String, String>();
     protected HashMap<String, List<String>> mapDefinition = new HashMap<String, List<String>>();
     private String[] keyArray = new String[75];
     private int keyIndex = 0;
     private List<String> listPhase;
-    private int phaseSize = 0;    
+    private int phaseSize = 0;   
+    private Set<String> errorSet;
     
 	protected TextToSpeech tts;
 	protected Intent intent;
@@ -54,6 +57,8 @@ public class MainActivity extends Activity implements OnInitListener {
     protected boolean speanOn = false;
     
 	String del = " ";
+	
+	private Button pronunciation;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +76,18 @@ public class MainActivity extends Activity implements OnInitListener {
 		mEcho = (TextView) findViewById(R.id.echo);
 		mKey = (TextView) findViewById(R.id.key);
 		mySpeak = (TextView) findViewById(R.id.mySpeak);
+//		mKey.setVisibility(View.GONE);
 		
+		final TextView mouth1 = (TextView) findViewById(R.id.mouth1);
+		final TextView mouth1Type = (TextView) findViewById(R.id.mouth1Type);
+		final TextView mouth2 = (TextView) findViewById(R.id.mouth2);
+		final TextView mouth2Type = (TextView) findViewById(R.id.mouth2Type);
+		final TextView mouth3 = (TextView) findViewById(R.id.mouth3);
+		final TextView mouth3Type = (TextView) findViewById(R.id.mouth3Type);
+		final TextView mouth4 = (TextView) findViewById(R.id.mouth4);
+		final TextView mouth4Type = (TextView) findViewById(R.id.mouth4Type);
+		final TextView mouth5 = (TextView) findViewById(R.id.mouth5);
+		final TextView mouth5Type = (TextView) findViewById(R.id.mouth5Type);
 /*		
 		final Button verifySpeeck = (Button) this.findViewById(R.id.verifySpeeck);
 		verifySpeeck.setOnClickListener(new View.OnClickListener() {
@@ -84,9 +100,35 @@ public class MainActivity extends Activity implements OnInitListener {
 			}
 		});
 */		
+		pronunciation = (Button) this.findViewById(R.id.pronunciation);
+		pronunciation.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Iterator<String> itr = errorSet.iterator();
+		        while(itr.hasNext()) {
+		        	System.out.println("*********** ITR " + itr.next());
+		        }
+			
+
+				int type = 1;
+				
+				if (type == 1) {
+					mouth1.setText("Vertical Position: ");
+					mouth2.setText("Horizontal Position: ");
+					mouth3.setText("Lip Rounding: ");
+					mouth4.setText("Dithphongization: ");
+					mouth5.setText("Tenseness: ");
+				}
+//				speakMode = Constants.SPEAK_MODE_TEAINING;
+//				startTraining();
+			}
+		});	
+		pronunciation.setVisibility(View.GONE);
+		
 		final Button training = (Button) this.findViewById(R.id.training);
 		training.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				pronunciation.setVisibility(View.GONE);
+				
 				EditText lesson = (EditText) findViewById(R.id.lessonNum);
 				int i = Integer.parseInt(lesson.getText().toString());
 		        if (i >= 0) {
@@ -104,6 +146,8 @@ public class MainActivity extends Activity implements OnInitListener {
 		final Button next = (Button) this.findViewById(R.id.next);
 		next.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				pronunciation.setVisibility(View.GONE);
+				
 				speakMode = Constants.SPEAK_MODE_TEAINING;
 				phaseNo++;
 				if (phaseNo ==phaseSize) {
@@ -119,6 +163,8 @@ public class MainActivity extends Activity implements OnInitListener {
 		final Button tryAgain = (Button) this.findViewById(R.id.tryAgain);
 		tryAgain.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				pronunciation.setVisibility(View.GONE);
+				
 				speakMode = Constants.SPEAK_MODE_TEAINING;
 				startTraining();
 			}
@@ -252,6 +298,7 @@ public class MainActivity extends Activity implements OnInitListener {
     } 
     
     private String compareSpeak(String fromRec) {
+    	errorSet = new LinkedHashSet<String>();
     	String text = "";
 
 		StringTokenizer echo = new StringTokenizer(listPhase.get(phaseNo), del);
@@ -273,14 +320,20 @@ public class MainActivity extends Activity implements OnInitListener {
 				if (strEcho.equals(strMatched)) {
 					text += "<font color='blue'>" + strMatched  + "</font> ";
 				} else {
+					errorSet.add(strEcho);
 					text += "<font color='red'>" + strMatched  + "</font> ";
 					foundError = true;
 				}
 			} else {
+				errorSet.add(strEcho);
 				reachEnd = true;
 				text += "<font color='red'>" + strMatched  + "</font> ";
 				foundError = true;
 			}			
+		}
+		
+		if (foundError) {
+			pronunciation.setVisibility(View.VISIBLE);
 		}
 		
     	return text;
@@ -342,19 +395,11 @@ public class MainActivity extends Activity implements OnInitListener {
 			while ((line = in.readLine()) != null) {
 				System.out.println("DDD " + line);
 				if (line.charAt(0) == '[') {
-					if (responseData == null) {
-						responseData = new ArrayList<String>();
-					} else {
-						mapOfList.put(key, responseData);
-						responseData = new ArrayList<String>();
-					}
 					key = line.substring(1, line.length()-1);
-					keyArray[ind++] = key;
 				} else {
 					mapPronunciation.put(line, key);
 				}
 			}
-			mapOfList.put(key, responseData);
 		} catch(IOException e) {
 
 		} finally {
