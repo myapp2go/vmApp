@@ -50,6 +50,7 @@ public class MainActivity extends Activity implements OnInitListener {
     private List<String> listPhase;
     private int phaseSize = 0;   
     private Set<String> errorSet;
+    private String[] errorArray;
     
 	protected TextToSpeech tts;
 	protected Intent intent;
@@ -359,6 +360,7 @@ public class MainActivity extends Activity implements OnInitListener {
 		
 		if (foundError) {
 			pronunciation.setVisibility(View.VISIBLE);
+			errorArray = (String[]) errorSet.toArray();
 		}
 		
     	return text;
