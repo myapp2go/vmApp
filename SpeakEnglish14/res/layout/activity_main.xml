@@ -109,6 +109,7 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:text="word"
+        android:textColor="#0000FF"
         android:layout_below="@+id/mySpeak"
         android:textSize="20dip" />
 
@@ -127,6 +128,7 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:text="word"
+        android:textColor="#FF0000"
         android:layout_below="@+id/errorWord"
         android:layout_toRightOf="@+id/mouth1"
         android:textSize="20dip" />
@@ -137,6 +139,7 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:text="word"
+        
         android:layout_below="@+id/mouth1"
         android:textSize="20dip" />
           
@@ -146,6 +149,7 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:text="word"
+        android:textColor="#FF0000"
         android:layout_below="@+id/mouth1"
         android:layout_toRightOf="@+id/mouth2"
         android:textSize="20dip" />
@@ -165,6 +169,7 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:text="word"
+        android:textColor="#FF0000"
         android:layout_below="@+id/mouth2"
         android:layout_toRightOf="@+id/mouth3"
         android:textSize="20dip" />
@@ -185,6 +190,7 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:text="word"
+        android:textColor="#FF0000"
         android:layout_below="@+id/mouth3"
         android:layout_toRightOf="@+id/mouth4"
         android:textSize="20dip" />
@@ -205,6 +211,7 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:text="word"
+        android:textColor="#FF0000"
         android:layout_below="@+id/mouth4"
         android:layout_toRightOf="@+id/mouth5"
         android:textSize="20dip" />

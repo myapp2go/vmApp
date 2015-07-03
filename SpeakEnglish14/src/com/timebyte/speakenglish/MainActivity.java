@@ -43,6 +43,7 @@ public class MainActivity extends Activity implements OnInitListener {
     private int phaseNo = 0;
     protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
     protected HashMap<String, String> mapPronunciation = new HashMap<String, String>();
+    protected HashMap<String, String> mapWordData = new HashMap<String, String>();
     protected HashMap<String, List<String>> mapDefinition = new HashMap<String, List<String>>();
     private String[] keyArray = new String[75];
     private int keyIndex = 0;
@@ -78,6 +79,7 @@ public class MainActivity extends Activity implements OnInitListener {
 		mySpeak = (TextView) findViewById(R.id.mySpeak);
 //		mKey.setVisibility(View.GONE);
 		
+		final TextView errorWord = (TextView) findViewById(R.id.errorWord);
 		final TextView mouth1 = (TextView) findViewById(R.id.mouth1);
 		final TextView mouth1Type = (TextView) findViewById(R.id.mouth1Type);
 		final TextView mouth2 = (TextView) findViewById(R.id.mouth2);
@@ -105,19 +107,36 @@ public class MainActivity extends Activity implements OnInitListener {
 			public void onClick(View v) {
 				Iterator<String> itr = errorSet.iterator();
 		        while(itr.hasNext()) {
-		        	System.out.println("*********** ITR " + itr.next());
+		        	String errStr = itr.next();
+		        	errorWord.setText(errStr);
+		        	String wordStr = mapWordData.get(errStr);
+		        	if (wordStr != null) {		        		
+		        		String pronunciationStr = mapPronunciation.get(wordStr);
+		        		if (pronunciationStr != null) {
+		        			if (pronunciationStr.charAt(0) == '1') {
+		        				System.out.println("*********** ITR1111 " + pronunciationStr);
+		    					mouth1.setText("Vertical Position: ");
+		    					mouth2.setText("Horizontal Position: ");
+		    					mouth3.setText("Lip Rounding: ");
+		    					mouth4.setText("Dithphongization: ");
+		    					mouth5.setText("Tenseness: ");
+		    					
+		    					StringTokenizer type = new StringTokenizer(pronunciationStr, "_");
+		    					String[] array = new String[6];
+		    					int ind = 0;
+		    					while (type.hasMoreTokens()) {
+		    						array[ind++] = type.nextToken();
+		    					}
+		    					mouth1Type.setText(array[1]);
+		    					mouth2Type.setText(array[2]);
+		    					mouth3Type.setText(array[3]);
+		    					mouth4Type.setText(array[4]);
+		    					mouth5Type.setText(array[5]);
+		        			}
+		        		}
+		        	}
 		        }
 			
-
-				int type = 1;
-				
-				if (type == 1) {
-					mouth1.setText("Vertical Position: ");
-					mouth2.setText("Horizontal Position: ");
-					mouth3.setText("Lip Rounding: ");
-					mouth4.setText("Dithphongization: ");
-					mouth5.setText("Tenseness: ");
-				}
 //				speakMode = Constants.SPEAK_MODE_TEAINING;
 //				startTraining();
 			}
@@ -271,6 +290,7 @@ public class MainActivity extends Activity implements OnInitListener {
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
 		readData();
+		readWordData();
 		readPronunication();
 		
 		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
@@ -331,6 +351,11 @@ public class MainActivity extends Activity implements OnInitListener {
 				foundError = true;
 			}			
 		}
+		while (echo.hasMoreTokens()) {
+			strEcho = echo.nextToken();
+			errorSet.add(strEcho);
+			foundError = true;
+		}
 		
 		if (foundError) {
 			pronunciation.setVisibility(View.VISIBLE);
@@ -381,11 +406,11 @@ public class MainActivity extends Activity implements OnInitListener {
 //		keyArray = keySet.toArray(new String[keySet.size()]);
 	}
 	
-	protected void readPronunication() {
+	protected void readWordData() {
 		InputStream inputStream = null;
 		
 		try {
-			inputStream = getResources().openRawResource(R.raw.pronunciation);
+			inputStream = getResources().openRawResource(R.raw.worddata);
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			String line;
 
@@ -397,7 +422,41 @@ public class MainActivity extends Activity implements OnInitListener {
 				if (line.charAt(0) == '[') {
 					key = line.substring(1, line.length()-1);
 				} else {
-					mapPronunciation.put(line, key);
+					mapWordData.put(line, key);
+				}
+			}
+		} catch(IOException e) {
+
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+
+				}
+			}
+		}
+//		Set<String> keySet = mapOfList.keySet();
+//		keyArray = keySet.toArray(new String[keySet.size()]);
+	}
+	
+	protected void readPronunication() {
+		InputStream inputStream = null;
+		
+		try {
+			inputStream = getResources().openRawResource(R.raw.pronunciation);
+			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+			String line;
+
+			String key = "";
+			int ind = 0;
+			while ((line = in.readLine()) != null) {
+				System.out.println("DDD " + line);
+				if (line.charAt(0) == '[') {
+					key = line.substring(1, line.length()-1);
+				} else {
+					System.out.println(line + " * " + key);
+					mapPronunciation.put(key, line);
 				}
 			}
 		} catch(IOException e) {
