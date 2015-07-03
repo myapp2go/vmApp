@@ -8,6 +8,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ACD6FF"
+    android:focusable="true" 
+    android:focusableInTouchMode="true"
     android:useDefaultMargins="true" >
 
     <TextView
@@ -24,6 +26,7 @@
         android:id="@+id/lesson"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="5dip"
         android:text="@string/lesson"
         android:layout_below="@+id/greeting"
         android:textSize="20dip" />
@@ -60,11 +63,21 @@
         android:layout_below="@+id/lesson"
         android:layout_toRightOf="@+id/next"
         android:text="@string/tryAgain" /> 
- 
+
+     <Button
+        android:id="@+id/pronunciation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_below="@+id/lesson"
+        android:layout_toRightOf="@+id/tryAgain"
+        android:text="@string/pronunciation" /> 
+        
     <TextView 
 	    android:id="@+id/key"
         android:textSize="20dip"
         android:layout_below="@+id/training"
+        android:padding="5dip"
         android:background="#00FFFF"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
@@ -74,6 +87,7 @@
 	    android:id="@+id/echo"
 	    android:layout_below="@+id/key"
         android:textSize="24dip"
+        android:padding="5dip"
         android:background="#FFFF00"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
@@ -83,6 +97,7 @@
 	    android:id="@+id/mySpeak"
 	    android:layout_below="@+id/echo"
         android:textSize="24dip"
+        android:padding="5dip"
         android:background="#FFFFFF"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">

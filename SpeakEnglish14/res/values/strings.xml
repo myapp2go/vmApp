@@ -12,5 +12,6 @@
   	<string name="tryAgain">Retry</string>
     <string name="lesson">Lesson</string>
     <string name="lessonNum">0</string>
+    <string name="pronunciation">Pronunciation</string>
                
 </resources>

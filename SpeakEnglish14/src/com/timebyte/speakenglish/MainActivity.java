@@ -40,6 +40,8 @@ public class MainActivity extends Activity implements OnInitListener {
     private String speakMode = Constants.SPEAK_MODE_TEAINING;
     private int phaseNo = 0;
     protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
+    protected HashMap<String, List<String>> mapPronunciation = new HashMap<String, List<String>>();
+    protected HashMap<String, List<String>> mapDefinition = new HashMap<String, List<String>>();
     private String[] keyArray = new String[75];
     private int keyIndex = 0;
     private List<String> listPhase;
@@ -223,6 +225,7 @@ public class MainActivity extends Activity implements OnInitListener {
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
 		readData();
+		readPronunication();
 		
 		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
 	}
@@ -307,6 +310,48 @@ public class MainActivity extends Activity implements OnInitListener {
 					keyArray[ind++] = key;
 				} else {
 					responseData.add(line);
+				}
+			}
+			mapOfList.put(key, responseData);
+		} catch(IOException e) {
+
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+
+				}
+			}
+		}
+//		Set<String> keySet = mapOfList.keySet();
+//		keyArray = keySet.toArray(new String[keySet.size()]);
+	}
+	
+	protected void readPronunication() {
+		InputStream inputStream = null;
+		
+		try {
+			inputStream = getResources().openRawResource(R.raw.pronunciation);
+			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+			String line;
+
+			List<String> responseData = null;
+			String key = "";
+			int ind = 0;
+			while ((line = in.readLine()) != null) {
+				System.out.println("DDD " + line);
+				if (line.charAt(0) == '[') {
+					if (responseData == null) {
+						responseData = new ArrayList<String>();
+					} else {
+						mapOfList.put(key, responseData);
+						responseData = new ArrayList<String>();
+					}
+					key = line.substring(1, line.length()-1);
+					keyArray[ind++] = key;
+				} else {
+					mapPronunciation.put(line, key);
 				}
 			}
 			mapOfList.put(key, responseData);
