@@ -61,6 +61,17 @@ public class MainActivity extends Activity implements OnInitListener {
 	String del = " ";
 	
 	private Button pronunciation;
+	private TextView errorWord;
+	private TextView mouth1;
+	private TextView mouth1Type;
+	private TextView mouth2;
+	private TextView mouth2Type;
+	private TextView mouth3;
+	private TextView mouth3Type;
+	private TextView mouth4;
+	private TextView mouth4Type;
+	private TextView mouth5;
+	private TextView mouth5Type;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,17 +91,17 @@ public class MainActivity extends Activity implements OnInitListener {
 		mySpeak = (TextView) findViewById(R.id.mySpeak);
 //		mKey.setVisibility(View.GONE);
 		
-		final TextView errorWord = (TextView) findViewById(R.id.errorWord);
-		final TextView mouth1 = (TextView) findViewById(R.id.mouth1);
-		final TextView mouth1Type = (TextView) findViewById(R.id.mouth1Type);
-		final TextView mouth2 = (TextView) findViewById(R.id.mouth2);
-		final TextView mouth2Type = (TextView) findViewById(R.id.mouth2Type);
-		final TextView mouth3 = (TextView) findViewById(R.id.mouth3);
-		final TextView mouth3Type = (TextView) findViewById(R.id.mouth3Type);
-		final TextView mouth4 = (TextView) findViewById(R.id.mouth4);
-		final TextView mouth4Type = (TextView) findViewById(R.id.mouth4Type);
-		final TextView mouth5 = (TextView) findViewById(R.id.mouth5);
-		final TextView mouth5Type = (TextView) findViewById(R.id.mouth5Type);
+		errorWord = (TextView) findViewById(R.id.errorWord);
+		mouth1 = (TextView) findViewById(R.id.mouth1);
+		mouth1Type = (TextView) findViewById(R.id.mouth1Type);
+		mouth2 = (TextView) findViewById(R.id.mouth2);
+		mouth2Type = (TextView) findViewById(R.id.mouth2Type);
+		mouth3 = (TextView) findViewById(R.id.mouth3);
+		mouth3Type = (TextView) findViewById(R.id.mouth3Type);
+		mouth4 = (TextView) findViewById(R.id.mouth4);
+		mouth4Type = (TextView) findViewById(R.id.mouth4Type);
+		mouth5 = (TextView) findViewById(R.id.mouth5);
+		mouth5Type = (TextView) findViewById(R.id.mouth5Type);
 /*		
 		final Button verifySpeeck = (Button) this.findViewById(R.id.verifySpeeck);
 		verifySpeeck.setOnClickListener(new View.OnClickListener() {
