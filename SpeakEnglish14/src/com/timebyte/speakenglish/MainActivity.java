@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnInitListener {
@@ -63,15 +62,15 @@ public class MainActivity extends Activity implements OnInitListener {
 	private Button pronunciation;
 	private TextView errorWord;
 	private TextView mouth1;
-	private TextView mouth1Type;
+	private Button mouth1Type;
 	private TextView mouth2;
-	private TextView mouth2Type;
+	private Button mouth2Type;
 	private TextView mouth3;
-	private TextView mouth3Type;
+	private Button mouth3Type;
 	private TextView mouth4;
-	private TextView mouth4Type;
+	private Button mouth4Type;
 	private TextView mouth5;
-	private TextView mouth5Type;
+	private Button mouth5Type;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,15 +92,15 @@ public class MainActivity extends Activity implements OnInitListener {
 		
 		errorWord = (TextView) findViewById(R.id.errorWord);
 		mouth1 = (TextView) findViewById(R.id.mouth1);
-		mouth1Type = (TextView) findViewById(R.id.mouth1Type);
+		mouth1Type = (Button) findViewById(R.id.mouth1Type);
 		mouth2 = (TextView) findViewById(R.id.mouth2);
-		mouth2Type = (TextView) findViewById(R.id.mouth2Type);
+		mouth2Type = (Button) findViewById(R.id.mouth2Type);
 		mouth3 = (TextView) findViewById(R.id.mouth3);
-		mouth3Type = (TextView) findViewById(R.id.mouth3Type);
+		mouth3Type = (Button) findViewById(R.id.mouth3Type);
 		mouth4 = (TextView) findViewById(R.id.mouth4);
-		mouth4Type = (TextView) findViewById(R.id.mouth4Type);
+		mouth4Type = (Button) findViewById(R.id.mouth4Type);
 		mouth5 = (TextView) findViewById(R.id.mouth5);
-		mouth5Type = (TextView) findViewById(R.id.mouth5Type);
+		mouth5Type = (Button) findViewById(R.id.mouth5Type);
 /*		
 		final Button verifySpeeck = (Button) this.findViewById(R.id.verifySpeeck);
 		verifySpeeck.setOnClickListener(new View.OnClickListener() {
@@ -325,7 +324,7 @@ public class MainActivity extends Activity implements OnInitListener {
             	String text = compareSpeak(matches.get(0).toLowerCase());
             
             	mEcho.setText(listPhase.get(phaseNo));
-            	mySpeak.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+            	mySpeak.setText(Html.fromHtml(text), Button.BufferType.SPANNABLE);
         	}
         }  
     } 

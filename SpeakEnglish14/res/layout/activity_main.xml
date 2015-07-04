@@ -120,7 +120,7 @@
         android:layout_below="@+id/errorWord"
         android:textSize="20dip" />
           
-     <TextView
+    <Button
         android:id="@+id/mouth1Type"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
         android:layout_below="@+id/mouth1Def"
         android:textSize="20dip" />
           
-     <TextView
+    <Button
         android:id="@+id/mouth2Type"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
         android:layout_below="@+id/mouth2Def"
         android:textSize="20dip" />
           
-     <TextView
+    <Button
         android:id="@+id/mouth3Type"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -182,7 +182,6 @@
         android:layout_toRightOf="@+id/mouth3"
         android:textSize="20dip" />
      
-
     <TextView
         android:id="@+id/mouth3Def"
 		android:layout_width="wrap_content"
@@ -199,7 +198,7 @@
         android:layout_below="@+id/mouth3Def"
         android:textSize="20dip" />
           
-     <TextView
+    <Button
         android:id="@+id/mouth4Type"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -225,7 +224,7 @@
         android:layout_below="@+id/mouth4Def"
         android:textSize="20dip" />
           
-     <TextView
+    <Button
         android:id="@+id/mouth5Type"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
