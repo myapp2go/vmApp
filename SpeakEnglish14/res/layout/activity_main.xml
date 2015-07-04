@@ -131,11 +131,19 @@
         android:textSize="20dip" />
 
     <TextView
+        android:id="@+id/mouth1Def"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:layout_below="@+id/mouth1"
+        android:textSize="20dip" />
+         
+    <TextView
         android:id="@+id/mouth2"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dip"       
-        android:layout_below="@+id/mouth1"
+        android:layout_below="@+id/mouth1Def"
         android:textSize="20dip" />
           
      <TextView
@@ -144,16 +152,24 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:textColor="#FF0000"
-        android:layout_below="@+id/mouth1"
+        android:layout_below="@+id/mouth1Def"
         android:layout_toRightOf="@+id/mouth2"
         android:textSize="20dip" />
-     
+
+    <TextView
+        android:id="@+id/mouth2Def"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:layout_below="@+id/mouth2"
+        android:textSize="20dip" />
+         
     <TextView
         android:id="@+id/mouth3"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dip"
-        android:layout_below="@+id/mouth2"
+        android:layout_below="@+id/mouth2Def"
         android:textSize="20dip" />
           
      <TextView
@@ -162,17 +178,25 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:textColor="#FF0000"
-        android:layout_below="@+id/mouth2"
+        android:layout_below="@+id/mouth2Def"
         android:layout_toRightOf="@+id/mouth3"
         android:textSize="20dip" />
      
-     
+
+    <TextView
+        android:id="@+id/mouth3Def"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:layout_below="@+id/mouth3"
+        android:textSize="20dip" />
+         
     <TextView
         android:id="@+id/mouth4"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dip"
-        android:layout_below="@+id/mouth3"
+        android:layout_below="@+id/mouth3Def"
         android:textSize="20dip" />
           
      <TextView
@@ -181,17 +205,24 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:textColor="#FF0000"
-        android:layout_below="@+id/mouth3"
+        android:layout_below="@+id/mouth3Def"
         android:layout_toRightOf="@+id/mouth4"
         android:textSize="20dip" />
-     
+ 
+    <TextView
+        android:id="@+id/mouth4Def"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:layout_below="@+id/mouth4"
+        android:textSize="20dip" />    
      
     <TextView
         android:id="@+id/mouth5"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dip"
-        android:layout_below="@+id/mouth4"
+        android:layout_below="@+id/mouth4Def"
         android:textSize="20dip" />
           
      <TextView
@@ -200,10 +231,18 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:textColor="#FF0000"
-        android:layout_below="@+id/mouth4"
+        android:layout_below="@+id/mouth4Def"
         android:layout_toRightOf="@+id/mouth5"
         android:textSize="20dip" />
         
+    <TextView
+        android:id="@+id/mouth5Def"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:layout_below="@+id/mouth5"
+        android:textSize="20dip" />
+    
 </RelativeLayout>
 
 </ScrollView>
