@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements OnInitListener {
     protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
     protected HashMap<String, String> mapPronunciation = new HashMap<String, String>();
     protected HashMap<String, String> mapWordData = new HashMap<String, String>();
-    protected HashMap<String, List<String>> mapDefinition = new HashMap<String, List<String>>();
+    protected HashMap<String, String> mapDefinition = new HashMap<String, String>();
     private String[] keyArray = new String[75];
     private int keyIndex = 0;
     private List<String> listPhase;
@@ -293,6 +293,7 @@ public class MainActivity extends Activity implements OnInitListener {
 		readData();
 		readWordData();
 		readPronunication();
+		readDefinition();
 		
 		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
 	}
@@ -465,6 +466,40 @@ public class MainActivity extends Activity implements OnInitListener {
 				} else {
 					System.out.println(line + " * " + key);
 					mapPronunciation.put(key, line);
+				}
+			}
+		} catch(IOException e) {
+
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+
+				}
+			}
+		}
+//		Set<String> keySet = mapOfList.keySet();
+//		keyArray = keySet.toArray(new String[keySet.size()]);
+	}
+	
+	protected void readDefinition() {
+		InputStream inputStream = null;
+		
+		try {
+			inputStream = getResources().openRawResource(R.raw.definition);
+			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+			String line;
+
+			String key = "";
+			int ind = 0;
+			while ((line = in.readLine()) != null) {
+				System.out.println("DDD " + line);
+				if (line.charAt(0) == '[') {
+					key = line.substring(1, line.length()-1);
+				} else {
+					System.out.println(line + " * " + key);
+					mapDefinition.put(key, line);
 				}
 			}
 		} catch(IOException e) {
