@@ -352,6 +352,7 @@ public class MainActivity extends Activity implements OnInitListener {
 				foundError = true;
 			}			
 		}
+		
 		while (echo.hasMoreTokens()) {
 			strEcho = echo.nextToken();
 			errorSet.add(strEcho);
@@ -359,8 +360,13 @@ public class MainActivity extends Activity implements OnInitListener {
 		}
 		
 		if (foundError) {
-			pronunciation.setVisibility(View.VISIBLE);
-			errorArray = (String[]) errorSet.toArray();
+			errorArray = new String[errorSet.size()];
+			Iterator<String> itr = errorSet.iterator();
+			int ind = 0;
+	        while(itr.hasNext()) {
+	        	errorArray[ind++] = itr.next();
+	        }
+			pronunciation.setVisibility(View.VISIBLE);			
 		}
 		
     	return text;
