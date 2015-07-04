@@ -63,14 +63,19 @@ public class MainActivity extends Activity implements OnInitListener {
 	private TextView errorWord;
 	private TextView mouth1;
 	private Button mouth1Type;
+	private TextView mouth1Def;
 	private TextView mouth2;
 	private Button mouth2Type;
+	private TextView mouth2Def;
 	private TextView mouth3;
 	private Button mouth3Type;
+	private TextView mouth3Def;
 	private TextView mouth4;
 	private Button mouth4Type;
+	private TextView mouth4Def;
 	private TextView mouth5;
 	private Button mouth5Type;
+	private TextView mouth5Def;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +98,20 @@ public class MainActivity extends Activity implements OnInitListener {
 		errorWord = (TextView) findViewById(R.id.errorWord);
 		mouth1 = (TextView) findViewById(R.id.mouth1);
 		mouth1Type = (Button) findViewById(R.id.mouth1Type);
+		mouth1Def = (TextView) findViewById(R.id.mouth1Def);
 		mouth2 = (TextView) findViewById(R.id.mouth2);
 		mouth2Type = (Button) findViewById(R.id.mouth2Type);
+		mouth2Def = (TextView) findViewById(R.id.mouth2Def);
 		mouth3 = (TextView) findViewById(R.id.mouth3);
 		mouth3Type = (Button) findViewById(R.id.mouth3Type);
+		mouth3Def = (TextView) findViewById(R.id.mouth3Def);
 		mouth4 = (TextView) findViewById(R.id.mouth4);
 		mouth4Type = (Button) findViewById(R.id.mouth4Type);
+		mouth4Def = (TextView) findViewById(R.id.mouth4Def);
 		mouth5 = (TextView) findViewById(R.id.mouth5);
 		mouth5Type = (Button) findViewById(R.id.mouth5Type);
+		mouth5Def = (TextView) findViewById(R.id.mouth5Def);
+		hidePronunciationAll();
 /*		
 		final Button verifySpeeck = (Button) this.findViewById(R.id.verifySpeeck);
 		verifySpeeck.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +158,8 @@ public class MainActivity extends Activity implements OnInitListener {
 		        		}
 		        	}
 		        }
+		        
+		        showPronunciationBasic();
 			
 //				speakMode = Constants.SPEAK_MODE_TEAINING;
 //				startTraining();
@@ -202,6 +215,39 @@ public class MainActivity extends Activity implements OnInitListener {
 		
 	}
 
+	private void hidePronunciationAll() {
+		errorWord.setVisibility(View.GONE);
+		mouth1.setVisibility(View.GONE);
+		mouth1Type.setVisibility(View.GONE);
+		mouth1Def.setVisibility(View.GONE);
+		mouth2.setVisibility(View.GONE);
+		mouth2Type.setVisibility(View.GONE);
+		mouth2Def.setVisibility(View.GONE);
+		mouth3.setVisibility(View.GONE);
+		mouth3Type.setVisibility(View.GONE);
+		mouth3Def.setVisibility(View.GONE);
+		mouth4.setVisibility(View.GONE);
+		mouth4Type.setVisibility(View.GONE);
+		mouth4Def.setVisibility(View.GONE);
+		mouth5.setVisibility(View.GONE);
+		mouth5Type.setVisibility(View.GONE);
+		mouth5Def.setVisibility(View.GONE);
+	}
+
+	private void showPronunciationBasic() {
+		errorWord.setVisibility(View.VISIBLE);
+		mouth1.setVisibility(View.VISIBLE);
+		mouth1Type.setVisibility(View.VISIBLE);
+		mouth2.setVisibility(View.VISIBLE);
+		mouth2Type.setVisibility(View.VISIBLE);
+		mouth3.setVisibility(View.VISIBLE);
+		mouth3Type.setVisibility(View.VISIBLE);
+		mouth4.setVisibility(View.VISIBLE);
+		mouth4Type.setVisibility(View.VISIBLE);
+		mouth5.setVisibility(View.VISIBLE);
+		mouth5Type.setVisibility(View.VISIBLE);
+	}
+	
 	private void initTraining() {
 		phase = new String[10];
 		
