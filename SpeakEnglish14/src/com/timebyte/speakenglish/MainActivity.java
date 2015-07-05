@@ -97,8 +97,17 @@ public class MainActivity extends Activity implements OnInitListener {
 		
 		errorWord = (TextView) findViewById(R.id.errorWord);
 		mouth1 = (TextView) findViewById(R.id.mouth1);
-		mouth1Type = (Button) findViewById(R.id.mouth1Type);
 		mouth1Def = (TextView) findViewById(R.id.mouth1Def);
+		mouth1Type = (Button) findViewById(R.id.mouth1Type);
+		mouth1Type.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				String type = mouth1Type.getText().toString();
+				String def = mapDefinition.get(type);
+				mouth1Def.setText(def);
+				mouth1Def.setVisibility(View.VISIBLE);
+			}
+		});
+
 		mouth2 = (TextView) findViewById(R.id.mouth2);
 		mouth2Type = (Button) findViewById(R.id.mouth2Type);
 		mouth2Def = (TextView) findViewById(R.id.mouth2Def);
