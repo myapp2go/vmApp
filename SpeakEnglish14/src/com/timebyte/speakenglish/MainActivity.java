@@ -50,6 +50,8 @@ public class MainActivity extends Activity implements OnInitListener {
     private int phaseSize = 0;   
     private Set<String> errorSet;
     private String[] errorArray;
+    private int errorIndex = 0;
+    private boolean definitionFound = false;
     
 	protected TextToSpeech tts;
 	protected Intent intent;
@@ -148,37 +150,7 @@ public class MainActivity extends Activity implements OnInitListener {
 		pronunciation = (Button) this.findViewById(R.id.pronunciation);
 		pronunciation.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Iterator<String> itr = errorSet.iterator();
-		        while(itr.hasNext()) {
-		        	String errStr = itr.next();
-		        	errorWord.setText(errStr);
-		        	String wordStr = mapWordData.get(errStr);
-		        	if (wordStr != null) {		        		
-		        		String pronunciationStr = mapPronunciation.get(wordStr);
-		        		if (pronunciationStr != null) {
-		        			if (pronunciationStr.charAt(0) == '1') {
-		        				System.out.println("*********** ITR1111 " + pronunciationStr);
-		    					mouth1.setText("Vertical Position: ");
-		    					mouth2.setText("Horizontal Position: ");
-		    					mouth3.setText("Lip Rounding: ");
-		    					mouth4.setText("Dithphongization: ");
-		    					mouth5.setText("Tenseness: ");
-		    					
-		    					StringTokenizer type = new StringTokenizer(pronunciationStr, "_");
-		    					String[] array = new String[6];
-		    					int ind = 0;
-		    					while (type.hasMoreTokens()) {
-		    						array[ind++] = type.nextToken();
-		    					}
-		    					mouth1Type.setText(array[1]);
-		    					mouth2Type.setText(array[2]);
-		    					mouth3Type.setText(array[3]);
-		    					mouth4Type.setText(array[4]);
-		    					mouth5Type.setText(array[5]);
-		        			}
-		        		}
-		        	}
-		        }
+				procError(0);
 		        
 		        showPronunciationBasic();
 			
@@ -187,7 +159,6 @@ public class MainActivity extends Activity implements OnInitListener {
 			}
 		});	
 		pronunciation.setVisibility(View.GONE);
-
 		
 		final Button next = (Button) this.findViewById(R.id.next);
 		next.setOnClickListener(new View.OnClickListener() {
@@ -240,6 +211,37 @@ public class MainActivity extends Activity implements OnInitListener {
 		});		
 	}
 
+	private void procError(int index) {
+    	String errStr = errorArray[index];
+    	errorWord.setText(errStr);
+    	String wordStr = mapWordData.get(errStr);
+    	if (wordStr != null) {		        		
+    		String pronunciationStr = mapPronunciation.get(wordStr);
+    		if (pronunciationStr != null) {
+    			if (pronunciationStr.charAt(0) == '1') {
+    				System.out.println("*********** ITR1111 " + pronunciationStr);
+					mouth1.setText("Vertical Position: ");
+					mouth2.setText("Horizontal Position: ");
+					mouth3.setText("Lip Rounding: ");
+					mouth4.setText("Dithphongization: ");
+					mouth5.setText("Tenseness: ");
+					
+					StringTokenizer type = new StringTokenizer(pronunciationStr, "_");
+					String[] array = new String[6];
+					int ind = 0;
+					while (type.hasMoreTokens()) {
+						array[ind++] = type.nextToken();
+					}
+					mouth1Type.setText(array[1]);
+					mouth2Type.setText(array[2]);
+					mouth3Type.setText(array[3]);
+					mouth4Type.setText(array[4]);
+					mouth5Type.setText(array[5]);
+    			}
+    		}
+    	}
+	}
+	
 	private void hidePronunciationAll() {
 		errorWord.setVisibility(View.GONE);
 		errTry.setVisibility(View.GONE);
@@ -451,7 +453,9 @@ public class MainActivity extends Activity implements OnInitListener {
 			int ind = 0;
 	        while(itr.hasNext()) {
 	        	errorArray[ind++] = itr.next();
+	        	System.out.println("ERRRRR111111  " + errorArray[ind-1]);
 	        }
+//	        System.out.println("ERRRRR  " + errorArray.length);
 			pronunciation.setVisibility(View.VISIBLE);			
 		}
 		
