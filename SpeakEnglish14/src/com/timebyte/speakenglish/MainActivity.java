@@ -100,11 +100,18 @@ public class MainActivity extends Activity implements OnInitListener {
 		mouth1Def = (TextView) findViewById(R.id.mouth1Def);
 		mouth1Type = (Button) findViewById(R.id.mouth1Type);
 		mouth1Type.setOnClickListener(new View.OnClickListener() {
+			boolean toggle = true;
 			public void onClick(View v) {
-				String type = mouth1Type.getText().toString();
-				String def = mapDefinition.get(type);
-				mouth1Def.setText(def);
-				mouth1Def.setVisibility(View.VISIBLE);
+				if (toggle) {
+					String type = mouth1Type.getText().toString();
+					String def = mapDefinition.get(type);
+					mouth1Def.setText(def);
+					mouth1Def.setVisibility(View.VISIBLE);
+					toggle = false;
+				} else {
+					mouth1Def.setVisibility(View.GONE);
+					toggle = true;
+				}
 			}
 		});
 
