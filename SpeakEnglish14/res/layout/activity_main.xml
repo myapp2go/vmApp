@@ -111,7 +111,27 @@
         android:textColor="#0000FF"
         android:layout_below="@+id/mySpeak"
         android:textSize="20dip" />
-
+    
+    <Button
+        android:id="@+id/errTry"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mySpeak"
+        android:layout_toRightOf="@+id/errorWord"
+        android:text="Practice"
+        android:padding="5dip"
+        android:textSize="20dip" />
+        
+    <Button
+        android:id="@+id/errNext"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mySpeak"
+        android:layout_toRightOf="@+id/errTry"
+        android:text="Next"
+        android:padding="5dip"
+        android:textSize="20dip" />
+    
    	<GridLayout 
    	    android:id="@+id/mouthGrid"
     	android:layout_width="match_parent"
