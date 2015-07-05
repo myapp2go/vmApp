@@ -61,6 +61,8 @@ public class MainActivity extends Activity implements OnInitListener {
 	
 	private Button pronunciation;
 	private TextView errorWord;
+	private Button errTry;
+	private Button errNext;
 	private TextView mouth1;
 	private Button mouth1Type;
 	private TextView mouth1Def;
@@ -96,6 +98,9 @@ public class MainActivity extends Activity implements OnInitListener {
 //		mKey.setVisibility(View.GONE);
 		
 		errorWord = (TextView) findViewById(R.id.errorWord);
+		errTry = (Button) findViewById(R.id.errTry);
+		errNext = (Button) findViewById(R.id.errNext);
+		
 		mouth1 = (TextView) findViewById(R.id.mouth1);
 		mouth1Def = (TextView) findViewById(R.id.mouth1Def);
 		mouth1Type = (Button) findViewById(R.id.mouth1Type);
