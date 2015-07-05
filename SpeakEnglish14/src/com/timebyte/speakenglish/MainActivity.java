@@ -166,25 +166,7 @@ public class MainActivity extends Activity implements OnInitListener {
 			}
 		});	
 		pronunciation.setVisibility(View.GONE);
-		
-		final Button training = (Button) this.findViewById(R.id.training);
-		training.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				pronunciation.setVisibility(View.GONE);
-				
-				EditText lesson = (EditText) findViewById(R.id.lessonNum);
-				int i = Integer.parseInt(lesson.getText().toString());
-		        if (i >= 0) {
-		        	keyIndex = i;
-		        }
-		        
-				speakMode = Constants.SPEAK_MODE_TEAINING;
-				mKey.setText(keyArray[keyIndex]);
-				listPhase = mapOfList.get(keyArray[keyIndex++]);
-				phaseSize = listPhase.size();
-				startTraining();
-			}
-		});
+
 		
 		final Button next = (Button) this.findViewById(R.id.next);
 		next.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +184,7 @@ public class MainActivity extends Activity implements OnInitListener {
 				startTraining();
 			}
 		});
+		next.setVisibility(View.GONE);
 		
 		final Button tryAgain = (Button) this.findViewById(R.id.tryAgain);
 		tryAgain.setOnClickListener(new View.OnClickListener() {
@@ -212,7 +195,28 @@ public class MainActivity extends Activity implements OnInitListener {
 				startTraining();
 			}
 		});
+		tryAgain.setVisibility(View.GONE);
 		
+		final Button training = (Button) this.findViewById(R.id.training);
+		training.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				pronunciation.setVisibility(View.GONE);
+				next.setVisibility(View.VISIBLE);
+				tryAgain.setVisibility(View.VISIBLE);
+				
+				EditText lesson = (EditText) findViewById(R.id.lessonNum);
+				int i = Integer.parseInt(lesson.getText().toString());
+		        if (i >= 0) {
+		        	keyIndex = i;
+		        }
+		        
+				speakMode = Constants.SPEAK_MODE_TEAINING;
+				mKey.setText(keyArray[keyIndex]);
+				listPhase = mapOfList.get(keyArray[keyIndex++]);
+				phaseSize = listPhase.size();
+				startTraining();
+			}
+		});		
 	}
 
 	private void hidePronunciationAll() {
