@@ -242,6 +242,8 @@ public class MainActivity extends Activity implements OnInitListener {
 
 	private void hidePronunciationAll() {
 		errorWord.setVisibility(View.GONE);
+		errTry.setVisibility(View.GONE);
+		errNext.setVisibility(View.GONE);
 		mouth1.setVisibility(View.GONE);
 		mouth1Type.setVisibility(View.GONE);
 		mouth1Def.setVisibility(View.GONE);
@@ -261,6 +263,8 @@ public class MainActivity extends Activity implements OnInitListener {
 
 	private void showPronunciationBasic() {
 		errorWord.setVisibility(View.VISIBLE);
+		errTry.setVisibility(View.VISIBLE);
+		errNext.setVisibility(View.VISIBLE);
 		mouth1.setVisibility(View.VISIBLE);
 		mouth1Type.setVisibility(View.VISIBLE);
 		mouth2.setVisibility(View.VISIBLE);
