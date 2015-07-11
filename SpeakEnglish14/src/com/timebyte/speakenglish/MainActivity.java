@@ -40,6 +40,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
     private TextView mEcho;
     private TextView mKey;
     private TextView mySpeak;
+    private EditText lesson;
     
     private String[] phase;
     private String speakMode = Constants.SPEAK_MODE_TEAINING;
@@ -94,13 +95,12 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 		
 		initRecognizer();
 		
-//		initTraining();
-		
 //		mList = (ListView) findViewById(R.id.list);
 		
 		mEcho = (TextView) findViewById(R.id.echo);
 		mKey = (TextView) findViewById(R.id.key);
 		mySpeak = (TextView) findViewById(R.id.mySpeak);
+		lesson = (EditText) findViewById(R.id.lessonNum);
 //		mKey.setVisibility(View.GONE);
 		
 		initDefinitionView();
@@ -138,9 +138,10 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 				
 				speakMode = Constants.SPEAK_MODE_TEAINING;
 				phaseNo++;
-				if (phaseNo ==phaseSize) {
+				if (phaseNo == phaseSize) {
 					phaseNo = 0;
 					mKey.setText(keyArray[keyIndex]);
+//					lesson.setText(keyIndex);
 					listPhase = mapOfList.get(keyArray[keyIndex++]);
 					phaseSize = listPhase.size();	
 				}
@@ -167,7 +168,6 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 				next.setVisibility(View.VISIBLE);
 				tryAgain.setVisibility(View.VISIBLE);
 				
-				EditText lesson = (EditText) findViewById(R.id.lessonNum);
 				int i = Integer.parseInt(lesson.getText().toString());
 		        if (i >= 0) {
 		        	keyIndex = i;
@@ -218,16 +218,6 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 		mouth4Type.setVisibility(View.VISIBLE);
 		mouth5.setVisibility(View.VISIBLE);
 		mouth5Type.setVisibility(View.VISIBLE);
-	}
-	
-	private void initTraining() {
-		phase = new String[10];
-		
-		phase[0] = "please sit in this seat";
-		phase[1] = "these shoes should fit your feet";
-		phase[2] = "do you still steal";
-		phase[3] = "those bins are for beans";
-		phase[4] = "they ship sheep";
 	}
 
 	private void startTraining() {
@@ -349,7 +339,8 @@ public abstract class MainActivity extends Activity implements OnInitListener {
     	errorSet = new LinkedHashSet<String>();
     	String text = "";
 
-		StringTokenizer echo = new StringTokenizer(listPhase.get(phaseNo), del);
+    	String src = listPhase.get(phaseNo).toLowerCase().replace('?', ' ');
+		StringTokenizer echo = new StringTokenizer(src, del);
 		StringTokenizer matched = new StringTokenizer(fromRec.toString(), del);
 		
 		boolean reachEnd = false;
