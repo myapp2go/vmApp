@@ -34,6 +34,8 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 	abstract protected void initDefinitionData();
 	abstract protected void initDefinitionView();
 	abstract protected void procError(int index);
+	abstract protected void hidePronunciationAll();
+	abstract protected void showPronunciationBasic();
 	
 	private final int VOICE_RECOGNITION = 1234;
 //    private ListView mList;
@@ -135,6 +137,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 		next.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				pronunciation.setVisibility(View.GONE);
+				hidePronunciationAll();
 				
 				speakMode = Constants.SPEAK_MODE_TEAINING;
 				phaseNo++;
@@ -154,6 +157,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 		tryAgain.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				pronunciation.setVisibility(View.GONE);
+				hidePronunciationAll();
 				
 				speakMode = Constants.SPEAK_MODE_TEAINING;
 				startTraining();
@@ -180,44 +184,6 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 				startTraining();
 			}
 		});		
-	}
-
-	
-	private void hidePronunciationAll() {
-		errorWord.setVisibility(View.GONE);
-		errTry.setVisibility(View.GONE);
-		errNext.setVisibility(View.GONE);
-		mouth1.setVisibility(View.GONE);
-		mouth1Type.setVisibility(View.GONE);
-		mouth1Def.setVisibility(View.GONE);
-		mouth2.setVisibility(View.GONE);
-		mouth2Type.setVisibility(View.GONE);
-		mouth2Def.setVisibility(View.GONE);
-		mouth3.setVisibility(View.GONE);
-		mouth3Type.setVisibility(View.GONE);
-		mouth3Def.setVisibility(View.GONE);
-		mouth4.setVisibility(View.GONE);
-		mouth4Type.setVisibility(View.GONE);
-		mouth4Def.setVisibility(View.GONE);
-		mouth5.setVisibility(View.GONE);
-		mouth5Type.setVisibility(View.GONE);
-		mouth5Def.setVisibility(View.GONE);
-	}
-
-	private void showPronunciationBasic() {
-		errorWord.setVisibility(View.VISIBLE);
-		errTry.setVisibility(View.VISIBLE);
-		errNext.setVisibility(View.VISIBLE);
-		mouth1.setVisibility(View.VISIBLE);
-		mouth1Type.setVisibility(View.VISIBLE);
-		mouth2.setVisibility(View.VISIBLE);
-		mouth2Type.setVisibility(View.VISIBLE);
-		mouth3.setVisibility(View.VISIBLE);
-		mouth3Type.setVisibility(View.VISIBLE);
-		mouth4.setVisibility(View.VISIBLE);
-		mouth4Type.setVisibility(View.VISIBLE);
-		mouth5.setVisibility(View.VISIBLE);
-		mouth5Type.setVisibility(View.VISIBLE);
 	}
 
 	private void startTraining() {
