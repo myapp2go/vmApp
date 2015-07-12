@@ -82,7 +82,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				if (retry < maxRetry) {
 					microphoneOn = true;	
 					retry++;
-					tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
+//					tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
+					tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
 				} else {
 					retry = 0;
 				}

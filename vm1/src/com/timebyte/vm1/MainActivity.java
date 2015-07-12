@@ -173,7 +173,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
 							if (ttsCount == Constants.MAIL_PER_PAGE) {
 								ttsCount = 0;
-								tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
+//								tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
+								tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
 								microphoneOn = true;
 							} else {
 								ttsCount++;
@@ -185,7 +186,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 									ttsCount = 0;
 									waitBodyCommand = true;
 									microphoneOn = true;
-									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
+//									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
+									tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
 								} else {
 									if (!waitBodyCommand) {
 										ttsCount++;
@@ -196,7 +198,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								ttsCount = 0;
 								subCommand = Constants.SUBCOMMAND_MORE_SKIP;
 								microphoneOn = true;								
-								tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
+//								tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
+								tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
 							}
 							break;
 						}
@@ -227,6 +230,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				System.out.println("onError");				
 			}
 		});
+		
+		tts.addEarcon("money", "com.timebyte.vm1", R.raw.money);
 	}
 	
 	@Override
