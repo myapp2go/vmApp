@@ -28,14 +28,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
-			answer = matchReadCommand(matches);
-			switch (answer) {
-			case Constants.ANSWER_1 :
+			switch (matches.get(0)) {
+			case Constants.READ_OPTION_SUBJECT_ONLY :
 				readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				break;
-			case Constants.ANSWER_2 :
+			case Constants.READ_OPTION_SUBJECT_BODY :
 				readMode = Constants.READ_OPTION_SUBJECT_BODY;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);

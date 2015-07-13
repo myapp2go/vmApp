@@ -69,7 +69,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					mailCount = 0;
 
 					ArrayList<String> localArrayList = new ArrayList<String>();
-					localArrayList.add("1");
+					localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
 			        doReadMail(localArrayList);
 			        /* 
 					microphoneOn = true;
@@ -91,7 +91,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					mailCount = 0;
 
 					ArrayList<String> localArrayList = new ArrayList<String>();
-					localArrayList.add("2");
+					localArrayList.add(Constants.READ_OPTION_SUBJECT_BODY);
 			        doReadMail(localArrayList);
 				}
 			}
