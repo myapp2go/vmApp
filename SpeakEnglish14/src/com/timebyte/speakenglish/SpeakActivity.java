@@ -6,8 +6,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class SpeakActivity extends MainActivity {
-
-    public static int errorIndex = 0;
     
 	@Override
 	protected void initDefinitionData() {

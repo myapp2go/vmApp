@@ -14,6 +14,7 @@ import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.speech.RecognizerIntent;
@@ -57,7 +58,8 @@ public abstract class MainActivity extends Activity implements OnInitListener {
     private int phaseSize = 0;   
     private Set<String> errorSet;
     protected String[] errorArray;
-
+    public static int errorIndex = 0;
+    
     private boolean definitionFound = false;
     
 	protected TextToSpeech tts;
@@ -299,6 +301,11 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 
             if (Constants.SPEAK_MODE_PRONUNCIATION.equals(speakMode)) {
             	errorRetryResult.setText(matches.get(0).toString());
+            	if (errorArray[errorIndex].equals(matches.get(0).toString())) {
+            		errorRetryResult.setTextColor(Color.parseColor("#0000FF"));
+            	} else {
+            		errorRetryResult.setTextColor(Color.parseColor("#FF0000"));
+            	}
             } else {
             	String text = compareSpeak(matches.get(0).toLowerCase());
             
