@@ -46,7 +46,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		case Constants.SUBCOMMAND_RETRIEVE :
 			answer = matchReadCommand(matches);
 			switch (answer) {
-			case Constants.ANSWER_1 :
+			case Constants.ANSWER_CONTINUE :
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
 					waitBodyCommand = false;
 					readMessageBody();
@@ -54,7 +54,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					readMessage();
 				}
 				break;
-			case Constants.ANSWER_2 :
+			case Constants.ANSWER_STOP :
 				mailCount = 0;
 				break;
 			case Constants.COMMAND_NONE :
@@ -193,13 +193,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
         for (int i = 0; !found && (i < matches.size()); i++) {
         	switch (matches.get(i)) {
-        	case Constants.ANSWER_1 :
+        	case Constants.ANSWER_CONTINUE :
         		found = true;
-        		ans = Constants.ANSWER_1;
+        		ans = Constants.ANSWER_CONTINUE;
         		break;
-        	case Constants.ANSWER_2 :
+        	case Constants.ANSWER_STOP :
         		found = true;
-        		ans = Constants.ANSWER_2;
+        		ans = Constants.ANSWER_STOP;
         		break;	
         	}
         }
@@ -274,7 +274,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
 		for (int i = 0; !found && (i < matches.size()); i++) {
 			switch (matches.get(i)) {
-			case Constants.ANSWER_1:
+			case Constants.ANSWER_CONTINUE:
 				found = true;
 				sub = Constants.SUBCOMMAND_MORE;
 				break;
@@ -285,7 +285,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.SUBCOMMAND_ADD:
 				found = true;
 				sub = Constants.SUBCOMMAND_ADD;
-			case Constants.ANSWER_2:
+			case Constants.ANSWER_STOP:
+				found = true;
+				sub = Constants.COMMAND_STOP;
+				break;
+			case Constants.ANSWER_SKIP:
 				found = true;
 				sub = Constants.SUBCOMMAND_SKIP;
 				break;

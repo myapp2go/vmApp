@@ -62,9 +62,11 @@ public final class Constants {
 	
 	public static final String COMMAND_SETTING = "setting";
 
-	public static final String ANSWER_1 = "1";
-	public static final String ANSWER_2 = "2";
-
+	public static final String ANSWER_CONTINUE = "1";
+	public static final String ANSWER_STOP = "2";
+	public static final String ANSWER_SKIP = "3";
+	public static final String ANSWER_MORE = "4";
+	
 	public static final String ANSWER_YES = "yes";
 	public static final String ANSWER_NO = "no";
 	
