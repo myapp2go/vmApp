@@ -1,5 +1,6 @@
 package com.timebyte.speakenglish;
 
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,21 +19,14 @@ public class SpeakActivity extends MainActivity {
 	protected void initDefinitionView() {
 		// TODO Auto-generated method stub
 		errorWord = (TextView) findViewById(R.id.errorWord);
+		errorRetryResult = (TextView) findViewById(R.id.errorRetryResult);
+		
 		errTry = (Button) findViewById(R.id.errTry);
 		errTry.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				++errorIndex;
-				System.out.println("************ERRRRRR " + errorIndex);
-				procError(errorIndex);
-		        
-		        if (errorIndex < errorArray.length) {
-		        	errNext.setVisibility(View.GONE);
-		        }
-		        
-//		        showPronunciationBasic();
-			
-//				speakMode = Constants.SPEAK_MODE_TEAINING;
-//				startTraining();
+				speakMode = Constants.SPEAK_MODE_PRONUNCIATION;
+				tts.speak(errorArray[errorIndex], TextToSpeech.QUEUE_ADD, map);	
+				speakOn = true;	
 			}
 		});
 		

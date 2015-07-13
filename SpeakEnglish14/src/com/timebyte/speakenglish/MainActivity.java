@@ -45,7 +45,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
     private EditText lesson;
     
     private String[] phase;
-    private String speakMode = Constants.SPEAK_MODE_TEAINING;
+    protected String speakMode = Constants.SPEAK_MODE_TEAINING;
     private int phaseNo = 0;
     protected HashMap<String, List<String>> mapOfList = new HashMap<String, List<String>>();
     protected HashMap<String, String> mapPronunciation = new HashMap<String, String>();
@@ -64,12 +64,13 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 	protected Intent intent;
 	HashMap<String, String> map = new HashMap<String, String>();
 
-    protected boolean speanOn = false;
+    protected boolean speakOn = false;
     
 	String del = " ";
 	
 	private Button pronunciation;
 	protected TextView errorWord;
+	protected TextView errorRetryResult;
 	protected Button errTry;
 	protected Button errNext;
 	protected TextView mouth1;
@@ -191,13 +192,13 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 
 	private void startTraining() {
 		tts.speak(listPhase.get(phaseNo), TextToSpeech.QUEUE_ADD, map);	
-		speanOn = true;	
+		speakOn = true;	
 	}
 	
 	private void startSpeak() {
 		// TODO Auto-generated method stub
 		tts.speak(Constants.COMMAND_SAY, TextToSpeech.QUEUE_ADD, map);	
-		speanOn = true;
+		speakOn = true;
 	}
 	
 	public void initRecognizer() {	
@@ -223,13 +224,16 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 			@Override
 			public synchronized void onDone(String utteranceId) {
 				System.out.println("ONDONE" + phaseNo);
-				if (speanOn) {
+				if (speakOn) {
 					switch (speakMode) {
 					case Constants.SPEAK_MODE_TEAINING :
 //						startTraining();
 //						phaseNo++;
 						startRecognizer(0);
 						break;
+					case Constants.SPEAK_MODE_PRONUNCIATION :
+						startRecognizer(0);
+						break;						
 					case Constants.SPEAK_MODE_VERIFY :
 						startRecognizer(0);
 						break;						
@@ -293,8 +297,8 @@ public abstract class MainActivity extends Activity implements OnInitListener {
             ArrayList<String> matches = data.getStringArrayListExtra
             		(RecognizerIntent.EXTRA_RESULTS); 
 
-            if (Constants.SPEAK_MODE_VERIFY.equals(speakMode)) {
-            	mEcho.setText(matches.get(0).toString());
+            if (Constants.SPEAK_MODE_PRONUNCIATION.equals(speakMode)) {
+            	errorRetryResult.setText(matches.get(0).toString());
             } else {
             	String text = compareSpeak(matches.get(0).toLowerCase());
             

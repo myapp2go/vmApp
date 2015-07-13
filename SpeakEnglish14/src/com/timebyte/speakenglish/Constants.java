@@ -7,4 +7,5 @@ public class Constants {
 
 	public static final String SPEAK_MODE_VERIFY = "verify";
 	public static final String SPEAK_MODE_TEAINING = "training";	
+	public static final String SPEAK_MODE_PRONUNCIATION = "pronunciation";
 }
