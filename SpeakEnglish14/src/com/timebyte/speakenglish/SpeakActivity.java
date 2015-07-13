@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 public class SpeakActivity extends MainActivity {
 
-    private int errorIndex = 0;
+    public static int errorIndex = 0;
     
 	@Override
 	protected void initDefinitionData() {
@@ -21,9 +21,15 @@ public class SpeakActivity extends MainActivity {
 		errTry = (Button) findViewById(R.id.errTry);
 		errTry.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				procError(0);
+				++errorIndex;
+				System.out.println("************ERRRRRR " + errorIndex);
+				procError(errorIndex);
 		        
-		        showPronunciationBasic();
+		        if (errorIndex < errorArray.length) {
+		        	errNext.setVisibility(View.GONE);
+		        }
+		        
+//		        showPronunciationBasic();
 			
 //				speakMode = Constants.SPEAK_MODE_TEAINING;
 //				startTraining();
@@ -33,9 +39,12 @@ public class SpeakActivity extends MainActivity {
 		errNext = (Button) findViewById(R.id.errNext);
 		errNext.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				procError(0);
-		        
-		        showPronunciationBasic();
+				procError(++errorIndex);
+
+		        if (errorIndex >= errorArray.length-1) {
+		        	errNext.setVisibility(View.GONE);
+		        }
+//		        showPronunciationBasic();
 			
 //				speakMode = Constants.SPEAK_MODE_TEAINING;
 //				startTraining();

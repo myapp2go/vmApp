@@ -161,6 +161,7 @@ public class DataActivity extends SpeakActivity {
 
 	protected void procError(int index) {
     	String errStr = errorArray[index];
+    	System.out.println("*******ERRIND " + errStr + " * " + index);
     	errorWord.setText(errStr);
     	String wordStr = mapWordData.get(errStr);
     	if (wordStr != null) {		        		
