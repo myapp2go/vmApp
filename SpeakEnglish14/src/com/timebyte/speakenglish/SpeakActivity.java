@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 public class SpeakActivity extends MainActivity {
 
+    private int errorIndex = 0;
+    
 	@Override
 	protected void initDefinitionData() {
 		// TODO Auto-generated method stub
@@ -17,7 +19,28 @@ public class SpeakActivity extends MainActivity {
 		// TODO Auto-generated method stub
 		errorWord = (TextView) findViewById(R.id.errorWord);
 		errTry = (Button) findViewById(R.id.errTry);
+		errTry.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				procError(0);
+		        
+		        showPronunciationBasic();
+			
+//				speakMode = Constants.SPEAK_MODE_TEAINING;
+//				startTraining();
+			}
+		});
+		
 		errNext = (Button) findViewById(R.id.errNext);
+		errNext.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				procError(0);
+		        
+		        showPronunciationBasic();
+			
+//				speakMode = Constants.SPEAK_MODE_TEAINING;
+//				startTraining();
+			}
+		});
 	}
 
 	@Override

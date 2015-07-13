@@ -57,7 +57,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
     private int phaseSize = 0;   
     private Set<String> errorSet;
     protected String[] errorArray;
-    private int errorIndex = 0;
+
     private boolean definitionFound = false;
     
 	protected TextToSpeech tts;
@@ -126,6 +126,9 @@ public abstract class MainActivity extends Activity implements OnInitListener {
 				procError(0);
 		        
 		        showPronunciationBasic();
+		        if (errorArray.length <= 1) {
+		        	errNext.setVisibility(View.GONE);
+		        }
 			
 //				speakMode = Constants.SPEAK_MODE_TEAINING;
 //				startTraining();

@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class DataActivity extends SpeakActivity {
-	
+    
 	protected void initDefinitionData() {
 		readWordData();
 		readPronunication();
