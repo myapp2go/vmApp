@@ -306,6 +306,7 @@ public abstract class MainActivity extends Activity implements OnInitListener {
             	} else {
             		errorRetryResult.setTextColor(Color.parseColor("#FF0000"));
             	}
+            	errorRetryResult.setVisibility(View.VISIBLE);
             } else {
             	String text = compareSpeak(matches.get(0).toLowerCase());
             

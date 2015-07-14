@@ -31,6 +31,9 @@ public class SpeakActivity extends MainActivity {
 		errNext = (Button) findViewById(R.id.errNext);
 		errNext.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				errorRetryResult.setVisibility(View.GONE);
+//				hideDefinition();
+				
 				procError(++errorIndex);
 
 		        if (errorIndex >= errorArray.length-1) {
@@ -54,6 +57,7 @@ public class SpeakActivity extends MainActivity {
 		errorWord.setVisibility(View.GONE);
 		errTry.setVisibility(View.GONE);
 		errNext.setVisibility(View.GONE);
+		errorRetryResult.setVisibility(View.GONE);
 		mouth1.setVisibility(View.GONE);
 		mouth1Type.setVisibility(View.GONE);
 		mouth1Def.setVisibility(View.GONE);
@@ -71,6 +75,25 @@ public class SpeakActivity extends MainActivity {
 		mouth5Def.setVisibility(View.GONE);
 	}
 
+	protected void hideDefinition() {
+		errNext.setVisibility(View.GONE);
+		mouth1.setVisibility(View.GONE);
+		mouth1Type.setVisibility(View.GONE);
+		mouth1Def.setVisibility(View.GONE);
+		mouth2.setVisibility(View.GONE);
+		mouth2Type.setVisibility(View.GONE);
+		mouth2Def.setVisibility(View.GONE);
+		mouth3.setVisibility(View.GONE);
+		mouth3Type.setVisibility(View.GONE);
+		mouth3Def.setVisibility(View.GONE);
+		mouth4.setVisibility(View.GONE);
+		mouth4Type.setVisibility(View.GONE);
+		mouth4Def.setVisibility(View.GONE);
+		mouth5.setVisibility(View.GONE);
+		mouth5Type.setVisibility(View.GONE);
+		mouth5Def.setVisibility(View.GONE);
+	}
+	
 	protected void showPronunciationBasic() {
 		errorWord.setVisibility(View.VISIBLE);
 		errTry.setVisibility(View.VISIBLE);
