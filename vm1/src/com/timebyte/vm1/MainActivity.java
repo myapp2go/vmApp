@@ -48,6 +48,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
     
+	private boolean commandHelp = true;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,6 +65,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting) {
 					settingNotice();
 				} else {
+					tts.speak(Constants.COMMAND_READ_SUBJECT, TextToSpeech.QUEUE_ADD, map);
+					commandHelp = true;
+					
 					command = Constants.COMMAND_READ;
 					subCommand = Constants.COMMAND_INIT;
 					ttsCount = 1;
@@ -85,6 +90,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting) {
 					settingNotice();
 				} else {
+					tts.speak(Constants.COMMAND_READ_SUBJECT_BODY, TextToSpeech.QUEUE_ADD, map);
+					commandHelp = true;
+					
 					command = Constants.COMMAND_READ;
 					subCommand = Constants.COMMAND_INIT;
 					ttsCount = 1;
@@ -140,6 +148,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	    intent.putExtra(
 	    	RecognizerIntent.EXTRA_LANGUAGE_MODEL, 
 	        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);  
+	    intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(50000000));
 	}
 
 	public void startRecognizer(int ms) {
@@ -157,7 +166,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-//				System.out.println("ONDONE " + command + " * "  + subCommand + " * "  + readMode + " * " + " * " + mailCount + " * " + ttsCount + " * " + microphoneOn + " * " + readBodyDone);
+				if (commandHelp) {
+					commandHelp = false;
+					return;
+				}
+				
 				if (microphoneOn) {
 					startRecognizer(0);
 					microphoneOn = false;
