@@ -148,7 +148,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	    intent.putExtra(
 	    	RecognizerIntent.EXTRA_LANGUAGE_MODEL, 
 	        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);  
-	    intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(50000000));
+//	    intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(50000000));
 	}
 
 	public void startRecognizer(int ms) {
@@ -187,7 +187,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							if (ttsCount == Constants.MAIL_PER_PAGE) {
 								ttsCount = 0;
 //								tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
-								tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
+								tts.playEarcon("beethoven", TextToSpeech.QUEUE_ADD, map);
 								microphoneOn = true;
 							} else {
 								ttsCount++;
@@ -200,7 +200,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 									waitBodyCommand = true;
 									microphoneOn = true;
 //									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
-									tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
+									tts.playEarcon("beethoven", TextToSpeech.QUEUE_ADD, map);
 								} else {
 									if (!waitBodyCommand) {
 										ttsCount++;
@@ -212,7 +212,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								subCommand = Constants.SUBCOMMAND_MORE_SKIP;
 								microphoneOn = true;								
 //								tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
-								tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
+								tts.playEarcon("beethoven", TextToSpeech.QUEUE_ADD, map);
 							}
 							break;
 						}
@@ -245,6 +245,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		});
 		
 		tts.addEarcon("money", "com.timebyte.vm1", R.raw.money);
+		tts.addEarcon("beethoven", "com.timebyte.vm1", R.raw.beethoven);
 	}
 	
 	@Override
