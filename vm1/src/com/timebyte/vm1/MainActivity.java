@@ -2,6 +2,7 @@ package com.timebyte.vm1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -49,6 +50,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
     
 	private boolean commandHelp = true;
+	
+	ArrayList<String> recognizerResult = new ArrayList<String>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +137,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				isSetting = true;
 			}
 		});
+		
+		final Button debugging = (Button) this.findViewById(R.id.debugging);
+		if (debugging != null) {
+		debugging.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				startDebugging();
+			}
+		});
+		}
 	}
 
 	public void startSettings() {
@@ -141,6 +153,14 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		Intent ttsIntent = new Intent(this, SettingActivity.class);
 		
 		startActivity(ttsIntent);
+	}
+
+	public void startDebugging() {
+	    // Do something in response to button
+		Intent debugIntent = new Intent(this, DebuggingActivity.class);
+		debugIntent.putExtra("command_list", recognizerResult);
+		
+		startActivity(debugIntent);
 	}
 	
 	public void initRecognizer() {	
@@ -284,6 +304,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
         {  
             ArrayList<String> matches = data.getStringArrayListExtra
             		(RecognizerIntent.EXTRA_RESULTS); 
+            
+            recognizerResult.add(matches.toString());
             
             switch (command) {
             case Constants.COMMAND_WRITE : 
