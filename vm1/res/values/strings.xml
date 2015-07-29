@@ -22,5 +22,9 @@
     <string name="addContact">save</string>
  
     <string name="ok">OK</string>
-      
+
+    <string name="command1">command1</string>
+    <string name="command2">command2</string>
+    <string name="command3">command3</string>    
+    
 </resources>

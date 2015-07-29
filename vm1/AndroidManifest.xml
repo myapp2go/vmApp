@@ -34,7 +34,19 @@
         	<meta-data
             	android:name="android.support.PARENT_ACTIVITY"
             	android:value="com.pc.pcand.MainActivity" />
+        </activity>	
+    	<activity
+        	android:name="com.timebyte.vm1.DebuggingActivity"
+        	android:label="@string/debugging" >
+        	<meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="com.pc.pcand.MainActivity" />
     	</activity>
+    	
+		<activity android:name=".AccountActivity" />
+		<activity android:name=".ContactActivity" />
+		<activity android:name=".CommandActivity" />
+	
     </application>
 
 </manifest>

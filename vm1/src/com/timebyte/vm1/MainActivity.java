@@ -46,6 +46,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
     protected boolean microphoneOn = false;
     protected boolean isSetting = false;
+    protected boolean isSyncMail = false;
     
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
     
@@ -72,12 +73,18 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					commandHelp = true;
 					
 					command = Constants.COMMAND_READ;
-					subCommand = Constants.COMMAND_INIT;
+
 					ttsCount = 1;
 					mailCount = 0;
 
 					ArrayList<String> localArrayList = new ArrayList<String>();
-					localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
+					if (isSyncMail) {
+						subCommand = Constants.SUBCOMMAND_RETRIEVE;
+						localArrayList.add(Constants.ANSWER_CONTINUE);
+					} else {
+						subCommand = Constants.COMMAND_INIT;
+						localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
+					}					
 			        doReadMail(localArrayList);
 			        /* 
 					microphoneOn = true;
@@ -97,12 +104,18 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					commandHelp = true;
 					
 					command = Constants.COMMAND_READ;
-					subCommand = Constants.COMMAND_INIT;
+
 					ttsCount = 1;
 					mailCount = 0;
 
 					ArrayList<String> localArrayList = new ArrayList<String>();
-					localArrayList.add(Constants.READ_OPTION_SUBJECT_BODY);
+					if (isSyncMail) {
+						subCommand = Constants.SUBCOMMAND_RETRIEVE;
+						localArrayList.add(Constants.ANSWER_CONTINUE);
+					} else {
+						subCommand = Constants.COMMAND_INIT;
+						localArrayList.add(Constants.READ_OPTION_SUBJECT_BODY);
+					}
 			        doReadMail(localArrayList);
 				}
 			}
@@ -139,13 +152,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		});
 		
 		final Button debugging = (Button) this.findViewById(R.id.debugging);
-		if (debugging != null) {
 		debugging.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				startDebugging();
 			}
 		});
-		}
 	}
 
 	public void startSettings() {

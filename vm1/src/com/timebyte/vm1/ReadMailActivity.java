@@ -33,11 +33,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
+				isSyncMail = true;
 				break;
 			case Constants.READ_OPTION_SUBJECT_BODY :
 				readMode = Constants.READ_OPTION_SUBJECT_BODY;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
+				isSyncMail = true;
 				break;
 			case Constants.COMMAND_NONE :
 				break;	
@@ -57,7 +59,17 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.ANSWER_STOP :
 				mailCount = 0;
 				break;
+			case Constants.ANSWER_SKIP :
+				mailCount = 0;
+				break;	
 			case Constants.COMMAND_NONE :
+				if (retry < maxRetry) {
+					microphoneOn = true;	
+					retry++;
+					tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
+				} else {
+					retry = 0;
+				}
 				break;	
 			}
 			break;			
@@ -201,6 +213,10 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
         		found = true;
         		ans = Constants.ANSWER_STOP;
         		break;	
+        	case Constants.ANSWER_SKIP :
+        		found = true;
+        		ans = Constants.ANSWER_SKIP;
+        		break;		
         	}
         }
         
