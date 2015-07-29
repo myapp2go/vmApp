@@ -23,8 +23,11 @@
  
     <string name="ok">OK</string>
 
-    <string name="command1">command1</string>
-    <string name="command2">command2</string>
-    <string name="command3">command3</string>    
+    <string name="command1">Command 1</string>
+    <string name="command2">Command 2</string>
+    <string name="command3">Command 3</string>    
     
+    <string name="save">Save</string>
+    <string name="clean">Clean</string>
+        
 </resources>

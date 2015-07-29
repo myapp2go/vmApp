@@ -61,6 +61,13 @@ public final class Constants {
 	
 	public static final String COMMAND_SETTING = "setting";
 
+	public static final String COMMAND_COMMAND_RECORD = "commandRecord";
+	public static final String COMMAND_COMMAND1_GREETING = "please speak 1";
+	public static final String COMMAND_COMMAND2_GREETING = "please speak 2";
+	public static final String COMMAND_COMMAND3_GREETING = "please speak 3";
+	
+	public static final String ANSWER_CLEAN = "-1";
+	public static final String ANSWER_SAVE = "0";
 	public static final String ANSWER_CONTINUE = "1";
 	public static final String ANSWER_STOP = "2";
 	public static final String ANSWER_SKIP = "3";

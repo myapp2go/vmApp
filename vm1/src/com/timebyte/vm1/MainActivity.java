@@ -21,6 +21,8 @@ import android.widget.Button;
 
 public abstract class MainActivity extends Activity implements OnInitListener  {
 
+	public static MainActivity mainActivity;
+	
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void readMessageBody();
 	abstract protected void doWriteMail(ArrayList<String> matches);
@@ -51,6 +53,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
     
 	private boolean commandHelp = true;
+	private String commandType = Constants.ANSWER_CONTINUE;
+	HashMap<String, String> commandMap = new HashMap<String, String>();
 	
 	ArrayList<String> recognizerResult = new ArrayList<String>();
 	
@@ -59,9 +63,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		mainActivity = this;
+		
 		initTTS();
 		
 		initRecognizer();
+		
+		initCommandMap();
 		
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
@@ -197,16 +205,19 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
+				System.out.println("*** ERROR1 ");
 				if (commandHelp) {
 					commandHelp = false;
 					return;
 				}
 				
 				if (microphoneOn) {
+					System.out.println("*** ERR2OR ");
 					startRecognizer(0);
 					microphoneOn = false;
 				}
 				
+				System.out.println("*** ERRO3R ");
 	            switch (command) {
 	            case Constants.COMMAND_WRITE : 
 
@@ -253,7 +264,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	            case Constants.COMMAND_STOP:
 	            	break;	
 	            default :								// INIT
-	            	System.out.println("*** ERROR ");
+	            	System.out.println("*** ERROR96 ");
 	            	break;
 	            }
 			}
@@ -310,6 +321,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
+    	System.out.println("COMMAND_COMMAND_RECORD99 ");
     	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
@@ -325,15 +337,54 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             case Constants.COMMAND_READ:
             	doReadMail(matches);
             	break;
-            case Constants.COMMAND_SETTING:
+            case Constants.COMMAND_SETTING :
             	break;
-            case Constants.COMMAND_STOP:
+            case Constants.COMMAND_STOP :
+            	break;
+            case Constants.COMMAND_COMMAND_RECORD :
+            	for (int i = 0; i < matches.size(); i++) {
+            		commandMap.put(matches.get(i), commandType);
+            	}
+            	startSettings();
             	break;	
             default :								// INIT
-            	System.out.println("*** ERROR ");
+            	System.out.println("*** ERROR97 ");
             	break;
             }
         }
     }    
 
+    public void commandRecord(String type) {
+    	command = Constants.COMMAND_COMMAND_RECORD;
+    	microphoneOn = true;
+    	commandHelp = false;
+    	commandType = type;
+    	
+        switch (type) {
+        case Constants.ANSWER_CONTINUE : 
+        	tts.speak(Constants.COMMAND_COMMAND1_GREETING, TextToSpeech.QUEUE_FLUSH, map);
+        	break;
+        case Constants.ANSWER_STOP :
+        	tts.speak(Constants.COMMAND_COMMAND2_GREETING, TextToSpeech.QUEUE_FLUSH, map);
+        	break;
+        case Constants.ANSWER_SKIP :
+        	tts.speak(Constants.COMMAND_COMMAND3_GREETING, TextToSpeech.QUEUE_FLUSH, map);
+        	break;
+        case Constants.ANSWER_SAVE :
+        	break;	
+        case Constants.ANSWER_CLEAN :
+        	commandMap = new HashMap<String, String>();
+        	initCommandMap();
+        	break;	
+        default :								// INIT
+        	System.out.println("*** ERROR98 ");
+        	break;
+        }
+    }
+    
+    private void initCommandMap() {
+    	commandMap.put("1", Constants.ANSWER_CONTINUE);
+    	commandMap.put("1", Constants.ANSWER_STOP);
+    	commandMap.put("1", Constants.ANSWER_SKIP);
+    }
 }

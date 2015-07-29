@@ -25,7 +25,7 @@
         android:layout_below="@id/command1"
         android:layout_centerHorizontal="true"
         android:text="@string/command2"
-        android:textColor="#ff0000"
+        android:textColor="#00ff00"
         android:textSize="30dip" />    
     
     <Button
@@ -35,7 +35,27 @@
         android:layout_below="@id/command2"
         android:layout_centerHorizontal="true"
         android:text="@string/command3"
-        android:textColor="#00ff00"
+        android:textColor="#0000ff"
         android:textSize="30dip" />
-       
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/command3"
+        android:layout_centerHorizontal="true"
+        android:text="@string/save"
+        android:textColor="#ffff00"
+        android:textSize="30dip" />
+         
+    <Button
+        android:id="@+id/clean"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/save"
+        android:layout_centerHorizontal="true"
+        android:text="@string/clean"
+        android:textColor="#00ffff"
+        android:textSize="30dip" />
+        
 </RelativeLayout>

@@ -32,8 +32,9 @@ public class SettingActivity extends TabActivity {
         commandTabSpec.setIndicator("Command").setContent(new Intent(this, CommandActivity.class));
         
         /* Add tabSpec to the TabHost to display. */
+        tabHost.addTab(commandTabSpec);
         tabHost.addTab(accountTabSpec);
         tabHost.addTab(contactTabSpec);
-        tabHost.addTab(commandTabSpec);
+
     }
 }
