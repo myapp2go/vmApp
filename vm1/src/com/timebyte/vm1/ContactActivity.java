@@ -36,12 +36,8 @@ public class ContactActivity extends Activity {
     
 	private void savePreference() {
 		// TODO Auto-generated method stub
-		String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
-		String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
 		
 		Editor editor = sharedPreferences.edit();
-		editor.putString("myEmail", myEmail);
-		editor.putString("myPassword", myPassword);
 		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
 		editor.putInt("increment", 10);
 		editor.commit();
@@ -58,10 +54,6 @@ public class ContactActivity extends Activity {
 			folder.createNewFile();
 //			fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
 	        fos = new FileOutputStream(new File(folder, FILENAME));
-	        string = "myEmail:" + myEmail + del;
-			fos.write(string.getBytes());
-	        string = "myPassword:" + myPassword + del;
-			fos.write(string.getBytes());
 			string = ((TextView) findViewById(R.id.contactName1)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail1)).getText().toString() + del;
 			fos.write(string.getBytes());
 			string = ((TextView) findViewById(R.id.contactName2)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail2)).getText().toString() + del;

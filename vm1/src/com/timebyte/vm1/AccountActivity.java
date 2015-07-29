@@ -46,12 +46,14 @@ public class AccountActivity extends Activity {
 		editor.putInt("increment", 10);
 		editor.commit();
 
-		String FILENAME = "pcVoiceMail";
+		String FILENAME = "pcMailAccount";
 		String string = "hello  world!";
 		String del = "_____";
 		
 		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
-		folder.mkdirs();
+		if (!folder.isDirectory()) {
+			folder.mkdirs();
+		}
          
 		FileOutputStream fos;
 		try {
@@ -61,16 +63,6 @@ public class AccountActivity extends Activity {
 	        string = "myEmail:" + myEmail + del;
 			fos.write(string.getBytes());
 	        string = "myPassword:" + myPassword + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName1)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail1)).getText().toString() + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName2)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail2)).getText().toString() + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName3)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail3)).getText().toString() + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName4)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail4)).getText().toString() + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName5)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail5)).getText().toString() + del;
 			fos.write(string.getBytes());
 
 			fos.close();
