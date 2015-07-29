@@ -1,7 +1,16 @@
 package com.timebyte.vm1;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -9,6 +18,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -69,7 +79,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		
 		initRecognizer();
 		
-		initCommandMap();
+		getVoiceCommand();
 		
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
@@ -321,13 +331,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
-    	System.out.println("COMMAND_COMMAND_RECORD99 ");
     	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
             ArrayList<String> matches = data.getStringArrayListExtra
             		(RecognizerIntent.EXTRA_RESULTS); 
-            
+//        	System.out.println("COMMAND_COMMAND_RECORD99 " + matches);
+        	
             recognizerResult.add(matches.toString());
             
             switch (command) {
@@ -348,7 +358,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             	startSettings();
             	break;	
             default :								// INIT
-            	System.out.println("*** ERROR97 ");
+            	System.out.println("*** ERROR ");
             	break;
             }
         }
@@ -377,14 +387,83 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
         	initCommandMap();
         	break;	
         default :								// INIT
-        	System.out.println("*** ERROR98 ");
+        	System.out.println("*** ERROR ");
         	break;
         }
     }
+    
     
     private void initCommandMap() {
     	commandMap.put("1", Constants.ANSWER_CONTINUE);
     	commandMap.put("1", Constants.ANSWER_STOP);
     	commandMap.put("1", Constants.ANSWER_SKIP);
+    }
+    
+    String FILENAME = "voiceCommand";
+    private void getVoiceCommand() {
+    	initCommandMap();
+    			
+		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
+
+		File file = new File(folder, FILENAME);
+
+		//Read text from file
+		StringBuilder text = new StringBuilder();
+		
+		try {
+		    BufferedReader br = new BufferedReader(new FileReader(file));
+		    String line;
+
+		    while ((line = br.readLine()) != null) {
+		        text.append(line);
+		        text.append('\n');
+		    }		
+			
+		    String del = "_";
+			StringTokenizer st = new StringTokenizer(text.toString(), del);
+			while (st.hasMoreTokens()) {
+				String str = st.nextToken();
+				if (str.length() > 2) {
+					String value = str.substring(0, 1);
+					String key = str.substring(2, str.length());
+					commandMap.put(key,  value);
+				}
+			}
+		    		    
+		    br.close();
+		}
+		catch (IOException e) {
+		    //You'll need to add proper error handling here
+			settingNotice();
+			e.printStackTrace();
+		}
+    }
+    
+    private void saveCommand() {
+		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
+		if (!folder.isDirectory()) {
+			folder.mkdirs();
+		}
+        
+		FileOutputStream fos;
+		try {
+			folder.createNewFile();
+//			fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+	        fos = new FileOutputStream(new File(folder, FILENAME));
+	        
+	        Iterator it = commandMap.entrySet().iterator();
+	        while (it.hasNext()) {
+	            Map.Entry pair = (Map.Entry)it.next();
+	            String str = pair.getValue() + "," + pair.getKey() + "_";
+	            fos.write(str.getBytes());
+	        }
+
+			fos.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
     }
 }

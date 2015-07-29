@@ -199,6 +199,21 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 	
 	private String matchReadCommand(ArrayList<String> matches) {
+		boolean found = false;
+		String sub = Constants.COMMAND_NONE;
+		
+		for (int i = 0; !found && (i < matches.size()); i++) {
+			String ret = commandMap.get(matches.get(i));
+			if (ret != null) {
+				found = true;
+				sub = ret;
+			}
+		}
+		
+		return sub;
+	}
+	
+	private String matchReadCommandOld(ArrayList<String> matches) {
 		// TODO Auto-generated method stub
         boolean found = false;
         String ans = Constants.COMMAND_NONE;
