@@ -28,10 +28,14 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 	}
 
 	protected void getPreferenceFromFile() {
-		String FILENAME = "pcVoiceMail";
+		getPreferenceFromFile("pcMailAccount");
+		getPreferenceFromFile("pcVoiceMail");
+	}
+	
+	protected void getPreferenceFromFile(String filename) {
 		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
 
-		File file = new File(folder, FILENAME);
+		File file = new File(folder, filename);
 
 		//Read text from file
 		StringBuilder text = new StringBuilder();
@@ -52,8 +56,7 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 			e.printStackTrace();
 		}
 		
-		setupPreferences(text);
-		
+		setupPreferences(text);		
 	}
 
 	protected void settingNotice() {

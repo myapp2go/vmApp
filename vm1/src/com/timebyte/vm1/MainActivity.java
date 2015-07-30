@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,6 +18,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -68,12 +68,16 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	ArrayList<String> recognizerResult = new ArrayList<String>();
 	
+	private Handler handler;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
 		mainActivity = this;
+		
+		handler = new Handler();
 		
 		initTTS();
 		
@@ -204,8 +208,17 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		if (ms > 0) {
 			SystemClock.sleep(ms);
 		}
+		
+		handler.postDelayed(checkRecognizer, 15000);
 	    startActivityForResult(intent, VOICE_RECOGNITION); 
 	}
+
+	private Runnable checkRecognizer = new Runnable() {
+	    public void run() {     
+	    	microphoneOn = true;	
+			tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
+	    }
+	};
 	
 	private void initTTS() {		
 		map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
@@ -215,19 +228,16 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				System.out.println("*** ERROR1 ");
 				if (commandHelp) {
 					commandHelp = false;
 					return;
 				}
 				
 				if (microphoneOn) {
-					System.out.println("*** ERR2OR ");
 					startRecognizer(0);
 					microphoneOn = false;
 				}
 				
-				System.out.println("*** ERRO3R ");
 	            switch (command) {
 	            case Constants.COMMAND_WRITE : 
 
@@ -331,6 +341,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
+    	System.out.println("COMMAND_COMMAND_RECORD99 ");
+    	handler.removeCallbacks(checkRecognizer);
     	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
@@ -391,8 +403,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
         	break;
         }
     }
-    
-    
+        
     private void initCommandMap() {
     	commandMap.put("1", Constants.ANSWER_CONTINUE);
     	commandMap.put("1", Constants.ANSWER_STOP);
