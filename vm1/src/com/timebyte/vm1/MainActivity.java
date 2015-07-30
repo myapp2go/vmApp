@@ -69,6 +69,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	ArrayList<String> recognizerResult = new ArrayList<String>();
 	
 	private Handler handler;
+	private String lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				} else {
 					tts.speak(Constants.COMMAND_READ_SUBJECT, TextToSpeech.QUEUE_ADD, map);
 					commandHelp = true;
-					
+					lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
 					command = Constants.COMMAND_READ;
 
 					ttsCount = 1;
@@ -124,7 +125,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				} else {
 					tts.speak(Constants.COMMAND_READ_SUBJECT_BODY, TextToSpeech.QUEUE_ADD, map);
 					commandHelp = true;
-					
+					lastReadType = Constants.READ_OPTION_SUBJECT_BODY;
 					command = Constants.COMMAND_READ;
 
 					ttsCount = 1;
@@ -173,10 +174,14 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			}
 		});
 		
-		final Button debugging = (Button) this.findViewById(R.id.debugging);
-		debugging.setOnClickListener(new View.OnClickListener() {
+		final Button syncMail = (Button) this.findViewById(R.id.syncMail);
+		syncMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				startDebugging();
+				isSyncMail = true;
+				subCommand = Constants.COMMAND_INIT;
+				ArrayList<String> localArrayList = new ArrayList<String>();
+				localArrayList.add(lastReadType);
+				doReadMail(localArrayList);
 			}
 		});
 	}

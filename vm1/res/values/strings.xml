@@ -11,6 +11,7 @@
     <string name="writeMail">Write Mail</string>
     <string name="settings">Settings</string>
     <string name="debugging">Debug</string>
+    <string name="syncMail">Sync Mail</string>
     <string name="greeting">Welcome to Speak Mail</string>
 
     <string name="myEmail">My eMail</string>

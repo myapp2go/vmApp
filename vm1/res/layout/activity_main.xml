@@ -59,12 +59,12 @@
         android:textSize="30dip" />
 
     <Button
-        android:id="@+id/debugging"
+        android:id="@+id/syncMail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/settings"
         android:layout_centerHorizontal="true"
-        android:text="@string/debugging"
+        android:text="@string/syncMail"
         android:textColor="#ffff00"
         android:textSize="30dip" />
         
