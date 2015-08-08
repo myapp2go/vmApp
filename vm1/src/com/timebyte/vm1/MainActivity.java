@@ -92,8 +92,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting) {
 					settingNotice();
 				} else {
-					tts.speak(Constants.COMMAND_READ_SUBJECT, TextToSpeech.QUEUE_ADD, map);
-					commandHelp = true;
 					lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
 					command = Constants.COMMAND_READ;
 
@@ -119,8 +117,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting) {
 					settingNotice();
 				} else {
-					tts.speak(Constants.COMMAND_READ_SUBJECT_BODY, TextToSpeech.QUEUE_ADD, map);
-					commandHelp = true;
 					lastReadType = Constants.READ_OPTION_SUBJECT_BODY;
 					command = Constants.COMMAND_READ;
 
@@ -139,14 +135,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				}
 			}
 		});
-/*
-		final Button skipMail = (Button) this.findViewById(R.id.skipMail);
-		skipMail.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				tts.speak(Constants.COMMAND_SKIP_GREETING, TextToSpeech.QUEUE_FLUSH, map);
-			}
-		});
-*/		
+		
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -334,8 +323,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
-
 		getPreferenceFromFile();
+		
+		tts.speak(Constants.COMMAND_READ_SUBJECT_BODY, TextToSpeech.QUEUE_ADD, map);
+		commandHelp = true;
 	}
 	
     @Override  
@@ -380,7 +371,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     public void commandRecord(String type) {
     	command = Constants.COMMAND_COMMAND_RECORD;
     	microphoneOn = true;
-    	commandHelp = false;
     	commandType = type;
     	
         switch (type) {
@@ -394,6 +384,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
         	tts.speak(Constants.COMMAND_COMMAND3_GREETING, TextToSpeech.QUEUE_FLUSH, map);
         	break;
         case Constants.ANSWER_SAVE :
+        	saveCommand();
         	break;	
         case Constants.ANSWER_CLEAN :
         	commandMap = new HashMap<String, String>();
@@ -407,8 +398,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
         
     private void initCommandMap() {
     	commandMap.put("1", Constants.ANSWER_CONTINUE);
-    	commandMap.put("1", Constants.ANSWER_STOP);
-    	commandMap.put("1", Constants.ANSWER_SKIP);
+    	commandMap.put("2", Constants.ANSWER_STOP);
+    	commandMap.put("3", Constants.ANSWER_SKIP);
     }
     
     String FILENAME = "voiceCommand";
