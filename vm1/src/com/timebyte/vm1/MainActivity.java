@@ -109,10 +109,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
 					}					
 			        doReadMail(localArrayList);
-			        /* 
-					microphoneOn = true;
-					tts.speak(Constants.COMMAND_READ_GREETING, TextToSpeech.QUEUE_ADD, map);
-					*/
 				}
 			}
 		});
