@@ -145,8 +145,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					command = Constants.COMMAND_WRITE;
 					subCommand = Constants.SUBCOMMAND_TO;
 				
-					microphoneOn = true;
-					tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
+					ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
 				}
 			}
 		});
@@ -204,9 +203,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	}
 
 	private Runnable checkRecognizer = new Runnable() {
-	    public void run() {     
-	    	microphoneOn = true;	
-			tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
+	    public void run() {	
+			ttsAndPlayEarcon("money");
 	    }
 	};
 	
@@ -239,8 +237,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							if (ttsCount == Constants.MAIL_PER_PAGE) {
 								ttsCount = 0;
 //								tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
-								tts.playEarcon("beethoven", TextToSpeech.QUEUE_ADD, map);
-								microphoneOn = true;
+								ttsAndPlayEarcon("beethoven");
 							} else {
 								ttsCount++;
 							}
@@ -250,9 +247,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								if (ttsCount == Constants.MAIL_PER_PAGE) {
 									ttsCount = 0;
 									waitBodyCommand = true;
-									microphoneOn = true;
 //									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
-									tts.playEarcon("beethoven", TextToSpeech.QUEUE_ADD, map);
+									ttsAndPlayEarcon("beethoven");
 								} else {
 									if (!waitBodyCommand) {
 										ttsCount++;
@@ -261,10 +257,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								}
 							} else {
 								ttsCount = 0;
-								subCommand = Constants.SUBCOMMAND_MORE_SKIP;
-								microphoneOn = true;								
+								subCommand = Constants.SUBCOMMAND_MORE_SKIP;								
 //								tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
-								tts.playEarcon("beethoven", TextToSpeech.QUEUE_ADD, map);
+								ttsAndPlayEarcon("beethoven");
 							}
 							break;
 						}
@@ -325,8 +320,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
 		
-		tts.speak(Constants.COMMAND_READ_SUBJECT_BODY, TextToSpeech.QUEUE_ADD, map);
-		commandHelp = true;
+		ttsAndMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
 	}
 	
     @Override  
@@ -375,13 +369,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	
         switch (type) {
         case Constants.ANSWER_CONTINUE : 
-        	tts.speak(Constants.COMMAND_COMMAND1_GREETING, TextToSpeech.QUEUE_FLUSH, map);
+        	ttsAndMicrophone(Constants.COMMAND_COMMAND1_GREETING);
         	break;
         case Constants.ANSWER_STOP :
-        	tts.speak(Constants.COMMAND_COMMAND2_GREETING, TextToSpeech.QUEUE_FLUSH, map);
+        	ttsAndMicrophone(Constants.COMMAND_COMMAND2_GREETING);
         	break;
         case Constants.ANSWER_SKIP :
-        	tts.speak(Constants.COMMAND_COMMAND3_GREETING, TextToSpeech.QUEUE_FLUSH, map);
+        	ttsAndMicrophone(Constants.COMMAND_COMMAND3_GREETING);
         	break;
         case Constants.ANSWER_SAVE :
         	saveCommand();
@@ -466,7 +460,21 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			e1.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
+		}		
+    }
+    
+    protected void ttsAndMicrophone(String msg) {
+		microphoneOn = true;
+		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
+    }
+    
+    protected void ttsNoMicrophone(String msg) {
+		microphoneOn = false;
+		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
+    }
+    
+    protected void ttsAndPlayEarcon(String msg) {
+		microphoneOn = true;
+		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, map);
     }
 }

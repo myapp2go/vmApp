@@ -17,8 +17,7 @@ public class WriteMailActivity extends ReadMailActivity {
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
     		subCommand = Constants.SUBCOMMAND_TO;
-    		microphoneOn = true;
-    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
+    		ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
 			break;
 		case Constants.SUBCOMMAND_TO :
 			String name = matches.get(0);
@@ -27,11 +26,10 @@ public class WriteMailActivity extends ReadMailActivity {
 			if (mailTo != null) {
 				checkYesNo = true;
 				subCommand = Constants.SUBCOMMAND_VERIFY_TO;
-				microphoneOn = true;
-				tts.speak(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING, TextToSpeech.QUEUE_ADD, map);
+				ttsAndMicrophone(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING);
 			} else {
 				checkYesNo = false;
-	    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
+				ttsNoMicrophone(Constants.COMMAND_TO_GREETING);
 			}
 			break;
 		case Constants.SUBCOMMAND_VERIFY_TO :	
@@ -39,14 +37,12 @@ public class WriteMailActivity extends ReadMailActivity {
 			switch (answer) {
 			case Constants.ANSWER_YES :
 				subCommand = Constants.SUBCOMMAND_SUBJECFT;
-				microphoneOn = true;
-				tts.speak(Constants.COMMAND_SUBJECT_GREETING, TextToSpeech.QUEUE_ADD, map);				
+				ttsAndMicrophone(Constants.COMMAND_SUBJECT_GREETING);
 				break;
 			case Constants.ANSWER_NO :	
 				subCommand = Constants.SUBCOMMAND_TO;
 				answer = Constants.COMMAND_INIT;
-				microphoneOn = true;
-	    		tts.speak(Constants.COMMAND_TO_GREETING, TextToSpeech.QUEUE_ADD, map);
+				ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
 				break;
 			case Constants.COMMAND_NONE :	
 //				System.out.println("NONEGGGGGGGGGGGGGGGGG " + mailTo);
@@ -58,14 +54,12 @@ public class WriteMailActivity extends ReadMailActivity {
 		case Constants.SUBCOMMAND_SUBJECFT :
 			mailSubject = matches.get(0);
     		subCommand = Constants.SUBCOMMAND_BODY;
-    		microphoneOn = true;
-    		tts.speak(Constants.COMMAND_BODY_GREETING, TextToSpeech.QUEUE_ADD, map);
+    		ttsAndMicrophone(Constants.COMMAND_BODY_GREETING);
     		break;
 		case Constants.SUBCOMMAND_BODY :
 			mailBody = matches.get(0);
     		subCommand = Constants.SUBCOMMAND_DONE;
-    		microphoneOn = true;
-    		tts.speak(Constants.COMMAND_DONE_GREETING, TextToSpeech.QUEUE_ADD, map);
+    		ttsAndMicrophone(Constants.COMMAND_DONE_GREETING);
 			break;
 		case Constants.SUBCOMMAND_DONE :
 			String mode = matchWriteMode(matches);

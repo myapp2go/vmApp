@@ -63,10 +63,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				mailCount = 0;
 				break;	
 			case Constants.COMMAND_NONE :
-				if (retry < maxRetry) {
-					microphoneOn = true;	
+				if (retry < maxRetry) {	
 					retry++;
-					tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
+					ttsAndPlayEarcon("money");
 				} else {
 					retry = 0;
 				}
@@ -90,11 +89,10 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				readMessageBody();
 				break;
 			case Constants.COMMAND_NONE :
-				if (retry < maxRetry) {
-					microphoneOn = true;	
+				if (retry < maxRetry) {	
 					retry++;
 //					tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
-					tts.playEarcon("money", TextToSpeech.QUEUE_ADD, map);
+					ttsAndPlayEarcon("money");
 				} else {
 					retry = 0;
 				}
@@ -269,7 +267,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			readBodyDone = true;
 		}
 		
-		tts.speak("mail number" + (count + 1)  + " " + mailSubject[count] + body, TextToSpeech.QUEUE_ADD, map);						
+		ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);						
 	}
 	
 	private void readMessage() {
@@ -295,7 +293,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 //			HashMap<String, String> map = new HashMap<String, String>();
 //			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
 			    
-			tts.speak("mail number" + (i + 1)  + " " + mailSubject[i], TextToSpeech.QUEUE_ADD, map);
+			ttsNoMicrophone("mail number" + (i + 1)  + " " + mailSubject[i]);
 		}
 	}
 	
