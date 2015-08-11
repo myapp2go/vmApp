@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -71,6 +72,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private Handler handler;
 	private String lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
 	
+	private ProgressDialog processDialog;
+	private static boolean commandDone = true;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,6 +93,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				System.out.println("&&&&&&&&&&&&readMail " + commandDone);
+				if (!commandDone) {
+					startDialog();
+					return;
+				}				
+				commandDone = false;
+				
 				if (!isSetting) {
 					settingNotice();
 				} else {
@@ -114,6 +125,14 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button readBodyMail = (Button) this.findViewById(R.id.readBodyMail);
 		readBodyMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				System.out.println("&&&&&&&&&&&&readBodyMail " + commandDone);
+				if (!commandDone) {
+					startDialog();
+					return;
+				}				
+				commandDone = false;
+				System.out.println("&&&&&&&&&&&&7771 " + commandDone);
+				
 				if (!isSetting) {
 					settingNotice();
 				} else {
@@ -139,6 +158,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				System.out.println("&&&&&&&&&&&&writeMail " + commandDone);
+				if (!commandDone) {
+					startDialog();
+					return;
+				}				
+				commandDone = false;
+				
 				if (!isSetting) {
 					settingNotice();
 				} else {
@@ -148,11 +174,19 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
 				}
 			}
+			
 		});
 		
 		final Button settings = (Button) this.findViewById(R.id.settings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				System.out.println("&&&&&&&&&&&&settings " + commandDone);
+				if (!commandDone) {
+					startDialog();
+					return;
+				}				
+				commandDone = false;
+				
 				startSettings();
 				isSetting = true;
 			}
@@ -161,6 +195,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button syncMail = (Button) this.findViewById(R.id.syncMail);
 		syncMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				System.out.println("&&&&&&&&&&&&syncMailA " + commandDone);
+				if (!commandDone) {
+					startDialog();
+					return;
+				}				
+				commandDone = false;
+				
 				isSyncMail = true;
 				subCommand = Constants.COMMAND_INIT;
 				ArrayList<String> localArrayList = new ArrayList<String>();
@@ -279,11 +320,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 //				System.out.println("onStart ");
 			}
 
-//			@Override
-			public void onError(String utteranceId, int errorCode) {
-				System.out.println("onErrorNew " + errorCode);
-			}
-
 			@Override
 			public void onError(String arg0) {
 				// TODO Auto-generated method stub
@@ -320,22 +356,20 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
 		
-		ttsAndMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
+		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
+		commandDone = true;
 	}
 	
     @Override  
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
-    	System.out.println("COMMAND_COMMAND_RECORD99 ");
     	handler.removeCallbacks(checkRecognizer);
     	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
             ArrayList<String> matches = data.getStringArrayListExtra
             		(RecognizerIntent.EXTRA_RESULTS); 
-//        	System.out.println("COMMAND_COMMAND_RECORD99 " + matches);
-        	
             recognizerResult.add(matches.toString());
             
             switch (command) {
@@ -464,17 +498,37 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
+    	commandDone = false;
 		microphoneOn = true;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsNoMicrophone(String msg) {
+    	commandDone = false;
 		microphoneOn = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
+    	endDialog();
+    	
 		microphoneOn = true;
 		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, map);
+    }
+    
+    private void startDialog() {
+		processDialog = new ProgressDialog(this);
+		processDialog.setMessage("Process command, please wait...");
+		processDialog.setIndeterminate(false);
+		processDialog.setCancelable(false);
+		processDialog.show();
+    }
+    
+    protected void endDialog() {
+    	if (processDialog != null) {
+    		processDialog.dismiss();
+    	}
+    	
+    	commandDone = true;
     }
 }
