@@ -75,6 +75,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private ProgressDialog processDialog;
 	private static boolean commandDone = true;
 	
+	private int maxMpInputRetry = 5;	
+	private int mpInputRetry = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -125,13 +128,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button readBodyMail = (Button) this.findViewById(R.id.readBodyMail);
 		readBodyMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				System.out.println("&&&&&&&&&&&&readBodyMail " + commandDone);
 				if (!commandDone) {
 					startDialog();
 					return;
 				}				
 				commandDone = false;
-				System.out.println("&&&&&&&&&&&&7771 " + commandDone);
 				
 				if (!isSetting) {
 					settingNotice();
@@ -158,7 +159,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				System.out.println("&&&&&&&&&&&&writeMail " + commandDone);
 				if (!commandDone) {
 					startDialog();
 					return;
@@ -180,7 +180,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button settings = (Button) this.findViewById(R.id.settings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				System.out.println("&&&&&&&&&&&&settings " + commandDone);
 				if (!commandDone) {
 					startDialog();
 					return;
@@ -195,7 +194,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button syncMail = (Button) this.findViewById(R.id.syncMail);
 		syncMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				System.out.println("&&&&&&&&&&&&syncMailA " + commandDone);
 				if (!commandDone) {
 					startDialog();
 					return;
@@ -239,12 +237,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			SystemClock.sleep(ms);
 		}
 		
-		handler.postDelayed(checkRecognizer, 15000);
+		if (mpInputRetry < maxMpInputRetry) {
+			handler.postDelayed(checkRecognizer, 30000);
+		}
 	    startActivityForResult(intent, VOICE_RECOGNITION); 
 	}
 
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
+	    	mpInputRetry++;
 			ttsAndPlayEarcon("money");
 	    }
 	};
@@ -365,6 +366,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     {  
     	super.onActivityResult(requestCode, resultCode, data);
     	handler.removeCallbacks(checkRecognizer);
+    	mpInputRetry = 0;
     	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
