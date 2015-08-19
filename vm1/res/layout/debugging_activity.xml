@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <Button
+        android:id="@+id/debugStart"
+        android:text="@string/debugStart"
+        android:textColor="#ff0000"
+        android:textSize="30dip" />
+        
     <ListView
         android:id="@+id/months_list"
         android:layout_width="match_parent"
