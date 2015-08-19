@@ -393,7 +393,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             }
         } else {
         	System.out.println("10 *** No Match ");
-        	ttsAndPlayEarcon("money");
+//        	ttsAndPlayEarcon("money");
         }
     }    
 
