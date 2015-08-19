@@ -39,7 +39,7 @@ public final class Constants {
 	
 	public static final String COMMAND_READ = "read";
 	public static final String SUBCOMMAND_RETRIEVE = "retrieve";
-	public static final String SUBCOMMAND_MORE_SKIP = "moreSkip";
+//	public static final String SUBCOMMAND_MORE_SKIP = "moreSkip";
 	public static final String SUBCOMMAND_SKIP = "skip";
 	public static final String SUBCOMMAND_MORE = "more";
 	public static final String SBCOMMAND_UP = "up";

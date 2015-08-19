@@ -96,7 +96,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				System.out.println("&&&&&&&&&&&&readMail " + commandDone);
 				if (!commandDone) {
 					startDialog();
 					return;
@@ -170,7 +169,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				} else {
 					command = Constants.COMMAND_WRITE;
 					subCommand = Constants.SUBCOMMAND_TO;
-				
 					ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
 				}
 			}
@@ -278,7 +276,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
 							if (ttsCount == Constants.MAIL_PER_PAGE) {
 								ttsCount = 0;
-//								tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
 								ttsAndPlayEarcon("beethoven");
 							} else {
 								ttsCount++;
@@ -289,7 +286,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								if (ttsCount == Constants.MAIL_PER_PAGE) {
 									ttsCount = 0;
 									waitBodyCommand = true;
-//									tts.speak(Constants.COMMAND_READ_ACTION, TextToSpeech.QUEUE_ADD, map);
 									ttsAndPlayEarcon("beethoven");
 								} else {
 									if (!waitBodyCommand) {
@@ -299,8 +295,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								}
 							} else {
 								ttsCount = 0;
-								subCommand = Constants.SUBCOMMAND_MORE_SKIP;								
-//								tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
 								ttsAndPlayEarcon("beethoven");
 							}
 							break;
@@ -330,6 +324,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		
 		tts.addEarcon("money", "com.timebyte.vm1", R.raw.money);
 		tts.addEarcon("beethoven", "com.timebyte.vm1", R.raw.beethoven);
+		tts.addEarcon("jetsons", "com.timebyte.vm1", R.raw.jetsons);
 	}
 	
 	@Override
@@ -356,7 +351,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		// TODO Auto-generated method stub
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
-		
 		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
 		commandDone = true;
 	}
@@ -365,7 +359,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
-    	handler.removeCallbacks(checkRecognizer);
+    	if (handler != null) {
+    		handler.removeCallbacks(checkRecognizer);
+    	}
     	mpInputRetry = 0;
     	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
@@ -395,6 +391,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             	System.out.println("*** ERROR ");
             	break;
             }
+        } else {
+        	System.out.println("10 *** No Match ");
+        	ttsAndPlayEarcon("money");
         }
     }    
 
@@ -513,8 +512,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
     protected void ttsAndPlayEarcon(String msg) {
     	endDialog();
+    	if (handler != null) {
+    		handler.removeCallbacks(checkRecognizer);
+    	}
     	
 		microphoneOn = true;
+		ttsCount = 0;
 		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, map);
     }
     

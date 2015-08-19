@@ -18,7 +18,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private String[] mailSubject;
 	private String[] mailBody;
 	private int maxLen = 200;
-	private int maxRetry = 2;	
+	private int maxRetry = 5;	
 	private int retry = 0;
 	private int bodyReaded = 0;
 	private boolean skipLink = true;
@@ -50,7 +50,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
-					waitBodyCommand = false;
+					// PC522 Handle readBodyDone
+//					waitBodyCommand = false;
 					readMessageBody();
 				} else {
 					readMessage();
@@ -58,9 +59,21 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				break;
 			case Constants.ANSWER_STOP :
 				mailCount = 0;
+				readBodyDone = true;
 				break;
 			case Constants.ANSWER_SKIP :
-				mailCount = 0;
+//				mailCount = 0;
+//				readBodyDone = true;
+				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+					readBodyDone = true;
+				} else {
+					if (retry < maxRetry) {	
+						retry++;
+						ttsAndPlayEarcon("jetsons");
+					} else {
+						retry = 0;
+					}
+				}
 				break;	
 			case Constants.COMMAND_NONE :
 				if (retry < maxRetry) {	
@@ -71,7 +84,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				}
 				break;	
 			}
-			break;			
+			break;	
+/*			
 		case Constants.SUBCOMMAND_MORE_SKIP :
 			String cmd = matchReadMode(matches);
 			switch (cmd) {
@@ -88,6 +102,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				mailCount++;
 				readMessageBody();
 				break;
+				
 			case Constants.COMMAND_NONE :
 				if (retry < maxRetry) {	
 					retry++;
@@ -99,6 +114,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				break;
 			}
 			break;
+			*/
 		case Constants.COMMAND_NEXT :
 			microphoneOn = false;
 			mailCount--;
@@ -183,7 +199,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			}
 		}
 		
-		dump();
+//		dump();
 	}
 
 	private void dump() {
@@ -292,7 +308,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 //			HashMap<String, String> map = new HashMap<String, String>();
 //			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
-			    
+			
 			ttsNoMicrophone("mail number" + (i + 1)  + " " + mailSubject[i]);
 		}
 	}
