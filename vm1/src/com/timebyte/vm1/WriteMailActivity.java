@@ -11,7 +11,7 @@ public class WriteMailActivity extends ReadMailActivity {
     protected String mailSubject = "";
     protected String mailBody = "";
  
-    protected boolean checkYesNo = false;
+//    protected boolean checkYesNo = false;
     
 	protected void doWriteMail(ArrayList<String> matches) {
 		switch (subCommand) {
@@ -21,15 +21,15 @@ public class WriteMailActivity extends ReadMailActivity {
 			break;
 		case Constants.SUBCOMMAND_TO :
 			String name = matches.get(0);
-			System.out.println("DUMP " + matches);
+//			System.out.println("DUMP " + matches);
 			mailTo = matchName(name);
 			if (mailTo != null) {
-				checkYesNo = true;
+//				checkYesNo = true;
 				subCommand = Constants.SUBCOMMAND_VERIFY_TO;
 				ttsAndMicrophone(Constants.COMMAND_ECHO_HEADER_GREETING + mailTo + Constants.COMMAND_ECHO_FOOTER_GREETING);
 			} else {
-				checkYesNo = false;
-				ttsNoMicrophone(Constants.COMMAND_TO_GREETING);
+//				checkYesNo = false;
+				ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
 			}
 			break;
 		case Constants.SUBCOMMAND_VERIFY_TO :	
