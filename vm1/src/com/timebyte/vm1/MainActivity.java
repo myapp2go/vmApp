@@ -87,7 +87,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		if (BuildConfig.DEBUG) {
-			logStr.add("onCreate called");
+			logStr.add("[onCreate called]");
 		}
 		
 		mainActivity = this;
@@ -219,6 +219,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				startDebugging();
 			}
 		});
+		
+		if (BuildConfig.DEBUG) {
+			logStr.add("[onCreate done]");
+		}
 	}
 
 	public void startSettings() {
@@ -229,7 +233,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	}
 
 	public void startDebugging() {
-		doDebugMail("tapaulchen@gmail.com", "Tanan1559", "paultchan@yahoo.com", "Paul", "MSG");
+		String msg = logStr.toString();
+		
+		doDebugMail("tapaulchen@gmail.com", "Tanan1559", "paultchan@yahoo.com", "VoiceMailDebug", msg);
 	}
 	
 	public void initRecognizer() {	
