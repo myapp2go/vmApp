@@ -121,5 +121,13 @@ public class WriteMailActivity extends ReadMailActivity {
 
         return mode;
 	}
+
+	@Override
+	protected void doDebugMail(String myEmail, String myPassword,
+			String mailTo, String mailSubject, String mailBody) {
+		// TODO Auto-generated method stub
+		new WriteMailTask(WriteMailActivity.this).execute(sharedPreferences, mailTo, mailSubject, mailBody);
+
+	}
 }
 

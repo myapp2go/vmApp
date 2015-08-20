@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -37,6 +38,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void readMessageBody();
 	abstract protected void doWriteMail(ArrayList<String> matches);
+	abstract protected void doDebugMail(String myEmail, String myPassword, String mailTo, String mailSubject, String mailBody);
 	abstract protected void getPreferenceFromFile();
 	abstract protected void settingNotice();
 	
@@ -78,10 +80,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private int maxMpInputRetry = 5;	
 	private int mpInputRetry = 0;
 	
+	private Vector<String> logStr = new Vector<String>();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		if (BuildConfig.DEBUG) {
+			logStr.add("onCreate called");
+		}
 		
 		mainActivity = this;
 		
@@ -205,6 +212,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				doReadMail(localArrayList);
 			}
 		});
+		
+		final Button debugging = (Button) this.findViewById(R.id.debugging);
+		debugging.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				startDebugging();
+			}
+		});
 	}
 
 	public void startSettings() {
@@ -215,11 +229,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	}
 
 	public void startDebugging() {
-	    // Do something in response to button
-		Intent debugIntent = new Intent(this, DebuggingActivity.class);
-		debugIntent.putExtra("command_list", recognizerResult);
-		
-		startActivity(debugIntent);
+		doDebugMail("tapaulchen@gmail.com", "Tanan1559", "paultchan@yahoo.com", "Paul", "MSG");
 	}
 	
 	public void initRecognizer() {	
