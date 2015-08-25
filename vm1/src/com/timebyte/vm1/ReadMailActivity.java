@@ -139,10 +139,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
 		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;	
 
-		for (int i = 1; i <= len; i++) {
+		for (int i = len; i >= 1; i--) {
 			try {
 				Message msg = messages[len - i];
 				mailSubject[i] = msg.getSubject();
+//				System.out.println("************MMM " + i + " " + mailSubject[i]);
 
 				Object msgContent = msg.getContent();
 				if (msgContent instanceof Multipart) {
