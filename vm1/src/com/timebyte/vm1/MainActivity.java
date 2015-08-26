@@ -51,7 +51,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected int ttsCount = 1;
 	protected int mailCount = 0;
-	protected int maxReadCount = 500;
+	protected int maxReadCount = 50;
     protected boolean readBodyDone = false;
     protected boolean waitBodyCommand = false;
     

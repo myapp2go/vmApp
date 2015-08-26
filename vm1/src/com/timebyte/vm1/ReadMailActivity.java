@@ -131,32 +131,36 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	
 	public void setMessages(Message[] messages) {
 		int len = messages.length;
+		int start = 0;
+		int end = messages.length;
 		if (len > maxReadCount) {
 			len = maxReadCount;
+			start = messages.length - maxReadCount;			
 		}
 		mailSubject = new String[len + 1];
 		mailBody = new String[len + 1];
 		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
 		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;	
 
-		for (int i = len; i >= 1; i--) {
+		int index = len;
+		for (int i = start; i < end; i++, index--) {
 			try {
-				Message msg = messages[len - i];
-				mailSubject[i] = msg.getSubject();
-//				System.out.println("************MMM " + i + " " + mailSubject[i]);
+				Message msg = messages[i];
+				mailSubject[index] = msg.getSubject();
+//				System.out.println("************MMM " + (index) + " " + mailSubject[index]);
 
 				Object msgContent = msg.getContent();
 				if (msgContent instanceof Multipart) {
 					Multipart multipart = (Multipart) msgContent;
 					boolean found = false;
 					
-					mailBody[i] = "";
+					mailBody[index] = "";
 					for (int j = 0; j < multipart.getCount(); j++) {
 						BodyPart bodyPart = multipart.getBodyPart(j);
 						int pos = bodyPart.getContentType().indexOf("PLAIN");						
 						if (pos > 0) {
 							found = true;
-							mailBody[i] += parseMessage(bodyPart.getContent().toString());
+							mailBody[index] += parseMessage(bodyPart.getContent().toString());
 						}
 						
 						pos = bodyPart.getContentType().indexOf("ALTERNATIVE");
@@ -172,7 +176,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 										content = nestBodyPart.getContent().toString();
 									}
 								}
-								mailBody[i] += content;
+								mailBody[index] += content;
 							}
 						}
 						String disposition = bodyPart.getDisposition();
@@ -182,14 +186,14 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					}
 									
 					if (!found) {
-						mailBody[i] += Constants.MAIL_BODY_NOT_SUPPORT;
+						mailBody[index] += Constants.MAIL_BODY_NOT_SUPPORT;
 					}
 				} else {
 					int pos = msg.getContentType().indexOf("PLAIN");
 					if (pos == -1) {
-						mailBody[i] += Constants.MAIL_BODY_IS_HTML;
+						mailBody[index] += Constants.MAIL_BODY_IS_HTML;
 					} else {
-						mailBody[i] += parseMessage(msg.getContent().toString());
+						mailBody[index] += parseMessage(msg.getContent().toString());
 					}					
 				}
 			} catch (IOException e) {	
