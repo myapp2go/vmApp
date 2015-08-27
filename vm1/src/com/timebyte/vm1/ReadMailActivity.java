@@ -25,6 +25,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	
 	protected void doReadMail(ArrayList<String> matches) {
 		String answer = Constants.COMMAND_NONE;
+		System.out.println("************ doReadMail " + subCommand);
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
@@ -47,6 +48,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			break;
 		case Constants.SUBCOMMAND_RETRIEVE :
 			answer = matchReadCommand(matches);
+			System.out.println("************ doReadMail9999 " + subCommand + " & " + answer);
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
@@ -60,15 +62,22 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.ANSWER_STOP :
 				mailCount = 0;
 				readBodyDone = true;
+				waitBodyCommand = false;
+				bodyReaded = 0;
 				break;
 			case Constants.ANSWER_SKIP :
+				waitBodyCommand = false;
+				bodyReaded = 0;
 //				mailCount = 0;
 //				readBodyDone = true;
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
 					readBodyDone = true;
+					mailCount++;
+					readMessageBody();
 				} else {
 					if (retry < maxRetry) {	
 						retry++;
+						System.out.println("**************ST 5");
 						ttsAndPlayEarcon("jetsons");
 					} else {
 						retry = 0;
@@ -78,6 +87,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.COMMAND_NONE :
 				if (retry < maxRetry) {	
 					retry++;
+					System.out.println("**************ST 6");
 					ttsAndPlayEarcon("money");
 				} else {
 					retry = 0;
@@ -220,6 +230,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private String matchReadCommand(ArrayList<String> matches) {
 		boolean found = false;
 		String sub = Constants.COMMAND_NONE;
+		System.out.println("*****MATCH " + matches);
 		
 		for (int i = 0; !found && (i < matches.size()); i++) {
 			String ret = commandMap.get(matches.get(i));
@@ -271,10 +282,15 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
 		String body = mailBody[count];
 		int len = body.length();
-
+System.out.println("********************************LEN " + len + " * " + maxLen);
 		if (len > maxLen) {
+			System.out.println("********************************LEN1 " + len + " * " + bodyReaded);
 			if ((len - bodyReaded) >= maxLen) {
 				int ind = body.indexOf(" ", (bodyReaded+maxLen));
+				if (ind <= 0) {
+					ind = len;
+				}
+				System.out.println("********************************LEN3 " + len + " * " + ind);
 				body = mailBody[count].substring(bodyReaded, ind);
 				bodyReaded = ind;
 				readBodyDone = false;
@@ -288,7 +304,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			readBodyDone = true;
 		}
 		
-		ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);						
+		if (readBodyDone) {
+			ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);
+		} else {
+			ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);
+		}
 	}
 	
 	private void readMessage() {

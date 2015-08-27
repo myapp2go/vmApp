@@ -260,6 +260,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
 	    	mpInputRetry++;
+	    	System.out.println("**************ST 1");
 			ttsAndPlayEarcon("money");
 	    }
 	};
@@ -272,6 +273,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
+				System.out.println("onDone onDone onDone " +command + " * " + subCommand + " * " + readMode);
 				if (commandHelp) {
 					commandHelp = false;
 					return;
@@ -287,11 +289,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	            	break;
 	            case Constants.COMMAND_READ:
+	            	System.out.println("onDone onDone onDone1 ");
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						switch (readMode) {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
 							if (ttsCount == Constants.MAIL_PER_PAGE) {
 								ttsCount = 0;
+								System.out.println("**************ST 2");
 								ttsAndPlayEarcon("beethoven");
 							} else {
 								ttsCount++;
@@ -302,6 +306,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								if (ttsCount == Constants.MAIL_PER_PAGE) {
 									ttsCount = 0;
 									waitBodyCommand = true;
+									System.out.println("**************ST 3");
 									ttsAndPlayEarcon("beethoven");
 								} else {
 									if (!waitBodyCommand) {
@@ -310,8 +315,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 									}
 								}
 							} else {
-								ttsCount = 0;
-								ttsAndPlayEarcon("beethoven");
+								if (!waitBodyCommand) {
+									ttsCount = 0;
+									System.out.println("**************ST 4");
+									ttsAndPlayEarcon("pinkpanther");
+									waitBodyCommand = true;
+								}
 							}
 							break;
 						}
@@ -341,6 +350,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		tts.addEarcon("money", "com.timebyte.vm1", R.raw.money);
 		tts.addEarcon("beethoven", "com.timebyte.vm1", R.raw.beethoven);
 		tts.addEarcon("jetsons", "com.timebyte.vm1", R.raw.jetsons);
+		tts.addEarcon("pinkpanther", "com.timebyte.vm1", R.raw.pinkpanther);
 	}
 	
 	@Override
@@ -515,18 +525,21 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
+    	System.out.println("**************ttsAndMicrophone");
     	commandDone = false;
 		microphoneOn = true;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsNoMicrophone(String msg) {
+    	System.out.println("**************ttsNoMicrophone2");
     	commandDone = false;
 		microphoneOn = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
+    	System.out.println("**************ttsAndPlayEarcon3");
     	endDialog();
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
