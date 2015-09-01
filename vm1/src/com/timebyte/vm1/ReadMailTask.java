@@ -75,7 +75,7 @@ public class ReadMailTask extends AsyncTask {
 
 //		    System.out.println("&&&&&&&&&&&&&&&&&&SEEEEEEEEEEEEEEEE&&&&&&& " +emailFolder.getMessageCount() );
 //		    System.out.println("&&&&&&&&&&&&&&&&&&SEEEEEEEEEEEEEEEE " +messages1.length );
-			Message[] messages = emailFolder.getMessages();
+//			Message[] messages = emailFolder.getMessages();
 //			System.out.println("&&&&&&&&&&&&&&&&&&SDDDDDDDDDDDDDDDD " +messages1.length );
 			readMailActivity.setMessages(messages1);
 			

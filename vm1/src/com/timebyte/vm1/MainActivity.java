@@ -51,13 +51,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected int ttsCount = 1;
 	protected int mailCount = 0;
-	protected int maxReadCount = 50;
+	protected int maxReadCount = 500;
     protected boolean readBodyDone = false;
     protected boolean isPlayEarcon = false;
     
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
-	protected String readMode = Constants.COMMAND_INIT;  
+	protected String readMode = Constants.READ_OPTION_SUBJECT_ONLY;  
 	
     protected boolean microphoneOn = false;
     protected boolean isSetting = false;
@@ -72,7 +72,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	ArrayList<String> recognizerResult = new ArrayList<String>();
 	
 	private Handler handler;
-	private String lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
+//	protected String lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
 	
 	private ProgressDialog processDialog;
 	private static boolean commandDone = true;
@@ -112,7 +112,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting) {
 					settingNotice();
 				} else {
-					lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
+					readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 					command = Constants.COMMAND_READ;
 
 					ttsCount = 1;
@@ -123,7 +123,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						subCommand = Constants.SUBCOMMAND_RETRIEVE;
 						localArrayList.add(Constants.ANSWER_CONTINUE);
 					} else {
-						ttsNoMicrophone(Constants.COMMAND_READ_RETRIEVE);
+//						ttsNoMicrophone(Constants.COMMAND_READ_RETRIEVE);
 						subCommand = Constants.COMMAND_INIT;
 						localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
 					}					
@@ -144,7 +144,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting) {
 					settingNotice();
 				} else {
-					lastReadType = Constants.READ_OPTION_SUBJECT_BODY;
+					readMode = Constants.READ_OPTION_SUBJECT_BODY;
 					command = Constants.COMMAND_READ;
 
 					ttsCount = 1;
@@ -155,7 +155,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						subCommand = Constants.SUBCOMMAND_RETRIEVE;
 						localArrayList.add(Constants.ANSWER_CONTINUE);
 					} else {
-						ttsNoMicrophone(Constants.COMMAND_READ_RETRIEVE);
+//						ttsNoMicrophone(Constants.COMMAND_READ_RETRIEVE);
 						subCommand = Constants.COMMAND_INIT;
 						localArrayList.add(Constants.READ_OPTION_SUBJECT_BODY);
 					}
@@ -210,7 +210,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				isSyncMail = true;
 				subCommand = Constants.COMMAND_INIT;
 				ArrayList<String> localArrayList = new ArrayList<String>();
-				localArrayList.add(lastReadType);
+				localArrayList.add(readMode);
 				doReadMail(localArrayList);
 			}
 		});

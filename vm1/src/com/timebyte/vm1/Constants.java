@@ -30,7 +30,7 @@ public final class Constants {
 	public static String COMMAND_READ_GREETING = "Please speak 1 for reading subject, 2 for reading subject and message";
 	public static String COMMAND_READ_SUBJECT = "voice command 1 for continue, 2 for stop";
 	public static String COMMAND_READ_SUBJECT_BODY = "voice command 1 for continue, 2 for stop, 3 for skip";	
-	public static String COMMAND_READ_RETRIEVE = "Retrieve mail, please wait";	
+//	public static String COMMAND_READ_RETRIEVE = "Retrieve mail, please wait";	
 	
 	public static final String COMMAND_INIT = "init";
 	public static final String COMMAND_NONE = "none";

@@ -145,9 +145,16 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		mailBody = new String[len + 1];
 		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
 		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;	
-
-		int index = len;
-		for (int i = start; i < end; i++, index--) {
+		microphoneOn = false;
+		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+			readMessageBody();
+		} else {
+			mailCount++;
+			ttsNoMicrophone("mail number 1 " + " " + mailSubject[0]);
+		}
+		
+		int index = 1;
+		for (int i = end-1; i > start; i--, index++) {
 			try {
 				Message msg = messages[i];
 				mailSubject[index] = msg.getSubject();
@@ -206,6 +213,16 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			if (index < 5) {
+				microphoneOn = false;
+				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+					readMessageBody();
+				} else {
+					mailCount++;
+					ttsNoMicrophone("mail number" + (index+1) + " " + mailSubject[index]);
+				}
+			}
 		}
 		
 //		dump();
@@ -263,12 +280,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 	
 	public void readMailDone() {
-		microphoneOn = false;
-		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
-			readMessageBody();
-		} else {
-			readMessage();
-		}
+//		microphoneOn = false;
+//		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+//			readMessageBody();
+//		} else {
+//			readMessage();
+//		}
 	}
 
 	protected void readMessageBody() {
