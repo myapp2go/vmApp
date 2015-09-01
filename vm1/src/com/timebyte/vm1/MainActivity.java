@@ -53,7 +53,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected int mailCount = 0;
 	protected int maxReadCount = 50;
     protected boolean readBodyDone = false;
-    protected boolean waitBodyCommand = false;
+//    protected boolean waitBodyCommand = false;
     protected boolean isPlayEarcon = false;
     
 	protected String command = Constants.COMMAND_INIT;
@@ -274,7 +274,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				System.out.println("onDone onDone onDone " +command + " * " + subCommand + " * " + readMode);
 				if (commandHelp) {
 					commandHelp = false;
 					return;
@@ -290,45 +289,29 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	            	break;
 	            case Constants.COMMAND_READ:
-	            	System.out.println("onDone onDone onDone1 ");
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						switch (readMode) {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
 							if (ttsCount == Constants.MAIL_PER_PAGE) {
 								ttsCount = 0;
-								System.out.println("**************ST 2");
 								ttsAndPlayEarcon("beethoven");
 							} else {
 								ttsCount++;
 							}
 							break;
 						case Constants.READ_OPTION_SUBJECT_BODY:
-							System.out.println("onDone onDone onDone12 ");
 							if (readBodyDone) {
-								System.out.println("onDone onDone onDone13 ");
 								if (ttsCount == Constants.MAIL_PER_PAGE) {
 									ttsCount = 0;
-									waitBodyCommand = false;
-									System.out.println("**************ST 3");
 									ttsAndPlayEarcon("beethoven");
 								} else {
-									if (!waitBodyCommand) {
-										ttsCount++;
-										readMessageBody();
-									} else {
-										System.out.println("**************ERROR ST 3399");
-//										ttsAndPlayEarcon("pinkpanther");
-									}
+									ttsCount++;
+									readMessageBody();
 								}
 							} else {
 								if (!isPlayEarcon) {
 									ttsCount = 0;
-									System.out.println("**************ST 4");
 									ttsAndPlayEarcon("pinkpanther");
-//									waitBodyCommand = true;
-								} else {
-									System.out.println("**************ST 44");
-//									ttsAndPlayEarcon("pinkpanther");
 								}
 							}
 							break;
@@ -534,7 +517,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
-    	System.out.println("**************ttsAndMicrophone");
     	commandDone = false;
 		microphoneOn = true;
 		isPlayEarcon = false;
@@ -542,7 +524,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsNoMicrophone(String msg) {
-    	System.out.println("**************ttsNoMicrophone2");
     	commandDone = false;
 		microphoneOn = false;
 		isPlayEarcon = false;
@@ -550,7 +531,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndPlayEarcon(String msg) {
-    	System.out.println("**************ttsAndPlayEarcon3");
     	endDialog();
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
