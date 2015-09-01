@@ -294,6 +294,7 @@ System.out.println("********************************LEN " + len + " * " + maxLen
 				body = mailBody[count].substring(bodyReaded, ind);
 				bodyReaded = ind;
 				readBodyDone = false;
+//				waitBodyCommand = true;
 			} else {
 				body = mailBody[count].substring(bodyReaded, len-1);
 				readBodyDone = true;

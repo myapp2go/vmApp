@@ -54,6 +54,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected int maxReadCount = 50;
     protected boolean readBodyDone = false;
     protected boolean waitBodyCommand = false;
+    protected boolean isPlayEarcon = false;
     
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
@@ -302,24 +303,32 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							}
 							break;
 						case Constants.READ_OPTION_SUBJECT_BODY:
+							System.out.println("onDone onDone onDone12 ");
 							if (readBodyDone) {
+								System.out.println("onDone onDone onDone13 ");
 								if (ttsCount == Constants.MAIL_PER_PAGE) {
 									ttsCount = 0;
-									waitBodyCommand = true;
+									waitBodyCommand = false;
 									System.out.println("**************ST 3");
 									ttsAndPlayEarcon("beethoven");
 								} else {
 									if (!waitBodyCommand) {
 										ttsCount++;
 										readMessageBody();
+									} else {
+										System.out.println("**************ERROR ST 3399");
+//										ttsAndPlayEarcon("pinkpanther");
 									}
 								}
 							} else {
-								if (!waitBodyCommand) {
+								if (!isPlayEarcon) {
 									ttsCount = 0;
 									System.out.println("**************ST 4");
 									ttsAndPlayEarcon("pinkpanther");
-									waitBodyCommand = true;
+//									waitBodyCommand = true;
+								} else {
+									System.out.println("**************ST 44");
+//									ttsAndPlayEarcon("pinkpanther");
 								}
 							}
 							break;
@@ -528,6 +537,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	System.out.println("**************ttsAndMicrophone");
     	commandDone = false;
 		microphoneOn = true;
+		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
@@ -535,6 +545,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	System.out.println("**************ttsNoMicrophone2");
     	commandDone = false;
 		microphoneOn = false;
+		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
@@ -546,6 +557,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	}
     	
 		microphoneOn = true;
+		isPlayEarcon = true;
 		ttsCount = 0;
 		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, map);
     }
