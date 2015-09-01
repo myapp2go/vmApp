@@ -53,7 +53,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected int mailCount = 0;
 	protected int maxReadCount = 50;
     protected boolean readBodyDone = false;
-//    protected boolean waitBodyCommand = false;
     protected boolean isPlayEarcon = false;
     
 	protected String command = Constants.COMMAND_INIT;
@@ -124,6 +123,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						subCommand = Constants.SUBCOMMAND_RETRIEVE;
 						localArrayList.add(Constants.ANSWER_CONTINUE);
 					} else {
+						ttsNoMicrophone(Constants.COMMAND_READ_RETRIEVE);
 						subCommand = Constants.COMMAND_INIT;
 						localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
 					}					
@@ -155,6 +155,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						subCommand = Constants.SUBCOMMAND_RETRIEVE;
 						localArrayList.add(Constants.ANSWER_CONTINUE);
 					} else {
+						ttsNoMicrophone(Constants.COMMAND_READ_RETRIEVE);
 						subCommand = Constants.COMMAND_INIT;
 						localArrayList.add(Constants.READ_OPTION_SUBJECT_BODY);
 					}
@@ -367,9 +368,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	@Override
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
+		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
+		
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
-		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
+
 		commandDone = true;
 	}
 	
