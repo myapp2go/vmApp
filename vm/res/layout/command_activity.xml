@@ -9,73 +9,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.pc1.MainActivity" >
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="@string/greeting"
-        android:textSize="24dip" />
-
     <Button
-        android:id="@+id/readMail"
+        android:id="@+id/command1"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
         android:layout_centerHorizontal="true"
-        android:text="@string/readMail"
+        android:text="@string/command1"
         android:textColor="#ff0000"
         android:textSize="30dip" />
 
     <Button
-        android:id="@+id/readBodyMail"
+        android:id="@+id/command2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/readMail"
+        android:layout_below="@id/command1"
         android:layout_centerHorizontal="true"
-        android:text="@string/readBodyMail"
-        android:textColor="#ff0000"
+        android:text="@string/command2"
+        android:textColor="#00ff00"
         android:textSize="30dip" />    
     
     <Button
-        android:id="@+id/writeMail"
+        android:id="@+id/command3"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/readBodyMail"
+        android:layout_below="@id/command2"
         android:layout_centerHorizontal="true"
-        android:text="@string/writeMail"
-        android:textColor="#00ff00"
-        android:textSize="30dip" />
-
-    <Button
-        android:id="@+id/settings"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/writeMail"
-        android:layout_centerHorizontal="true"
-        android:text="@string/settings"
+        android:text="@string/command3"
         android:textColor="#0000ff"
         android:textSize="30dip" />
 
     <Button
-        android:id="@+id/syncMail"
+        android:id="@+id/save"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/settings"
+        android:layout_below="@id/command3"
         android:layout_centerHorizontal="true"
-        android:text="@string/syncMail"
+        android:text="@string/save"
         android:textColor="#ffff00"
         android:textSize="30dip" />
-    
+         
     <Button
-        android:id="@+id/debugging"
+        android:id="@+id/clean"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/syncMail"
+        android:layout_below="@id/save"
         android:layout_centerHorizontal="true"
-        android:text="@string/debugging"
-        android:textColor="#ffff00"
+        android:text="@string/clean"
+        android:textColor="#00ffff"
         android:textSize="30dip" />
-    
+        
 </RelativeLayout>

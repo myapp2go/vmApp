@@ -1,35 +1,28 @@
 package com.pc.vm;
 
-import java.io.IOException;
 import java.util.Properties;
 
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
-import javax.mail.Flags;
 import javax.mail.search.FlagTerm;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
-import android.speech.tts.TextToSpeech;
 
 public class ReadMailTask extends AsyncTask {
 
-	private ProgressDialog statusDialog;
-	private ReadMailActivity readMailActivity;
-
-	private static String host = "pop.gmail.com";
-	private static String port = "995";
-	private static String storeType = "pop3s";
-	private static String user;
-	private static String pwd;
-	
 	private static String imapHost = "imap.gmail.com";
 	private static String imapStoreType = "imaps";
+	
+	private ReadMailActivity readMailActivity;
+	private ProgressDialog statusDialog;
 	
 	public ReadMailTask(ReadMailActivity mainActivity) {
 		readMailActivity = mainActivity;
@@ -44,16 +37,22 @@ public class ReadMailTask extends AsyncTask {
 	}
 	
 	@Override
-	protected Object doInBackground(Object... params) {
+	protected Object doInBackground(Object... arg0) {
+
+		SharedPreferences pref  = (SharedPreferences) arg0[0];
 		// TODO Auto-generated method stub
-				readEmailByIMAP(params[0].toString(), params[1].toString());
+//		SharedPreferences pref = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
+		String myEmail = pref.getString("myEmail", "");
+		String myPassword = pref.getString("myPassword", "");
+		String readOPtion = pref.getString("readOPtion", "");
+
+		System.out.println("*************************TASK " + myEmail + " * " + myPassword + " * " + readOPtion);
+		readGEmailByIMAP(myEmail, myPassword);
+		
 		return null;
 	}
 
-	public void readEmailByIMAP(String mailAccount, String password) {	
-		user = mailAccount;
-		pwd = password;
-		
+	public void readGEmailByIMAP(String mailAccount, String password) {	
 		Store emailStore = null;
 		Folder emailFolder = null;
 	
@@ -63,15 +62,21 @@ public class ReadMailTask extends AsyncTask {
 		try {
 			Session emailSession = Session.getDefaultInstance(properties);	
 			emailStore = (Store) emailSession.getStore(imapStoreType);	
-			emailStore.connect(imapHost, user, password);			
+			emailStore.connect(imapHost, mailAccount, password);			
 			emailFolder = emailStore.getFolder("INBOX");
+//			emailFolder.open(Folder.READ_WRITE);
 			emailFolder.open(Folder.READ_ONLY);
-
+			
 		    Flags seen = new Flags(Flags.Flag.SEEN);
 		    FlagTerm unseenFlagTerm = new FlagTerm(seen, true);
-		    Message messages1[] = emailFolder.search(unseenFlagTerm);
-		    System.out.println("SEEEEEEEEEEEEEEEE " +messages1.length );
-			Message[] messages = emailFolder.getMessages();
+		    
+//		    Message messages1[] = emailFolder.search(unseenFlagTerm);
+		    Message messages1[] = emailFolder.getMessages();
+
+//		    System.out.println("&&&&&&&&&&&&&&&&&&SEEEEEEEEEEEEEEEE&&&&&&& " +emailFolder.getMessageCount() );
+//		    System.out.println("&&&&&&&&&&&&&&&&&&SEEEEEEEEEEEEEEEE " +messages1.length );
+//			Message[] messages = emailFolder.getMessages();
+//			System.out.println("&&&&&&&&&&&&&&&&&&SDDDDDDDDDDDDDDDD " +messages1.length );
 			readMailActivity.setMessages(messages1);
 			
 			emailFolder.close(false);
@@ -104,7 +109,6 @@ public class ReadMailTask extends AsyncTask {
 		// TODO Auto-generated method stub
 		System.out.println("************************** PWD " + mailAccount + " " + password);
 	}
-
 	@Override
 	public void onProgressUpdate(Object... values) {
 		statusDialog.setMessage(values[0].toString());
@@ -115,6 +119,7 @@ public class ReadMailTask extends AsyncTask {
 	public void onPostExecute(Object result) {
 		statusDialog.dismiss();
 		
-		readMailActivity.ReadMailDone();
+		readMailActivity.readMailDone();
 	}
+	
 }

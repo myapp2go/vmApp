@@ -2,106 +2,327 @@ package com.pc.vm;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import javax.mail.Flags;
-import javax.mail.Folder;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
-import javax.mail.Store;
+import javax.mail.Part;
 
-import android.speech.tts.TextToSpeech;
-import android.widget.TextView;
+public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
-public abstract class ReadMailActivity extends MainActivity {
-
-	private int msgCount = 0;
-	private String[] mailMessages;
-	private int msgLength;
+	private String[] mailSubject;
+	private String[] mailBody;
+	private int maxLen = 200;
+	private int maxRetry = 5;	
+	private int retry = 0;
+	private int bodyReaded = 0;
+	private boolean skipLink = true;
 	
-	private Store emailStore = null;
-	private Folder emailFolder = null;
-	  
 	protected void doReadMail(ArrayList<String> matches) {
-        System.out.println("*** doReadMail " + command + " * " + subCommand + " * " + answer + " * " + checkReadMode);
-        
-		if (checkReadMode) {
-			matchReadMode(matches);
-			checkReadMode = false;
-        }
-        System.out.println("*** doReadMail AFTER " + command + " * " + subCommand + " * " + answer + " * " + checkReadMode);
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%66666%9999 doReadMail Number ");
-			String myEmail = ((TextView) findViewById(R.id.myEmail)).getText().toString();
-			String myPassword = ((TextView) findViewById(R.id.myPassword)).getText().toString();
-// PC522			
-//			subCommand = Constants.COMMAND_STOP;
-			new ReadMailTask(ReadMailActivity.this).execute(myEmail, myPassword);	
+			switch (matches.get(0)) {
+			case Constants.READ_OPTION_SUBJECT_ONLY :
+				readMode = Constants.READ_OPTION_SUBJECT_ONLY;
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
+				isSyncMail = true;
+				break;
+			case Constants.READ_OPTION_SUBJECT_BODY :
+				readMode = Constants.READ_OPTION_SUBJECT_BODY;
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
+				isSyncMail = true;
+				break;
+			case Constants.COMMAND_NONE :
+				break;	
+			}
 			break;
+		case Constants.SUBCOMMAND_RETRIEVE :
+			String answer = matchReadCommand(matches);
+
+			switch (answer) {
+			case Constants.ANSWER_CONTINUE :
+				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+					// PC522 Handle readBodyDone
+//					waitBodyCommand = false;
+					readMessageBody();
+				} else {
+					readMessage();
+				}
+				break;
+			case Constants.ANSWER_STOP :
+				mailCount = 0;
+				readBodyDone = true;
+				bodyReaded = 0;
+				break;
+			case Constants.ANSWER_SKIP :
+				bodyReaded = 0;
+//				mailCount = 0;
+//				readBodyDone = true;
+				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+					readBodyDone = true;
+					mailCount++;
+					readMessageBody();
+				} else {
+					if (retry < maxRetry) {	
+						retry++;
+						ttsAndPlayEarcon("jetsons");
+					} else {
+						retry = 0;
+					}
+				}
+				break;	
+			case Constants.COMMAND_NONE :
+				if (retry < maxRetry) {	
+					retry++;
+					ttsAndPlayEarcon("money");
+				} else {
+					retry = 0;
+				}
+				break;	
+			}
+			break;	
+/*			
+		case Constants.SUBCOMMAND_MORE_SKIP :
+			String cmd = matchReadMode(matches);
+			switch (cmd) {
+			case Constants.SUBCOMMAND_MORE :
+				microphoneOn = false;
+				waitBodyCommand = false;
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+				readMessageBody();
+				break;
+			case Constants.SUBCOMMAND_SKIP :
+				microphoneOn = false;
+				waitBodyCommand = false;
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+				mailCount++;
+				readMessageBody();
+				break;
+				
+			case Constants.COMMAND_NONE :
+				if (retry < maxRetry) {	
+					retry++;
+//					tts.speak(Constants.COMMAND_READ_BODY_MORE_SKIP, TextToSpeech.QUEUE_ADD, map);
+					ttsAndPlayEarcon("money");
+				} else {
+					retry = 0;
+				}
+				break;
+			}
+			break;
+			*/
 		case Constants.COMMAND_NEXT :
-			readMessage(ttsCount+10, 100);
+			microphoneOn = false;
+			mailCount--;
+			readMessage();
 			break;
 		case Constants.COMMAND_STOP :
-			commandReset();
-    		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
-    		startRecognizer();
+			mailCount = 0;
+//			commandReset();
+//    		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
+//    		startRecognizer();
 			break;
 		}
-	
 	}
-
+	
 	public void setMessages(Message[] messages) {
-		mailMessages = new String[messages.length+1];
-		mailMessages[0] = Constants.COMMAND_ADVERTISE_GREETING;
-		for (int i = 1; i < messages.length; i++) {
+		int len = messages.length;
+		int start = 0;
+		int end = messages.length;
+		if (len > maxReadCount) {
+			len = maxReadCount;
+			start = messages.length - maxReadCount;			
+		}
+		mailSubject = new String[len + 1];
+		mailBody = new String[len + 1];
+		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
+		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;	
+		microphoneOn = false;
+		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+			readMessageBody();
+		} else {
+			mailCount++;
+			ttsNoMicrophone("mail number 1 " + " " + mailSubject[0]);
+		}
+		
+		int index = 1;
+		for (int i = end-1; i > start; i--, index++) {
 			try {
-				mailMessages[i] = messages[i].getSubject();
-				String str = mailMessages[i];
-				String type = "TEXT/HTML";
-//				 if (!(messages[i].getFlags() == null))
-//				        System.out.println("FLAG " + messages[i].getSubject());
-				try {
-					if (!(messages[i].getContent() instanceof Multipart)) {
-//					System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContent());
+				Message msg = messages[i];
+				mailSubject[index] = msg.getSubject();
+//				System.out.println("************MMM " + (index) + " " + mailSubject[index]);
+
+				Object msgContent = msg.getContent();
+				if (msgContent instanceof Multipart) {
+					Multipart multipart = (Multipart) msgContent;
+					boolean found = false;
 					
-//						System.out.println("%%%%%%%%%%%%%%%FLAG " + messages[i].getContentType());
-//						System.out.println("%%%%%%%%%%%%%%%FLAGINDEX " + messages[i].getContentType().indexOf("HTML"));
-						int pos = messages[i].getContentType().indexOf("HTML");
-						if (pos == -1) {
-//							System.out.println("%%%%%%%%%%%%%%%CONTENT " + messages[i].getContent());
+					mailBody[index] = "";
+					for (int j = 0; j < multipart.getCount(); j++) {
+						BodyPart bodyPart = multipart.getBodyPart(j);
+						int pos = bodyPart.getContentType().indexOf("PLAIN");						
+						if (pos > 0) {
+							found = true;
+							mailBody[index] += parseMessage(bodyPart.getContent().toString());
+						}
+						
+						pos = bodyPart.getContentType().indexOf("ALTERNATIVE");
+						if (pos > 0) {
+							found = true;
+							if (bodyPart.getContent() instanceof Multipart) {
+								Multipart nestpart = (Multipart) bodyPart.getContent();
+								String content = "";
+								for (int k = 0; k < nestpart.getCount(); k++) {
+									BodyPart nestBodyPart = nestpart.getBodyPart(j);
+									int nestpos =nestBodyPart.getContentType().indexOf("PLAIN");
+									if ((nestpos > 0) && (nestBodyPart.getContent() != null) && !nestBodyPart.getContent().toString().equals("null")) {
+										content = nestBodyPart.getContent().toString();
+									}
+								}
+								mailBody[index] += content;
+							}
+						}
+						String disposition = bodyPart.getDisposition();
+						if (disposition != null && (disposition.equals(Part.ATTACHMENT) || disposition.equals(Part.INLINE))) {	
+							mailBody[i] += Constants.MAIL_BODY_HAVE_ATTACHMENT;
 						}
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+									
+					if (!found) {
+						mailBody[index] += Constants.MAIL_BODY_NOT_SUPPORT;
+					}
+				} else {
+					int pos = msg.getContentType().indexOf("PLAIN");
+					if (pos == -1) {
+						mailBody[index] += Constants.MAIL_BODY_IS_HTML;
+					} else {
+						mailBody[index] += parseMessage(msg.getContent().toString());
+					}					
 				}
+			} catch (IOException e) {	
+				
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			if (index < 5) {
+				microphoneOn = false;
+				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+					readMessageBody();
+				} else {
+					mailCount++;
+					ttsNoMicrophone("mail number" + (index+1) + " " + mailSubject[index]);
+				}
+			}
+		}
+		
+//		dump();
+	}
+
+	private void dump() {
+		System.out.println("****************************************START***********************");
+		for (int i = 0; i < mailBody.length; i++) {
+			System.out.println("****************************************ind***********************" + i);
+			System.out.println(mailBody[i]);
+		}
+		System.out.println("***************************************************************");
+
+	}
+	
+	private String matchReadCommand(ArrayList<String> matches) {
+		boolean found = false;
+		String sub = Constants.COMMAND_NONE;
+		
+		for (int i = 0; !found && (i < matches.size()); i++) {
+			String ret = commandMap.get(matches.get(i));
+			if (ret != null) {
+				found = true;
+				sub = ret;
+			}
+		}
+		
+		return sub;
+	}
+	
+	private String matchReadCommandOld(ArrayList<String> matches) {
+		// TODO Auto-generated method stub
+        boolean found = false;
+        String ans = Constants.COMMAND_NONE;
+		
+        for (int i = 0; !found && (i < matches.size()); i++) {
+        	switch (matches.get(i)) {
+        	case Constants.ANSWER_CONTINUE :
+        		found = true;
+        		ans = Constants.ANSWER_CONTINUE;
+        		break;
+        	case Constants.ANSWER_STOP :
+        		found = true;
+        		ans = Constants.ANSWER_STOP;
+        		break;	
+        	case Constants.ANSWER_SKIP :
+        		found = true;
+        		ans = Constants.ANSWER_SKIP;
+        		break;		
+        	}
+        }
+        
+        return ans;
+	}
+	
+	public void readMailDone() {
+//		microphoneOn = false;
+//		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+//			readMessageBody();
+//		} else {
+//			readMessage();
+//		}
+	}
+
+	protected void readMessageBody() {
+		int count = mailCount;
+		
+		String body = mailBody[count];
+		int len = body.length();
+
+		if (len > maxLen) {
+			if ((len - bodyReaded) >= maxLen) {
+				int ind = body.indexOf(" ", (bodyReaded+maxLen));
+				if (ind <= 0) {
+					ind = len;
+				}
+				body = mailBody[count].substring(bodyReaded, ind);
+				bodyReaded = ind;
+				readBodyDone = false;
+			} else {
+				body = mailBody[count].substring(bodyReaded, len-1);
+				readBodyDone = true;
+			}			
+		} else {
+			mailCount++;
+			bodyReaded = 0;
+			readBodyDone = true;
+		}
+		
+		ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);
+	}
+	
+	private void readMessage() {
+		int start = mailCount;		
+
+		int count = mailCount + Constants.MAIL_PER_PAGE;
+		if (count > mailSubject.length) {
+			count = mailSubject.length;
 		}
 
-		System.out.println("^^^^^^^^^^^^^^^^^setMessages*********** " + mailMessages + " " + messages);
-	}
 
-	public void ReadMailDone() {
-		int msgLength = mailMessages.length;
-
-		System.out.println("^^^^^^^^^^^^^^^^^ReadMailDone*********** ");
-		readMessage(0, msgLength);
-
-	}
-
-	private void readMessage(int count, int msgLength) {
-		System.out.println("^^^^^^^^^^^^^^^^^readMessage*********** ");
-		
-//		for (int i = count; i < msgLength; i++) {
-		for (int i = count; (i < count+increment); i++) {
-	
-//			Message message = mailMessages[i];
+		for (int i = start; i < count; i++) {
+			mailCount++;
+//			Message message = mailSubject[i];
 			/*
 			System.out.println("----------------------------------");
 			System.out.println("Email Number " + (i + 1));
@@ -110,68 +331,74 @@ public abstract class ReadMailActivity extends MainActivity {
 			System.out.println("Text: " + message.getContent().toString());
 			 */
 
-			HashMap<String, String> map = new HashMap<String, String>();
-			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
-			    
-//			tts.speak("mail number :" + (i + 1) + message.getSubject(), TextToSpeech.QUEUE_ADD, null);
-
-				tts.speak("mail number" + (i + 1)  + " " + mailMessages[i], TextToSpeech.QUEUE_ADD, map);
-	
-/*			
-			Object msgContent = message.getContent();
-			String content = "";
-	
-			if (msgContent instanceof Multipart) {
-				Multipart multipart = (Multipart) msgContent;
-				System.out.println("BodyPart" + "MultiPartCount: " + multipart.getCount());
-
-				for (int j = 0; j < multipart.getCount(); j++) {
-					BodyPart bodyPart = multipart.getBodyPart(j);
-
-					String disposition = bodyPart.getDisposition();
-
-					if (j == 0) {
-					if (disposition != null
-						&& (disposition.equalsIgnoreCase("ATTACHMENT"))) {
-						System.out.println("Mail have some attachment");
-
-						DataHandler handler = bodyPart.getDataHandler();
-						System.out.println("file name : " + handler.getName());
-					} else {
-						content = bodyPart.getContent().toString();
-						System.out.println("getText " + content);
-					}
-				}
-			}
-		}
-		*/
+//			HashMap<String, String> map = new HashMap<String, String>();
+//			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
+			
+			ttsNoMicrophone("mail number" + (i + 1)  + " " + mailSubject[i]);
 		}
 	}
 	
-	private void matchReadMode(ArrayList<String> matches) {
+	private String matchReadMode(ArrayList<String> matches) {
 		boolean found = false;
+		String sub = Constants.COMMAND_NONE;
 		
 		for (int i = 0; !found && (i < matches.size()); i++) {
-			System.out.println("77777777777777777777777777777CHECK " +matches.get(i) );
 			switch (matches.get(i)) {
-			case Constants.SBCOMMAND_NEXT:
+			case Constants.ANSWER_CONTINUE:
 				found = true;
-				subCommand = Constants.SBCOMMAND_NEXT;
+				sub = Constants.ANSWER_CONTINUE;
 				break;
 			case Constants.SBCOMMAND_UP:
 				found = true;
-				subCommand = Constants.SBCOMMAND_UP;
+				sub = Constants.SBCOMMAND_UP;
 				break;
 			case Constants.SUBCOMMAND_ADD:
 				found = true;
-				subCommand = Constants.SUBCOMMAND_ADD;
-				break;
-			case Constants.COMMAND_STOP:
+				sub = Constants.SUBCOMMAND_ADD;
+			case Constants.ANSWER_STOP:
 				found = true;
-				subCommand = Constants.COMMAND_STOP;
+				sub = Constants.COMMAND_STOP;
 				break;
+			case Constants.ANSWER_SKIP:
+				found = true;
+				sub = Constants.SUBCOMMAND_SKIP;
+				break;
+			case Constants.SUBCOMMAND_DETAIL:
+				found = true;
+				sub = Constants.SUBCOMMAND_DETAIL;
+				break;
+			case Constants.SUBCOMMAND_REPEAT:
+				found = true;
+				sub = Constants.SUBCOMMAND_REPEAT;
+				break;	
 			}
 		}
-		System.out.println("77777777777777777777777777777CHECsubCommandK " + subCommand);
+		
+		return sub;
+	}
+	
+	private String parseMessage(String paramString) {
+	    int start = paramString.indexOf("http", 0);
+	    StringBuffer localStringBuffer = new StringBuffer();
+
+	    int ind = 0;
+	    int end = paramString.length();
+	    while (start >= 0) {
+	    	if (("http:".equals(paramString.substring(start, start + 5))) || ("https:".equals(paramString.substring(start, start + 6)))) {
+	    		localStringBuffer.append(paramString.substring(ind, start) + "  link skip");
+	    		ind = paramString.indexOf(" ", start);
+	    		if (ind == -1) {
+	    			ind = start;
+	    			start = -1;
+	    		} else {
+	    			start = paramString.indexOf("http", ind);
+	    		}
+	        } else {
+	        	start = paramString.indexOf("http", start+5);
+	        }
+	    }
+	    localStringBuffer.append(paramString.substring(ind, end));
+	    
+	    return localStringBuffer.toString();
 	}
 }
