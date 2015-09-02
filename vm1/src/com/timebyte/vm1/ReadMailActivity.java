@@ -2,16 +2,12 @@ package com.timebyte.vm1;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import javax.activation.DataHandler;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
-
-import android.speech.tts.TextToSpeech;
 
 public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
@@ -46,7 +42,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			break;
 		case Constants.SUBCOMMAND_RETRIEVE :
 			String answer = matchReadCommand(matches);
-			System.out.println("************ doReadMail9999 " + subCommand + " & " + answer);
+
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
@@ -214,7 +210,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				e.printStackTrace();
 			}
 			
-			if (index < 5) {
+			if (index < Constants.MAIL_PER_PAGE) {
 				microphoneOn = false;
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
 					readMessageBody();
@@ -241,7 +237,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private String matchReadCommand(ArrayList<String> matches) {
 		boolean found = false;
 		String sub = Constants.COMMAND_NONE;
-		System.out.println("*****MATCH " + matches);
 		
 		for (int i = 0; !found && (i < matches.size()); i++) {
 			String ret = commandMap.get(matches.get(i));
@@ -351,7 +346,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			switch (matches.get(i)) {
 			case Constants.ANSWER_CONTINUE:
 				found = true;
-				sub = Constants.SUBCOMMAND_MORE;
+				sub = Constants.ANSWER_CONTINUE;
 				break;
 			case Constants.SBCOMMAND_UP:
 				found = true;
@@ -368,6 +363,14 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				found = true;
 				sub = Constants.SUBCOMMAND_SKIP;
 				break;
+			case Constants.SUBCOMMAND_DETAIL:
+				found = true;
+				sub = Constants.SUBCOMMAND_DETAIL;
+				break;
+			case Constants.SUBCOMMAND_REPEAT:
+				found = true;
+				sub = Constants.SUBCOMMAND_REPEAT;
+				break;	
 			}
 		}
 		
@@ -378,7 +381,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	    int start = paramString.indexOf("http", 0);
 	    StringBuffer localStringBuffer = new StringBuffer();
 
-	//    System.out.println("&&& SOURCE " + paramString);
 	    int ind = 0;
 	    int end = paramString.length();
 	    while (start >= 0) {
@@ -390,14 +392,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	    			start = -1;
 	    		} else {
 	    			start = paramString.indexOf("http", ind);
-//	    			System.out.println("&&& IND " + start + " * " + ind);
 	    		}
 	        } else {
-//	    	    System.out.println("&&& ELSE " + start + " * " + ind);
 	        	start = paramString.indexOf("http", start+5);
 	        }
 	    }
-//	    System.out.println("&&& END " + start + " * " + ind);
 	    localStringBuffer.append(paramString.substring(ind, end));
 	    
 	    return localStringBuffer.toString();
