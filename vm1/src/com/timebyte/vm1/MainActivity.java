@@ -37,6 +37,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void readMessageBody();
+	abstract protected void readOneMessage();
 	abstract protected void doWriteMail(ArrayList<String> matches);
 	abstract protected void doDebugMail(String myEmail, String myPassword, String mailTo, String mailSubject, String mailBody);
 	abstract protected void getPreferenceFromFile();
@@ -49,10 +50,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected Intent intent;
 	HashMap<String, String> map = new HashMap<String, String>();
 	
-	protected int ttsCount = 1;
+	protected int ttsCount = 0;
 	protected int mailCount = 0;
+	protected int mailBodyCount = 0;
 	protected int maxReadCount = 500;
-    protected boolean readBodyDone = false;
+    protected boolean readBodyDone = true;
     protected boolean isPlayEarcon = false;
     
 	protected String command = Constants.COMMAND_INIT;
@@ -115,7 +117,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 					command = Constants.COMMAND_READ;
 
-					ttsCount = 1;
+					ttsCount = 0;
 					mailCount = 0;
 
 					ArrayList<String> localArrayList = new ArrayList<String>();
@@ -147,7 +149,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					readMode = Constants.READ_OPTION_SUBJECT_BODY;
 					command = Constants.COMMAND_READ;
 
-					ttsCount = 1;
+					ttsCount = 0;
 					mailCount = 0;
 
 					ArrayList<String> localArrayList = new ArrayList<String>();
@@ -254,7 +256,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		}
 		
 		if (mpInputRetry < maxMpInputRetry) {
-			handler.postDelayed(checkRecognizer, 30000);
+			handler.postDelayed(checkRecognizer, 10000);
 		}
 	    startActivityForResult(intent, VOICE_RECOGNITION); 
 	}
@@ -262,7 +264,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
 	    	mpInputRetry++;
-	    	System.out.println("**************ST 1");
 			ttsAndPlayEarcon("money");
 	    }
 	};
@@ -271,6 +272,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
 		
 		tts = new TextToSpeech(this, this);
+		
+		tts.addEarcon("money", "com.timebyte.vm1", R.raw.money);
+		tts.addEarcon("beethoven", "com.timebyte.vm1", R.raw.beethoven);
+		tts.addEarcon("jetsons", "com.timebyte.vm1", R.raw.jetsons);
+		tts.addEarcon("pinkpanther", "com.timebyte.vm1", R.raw.pinkpanther);
+		
 		tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
 
 			@Override
@@ -293,11 +300,24 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						switch (readMode) {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
-							if (ttsCount == Constants.MAIL_PER_PAGE) {
-								ttsCount = 0;
-								ttsAndPlayEarcon("beethoven");
+							if (readBodyDone) {
+								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
+									ttsCount = 0;
+									mailBodyCount = mailCount - Constants.MAIL_PER_PAGE; 
+					            	if (!isPlayEarcon) {
+					            		ttsAndPlayEarcon("beethoven");
+					            	}
+								} else {
+									if (!isPlayEarcon) {
+//										ttsCount++;
+										readOneMessage();
+									}
+								}
 							} else {
-								ttsCount++;
+								if (!isPlayEarcon) {
+									ttsCount = 0;
+									ttsAndPlayEarcon("pinkpanther");
+								}
 							}
 							break;
 						case Constants.READ_OPTION_SUBJECT_BODY:
@@ -306,7 +326,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 									ttsCount = 0;
 									ttsAndPlayEarcon("beethoven");
 								} else {
-									ttsCount++;
+//									ttsCount++;
 									readMessageBody();
 								}
 							} else {
@@ -340,10 +360,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			}
 		});
 		
-		tts.addEarcon("money", "com.timebyte.vm1", R.raw.money);
-		tts.addEarcon("beethoven", "com.timebyte.vm1", R.raw.beethoven);
-		tts.addEarcon("jetsons", "com.timebyte.vm1", R.raw.jetsons);
-		tts.addEarcon("pinkpanther", "com.timebyte.vm1", R.raw.pinkpanther);
+
 	}
 	
 	@Override
@@ -447,9 +464,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
         
     private void initCommandMap() {
-    	commandMap.put("1", Constants.ANSWER_CONTINUE);
-    	commandMap.put("2", Constants.ANSWER_STOP);
-    	commandMap.put("3", Constants.ANSWER_SKIP);
+    	commandMap.put(Constants.ANSWER_DETAIL, Constants.ANSWER_DETAIL);
+    	commandMap.put(Constants.ANSWER_SKIP, Constants.ANSWER_SKIP);
+    	commandMap.put(Constants.ANSWER_STOP, Constants.ANSWER_STOP);
+    	commandMap.put(Constants.ANSWER_CONTINUE, Constants.ANSWER_CONTINUE);
+
     }
     
     String FILENAME = "voiceCommand";

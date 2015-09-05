@@ -20,7 +20,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private boolean skipLink = true;
 	
 	protected void doReadMail(ArrayList<String> matches) {
-		
+
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
 			switch (matches.get(0)) {
@@ -42,7 +42,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			break;
 		case Constants.SUBCOMMAND_RETRIEVE :
 			String answer = matchReadCommand(matches);
-
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
@@ -50,8 +49,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 //					waitBodyCommand = false;
 					readMessageBody();
 				} else {
-					readMessage();
+					readOneMessage();
 				}
+				break;
+			case Constants.ANSWER_DETAIL :
+				readMessageBody();
 				break;
 			case Constants.ANSWER_STOP :
 				mailCount = 0;
@@ -145,16 +147,15 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
 			readMessageBody();
 		} else {
-			mailCount++;
-			ttsNoMicrophone("mail number 1 " + " " + mailSubject[0]);
+//			mailCount++;
+//			ttsNoMicrophone("mail number 1 " + " " + mailSubject[0]);
 		}
 		
-		int index = 1;
+		int index = 0;
 		for (int i = end-1; i > start; i--, index++) {
 			try {
 				Message msg = messages[i];
 				mailSubject[index] = msg.getSubject();
-//				System.out.println("************MMM " + (index) + " " + mailSubject[index]);
 
 				Object msgContent = msg.getContent();
 				if (msgContent instanceof Multipart) {
@@ -210,12 +211,14 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				e.printStackTrace();
 			}
 			
-			if (index < Constants.MAIL_PER_PAGE) {
-				microphoneOn = false;
+			if (index == 0) {				
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
+					microphoneOn = false;
 					readMessageBody();
 				} else {
 					mailCount++;
+					ttsCount++;
+					System.out.println("*******tttttt " + ttsCount);
 					ttsNoMicrophone("mail number" + (index+1) + " " + mailSubject[index]);
 				}
 			}
@@ -284,6 +287,35 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 
 	protected void readMessageBody() {
+		int count = mailBodyCount;
+		
+		String body = mailBody[count];
+		int len = body.length();
+
+		if (len > maxLen) {
+			if ((len - bodyReaded) >= maxLen) {
+				int ind = body.indexOf(" ", (bodyReaded+maxLen));
+				if (ind <= 0) {
+					ind = len;
+				}
+				body = mailBody[count].substring(bodyReaded, ind);
+				bodyReaded = ind;
+				readBodyDone = false;
+			} else {
+				body = mailBody[count].substring(bodyReaded, len-1);
+				readBodyDone = true;
+			}			
+		} else {
+			mailCount++;
+			bodyReaded = 0;
+			readBodyDone = true;
+		}
+
+//		ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);
+		ttsNoMicrophone("mail number" + (count + 1)  + " " + body);
+	}
+	
+	protected void readMessageBodyOld() {
 		int count = mailCount;
 		
 		String body = mailBody[count];
@@ -307,8 +339,15 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			bodyReaded = 0;
 			readBodyDone = true;
 		}
-		
-		ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);
+
+//		ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);
+		ttsNoMicrophone("mail number" + (count + 1)  + " " + body);
+	}
+
+	protected void readOneMessage() {
+//    	ttsCount++;
+    	mailCount++;
+		ttsNoMicrophone("mail number" + mailCount  + " " + mailSubject[mailCount]);		
 	}
 	
 	private void readMessage() {

@@ -4,7 +4,7 @@ public final class Constants {
 
 	private static final String Activity_Recognition = "https://github.com/myapp2go/vmApp.git";
 
-	public static final int MAIL_PER_PAGE = 5;
+	public static final int MAIL_PER_PAGE = 1;
 	
 	public static final String EMPTY_STRING = "";
 
@@ -42,7 +42,8 @@ public final class Constants {
 	public static final String SUBCOMMAND_RETRIEVE = "retrieve";
 //	public static final String SUBCOMMAND_MORE_SKIP = "moreSkip";
 	public static final String SUBCOMMAND_SKIP = "skip";
-	public static final String SUBCOMMAND_MORE = "more";
+	public static final String SUBCOMMAND_DETAIL = "detail";
+	public static final String SUBCOMMAND_REPEAT = "repeat";
 	public static final String SBCOMMAND_UP = "up";
 	public static final String SBCOMMAND_DOWN = "down";
 	public static final String SBCOMMAND_NEXT = "next";
@@ -70,9 +71,10 @@ public final class Constants {
 	public static final String ANSWER_CLEAN = "-1";
 	public static final String ANSWER_SAVE = "0";
 	public static final String ANSWER_CONTINUE = "1";
-	public static final String ANSWER_STOP = "2";
+	public static final String ANSWER_DETAIL = "2";
 	public static final String ANSWER_SKIP = "3";
-	public static final String ANSWER_MORE = "4";
+	public static final String ANSWER_STOP = "4";
+	public static final String ANSWER_REPEAT = "5";
 	
 	public static final String ANSWER_YES = "yes";
 	public static final String ANSWER_NO = "no";
