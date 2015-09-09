@@ -133,7 +133,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				}
 			}
 		});
-		
+/*		
 		final Button readBodyMail = (Button) this.findViewById(R.id.readBodyMail);
 		readBodyMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -165,7 +165,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				}
 			}
 		});
-		
+*/		
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -173,7 +173,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					startDialog();
 					return;
 				}				
-				commandDone = false;
+//				commandDone = false;
 				
 				if (!isSetting) {
 					settingNotice();
@@ -193,7 +193,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					startDialog();
 					return;
 				}				
-				commandDone = false;
+//				commandDone = false;
 				
 				startSettings();
 				isSetting = true;
@@ -263,8 +263,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
-	    	mpInputRetry++;
-			ttsAndPlayEarcon("money");
+//	    	mpInputRetry++;
+//			ttsAndPlayEarcon("money");
+	    	readOneMessage();
 	    }
 	};
 	
@@ -282,6 +283,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
+				System.out.println("*****************onDone " + microphoneOn);
 				if (commandHelp) {
 					commandHelp = false;
 					return;
@@ -539,21 +541,21 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
-    	commandDone = false;
+//    	commandDone = false;
 		microphoneOn = true;
 		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsNoMicrophone(String msg) {
-    	commandDone = false;
+//    	commandDone = false;
 		microphoneOn = false;
 		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
-    	endDialog();
+//    	endDialog();
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
     	}

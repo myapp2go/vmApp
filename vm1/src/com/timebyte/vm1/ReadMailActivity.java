@@ -44,6 +44,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			String answer = matchReadCommand(matches);
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
+				bodyReaded = 0;
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
 					// PC522 Handle readBodyDone
 //					waitBodyCommand = false;
@@ -53,9 +54,14 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				}
 				break;
 			case Constants.ANSWER_DETAIL :
-				readMessageBody();
+//				if (readBodyDone) {
+//					readOneMessage();
+//				} else {
+					readMessageBody();
+//				}
 				break;
 			case Constants.ANSWER_STOP :
+				bodyReaded = 0;
 				mailCount = 0;
 				readBodyDone = true;
 				bodyReaded = 0;
@@ -63,7 +69,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.ANSWER_SKIP :
 				bodyReaded = 0;
 //				mailCount = 0;
-//				readBodyDone = true;
+				readBodyDone = true;
+				readOneMessage();
+				/*
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
 					readBodyDone = true;
 					mailCount++;
@@ -76,8 +84,10 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 						retry = 0;
 					}
 				}
+				*/
 				break;	
 			case Constants.COMMAND_NONE :
+				System.out.println("&&&&&&&&&&&&&&&NONE");
 				if (retry < maxRetry) {	
 					retry++;
 					ttsAndPlayEarcon("money");
@@ -284,6 +294,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 //		} else {
 //			readMessage();
 //		}
+		endDialog();
 	}
 
 	protected void readMessageBody() {
@@ -291,6 +302,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
 		String body = mailBody[count];
 		int len = body.length();
+		if (len == bodyReaded) {
+			readOneMessage();
+		} else {
 
 		if (len > maxLen) {
 			if ((len - bodyReaded) >= maxLen) {
@@ -303,16 +317,18 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				readBodyDone = false;
 			} else {
 				body = mailBody[count].substring(bodyReaded, len-1);
+				bodyReaded = len;
 				readBodyDone = true;
 			}			
 		} else {
 			mailCount++;
-			bodyReaded = 0;
+			bodyReaded = len;
 			readBodyDone = true;
 		}
 
 //		ttsNoMicrophone("mail number" + (count + 1)  + " " + mailSubject[count] + body);
 		ttsNoMicrophone("mail number" + (count + 1)  + " " + body);
+		}
 	}
 	
 	protected void readMessageBodyOld() {
@@ -346,6 +362,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 	protected void readOneMessage() {
 //    	ttsCount++;
+		bodyReaded = 0;
     	mailCount++;
 		ttsNoMicrophone("mail number" + mailCount  + " " + mailSubject[mailCount]);		
 	}
