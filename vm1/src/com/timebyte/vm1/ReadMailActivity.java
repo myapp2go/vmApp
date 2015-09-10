@@ -197,7 +197,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 										content = nestBodyPart.getContent().toString();
 									}
 								}
-								mailBody[index] += content;
+								mailBody[index] += parseMessage(content);
 							}
 						}
 						String disposition = bodyPart.getDisposition();
@@ -456,6 +456,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	        	start = paramString.indexOf("http", start+5);
 	        }
 	    }
+	    
 	    localStringBuffer.append(paramString.substring(ind, end));
 	    
 	    return localStringBuffer.toString();
