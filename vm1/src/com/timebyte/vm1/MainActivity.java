@@ -299,24 +299,25 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						switch (readMode) {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
-							if (mailCount < mailSize) {
-							if (readBodyDone) {
-								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
-									mailBodyCount = mailCount - Constants.MAIL_PER_PAGE; 
-					            	if (!isPlayEarcon) {
-					            		ttsAndPlayEarcon("beethoven");
-					            	}
+							if (mailCount < mailSize-1) {
+								if (readBodyDone) {
+									if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
+										mailBodyCount = mailCount - Constants.MAIL_PER_PAGE; 
+										if (!isPlayEarcon) {
+											ttsAndPlayEarcon("beethoven");
+										}
+									} else {
+										if (!isPlayEarcon) {
+											readOneMessage();
+										}
+									}
 								} else {
 									if (!isPlayEarcon) {
-//										ttsCount++;
-										readOneMessage();
+										ttsAndPlayEarcon("pinkpanther");
 									}
 								}
 							} else {
-								if (!isPlayEarcon) {
-									ttsAndPlayEarcon("pinkpanther");
-								}
-							}
+								endDialog();
 							}
 							break;
 						case Constants.READ_OPTION_SUBJECT_BODY:

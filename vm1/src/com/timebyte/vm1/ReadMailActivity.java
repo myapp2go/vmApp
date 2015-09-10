@@ -64,7 +64,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				bodyReaded = 0;
 				mailCount = 0;
 				readBodyDone = true;
-				bodyReaded = 0;
+				endDialog();
 				break;
 			case Constants.ANSWER_SKIP :
 				bodyReaded = 0;
