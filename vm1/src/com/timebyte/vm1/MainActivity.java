@@ -52,6 +52,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected int ttsCount = 0;
 	protected int mailCount = 0;
+	protected int mailSize = 0;
 	protected int mailBodyCount = 0;
 	protected int maxReadCount = 500;
     protected boolean readBodyDone = true;
@@ -283,7 +284,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				System.out.println("*****************onDone " + microphoneOn);
 				if (commandHelp) {
 					commandHelp = false;
 					return;
@@ -302,6 +302,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						switch (readMode) {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
+							if (mailCount < mailSize) {
 							if (readBodyDone) {
 								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
 									ttsCount = 0;
@@ -320,6 +321,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 									ttsCount = 0;
 									ttsAndPlayEarcon("pinkpanther");
 								}
+							}
 							}
 							break;
 						case Constants.READ_OPTION_SUBJECT_BODY:
