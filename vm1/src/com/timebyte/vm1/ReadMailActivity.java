@@ -228,8 +228,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					readMessageBody();
 				} else {
 					mailCount++;
-					ttsCount++;
-					System.out.println("*******tttttt " + ttsCount);
 					ttsNoMicrophone("mail number" + (index+1) + " " + mailSubject[index]);
 				}
 			}

@@ -50,7 +50,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected Intent intent;
 	HashMap<String, String> map = new HashMap<String, String>();
 	
-	protected int ttsCount = 0;
 	protected int mailCount = 0;
 	protected int mailSize = 0;
 	protected int mailBodyCount = 0;
@@ -117,8 +116,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				} else {
 					readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 					command = Constants.COMMAND_READ;
-
-					ttsCount = 0;
 					mailCount = 0;
 
 					ArrayList<String> localArrayList = new ArrayList<String>();
@@ -305,7 +302,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							if (mailCount < mailSize) {
 							if (readBodyDone) {
 								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
-									ttsCount = 0;
 									mailBodyCount = mailCount - Constants.MAIL_PER_PAGE; 
 					            	if (!isPlayEarcon) {
 					            		ttsAndPlayEarcon("beethoven");
@@ -318,7 +314,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								}
 							} else {
 								if (!isPlayEarcon) {
-									ttsCount = 0;
 									ttsAndPlayEarcon("pinkpanther");
 								}
 							}
@@ -326,8 +321,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							break;
 						case Constants.READ_OPTION_SUBJECT_BODY:
 							if (readBodyDone) {
-								if (ttsCount == Constants.MAIL_PER_PAGE) {
-									ttsCount = 0;
+								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
 									ttsAndPlayEarcon("beethoven");
 								} else {
 //									ttsCount++;
@@ -335,7 +329,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								}
 							} else {
 								if (!isPlayEarcon) {
-									ttsCount = 0;
 									ttsAndPlayEarcon("pinkpanther");
 								}
 							}
@@ -564,7 +557,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	
 		microphoneOn = true;
 		isPlayEarcon = true;
-		ttsCount = 0;
 		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
