@@ -52,7 +52,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected int mailCount = 0;
 	protected int mailSize = 0;
-	protected int mailBodyCount = 0;
+//	protected int mailBodyCount = 0;
 	protected int maxReadCount = 500;
     protected boolean readBodyDone = true;
     protected boolean isPlayEarcon = false;
@@ -214,7 +214,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				doReadMail(localArrayList);
 			}
 		});
-		
+/*		
 		final Button debugging = (Button) this.findViewById(R.id.debugging);
 		debugging.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -225,6 +225,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		if (BuildConfig.DEBUG) {
 			logStr.add("[onCreate done]");
 		}
+*/
 	}
 
 	public void startSettings() {
@@ -299,10 +300,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						switch (readMode) {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
-							if (mailCount < mailSize-1) {
+							if (mailCount < mailSize) {
 								if (readBodyDone) {
-									if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
-										mailBodyCount = mailCount - Constants.MAIL_PER_PAGE; 
+									if ((mailCount % Constants.MAIL_PER_PAGE) == 0) { 
 										if (!isPlayEarcon) {
 											ttsAndPlayEarcon("beethoven");
 										}
