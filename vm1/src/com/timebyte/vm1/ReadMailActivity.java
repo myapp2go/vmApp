@@ -42,6 +42,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			break;
 		case Constants.SUBCOMMAND_RETRIEVE :
 			String answer = matchReadCommand(matches);
+			if (mailCount >= mailBody.length) {
+				answer = Constants.ANSWER_STOP;
+			}
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
 				bodyReaded = 0;
