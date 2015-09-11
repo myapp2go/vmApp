@@ -273,6 +273,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	
 	protected void readOneMessage() {
 		bodyReaded = 0;
+		readBodyDone = true;
 		ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailCount]);		
     	mailCount++;
 	}

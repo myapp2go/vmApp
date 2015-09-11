@@ -264,7 +264,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	    public void run() {	
 //	    	mpInputRetry++;
 //			ttsAndPlayEarcon("money");
-	    	readOneMessage();
+	    	if (readBodyDone) {
+	    		readOneMessage();
+	    	} else {
+	    		readMessageBody();
+	    	}
 	    }
 	};
 	
