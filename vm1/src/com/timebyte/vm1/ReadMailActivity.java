@@ -110,7 +110,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		for (int i = end-1; i > start; i--, index++) {
 			try {
 				Message msg = messages[i];
-				mailSubject[index] = msg.getSubject();
+				mailSubject[index] = parseFrom(msg.getFrom()[0].toString()) + " send " + msg.getSubject();
 
 				Object msgContent = msg.getContent();
 				if (msgContent instanceof Multipart) {
@@ -267,7 +267,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				readBodyDone = true;
 			}
 
-			ttsNoMicrophone("mail number" + (count + 1)  + " " + body);
+			ttsNoMicrophone(body);
+//			ttsNoMicrophone("mail number" + (count + 1)  + " " + body);
 		}
 	}
 	
@@ -368,5 +369,26 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	    localStringBuffer.append(paramString.substring(ind, end));
 	    
 	    return localStringBuffer.toString();
+	}
+	
+	private String parseFrom(String src) {
+		String from = "";
+		
+		if (src.charAt(0) == '=') {
+			int ind = src.indexOf("<");
+			if (ind > 0) {
+				from = src.substring(ind+1, src.length()-1);
+			}
+		} else {
+			int ind = src.indexOf("<");
+			if (ind > 0) {
+				from = src.substring(0, ind-1);
+			} else {
+				from = src;
+			}
+		}
+		
+//		System.out.println("********************FFF " + from);
+		return from;
 	}
 }
