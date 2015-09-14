@@ -21,35 +21,39 @@ public class CommandActivity extends Activity {
 	
 	protected SharedPreferences sharedPreferences;
 	
-	private Set<String> command1 = new HashSet<String>();
-	private Set<String> command2 = new HashSet<String>();
-	private Set<String> command3 = new HashSet<String>();
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.command_activity);
 		
-		final Button commandButton1 = (Button) this.findViewById(R.id.command1);
-		commandButton1.setOnClickListener(new View.OnClickListener() {
+		final Button commandContinueButton = (Button) this.findViewById(R.id.cmd_continue);
+		commandContinueButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				MainActivity.mainActivity.commandRecord(Constants.ANSWER_CONTINUE);
 				onBackPressed();
 			}			
 		});
 
-		final Button commandButton2 = (Button) this.findViewById(R.id.command2);
-		commandButton2.setOnClickListener(new View.OnClickListener() {
+		final Button commandDetailButton = (Button) this.findViewById(R.id.cmd_detail);
+		commandDetailButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MainActivity.mainActivity.commandRecord(Constants.ANSWER_STOP);
+				MainActivity.mainActivity.commandRecord(Constants.ANSWER_DETAIL);
 				onBackPressed();
 			}			
 		});
 		
-		final Button commandButton3 = (Button) this.findViewById(R.id.command3);
-		commandButton3.setOnClickListener(new View.OnClickListener() {
+		final Button commandSkipButton = (Button) this.findViewById(R.id.cmd_skip);
+		commandSkipButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				MainActivity.mainActivity.commandRecord(Constants.ANSWER_SKIP);
+				onBackPressed();
+			}			
+		});
+
+		final Button commandStopButton = (Button) this.findViewById(R.id.cmd_stop);
+		commandStopButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				MainActivity.mainActivity.commandRecord(Constants.ANSWER_STOP);
 				onBackPressed();
 			}			
 		});

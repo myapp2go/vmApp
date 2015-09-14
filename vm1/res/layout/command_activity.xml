@@ -10,39 +10,49 @@
     tools:context="com.example.pc1.MainActivity" >
 
     <Button
-        android:id="@+id/command1"
+        android:id="@+id/cmd_continue"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/command1"
+        android:text="@string/cmd_continue"
         android:textColor="#ff0000"
         android:textSize="30dip" />
 
     <Button
-        android:id="@+id/command2"
+        android:id="@+id/cmd_detail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/command1"
+        android:layout_below="@id/cmd_continue"
         android:layout_centerHorizontal="true"
-        android:text="@string/command2"
+        android:text="@string/cmd_detail"
         android:textColor="#00ff00"
         android:textSize="30dip" />    
     
     <Button
-        android:id="@+id/command3"
+        android:id="@+id/cmd_skip"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/command2"
+        android:layout_below="@id/cmd_detail"
         android:layout_centerHorizontal="true"
-        android:text="@string/command3"
+        android:text="@string/cmd_skip"
         android:textColor="#0000ff"
         android:textSize="30dip" />
 
+        <Button
+        android:id="@+id/cmd_stop"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cmd_skip"
+        android:layout_centerHorizontal="true"
+        android:text="@string/cmd_stop"
+        android:textColor="#0000ff"
+        android:textSize="30dip" />
+        
     <Button
         android:id="@+id/save"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/command3"
+        android:layout_below="@id/cmd_stop"
         android:layout_centerHorizontal="true"
         android:text="@string/save"
         android:textColor="#ffff00"

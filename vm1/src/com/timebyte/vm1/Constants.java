@@ -67,6 +67,7 @@ public final class Constants {
 	public static final String COMMAND_COMMAND1_GREETING = "please speak 1";
 	public static final String COMMAND_COMMAND2_GREETING = "please speak 2";
 	public static final String COMMAND_COMMAND3_GREETING = "please speak 3";
+	public static final String COMMAND_COMMAND4_GREETING = "please speak 4";
 	
 	public static final String ANSWER_CLEAN = "-1";
 	public static final String ANSWER_SAVE = "0";

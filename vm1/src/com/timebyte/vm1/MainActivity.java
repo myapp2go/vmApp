@@ -446,11 +446,14 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
         case Constants.ANSWER_CONTINUE : 
         	ttsAndMicrophone(Constants.COMMAND_COMMAND1_GREETING);
         	break;
-        case Constants.ANSWER_STOP :
+        case Constants.ANSWER_DETAIL :
         	ttsAndMicrophone(Constants.COMMAND_COMMAND2_GREETING);
         	break;
         case Constants.ANSWER_SKIP :
         	ttsAndMicrophone(Constants.COMMAND_COMMAND3_GREETING);
+        	break;
+        case Constants.ANSWER_STOP :
+        	ttsAndMicrophone(Constants.COMMAND_COMMAND4_GREETING);
         	break;
         case Constants.ANSWER_SAVE :
         	saveCommand();

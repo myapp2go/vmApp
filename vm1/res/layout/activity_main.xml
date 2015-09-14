@@ -27,22 +27,13 @@
         android:text="@string/readMail"
         android:textColor="#ff0000"
         android:textSize="30dip" />
-
-    <Button
-        android:id="@+id/readBodyMail"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/readMail"
-        android:layout_centerHorizontal="true"
-        android:text="@string/readBodyMail"
-        android:textColor="#ff0000"
-        android:textSize="30dip" />    
+   
     
     <Button
         android:id="@+id/writeMail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/readBodyMail"
+        android:layout_below="@id/readMail"
         android:layout_centerHorizontal="true"
         android:text="@string/writeMail"
         android:textColor="#00ff00"
@@ -67,15 +58,5 @@
         android:text="@string/syncMail"
         android:textColor="#ffff00"
         android:textSize="30dip" />
-    
-    <Button
-        android:id="@+id/debugging"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/syncMail"
-        android:layout_centerHorizontal="true"
-        android:text="@string/debugging"
-        android:textColor="#ffff00"
-        android:textSize="30dip" />
-    
+      
 </RelativeLayout>
