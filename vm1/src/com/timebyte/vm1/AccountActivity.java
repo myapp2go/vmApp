@@ -24,7 +24,9 @@ public class AccountActivity extends Activity {
         setContentView(R.layout.account_activity);
 
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
-		
+		((TextView)findViewById(R.id.myEmail)).setText(sharedPreferences.getString("myEmail", ""));
+		((TextView)findViewById(R.id.myPassword)).setText(sharedPreferences.getString("myPassword", ""));		
+        
 		final Button settingButton = (Button) this.findViewById(R.id.setting);
 		settingButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
