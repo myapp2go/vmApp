@@ -356,7 +356,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	    		localStringBuffer.append(paramString.substring(ind, start) + "  link skip");
 	    		ind = paramString.indexOf(" ", start);
 	    		if (ind == -1) {
-	    			ind = start;
+	    			ind = end;
 	    			start = -1;
 	    		} else {
 	    			start = paramString.indexOf("http", ind);
