@@ -52,8 +52,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected int mailCount = 0;
 	protected int mailSize = 0;
-//	protected int mailBodyCount = 0;
-	protected int maxReadCount = 500;
+	protected int maxReadCount = 200;
     protected boolean readBodyDone = true;
     protected boolean isPlayEarcon = false;
     
@@ -67,25 +66,23 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
     
-	private boolean commandHelp = true;
 	private String commandType = Constants.ANSWER_CONTINUE;
 	HashMap<String, String> commandMap = new HashMap<String, String>();
 	
 	ArrayList<String> recognizerResult = new ArrayList<String>();
 	
 	private Handler handler;
-//	protected String lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
 	
 	private ProgressDialog processDialog;
 	private static boolean readDone = true;
 	private static boolean readStop = false;
 	private static boolean writeStop = false;
-//	private static boolean commandDone = true;
 	
 	private int maxMpInputRetry = 5;	
 	private int mpInputRetry = 0;
 	
 	private Vector<String> logStr = new Vector<String>();
+	private Button searchMail;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +166,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				doReadMail(localArrayList);
 			}
 		});
+		
+		searchMail = (Button) this.findViewById(R.id.searchMail);
+		searchMail.setVisibility(View.GONE);
+		searchMail.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				setFlag(true, true, true);
+
+			}
+		});
 /*		
 		final Button debugging = (Button) this.findViewById(R.id.debugging);
 		debugging.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +190,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	}
 
 	public void startSettings() {
-	    // Do something in response to button
 		Intent ttsIntent = new Intent(this, SettingActivity.class);
 		
 		startActivity(ttsIntent);
@@ -241,11 +246,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				if (commandHelp) {
-					commandHelp = false;
-					return;
-				}
-				
 				if (microphoneOn) {
 					startRecognizer(0);
 					microphoneOn = false;
@@ -532,6 +532,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void endDialog() {
+    	searchMail.setVisibility(View.VISIBLE);
+    	
     	if (processDialog != null) {
     		processDialog.dismiss();
     	}
