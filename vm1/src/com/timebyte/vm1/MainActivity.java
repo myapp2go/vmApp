@@ -77,7 +77,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 //	protected String lastReadType = Constants.READ_OPTION_SUBJECT_ONLY;
 	
 	private ProgressDialog processDialog;
-	private static boolean commandDone = true;
+	private static boolean readDone = true;
+	private static boolean readStop = false;
+	private static boolean writeStop = false;
+//	private static boolean commandDone = true;
 	
 	private int maxMpInputRetry = 5;	
 	private int mpInputRetry = 0;
@@ -104,13 +107,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if (!commandDone) {
-					startDialog();
-					return;
-				}				
-				commandDone = false;
-				
+			public void onClick(View v) {		
+				setFlag(false, false, true);
+								
 				if (!isSetting) {
 					settingNotice();
 				} else {
@@ -131,47 +130,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				}
 			}
 		});
-/*		
-		final Button readBodyMail = (Button) this.findViewById(R.id.readBodyMail);
-		readBodyMail.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if (!commandDone) {
-					startDialog();
-					return;
-				}				
-				commandDone = false;
-				
-				if (!isSetting) {
-					settingNotice();
-				} else {
-					readMode = Constants.READ_OPTION_SUBJECT_BODY;
-					command = Constants.COMMAND_READ;
-
-					ttsCount = 0;
-					mailCount = 0;
-
-					ArrayList<String> localArrayList = new ArrayList<String>();
-					if (isSyncMail) {
-						subCommand = Constants.SUBCOMMAND_RETRIEVE;
-						localArrayList.add(Constants.ANSWER_CONTINUE);
-					} else {
-//						ttsNoMicrophone(Constants.COMMAND_READ_RETRIEVE);
-						subCommand = Constants.COMMAND_INIT;
-						localArrayList.add(Constants.READ_OPTION_SUBJECT_BODY);
-					}
-			        doReadMail(localArrayList);
-				}
-			}
-		});
-*/		
+		
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (!commandDone) {
-					startDialog();
-					return;
-				}				
-//				commandDone = false;
+				setFlag(readDone, true, false);
 				
 				if (!isSetting) {
 					settingNotice();
@@ -187,11 +150,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button settings = (Button) this.findViewById(R.id.settings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (!commandDone) {
-					startDialog();
-					return;
-				}				
-//				commandDone = false;
+				setFlag(readDone, true, false);
 				
 				startSettings();
 				isSetting = true;
@@ -201,11 +160,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button syncMail = (Button) this.findViewById(R.id.syncMail);
 		syncMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (!commandDone) {
-					startDialog();
-					return;
-				}				
-				commandDone = false;
+				setFlag(false, false, true);
 				
 				isSyncMail = true;
 				subCommand = Constants.COMMAND_INIT;
@@ -392,7 +347,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
 
-		commandDone = true;
+		readDone = true;
 	}
 	
     @Override  
@@ -581,6 +536,18 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     		processDialog.dismiss();
     	}
     	
-    	commandDone = true;
+    	readDone = true;
     }
+    
+    protected void setFlag(boolean cmdDone, boolean cmdStop, boolean cmdWrite) {
+		if (!readDone) {
+			startDialog();
+			return;
+		}	
+		
+    	readDone = cmdDone;
+    	readStop = cmdStop;
+    	writeStop = cmdWrite;
+    }
+    
 }
