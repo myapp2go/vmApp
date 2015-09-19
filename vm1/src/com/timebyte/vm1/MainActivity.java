@@ -36,6 +36,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	public static MainActivity mainActivity;
 	
 	abstract protected void doReadMail(ArrayList<String> matches);
+	abstract protected void doSearchMail(ArrayList<String> matches);
 	abstract protected void readMessageBody();
 	abstract protected void readOneMessage();
 	abstract protected void doWriteMail(ArrayList<String> matches);
@@ -52,6 +53,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected int mailCount = 0;
 	protected int mailSize = 0;
+	protected int searchSize = 0;
 	protected int maxReadCount = 200;
     protected boolean readBodyDone = true;
     protected boolean isPlayEarcon = false;
@@ -172,7 +174,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		searchMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				setFlag(true, true, true);
-
+				command = Constants.COMMAND_SEARCH;
+				
+				ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
 			}
 		});
 /*		
@@ -252,9 +256,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				}
 				
 	            switch (command) {
-	            case Constants.COMMAND_WRITE : 
-
-	            	break;
 	            case Constants.COMMAND_READ:
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						switch (readMode) {
@@ -295,7 +296,31 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							break;
 						}
 					}
-	            case Constants.COMMAND_SETTING:
+	            case Constants.COMMAND_WRITE : 
+
+	            	break;
+	            case Constants.COMMAND_SEARCH : 
+					if (mailCount < searchSize) {
+						if (readBodyDone) {
+							if ((mailCount % Constants.MAIL_PER_PAGE) == 0) { 
+								if (!isPlayEarcon) {
+									ttsAndPlayEarcon("beethoven");
+								}
+							} else {
+								if (!isPlayEarcon) {
+									readOneMessage();
+								}
+							}
+						} else {
+							if (!isPlayEarcon) {
+								ttsAndPlayEarcon("pinkpanther");
+							}
+						}
+					} else {
+						endDialog();
+					}
+	            	break;
+	            case Constants.COMMAND_SETTING :
 	            	break;
 	            case Constants.COMMAND_STOP:
 	            	break;	
@@ -366,11 +391,14 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             recognizerResult.add(matches.toString());
             
             switch (command) {
+            case Constants.COMMAND_READ:
+            	doReadMail(matches);
+            	break;
             case Constants.COMMAND_WRITE : 
             	doWriteMail(matches);
             	break;
-            case Constants.COMMAND_READ:
-            	doReadMail(matches);
+            case Constants.COMMAND_SEARCH:
+            	doSearchMail(matches);
             	break;
             case Constants.COMMAND_SETTING :
             	break;

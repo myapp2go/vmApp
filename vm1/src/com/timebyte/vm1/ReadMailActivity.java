@@ -13,11 +13,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 	private String[] mailSubject;
 	private String[] mailBody;
+	private int[] mailIndex;
 	private int maxLen = 200;
 	private int maxRetry = 5;	
 	private int retry = 0;
 	private int bodyReaded = 0;
-	private boolean skipLink = true;
+//	private boolean skipLink = true;
 	
 	protected void doReadMail(ArrayList<String> matches) {
 
@@ -102,6 +103,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		mailSize = len - 1;
 		mailSubject = new String[len + 1];
 		mailBody = new String[len + 1];
+		mailIndex = new int[len + 1];
 		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
 		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;	
 		microphoneOn = false;
@@ -111,7 +113,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			try {
 				Message msg = messages[i];
 				mailSubject[index] = parseFrom(msg.getFrom()[0].toString()) + " send " + msg.getSubject();
-
+				mailIndex[index] = index;
+				
 				Object msgContent = msg.getContent();
 				if (msgContent instanceof Multipart) {
 					Multipart multipart = (Multipart) msgContent;
@@ -241,7 +244,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 
 	protected void readMessageBody() {
-		int count = mailCount - 1;
+		int count = mailIndex[mailCount - 1];
 		String body = mailBody[count];
 		int len = body.length();
 		
@@ -275,7 +278,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	protected void readOneMessage() {
 		bodyReaded = 0;
 		readBodyDone = true;
-		ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailCount]);		
+		ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
     	mailCount++;
 	}
 	
@@ -390,5 +393,31 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
 //		System.out.println("********************FFF " + from);
 		return from;
+	}
+	
+	protected void doSearchMail(ArrayList<String> matches) {
+		boolean found = false;
+		
+		int count = 0;
+		for (int i = 0; i < mailSubject.length-1; i++) {
+			String subject = mailSubject[i];
+			found = false;
+			if (subject == null) {
+				found = true;
+			}
+			for (int j = 0; !found && (j < matches.size()); j++) {
+				String str = matches.get(j);
+				if (subject.indexOf(str) >= 0) {
+					mailIndex[count++] = i;
+					found = true;
+				}
+			}
+		}
+		
+		if (count > 0) {
+			mailCount = 0;
+			searchSize = count;
+			readOneMessage();
+		}
 	}
 }

@@ -49,7 +49,9 @@ public final class Constants {
 	public static final String SBCOMMAND_NEXT = "next";
 	public static final String READ_OPTION_SUBJECT_ONLY = "subjectOnly";
 	public static final String READ_OPTION_SUBJECT_BODY = "subjectBody";
-	
+
+	public static String COMMAND_SEARCH_GREETING = "search";
+
 	public static final String COMMAND_WRITE = "write";
 	public static final String SUBCOMMAND_TO = "to";
 	public static final String SUBCOMMAND_VERIFY_TO = "verifyTo";
@@ -63,6 +65,8 @@ public final class Constants {
 	
 	public static final String COMMAND_SETTING = "setting";
 
+	public static final String COMMAND_SEARCH = "search";
+	
 	public static final String COMMAND_COMMAND_RECORD = "commandRecord";
 	public static final String COMMAND_COMMAND1_GREETING = "please speak 1";
 	public static final String COMMAND_COMMAND2_GREETING = "please speak 2";
