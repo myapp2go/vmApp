@@ -13,6 +13,7 @@
     <string name="debugging">Debug</string>
     <string name="syncMail">Sync Mail</string>
     <string name="searchMail">Search Mail</string>
+    <string name="offLine">Off Line</string>
     <string name="greeting">Welcome to Speak Mail</string>
 
     <string name="myEmail">My eMail</string>

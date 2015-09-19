@@ -66,6 +66,7 @@ public final class Constants {
 	public static final String COMMAND_SETTING = "setting";
 
 	public static final String COMMAND_SEARCH = "search";
+	public static final String COMMAND_OFFLINE = "offLine";
 	
 	public static final String COMMAND_COMMAND_RECORD = "commandRecord";
 	public static final String COMMAND_COMMAND1_GREETING = "please speak 1";

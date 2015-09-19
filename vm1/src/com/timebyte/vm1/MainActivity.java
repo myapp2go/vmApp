@@ -37,6 +37,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void doSearchMail(ArrayList<String> matches);
+	abstract protected void doOffLine();
 	abstract protected void readMessageBody();
 	abstract protected void readOneMessage();
 	abstract protected void doWriteMail(ArrayList<String> matches);
@@ -85,6 +86,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	private Vector<String> logStr = new Vector<String>();
 	private Button searchMail;
+	private Button offLine;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +179,14 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				command = Constants.COMMAND_SEARCH;
 				
 				ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
+			}
+		});
+
+		offLine = (Button) this.findViewById(R.id.offLine);
+		offLine.setVisibility(View.GONE);
+		offLine.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+
 			}
 		});
 		
@@ -561,6 +571,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
     protected void endDialog() {
     	searchMail.setVisibility(View.VISIBLE);
+    	offLine.setVisibility(View.VISIBLE);
     	
     	if (processDialog != null) {
     		processDialog.dismiss();

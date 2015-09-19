@@ -420,4 +420,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			readOneMessage();
 		}
 	}
+	
+	protected void doOffLine() {
+		
+	}
 }
