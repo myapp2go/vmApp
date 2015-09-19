@@ -179,8 +179,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
 			}
 		});
-/*		
+		
 		final Button debugging = (Button) this.findViewById(R.id.debugging);
+		debugging.setVisibility(View.GONE);
 		debugging.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				startDebugging();
@@ -190,7 +191,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		if (BuildConfig.DEBUG) {
 			logStr.add("[onCreate done]");
 		}
-*/
 	}
 
 	public void startSettings() {

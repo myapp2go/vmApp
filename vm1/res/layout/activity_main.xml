@@ -59,7 +59,7 @@
         android:textColor="#ffff00"
         android:textSize="30dip" />
      
-        <Button
+    <Button
         android:id="@+id/searchMail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -68,5 +68,15 @@
         android:text="@string/searchMail"
         android:textColor="#ff0000"
         android:textSize="30dip" />
-        
+
+    <Button
+        android:id="@+id/debugging"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchMail"
+        android:layout_centerHorizontal="true"
+        android:text="@string/debugging"
+        android:textColor="#ffff00"
+        android:textSize="30dip" />
+ 
 </RelativeLayout>
