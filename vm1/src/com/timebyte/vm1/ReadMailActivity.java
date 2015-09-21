@@ -1,6 +1,12 @@
 package com.timebyte.vm1;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.mail.BodyPart;
@@ -8,6 +14,8 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
+
+import android.os.Environment;
 
 public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
@@ -28,7 +36,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.READ_OPTION_SUBJECT_ONLY :
 				readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
-				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
+				
+				//				doReadOffLines();
+				if (mailSubject == null || mailSubject.length <= 0) {
+					new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
+				}
 				isSyncMail = true;
 				break;
 			case Constants.READ_OPTION_SUBJECT_BODY :
@@ -421,7 +433,71 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 	}
 	
-	protected void doOffLine() {
+	String mailSubjectData = "mailSubjectData";
+	String mailBodyData = "mailBodyData";
+	
+	protected void doSaveOffLines() {
+		doSaveOffLine(mailSubjectData, mailSubject);
+		doSaveOffLine(mailBodyData, mailBody);
+	}
+
+	protected void doSaveOffLine(String dest, String[] src) {
+		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
+		File file = new File(folder, dest);
+		System.out.println("***OUT " + dest);
 		
+		ObjectOutputStream outputString = null;
+		try {
+			outputString = new ObjectOutputStream(new FileOutputStream(file));
+			outputString.writeObject(src);	
+			outputString.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	protected void doReadOffLines() {
+		doReadOffLine(mailSubjectData, mailSubject);
+		doReadOffLine(mailBodyData, mailBody);
+		
+		if (mailSubject == null || mailSubject.length <= 0) {
+			System.out.println("No File found");
+		} else {
+			ttsNoMicrophone("mail number " + (mailCount+1) + " " + mailSubject[mailCount]);
+			mailCount++;
+		}
+	}
+	
+	protected void doReadOffLine(String src, String[] dest) {
+		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
+		File file = new File(folder, src);
+		
+		ObjectInputStream inString = null;
+		try {
+			inString = new ObjectInputStream(new FileInputStream(file));
+
+			if (mailSubjectData.equals(src)) {
+				mailSubject = (String[])inString.readObject();
+			}
+			if (mailBodyData.equals(src)) {
+				mailBody = (String[])inString.readObject();
+			}
+			if (mailSubject != null) {
+				mailSize = mailSubject.length;
+				mailIndex = new int[mailSize];
+				
+				for (int i = 0; i < mailSize; i++) {
+					mailIndex[i] = i;
+				}
+			}
+			inString.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+//			e.printStackTrace();
+		}
 	}
 }
