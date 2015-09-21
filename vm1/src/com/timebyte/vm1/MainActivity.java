@@ -37,7 +37,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	abstract protected void doReadMail(ArrayList<String> matches);
 	abstract protected void doSearchMail(ArrayList<String> matches);
-	abstract protected void doOffLine();
+	abstract protected void doSaveOffLines();
 	abstract protected void readMessageBody();
 	abstract protected void readOneMessage();
 	abstract protected void doWriteMail(ArrayList<String> matches);
@@ -186,7 +186,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		offLine.setVisibility(View.GONE);
 		offLine.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-
+				doSaveOffLines();
 			}
 		});
 		
@@ -270,7 +270,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						switch (readMode) {
 						case Constants.READ_OPTION_SUBJECT_ONLY:
-							if (mailCount < mailSize) {
+							if (mailCount <= mailSize) {
 								if (readBodyDone) {
 									if ((mailCount % Constants.MAIL_PER_PAGE) == 0) { 
 										if (!isPlayEarcon) {
@@ -399,6 +399,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             ArrayList<String> matches = data.getStringArrayListExtra
             		(RecognizerIntent.EXTRA_RESULTS); 
             recognizerResult.add(matches.toString());
+            
+            logStr.add("[** " + matches.toString() + " **]");
             
             switch (command) {
             case Constants.COMMAND_READ:
@@ -571,7 +573,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
     protected void endDialog() {
     	searchMail.setVisibility(View.VISIBLE);
-    	offLine.setVisibility(View.VISIBLE);
+//    	offLine.setVisibility(View.VISIBLE);
     	
     	if (processDialog != null) {
     		processDialog.dismiss();

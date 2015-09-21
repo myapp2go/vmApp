@@ -104,7 +104,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 	}
 	
-	public void setMessages(Message[] messages) {
+	public void setMessages(Message[] messages) {		
 		int len = messages.length;
 		int start = 0;
 		int end = messages.length;
@@ -112,7 +112,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			len = maxReadCount;
 			start = messages.length - maxReadCount;			
 		}
-		mailSize = len - 1;
+		mailSize = len;
 		mailSubject = new String[len + 1];
 		mailBody = new String[len + 1];
 		mailIndex = new int[len + 1];
@@ -121,7 +121,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		microphoneOn = false;
 		
 		int index = 0;
-		for (int i = end-1; i > start; i--, index++) {
+		for (int i = end - 1; i >= start; i--, index++) {
 			try {
 				Message msg = messages[i];
 				mailSubject[index] = parseFrom(msg.getFrom()[0].toString()) + " send " + msg.getSubject();
@@ -290,8 +290,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	protected void readOneMessage() {
 		bodyReaded = 0;
 		readBodyDone = true;
-		ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
-    	mailCount++;
+		if (mailCount <= mailSize) {
+			ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
+			mailCount++;
+		} else {
+			ttsNoMicrophone("End of mail");
+		}
+			
 	}
 	
 	private void readMessageOld() {
