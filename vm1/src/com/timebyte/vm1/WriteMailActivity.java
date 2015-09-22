@@ -65,7 +65,7 @@ public class WriteMailActivity extends ReadMailActivity {
 			String mode = matchWriteMode(matches);
 			switch (mode) {
 			case Constants.SUBCOMMAND_SEND :
-				new WriteMailTask(WriteMailActivity.this).execute(sharedPreferences, mailTo, mailSubject, mailBody);
+				new WriteMailTask(WriteMailActivity.this).execute(false, sharedPreferences, mailTo, mailSubject, mailBody);
 				break;
 			}	
 			
@@ -126,7 +126,7 @@ public class WriteMailActivity extends ReadMailActivity {
 	protected void doDebugMail(String myEmail, String myPassword,
 			String mailTo, String mailSubject, String mailBody) {
 		// TODO Auto-generated method stub
-		new WriteMailTask(WriteMailActivity.this).execute(sharedPreferences, mailTo, mailSubject, mailBody);
+		new WriteMailTask(WriteMailActivity.this).execute(true, sharedPreferences, mailTo, mailSubject, mailBody);
 
 	}
 }

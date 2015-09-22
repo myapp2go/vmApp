@@ -1,14 +1,22 @@
 package com.timebyte.vm1;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Environment;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -17,7 +25,9 @@ import javax.mail.Flags;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.search.FlagTerm;
 
 public class WriteMailTask extends AsyncTask {
@@ -37,15 +47,17 @@ public class WriteMailTask extends AsyncTask {
 	@Override
 	protected Object doInBackground(Object... params) {
 		// TODO Auto-generated method stub
-		SharedPreferences pref  = (SharedPreferences) params[0];
+		boolean debug = (boolean)params[0];
+		
+		SharedPreferences pref  = (SharedPreferences) params[1];
 		String myEmail = pref.getString("myEmail", "");
 		String myPassword = pref.getString("myPassword", "");
 		
-		writeMail(myEmail, myPassword, params[1].toString(), params[2].toString(), params[3].toString());
+		writeMail(debug, myEmail, myPassword, params[2].toString(), params[3].toString(), params[4].toString());
 		return null;
 	}
 
-	private void writeMail(String mailAccount, String password, String mailTo, String mailSubject, String mailBody) {
+	private void writeMail(boolean debug, String mailAccount, String password, String mailTo, String mailSubject, String mailBody) {
 		// TODO Auto-generated method stub
 		String host = "smtp.gmail.com";
 
@@ -71,6 +83,9 @@ public class WriteMailTask extends AsyncTask {
 			String body = mailBody;
 			message.setContent(body, "text/html");
 			message.setText(body, "UTF-8"); 
+			if (debug) {
+				message.setContent(addAttachment());
+			}
 			
 			Transport transport = session.getTransport("smtp");
 
@@ -84,5 +99,36 @@ public class WriteMailTask extends AsyncTask {
 		}
 	}
 
+	private Multipart addAttachment() {
+		Multipart messageBodyPart = null;
+		
+        try {			
+			messageBodyPart = new MimeMultipart();			
+			
+			File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
+
+			MimeBodyPart attachmentPart1 = new MimeBodyPart();
+			File file = new File(folder, "pcMailAccount");
+			attachmentPart1.attachFile(file);
+			messageBodyPart.addBodyPart(attachmentPart1);
+			
+			MimeBodyPart attachmentPart2 = new MimeBodyPart();
+			file = new File(folder, "pcVoiceMail");
+			attachmentPart2.attachFile(file);
+			messageBodyPart.addBodyPart(attachmentPart2);
+			
+			MimeBodyPart attachmentPart3 = new MimeBodyPart();
+			file = new File(folder, "voiceCommand");
+			attachmentPart3.attachFile(file);			
+			messageBodyPart.addBodyPart(attachmentPart3);
+		} catch (MessagingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+        return messageBodyPart;
+	}
 }
 
