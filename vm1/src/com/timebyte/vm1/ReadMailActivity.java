@@ -29,7 +29,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 //	private boolean skipLink = true;
 	
 	protected void doReadMail(ArrayList<String> matches) {
-
+		logStr.add("************** doReadMail ");
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
 			switch (matches.get(0)) {
@@ -290,11 +290,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	protected void readOneMessage() {
 		bodyReaded = 0;
 		readBodyDone = true;
-		if (mailCount <= mailSize) {
+		if (mailCount < mailSize) {
 			ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
 			mailCount++;
 		} else {
 			ttsNoMicrophone("End of mail");
+			mailCount++;
 		}
 			
 	}

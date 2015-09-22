@@ -84,7 +84,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private int maxMpInputRetry = 5;	
 	private int mpInputRetry = 0;
 	
-	private Vector<String> logStr = new Vector<String>();
+	protected Vector<String> logStr = new Vector<String>();
 	private Button searchMail;
 	private Button offLine;
 	
@@ -228,7 +228,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			SystemClock.sleep(ms);
 		}
 		
-		if (mpInputRetry < maxMpInputRetry) {
+		if (mailCount <= mailSize) {
 			handler.postDelayed(checkRecognizer, 10000);
 		}
 	    startActivityForResult(intent, VOICE_RECOGNITION); 
@@ -236,8 +236,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
-//	    	mpInputRetry++;
-//			ttsAndPlayEarcon("money");
 	    	if (readBodyDone) {
 	    		readOneMessage();
 	    	} else {
@@ -260,7 +258,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				if (microphoneOn) {
+				logStr.add("************ onDone " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+				if (microphoneOn && (mailCount <= mailSize)) {
 					startRecognizer(0);
 					microphoneOn = false;
 				}
@@ -287,6 +286,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 									}
 								}
 							} else {
+								finishActivity(VOICE_RECOGNITION);
 								endDialog();
 							}
 							break;
