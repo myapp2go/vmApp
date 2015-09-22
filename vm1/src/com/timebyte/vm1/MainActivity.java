@@ -54,7 +54,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected int mailCount = 0;
 	protected int mailSize = 0;
-	protected int searchSize = 0;
 	protected int maxReadCount = 200;
     protected boolean readBodyDone = true;
     protected boolean isPlayEarcon = false;
@@ -259,6 +258,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {
 				logStr.add("************ onDone " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+
 				if (microphoneOn && ((mailCount <= mailSize) || Constants.COMMAND_SEARCH.equals(command))) {
 					startRecognizer(0);
 					microphoneOn = false;
@@ -310,7 +310,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	            	break;
 	            case Constants.COMMAND_SEARCH : 
-					if (mailCount <= searchSize) {
+					if (mailCount <= mailSize) {
 						if (readBodyDone) {
 							if ((mailCount % Constants.MAIL_PER_PAGE) == 0) { 
 								if (!isPlayEarcon) {
@@ -564,7 +564,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
-    private void startDialog() {
+    private void startDialogOld() {
 		processDialog = new ProgressDialog(this);
 		processDialog.setMessage("Process command, please wait...");
 		processDialog.setIndeterminate(false);
@@ -583,11 +583,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	readDone = true;
     }
     
-    protected void setFlag(boolean cmdDone, boolean cmdStop, boolean cmdWrite) {
-		if (!readDone) {
-			startDialog();
-			return;
-		}	
+    protected void setFlag(boolean cmdDone, boolean cmdStop, boolean cmdWrite) {	
+		mailCount = 0;
+		mailSize = 0;
 		
     	readDone = cmdDone;
     	readStop = cmdStop;

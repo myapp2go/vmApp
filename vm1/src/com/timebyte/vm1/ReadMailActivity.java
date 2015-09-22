@@ -288,15 +288,11 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 	
 	protected void readOneMessage() {
+		System.out.println("************ readOneMessage " + mailCount + " * " + mailSize);
 		bodyReaded = 0;
 		readBodyDone = true;
 		
-		int size = mailSize;
-		if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
-			size = searchSize;
-		}
-		
-		if (mailCount < size) {
+		if (mailCount < mailSize) {
 			ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
 			mailCount++;
 		} else {
@@ -440,11 +436,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
 		if (count > 0) {
 			mailCount = 0;
-			searchSize = count;
+			mailSize = count;
 			readOneMessage();
 		}
 	}
-	
+
+	// OffLIne
 	String mailSubjectData = "mailSubjectData";
 	String mailBodyData = "mailBodyData";
 	
