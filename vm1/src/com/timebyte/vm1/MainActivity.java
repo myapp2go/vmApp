@@ -191,7 +191,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		});
 		
 		final Button debugging = (Button) this.findViewById(R.id.debugging);
-		debugging.setVisibility(View.GONE);
+//		debugging.setVisibility(View.GONE);
 		debugging.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				startDebugging();
@@ -259,7 +259,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {
 				logStr.add("************ onDone " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				if (microphoneOn && (mailCount <= mailSize)) {
+				if (microphoneOn && ((mailCount <= mailSize) || Constants.COMMAND_SEARCH.equals(command))) {
 					startRecognizer(0);
 					microphoneOn = false;
 				}
@@ -310,7 +310,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	            	break;
 	            case Constants.COMMAND_SEARCH : 
-					if (mailCount < searchSize) {
+					if (mailCount <= searchSize) {
 						if (readBodyDone) {
 							if ((mailCount % Constants.MAIL_PER_PAGE) == 0) { 
 								if (!isPlayEarcon) {
@@ -327,6 +327,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							}
 						}
 					} else {
+						finishActivity(VOICE_RECOGNITION);
 						endDialog();
 					}
 	            	break;

@@ -290,7 +290,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	protected void readOneMessage() {
 		bodyReaded = 0;
 		readBodyDone = true;
-		if (mailCount < mailSize) {
+		
+		int size = mailSize;
+		if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
+			size = searchSize;
+		}
+		
+		if (mailCount < size) {
 			ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
 			mailCount++;
 		} else {
