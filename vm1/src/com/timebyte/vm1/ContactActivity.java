@@ -32,6 +32,12 @@ public class ContactActivity extends Activity {
 			}
 		});
 		
+		final Button cancelButton = (Button) this.findViewById(R.id.cancel);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
     }
     
 	private void savePreference() {

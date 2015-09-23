@@ -73,6 +73,13 @@ public class CommandActivity extends Activity {
 				onBackPressed();
 			}			
 		});
+		
+		final Button cancelButton = (Button) this.findViewById(R.id.cancel);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				onBackPressed();
+			}			
+		});
     }
 
 }

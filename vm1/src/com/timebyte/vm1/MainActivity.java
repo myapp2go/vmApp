@@ -581,12 +581,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	readDone = true;
     }
     
-    protected void setFlag(boolean cmdDone, boolean cmdStop, boolean cmdWrite) {	
-		mailCount = 0;
-		
+    protected void setFlag(boolean cmdDone, boolean cmdStop, boolean cmdWrite) {			
     	readDone = cmdDone;
     	readStop = cmdStop;
     	writeStop = cmdWrite;
+    	
+    	tts.playEarcon("", TextToSpeech.QUEUE_FLUSH, map);
+    	if (readStop || writeStop) {
+    		finishActivity(VOICE_RECOGNITION);
+    	}
     }
     
 }
