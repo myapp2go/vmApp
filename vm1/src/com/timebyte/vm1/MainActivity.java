@@ -54,6 +54,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected int mailCount = 0;
 	protected int mailSize = 0;
+	protected int searchSize = 0;
 	protected int maxReadCount = 200;
     protected boolean readBodyDone = true;
     protected boolean isPlayEarcon = false;
@@ -79,9 +80,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private static boolean readDone = true;
 	private static boolean readStop = false;
 	private static boolean writeStop = false;
-	
-	private int maxMpInputRetry = 5;	
-	private int mpInputRetry = 0;
 	
 	protected Vector<String> logStr = new Vector<String>();
 	private Button searchMail;
@@ -227,7 +225,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			SystemClock.sleep(ms);
 		}
 		
-		if (mailCount <= mailSize) {
+		if ((Constants.COMMAND_READ.equals(command) && mailCount <= mailSize) ||
+			(Constants.COMMAND_SEARCH.equals(command) && mailCount <= searchSize)	) {
 			handler.postDelayed(checkRecognizer, 10000);
 		}
 	    startActivityForResult(intent, VOICE_RECOGNITION); 
@@ -259,7 +258,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public synchronized void onDone(String utteranceId) {
 				logStr.add("************ onDone " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 
-				if (microphoneOn && ((mailCount <= mailSize) || Constants.COMMAND_SEARCH.equals(command))) {
+				if (microphoneOn && ( (Constants.COMMAND_READ.equals(command) && (mailCount <= mailSize)) || Constants.COMMAND_SEARCH.equals(command))) {
 					startRecognizer(0);
 					microphoneOn = false;
 				}
@@ -310,7 +309,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	            	break;
 	            case Constants.COMMAND_SEARCH : 
-					if (mailCount <= mailSize) {
+					if (mailCount <= searchSize) {
 						if (readBodyDone) {
 							if ((mailCount % Constants.MAIL_PER_PAGE) == 0) { 
 								if (!isPlayEarcon) {
@@ -393,7 +392,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
     	}
-    	mpInputRetry = 0;
     	
         if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
         {  
@@ -585,7 +583,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
     protected void setFlag(boolean cmdDone, boolean cmdStop, boolean cmdWrite) {	
 		mailCount = 0;
-		mailSize = 0;
 		
     	readDone = cmdDone;
     	readStop = cmdStop;

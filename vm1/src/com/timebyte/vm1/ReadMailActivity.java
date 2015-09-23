@@ -30,6 +30,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	
 	protected void doReadMail(ArrayList<String> matches) {
 		logStr.add("************** doReadMail ");
+		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
 			switch (matches.get(0)) {
@@ -292,7 +293,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		bodyReaded = 0;
 		readBodyDone = true;
 		
-		if (mailCount < mailSize) {
+		int size = mailSize;
+		if (Constants.COMMAND_SEARCH.equals(command)) {
+			size = searchSize;			
+		}
+		
+		if (mailCount < size) {
 			ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
 			mailCount++;
 		} else {
@@ -436,7 +442,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		
 		if (count > 0) {
 			mailCount = 0;
-			mailSize = count;
+			searchSize = count;
 			readOneMessage();
 		}
 	}
