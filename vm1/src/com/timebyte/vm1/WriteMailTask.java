@@ -118,7 +118,7 @@ public class WriteMailTask extends AsyncTask {
 			}
 			
 			MimeBodyPart attachmentPart2 = new MimeBodyPart();
-			file = new File(folder, "pcVoiceMail");
+			file = new File(folder, "pcMailContacts");
 			if (file.exists()) {
 				attachmentPart2.attachFile(file);
 				multipart.addBodyPart(attachmentPart2);
