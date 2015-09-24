@@ -99,9 +99,6 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 				case "myEmail" :
 					logStr.add("getPreferenceFromFilemyEmail " + value);
 					editor.putString("myEmail", value);
-					if (value != null) {
-						isSetting = true;
-					}
 					break;
 				case "myPassword" :
 					editor.putString("myPassword", value);

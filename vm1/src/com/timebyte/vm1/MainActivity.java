@@ -64,7 +64,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected String readMode = Constants.READ_OPTION_SUBJECT_ONLY;  
 	
     protected boolean microphoneOn = false;
-    protected boolean isSetting = false;
     protected boolean isSyncMail = false;
     
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
@@ -108,7 +107,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public void onClick(View v) {		
 				setFlag(false, false, true);
 								
-				if (!isSetting) {
+				if (!isSetting()) {
 					settingNotice();
 				} else {
 					readMode = Constants.READ_OPTION_SUBJECT_ONLY;
@@ -134,7 +133,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public void onClick(View v) {
 				setFlag(readDone, true, false);
 				
-				if (!isSetting) {
+				if (!isSetting()) {
 					settingNotice();
 				} else {
 					command = Constants.COMMAND_WRITE;
@@ -151,7 +150,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				setFlag(readDone, true, false);
 				
 				startSettings();
-				isSetting = true;
 			}
 		});
 		
@@ -592,4 +590,16 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	}
     }
     
+    private boolean isSetting() {
+    	boolean flag = false;
+    	
+    	if (sharedPreferences != null) {
+    		String myEmail = sharedPreferences.getString("myEmail", "");
+    		String myPassword = sharedPreferences.getString("myPassword", "");
+    		if ((myEmail != null) && (myPassword != null) && (myEmail.length() > 0) && (myPassword.length() > 0)) {
+    			flag = true;
+    		}
+    	}
+    	return flag;
+    }
 }
