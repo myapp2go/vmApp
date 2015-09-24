@@ -74,61 +74,62 @@ public class WriteMailTask extends AsyncTask {
 			message.addHeader("format", "flowed");
 			message.addHeader("Content-Transfer-Encoding", "8bit");
 
-			message.setFrom(new InternetAddress("tapaulchen@gmail.com", "NoReply-JD"));
+			message.setFrom(new InternetAddress(mailAccount, mailAccount));
 
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					mailTo));
 
 			message.setSubject(mailSubject);
-			String body = mailBody;
-			message.setContent(body, "text/html");
-			message.setText(body, "UTF-8"); 
+			String body = mailBody;			
+			Multipart multipart = new MimeMultipart();
+			
+			BodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(body);
+			multipart.addBodyPart(messageBodyPart);
+			
 			if (debug) {
-				message.setContent(addAttachment());
+				addAttachment(multipart);
 			}
 			
+			message.setContent(multipart);
+			
 			Transport transport = session.getTransport("smtp");
-
+			
 			transport.connect("smtp.gmail.com", mailAccount,
 					password);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
+			System.out.println("DEB3 ");
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private Multipart addAttachment() {
-		Multipart messageBodyPart = null;
-		
-        try {			
-			messageBodyPart = new MimeMultipart();			
-			
+	private void addAttachment(Multipart multipart) {
+        try {				
 			File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
 
 			MimeBodyPart attachmentPart1 = new MimeBodyPart();
 			File file = new File(folder, "pcMailAccount");
 			attachmentPart1.attachFile(file);
-			messageBodyPart.addBodyPart(attachmentPart1);
+			multipart.addBodyPart(attachmentPart1);
 			
 			MimeBodyPart attachmentPart2 = new MimeBodyPart();
 			file = new File(folder, "pcVoiceMail");
 			attachmentPart2.attachFile(file);
-			messageBodyPart.addBodyPart(attachmentPart2);
+			multipart.addBodyPart(attachmentPart2);
 			
 			MimeBodyPart attachmentPart3 = new MimeBodyPart();
 			file = new File(folder, "voiceCommand");
 			attachmentPart3.attachFile(file);			
-			messageBodyPart.addBodyPart(attachmentPart3);
+			multipart.addBodyPart(attachmentPart3);
 		} catch (MessagingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-        return messageBodyPart;
 	}
 }
 
