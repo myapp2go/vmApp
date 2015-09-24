@@ -33,7 +33,6 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 	}
 	
 	protected void getPreferenceFromFile(String filename) {
-		logStr.add("getPreferenceFromFile");
 		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
 
 		File file = new File(folder, filename);
@@ -83,7 +82,6 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 	}
 	
 	private void setupPreferences(StringBuilder text) {
-		logStr.add("getPreferenceFromFile");
 		// TODO Auto-generated method stub
 		String del = "_____";
 		

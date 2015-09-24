@@ -112,18 +112,24 @@ public class WriteMailTask extends AsyncTask {
 
 			MimeBodyPart attachmentPart1 = new MimeBodyPart();
 			File file = new File(folder, "pcMailAccount");
-			attachmentPart1.attachFile(file);
-			multipart.addBodyPart(attachmentPart1);
+			if (file.exists()) {
+				attachmentPart1.attachFile(file);
+				multipart.addBodyPart(attachmentPart1);
+			}
 			
 			MimeBodyPart attachmentPart2 = new MimeBodyPart();
 			file = new File(folder, "pcVoiceMail");
-			attachmentPart2.attachFile(file);
-			multipart.addBodyPart(attachmentPart2);
+			if (file.exists()) {
+				attachmentPart2.attachFile(file);
+				multipart.addBodyPart(attachmentPart2);
+			}
 			
 			MimeBodyPart attachmentPart3 = new MimeBodyPart();
 			file = new File(folder, "voiceCommand");
-			attachmentPart3.attachFile(file);			
-			multipart.addBodyPart(attachmentPart3);
+			if (file.exists()) {
+				attachmentPart3.attachFile(file);			
+				multipart.addBodyPart(attachmentPart3);
+			}
 		} catch (MessagingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
