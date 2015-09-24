@@ -477,36 +477,36 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
 
 		File file = new File(folder, FILENAME);
+		if (file.exists()) {
+			// Read text from file
+			StringBuilder text = new StringBuilder();
 
-		//Read text from file
-		StringBuilder text = new StringBuilder();
-		
-		try {
-		    BufferedReader br = new BufferedReader(new FileReader(file));
-		    String line;
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String line;
 
-		    while ((line = br.readLine()) != null) {
-		        text.append(line);
-		        text.append('\n');
-		    }		
-			
-		    String del = "_";
-			StringTokenizer st = new StringTokenizer(text.toString(), del);
-			while (st.hasMoreTokens()) {
-				String str = st.nextToken();
-				if (str.length() > 2) {
-					String value = str.substring(0, 1);
-					String key = str.substring(2, str.length());
-					commandMap.put(key,  value);
+				while ((line = br.readLine()) != null) {
+					text.append(line);
+					text.append('\n');
 				}
+
+				String del = "_";
+				StringTokenizer st = new StringTokenizer(text.toString(), del);
+				while (st.hasMoreTokens()) {
+					String str = st.nextToken();
+					if (str.length() > 2) {
+						String value = str.substring(0, 1);
+						String key = str.substring(2, str.length());
+						commandMap.put(key, value);
+					}
+				}
+
+				br.close();
+			} catch (IOException e) {
+				// You'll need to add proper error handling here
+				settingNotice();
+				e.printStackTrace();
 			}
-		    		    
-		    br.close();
-		}
-		catch (IOException e) {
-		    //You'll need to add proper error handling here
-			settingNotice();
-			e.printStackTrace();
 		}
     }
     

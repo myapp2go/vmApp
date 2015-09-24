@@ -48,7 +48,7 @@ public class ContactActivity extends Activity {
 		editor.putInt("increment", 10);
 		editor.commit();
 
-		String FILENAME = "pcVoiceMail";
+		String FILENAME = "pcMailContacts";
 		String string = "hello  world!";
 		String del = "_____";
 		

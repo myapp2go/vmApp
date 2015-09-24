@@ -29,34 +29,34 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 
 	protected void getPreferenceFromFile() {
 		getPreferenceFromFile("pcMailAccount");
-		getPreferenceFromFile("pcVoiceMail");
+		getPreferenceFromFile("pcMailContacts");
 	}
 	
 	protected void getPreferenceFromFile(String filename) {
 		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
 
 		File file = new File(folder, filename);
+		if (file.exists()) {
+			// Read text from file
+			StringBuilder text = new StringBuilder();
 
-		//Read text from file
-		StringBuilder text = new StringBuilder();
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String line;
 
-		try {
-		    BufferedReader br = new BufferedReader(new FileReader(file));
-		    String line;
+				while ((line = br.readLine()) != null) {
+					text.append(line);
+					text.append('\n');
+				}
+				br.close();
+			} catch (IOException e) {
+				// You'll need to add proper error handling here
+				settingNotice();
+				e.printStackTrace();
+			}
 
-		    while ((line = br.readLine()) != null) {
-		        text.append(line);
-		        text.append('\n');
-		    }
-		    br.close();
+			setupPreferences(text);
 		}
-		catch (IOException e) {
-		    //You'll need to add proper error handling here
-			settingNotice();
-			e.printStackTrace();
-		}
-		
-		setupPreferences(text);		
 	}
 
 	protected void settingNotice() {
