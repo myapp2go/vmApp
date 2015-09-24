@@ -97,7 +97,7 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 				String value = str.substring(ind+1);
 				switch (name) {
 				case "myEmail" :
-					logStr.add("getPreferenceFromFilemyEmail " + value);
+					logStr.add("***getPreferenceFromFilemyEmail " + value);
 					editor.putString("myEmail", value);
 					break;
 				case "myPassword" :

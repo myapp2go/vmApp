@@ -254,7 +254,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {
-				logStr.add("************ onDone " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+				logStr.add("************ onDone " + command + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 
 				if (microphoneOn && ( (Constants.COMMAND_READ.equals(command) && (mailCount <= mailSize)) || Constants.COMMAND_SEARCH.equals(command))) {
 					startRecognizer(0);

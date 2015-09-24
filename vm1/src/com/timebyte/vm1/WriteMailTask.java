@@ -86,11 +86,9 @@ public class WriteMailTask extends AsyncTask {
 			BodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setText(body);
 			multipart.addBodyPart(messageBodyPart);
-			
 			if (debug) {
 				addAttachment(multipart);
 			}
-			
 			message.setContent(multipart);
 			
 			Transport transport = session.getTransport("smtp");
@@ -99,7 +97,6 @@ public class WriteMailTask extends AsyncTask {
 					password);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
-			System.out.println("DEB3 ");
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
