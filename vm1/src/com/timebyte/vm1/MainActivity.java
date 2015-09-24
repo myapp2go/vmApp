@@ -209,7 +209,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	public void startDebugging() {
 		String msg = logStr.toString();
 		
-		doDebugMail(sharedPreferences.getString("myEmail", ""), sharedPreferences.getString("myEmail", ""), "paulchennk@gmail.com", "VoiceMailDebug", msg);
+		doDebugMail(sharedPreferences.getString("myEmail", ""), sharedPreferences.getString("myPassword", ""), "paulchennk@gmail.com", "VoiceMailDebug", msg);
 	}
 	
 	public void initRecognizer() {	
