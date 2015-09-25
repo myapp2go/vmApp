@@ -52,6 +52,8 @@ public final class Constants {
 
 	public static String COMMAND_SEARCH_GREETING = "search";
 
+	public static String COMMAND_SEARCH_SETTING_NOTICE = "You did not set up your account yet";
+
 	public static final String COMMAND_WRITE = "write";
 	public static final String SUBCOMMAND_TO = "to";
 	public static final String SUBCOMMAND_VERIFY_TO = "verifyTo";

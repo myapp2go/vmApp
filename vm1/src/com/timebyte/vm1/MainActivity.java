@@ -43,7 +43,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	abstract protected void doWriteMail(ArrayList<String> matches);
 	abstract protected void doDebugMail(String myEmail, String myPassword, String mailTo, String mailSubject, String mailBody);
 	abstract protected void getPreferenceFromFile();
-	abstract protected void settingNotice();
 	
 	private final int VOICE_RECOGNITION = 1234;
 	protected SharedPreferences sharedPreferences;
@@ -108,7 +107,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				setFlag(false, false, true);
 								
 				if (!isSetting()) {
-					settingNotice();
+					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
 				} else {
 					readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 					command = Constants.COMMAND_READ;
@@ -134,7 +133,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				setFlag(readDone, true, false);
 				
 				if (!isSetting()) {
-					settingNotice();
+					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
 				} else {
 					command = Constants.COMMAND_WRITE;
 					subCommand = Constants.SUBCOMMAND_TO;
@@ -158,11 +157,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public void onClick(View v) {
 				setFlag(false, false, true);
 				
-				isSyncMail = true;
-				subCommand = Constants.COMMAND_INIT;
-				ArrayList<String> localArrayList = new ArrayList<String>();
-				localArrayList.add(readMode);
-				doReadMail(localArrayList);
+				if (!isSetting()) {
+					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
+				} else {
+					isSyncMail = true;
+					subCommand = Constants.COMMAND_INIT;
+					ArrayList<String> localArrayList = new ArrayList<String>();
+					localArrayList.add(readMode);
+					doReadMail(localArrayList);
+				}
 			}
 		});
 		
@@ -171,10 +174,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		searchMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				setFlag(true, true, true);
-				command = Constants.COMMAND_SEARCH;
-				mailCount = 0;
 				
-				ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
+				if (!isSetting()) {
+					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
+				} else {
+					command = Constants.COMMAND_SEARCH;
+					mailCount = 0;
+
+					ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
+				}
 			}
 		});
 
@@ -506,7 +514,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				br.close();
 			} catch (IOException e) {
 				// You'll need to add proper error handling here
-				settingNotice();
+//				settingNotice();
 				e.printStackTrace();
 			}
 		}

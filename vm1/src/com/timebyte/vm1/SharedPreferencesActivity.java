@@ -51,7 +51,6 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 				br.close();
 			} catch (IOException e) {
 				// You'll need to add proper error handling here
-				settingNotice();
 				e.printStackTrace();
 			}
 
@@ -59,28 +58,6 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 		}
 	}
 
-	protected void settingNotice() {
-		popupDialog();
-	}
-	
-	private void popupDialog() {
-		new AlertDialog.Builder(this)
-	    .setTitle("Setting Account")
-	    .setMessage("You did not set up your account yet!")
-	    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) { 
-	            // continue with delete
-	        }
-	     })
-	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) { 
-	            // do nothing
-	        }
-	     })
-	    .setIcon(android.R.drawable.ic_dialog_alert)
-	     .show();
-	}
-	
 	private void setupPreferences(StringBuilder text) {
 		// TODO Auto-generated method stub
 		String del = "_____";
@@ -113,4 +90,26 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 		editor.commit();
 	}
 
+	protected void settingNoticeOld() {
+		popupDialogOld();
+	}
+	
+	private void popupDialogOld() {
+		new AlertDialog.Builder(this)
+	    .setTitle("Setting Account")
+	    .setMessage("You did not set up your account yet!")
+	    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	            // continue with delete
+	        }
+	     })
+	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	            // do nothing
+	        }
+	     })
+	    .setIcon(android.R.drawable.ic_dialog_alert)
+	     .show();
+	}
+	
 }
