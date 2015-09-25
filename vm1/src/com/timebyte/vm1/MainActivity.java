@@ -172,6 +172,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public void onClick(View v) {
 				setFlag(true, true, true);
 				command = Constants.COMMAND_SEARCH;
+				mailCount = 0;
 				
 				ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
 			}
@@ -256,7 +257,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public synchronized void onDone(String utteranceId) {
 				logStr.add("************ onDone " + command + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 
-				if (microphoneOn && ( (Constants.COMMAND_READ.equals(command) && (mailCount <= mailSize)) || Constants.COMMAND_SEARCH.equals(command))) {
+				if (Constants.COMMAND_READ.equals(command) && (mailCount > mailSize)) {
+					microphoneOn = false;
+				}
+				if (microphoneOn) {
 					startRecognizer(0);
 					microphoneOn = false;
 				}

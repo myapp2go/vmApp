@@ -15,7 +15,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/cmd_continue"
         android:textColor="#ff0000"
-        android:textSize="30dip" />
+        android:textSize="20dip" />
 
     <Button
         android:id="@+id/cmd_detail"
@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/cmd_detail"
         android:textColor="#00ff00"
-        android:textSize="30dip" />    
+        android:textSize="20dip" />    
     
     <Button
         android:id="@+id/cmd_skip"
@@ -35,7 +35,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/cmd_skip"
         android:textColor="#0000ff"
-        android:textSize="30dip" />
+        android:textSize="20dip" />
 
         <Button
         android:id="@+id/cmd_stop"
@@ -45,7 +45,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/cmd_stop"
         android:textColor="#ffff00"
-        android:textSize="30dip" />
+        android:textSize="20dip" />
         
     <Button
         android:id="@+id/save"
@@ -55,7 +55,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/save"
         android:textColor="#ff00ff"
-        android:textSize="30dip" />
+        android:textSize="20dip" />
          
     <Button
         android:id="@+id/clean"
@@ -65,7 +65,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/clean"
         android:textColor="#00ffff"
-        android:textSize="30dip" />
+        android:textSize="20dip" />
  
     <Button
         android:id="@+id/cancel"
@@ -75,6 +75,6 @@
         android:layout_centerHorizontal="true"
         android:text="@string/cancel"
         android:textColor="#000000"
-        android:textSize="30dip" />
+        android:textSize="20dip" />
         
 </RelativeLayout>
