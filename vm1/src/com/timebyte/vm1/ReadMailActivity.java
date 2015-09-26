@@ -85,9 +85,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			break;
 		case Constants.COMMAND_STOP :
 			mailCount = 0;
-//			commandReset();
-//    		tts.speak(Constants.COMMAND_GREETING, TextToSpeech.QUEUE_ADD, map);
-//    		startRecognizer();
 			break;
 		}
 	}
@@ -165,14 +162,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			} catch (IOException e) {	
 				
 			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 			if (index == 0) {
 				mailCount++;
-				ttsNoMicrophone("mail number" + (index + 1) + " "
-						+ mailSubject[index]);
+				ttsNoMicrophone("mail number" + (index + 1) + " " + mailSubject[index]);
 			}
 		}
 		
@@ -186,7 +181,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			System.out.println(mailBody[i]);
 		}
 		System.out.println("***************************************************************");
-
 	}
 	
 	private String matchReadCommand(ArrayList<String> matches) {
@@ -230,12 +224,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 	
 	public void readMailDone() {
-//		microphoneOn = false;
-//		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
-//			readMessageBody();
-//		} else {
-//			readMessage();
-//		}
 		endDialog();
 	}
 
@@ -267,7 +255,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			}
 
 			ttsNoMicrophone(body);
-//			ttsNoMicrophone("mail number" + (count + 1)  + " " + body);
 		}
 	}
 	
@@ -287,8 +274,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		} else {
 			ttsNoMicrophone("End of mail");
 			mailCount++;
-		}
-			
+		}			
 	}
 	
 	private void readMessageOld() {
@@ -298,7 +284,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		if (count > mailSubject.length) {
 			count = mailSubject.length;
 		}
-
 
 		for (int i = start; i < count; i++) {
 			mailCount++;
@@ -318,7 +303,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 	}
 	
-	private String matchReadMode(ArrayList<String> matches) {
+	private String matchReadModeOld(ArrayList<String> matches) {
 		boolean found = false;
 		String sub = Constants.COMMAND_NONE;
 		
@@ -400,7 +385,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			}
 		}
 		
-//		System.out.println("********************FFF " + from);
 		return from;
 	}
 	
@@ -494,7 +478,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-		// TODO Auto-generated catch block
 //			e.printStackTrace();
 		}
 	}

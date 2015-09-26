@@ -136,8 +136,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					subCommand = Constants.SUBCOMMAND_TO;
 					ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
 				}
-			}
-			
+			}			
 		});
 		
 		final Button settings = (Button) this.findViewById(R.id.settings);
@@ -179,7 +178,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				} else {
 					command = Constants.COMMAND_SEARCH;
 					mailCount = 0;
-
 					ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
 				}
 			}
@@ -235,6 +233,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			(Constants.COMMAND_SEARCH.equals(command) && mailCount <= searchSize)	) {
 			handler.postDelayed(checkRecognizer, 10000);
 		}
+		
 	    startActivityForResult(intent, VOICE_RECOGNITION); 
 	}
 
@@ -346,7 +345,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			}
 		});
 		
-
 	}
 	
 	@Override
@@ -421,7 +419,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             }
         } else {
         	System.out.println("10 *** No Match ");
-//        	ttsAndPlayEarcon("money");
         }
     }    
 
@@ -461,7 +458,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	commandMap.put(Constants.ANSWER_SKIP, Constants.ANSWER_SKIP);
     	commandMap.put(Constants.ANSWER_STOP, Constants.ANSWER_STOP);
     	commandMap.put(Constants.ANSWER_CONTINUE, Constants.ANSWER_CONTINUE);
-
     }
     
     String FILENAME = "voiceCommand";
@@ -498,7 +494,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				br.close();
 			} catch (IOException e) {
 				// You'll need to add proper error handling here
-//				settingNotice();
 				e.printStackTrace();
 			}
 		}
@@ -532,21 +527,18 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
-//    	commandDone = false;
 		microphoneOn = true;
 		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsNoMicrophone(String msg) {
-//    	commandDone = false;
 		microphoneOn = false;
 		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
-//    	endDialog();
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
     	}
