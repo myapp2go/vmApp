@@ -321,13 +321,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	            case Constants.COMMAND_SEARCH : 
 					if (mailCount <= searchSize) {
 						if (readBodyDone) {
-							if ((mailCount % Constants.MAIL_PER_PAGE) == 0) { 
-								if (!isPlayEarcon) {
-									ttsAndPlayEarcon("beethoven");
-								}
-							} else {
-								if (!isPlayEarcon) {
-									readOneMessage();
+							if (searchSize > 0) {
+								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
+									if (!isPlayEarcon) {
+										ttsAndPlayEarcon("beethoven");
+									}
+								} else {
+									if (!isPlayEarcon) {
+										readOneMessage();
+									}
 								}
 							}
 						} else {
