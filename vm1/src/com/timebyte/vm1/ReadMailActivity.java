@@ -77,11 +77,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				}
 				break;	
 			}
-			break;	
-		case Constants.COMMAND_NEXT :
-			microphoneOn = false;
-			mailCount--;
-			readOneMessage();
 			break;
 		case Constants.COMMAND_STOP :
 			mailCount = 0;
@@ -198,31 +193,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		return sub;
 	}
 	
-	private String matchReadCommandOld(ArrayList<String> matches) {
-		// TODO Auto-generated method stub
-        boolean found = false;
-        String ans = Constants.COMMAND_NONE;
-		
-        for (int i = 0; !found && (i < matches.size()); i++) {
-        	switch (matches.get(i)) {
-        	case Constants.ANSWER_CONTINUE :
-        		found = true;
-        		ans = Constants.ANSWER_CONTINUE;
-        		break;
-        	case Constants.ANSWER_STOP :
-        		found = true;
-        		ans = Constants.ANSWER_STOP;
-        		break;	
-        	case Constants.ANSWER_SKIP :
-        		found = true;
-        		ans = Constants.ANSWER_SKIP;
-        		break;		
-        	}
-        }
-        
-        return ans;
-	}
-	
 	public void readMailDone() {
 		endDialog();
 	}
@@ -275,71 +245,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			ttsNoMicrophone("End of mail");
 			mailCount++;
 		}			
-	}
-	
-	private void readMessageOld() {
-		int start = mailCount;		
-
-		int count = mailCount + Constants.MAIL_PER_PAGE;
-		if (count > mailSubject.length) {
-			count = mailSubject.length;
-		}
-
-		for (int i = start; i < count; i++) {
-			mailCount++;
-//			Message message = mailSubject[i];
-			/*
-			System.out.println("----------------------------------");
-			System.out.println("Email Number " + (i + 1));
-			System.out.println("Subject: " + message.getSubject());
-			System.out.println("From: " + message.getFrom()[0]);
-			System.out.println("Text: " + message.getContent().toString());
-			 */
-
-//			HashMap<String, String> map = new HashMap<String, String>();
-//			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
-			
-			ttsNoMicrophone("mail number" + (i + 1)  + " " + mailSubject[i]);
-		}
-	}
-	
-	private String matchReadModeOld(ArrayList<String> matches) {
-		boolean found = false;
-		String sub = Constants.COMMAND_NONE;
-		
-		for (int i = 0; !found && (i < matches.size()); i++) {
-			switch (matches.get(i)) {
-			case Constants.ANSWER_CONTINUE:
-				found = true;
-				sub = Constants.ANSWER_CONTINUE;
-				break;
-			case Constants.SBCOMMAND_UP:
-				found = true;
-				sub = Constants.SBCOMMAND_UP;
-				break;
-			case Constants.SUBCOMMAND_ADD:
-				found = true;
-				sub = Constants.SUBCOMMAND_ADD;
-			case Constants.ANSWER_STOP:
-				found = true;
-				sub = Constants.COMMAND_STOP;
-				break;
-			case Constants.ANSWER_SKIP:
-				found = true;
-				sub = Constants.SUBCOMMAND_SKIP;
-				break;
-			case Constants.SUBCOMMAND_DETAIL:
-				found = true;
-				sub = Constants.SUBCOMMAND_DETAIL;
-				break;
-			case Constants.SUBCOMMAND_REPEAT:
-				found = true;
-				sub = Constants.SUBCOMMAND_REPEAT;
-				break;	
-			}
-		}
-		
-		return sub;
 	}
 	
 	private String parseMessage(String paramString) {
@@ -411,6 +316,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			mailCount = 0;
 			searchSize = count;
 			readOneMessage();
+			subCommand = Constants.SUBCOMMAND_RETRIEVE;
 		}
 	}
 
@@ -481,4 +387,94 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 //			e.printStackTrace();
 		}
 	}
+	
+	private void readMessageOld() {
+		int start = mailCount;		
+
+		int count = mailCount + Constants.MAIL_PER_PAGE;
+		if (count > mailSubject.length) {
+			count = mailSubject.length;
+		}
+
+		for (int i = start; i < count; i++) {
+			mailCount++;
+//			Message message = mailSubject[i];
+			/*
+			System.out.println("----------------------------------");
+			System.out.println("Email Number " + (i + 1));
+			System.out.println("Subject: " + message.getSubject());
+			System.out.println("From: " + message.getFrom()[0]);
+			System.out.println("Text: " + message.getContent().toString());
+			 */
+
+//			HashMap<String, String> map = new HashMap<String, String>();
+//			map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
+			
+			ttsNoMicrophone("mail number" + (i + 1)  + " " + mailSubject[i]);
+		}
+	}
+	
+	private String matchReadModeOld(ArrayList<String> matches) {
+		boolean found = false;
+		String sub = Constants.COMMAND_NONE;
+		
+		for (int i = 0; !found && (i < matches.size()); i++) {
+			switch (matches.get(i)) {
+			case Constants.ANSWER_CONTINUE:
+				found = true;
+				sub = Constants.ANSWER_CONTINUE;
+				break;
+			case Constants.SBCOMMAND_UP:
+				found = true;
+				sub = Constants.SBCOMMAND_UP;
+				break;
+			case Constants.SUBCOMMAND_ADD:
+				found = true;
+				sub = Constants.SUBCOMMAND_ADD;
+			case Constants.ANSWER_STOP:
+				found = true;
+				sub = Constants.COMMAND_STOP;
+				break;
+			case Constants.ANSWER_SKIP:
+				found = true;
+				sub = Constants.SUBCOMMAND_SKIP;
+				break;
+			case Constants.SUBCOMMAND_DETAIL:
+				found = true;
+				sub = Constants.SUBCOMMAND_DETAIL;
+				break;
+			case Constants.SUBCOMMAND_REPEAT:
+				found = true;
+				sub = Constants.SUBCOMMAND_REPEAT;
+				break;	
+			}
+		}
+		
+		return sub;
+	}
+	
+	private String matchReadCommandOld(ArrayList<String> matches) {
+		// TODO Auto-generated method stub
+        boolean found = false;
+        String ans = Constants.COMMAND_NONE;
+		
+        for (int i = 0; !found && (i < matches.size()); i++) {
+        	switch (matches.get(i)) {
+        	case Constants.ANSWER_CONTINUE :
+        		found = true;
+        		ans = Constants.ANSWER_CONTINUE;
+        		break;
+        	case Constants.ANSWER_STOP :
+        		found = true;
+        		ans = Constants.ANSWER_STOP;
+        		break;	
+        	case Constants.ANSWER_SKIP :
+        		found = true;
+        		ans = Constants.ANSWER_SKIP;
+        		break;		
+        	}
+        }
+        
+        return ans;
+	}	
 }

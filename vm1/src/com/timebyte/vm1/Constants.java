@@ -87,5 +87,4 @@ public final class Constants {
 	public static final String ANSWER_YES = "yes";
 	public static final String ANSWER_NO = "no";
 	
-	public static final String COMMAND_NEXT = "next";
 }

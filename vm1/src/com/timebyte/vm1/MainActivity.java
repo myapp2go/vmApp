@@ -177,6 +177,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
 				} else {
 					command = Constants.COMMAND_SEARCH;
+					subCommand = Constants.COMMAND_INIT;
 					mailCount = 0;
 					ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
 				}
@@ -401,7 +402,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             	doWriteMail(matches);
             	break;
             case Constants.COMMAND_SEARCH:
-            	doSearchMail(matches);
+            	if (Constants.COMMAND_INIT.equals(subCommand)) {
+            		doSearchMail(matches);
+            	} else {
+            		doReadMail(matches);
+            	}
             	break;
             case Constants.COMMAND_SETTING :
             	break;
