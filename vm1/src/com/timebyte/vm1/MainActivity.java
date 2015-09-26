@@ -60,7 +60,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
-	protected String readMode = Constants.READ_OPTION_SUBJECT_ONLY;  
 	
     protected boolean microphoneOn = false;
     protected boolean isSyncMail = false;
@@ -109,7 +108,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting()) {
 					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
 				} else {
-					readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 					command = Constants.COMMAND_READ;
 					mailCount = 0;
 
@@ -118,7 +116,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						subCommand = Constants.SUBCOMMAND_RETRIEVE;
 						localArrayList.add(Constants.ANSWER_CONTINUE);
 					} else {
-//						ttsNoMicrophone(Constants.COMMAND_READ_RETRIEVE);
 						subCommand = Constants.COMMAND_INIT;
 						localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
 					}					
@@ -160,10 +157,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting()) {
 					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
 				} else {
-					isSyncMail = true;
+					isSyncMail = false;
+					mailCount = 0;
+					command = Constants.COMMAND_READ;
 					subCommand = Constants.COMMAND_INIT;
 					ArrayList<String> localArrayList = new ArrayList<String>();
-					localArrayList.add(readMode);
+					localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
 					doReadMail(localArrayList);
 				}
 			}
@@ -276,45 +275,28 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	            switch (command) {
 	            case Constants.COMMAND_READ:
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
-						switch (readMode) {
-						case Constants.READ_OPTION_SUBJECT_ONLY:
-							if (mailCount <= mailSize) {
-								if (readBodyDone) {
-									if ((mailCount % Constants.MAIL_PER_PAGE) == 0) { 
-										if (!isPlayEarcon) {
-											ttsAndPlayEarcon("beethoven");
-										}
-									} else {
-										if (!isPlayEarcon) {
-											readOneMessage();
-										}
+						if (mailCount <= mailSize) {
+							if (readBodyDone) {
+								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
+									if (!isPlayEarcon) {
+										ttsAndPlayEarcon("beethoven");
 									}
 								} else {
 									if (!isPlayEarcon) {
-										ttsAndPlayEarcon("pinkpanther");
+										readOneMessage();
 									}
-								}
-							} else {
-								finishActivity(VOICE_RECOGNITION);
-								endDialog();
-							}
-							break;
-						case Constants.READ_OPTION_SUBJECT_BODY:
-							if (readBodyDone) {
-								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
-									ttsAndPlayEarcon("beethoven");
-								} else {
-//									ttsCount++;
-									readMessageBody();
 								}
 							} else {
 								if (!isPlayEarcon) {
 									ttsAndPlayEarcon("pinkpanther");
 								}
 							}
-							break;
+						} else {
+							finishActivity(VOICE_RECOGNITION);
+							endDialog();
 						}
 					}
+					break;
 	            case Constants.COMMAND_WRITE : 
 
 	            	break;
