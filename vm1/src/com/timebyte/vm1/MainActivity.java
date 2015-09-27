@@ -106,7 +106,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				setFlag(false, false, true);
 								
 				if (!isSetting()) {
-					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
+					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 				} else {
 					command = Constants.COMMAND_READ;
 					mailCount = 0;
@@ -130,11 +130,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				setFlag(readDone, true, false);
 				
 				if (!isSetting()) {
-					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
+					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 				} else {
-					command = Constants.COMMAND_WRITE;
-					subCommand = Constants.SUBCOMMAND_TO;
-					ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
+					if (contacts.isEmpty()) {
+						ttsNoMicrophone(Constants.SETTING_CONTACT_NOTICE);
+					} else {
+						command = Constants.COMMAND_WRITE;
+						subCommand = Constants.SUBCOMMAND_TO;
+						ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
+					}
 				}
 			}			
 		});
@@ -154,7 +158,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				setFlag(false, false, true);
 				
 				if (!isSetting()) {
-					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
+					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 				} else {
 					isSyncMail = false;
 					mailCount = 0;
@@ -174,7 +178,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				setFlag(true, true, true);
 				
 				if (!isSetting()) {
-					ttsNoMicrophone(Constants.COMMAND_SEARCH_SETTING_NOTICE);
+					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 				} else {
 					command = Constants.COMMAND_SEARCH;
 					subCommand = Constants.COMMAND_INIT;

@@ -91,12 +91,14 @@ public class WriteMailTask extends AsyncTask {
 			}
 			message.setContent(multipart);
 			
+			System.out.println("*******WRITE BEFORE");
 			Transport transport = session.getTransport("smtp");
 			
 			transport.connect("smtp.gmail.com", mailAccount,
 					password);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
+			System.out.println("*******WRITE AFTER");
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
