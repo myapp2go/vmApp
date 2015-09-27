@@ -132,7 +132,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (!isSetting()) {
 					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 				} else {
-					if (contacts.isEmpty()) {
+					if (!syncContact() && contacts.isEmpty()) {
 						ttsNoMicrophone(Constants.SETTING_CONTACT_NOTICE);
 					} else {
 						command = Constants.COMMAND_WRITE;
@@ -597,6 +597,28 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     			flag = true;
     		}
     	}
+    	return flag;
+    }
+    
+    private boolean syncContact() {
+    	boolean flag = false;
+    	
+    	Map <String, String> map = (Map<String, String>) sharedPreferences.getAll();
+    	if (map != null) {
+    		Iterator it = map.entrySet().iterator();
+    	    while (it.hasNext()) {
+    	        Map.Entry pair = (Map.Entry)it.next();
+    	        String key = pair.getKey().toString();
+    	        int ind = key.indexOf(Constants.CONTACT_MARKER);
+    	        if (ind == 0 && (key.length() > Constants.CONTACT_MARKER.length())) {
+        	        String name = key.substring(Constants.CONTACT_MARKER.length(), key.length());
+        	        System.out.println("***********NNN " + name);
+    	        	contacts.put(name, pair.getValue().toString());
+    	        	flag = true;
+    	        }
+    	    }
+    	}
+    	
     	return flag;
     }
 }
