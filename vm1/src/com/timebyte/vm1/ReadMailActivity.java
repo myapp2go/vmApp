@@ -22,7 +22,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private String[] mailSubject;
 	private String[] mailBody;
 	private int[] mailIndex;
-	private int maxLen = 200;
+	private int maxLen = 100;
 	private int maxRetry = 5;	
 	private int retry = 0;
 	private int bodyReaded = 0;

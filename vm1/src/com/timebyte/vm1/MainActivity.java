@@ -77,6 +77,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private static boolean readDone = true;
 	private static boolean readStop = false;
 	private static boolean writeStop = false;
+	private static boolean microphoneDone = true;
+	private static boolean speechDone = true;
 	
 	protected Vector<String> logStr = new Vector<String>();
 	private Button searchMail;
@@ -102,24 +104,27 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {		
-				setFlag(false, false, true);
-								
-				if (!isSetting()) {
-					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-				} else {
-					command = Constants.COMMAND_READ;
-					mailCount = 0;
+			public void onClick(View v) {
+				if (microphoneDone && speechDone) {
+					setFlag(false, false, true);
 
-					ArrayList<String> localArrayList = new ArrayList<String>();
-					if (isSyncMail) {
-						subCommand = Constants.SUBCOMMAND_RETRIEVE;
-						localArrayList.add(Constants.ANSWER_CONTINUE);
+					if (!isSetting()) {
+						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 					} else {
-						subCommand = Constants.COMMAND_INIT;
-						localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
-					}					
-			        doReadMail(localArrayList);
+						command = Constants.COMMAND_READ;
+						mailCount = 0;
+
+						ArrayList<String> localArrayList = new ArrayList<String>();
+						if (isSyncMail) {
+							subCommand = Constants.SUBCOMMAND_RETRIEVE;
+							localArrayList.add(Constants.ANSWER_CONTINUE);
+						} else {
+							subCommand = Constants.COMMAND_INIT;
+							localArrayList
+									.add(Constants.READ_OPTION_SUBJECT_ONLY);
+						}
+						doReadMail(localArrayList);
+					}
 				}
 			}
 		});
@@ -127,17 +132,19 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				setFlag(readDone, true, false);
-				
-				if (!isSetting()) {
-					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-				} else {
-					if (!syncContact() && contacts.isEmpty()) {
-						ttsNoMicrophone(Constants.SETTING_CONTACT_NOTICE);
+				if (microphoneDone && speechDone) {
+					setFlag(readDone, true, false);
+
+					if (!isSetting()) {
+						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 					} else {
-						command = Constants.COMMAND_WRITE;
-						subCommand = Constants.SUBCOMMAND_TO;
-						ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
+						if (!syncContact() && contacts.isEmpty()) {
+							ttsNoMicrophone(Constants.SETTING_CONTACT_NOTICE);
+						} else {
+							command = Constants.COMMAND_WRITE;
+							subCommand = Constants.SUBCOMMAND_TO;
+							ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
+						}
 					}
 				}
 			}			
@@ -155,18 +162,20 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button syncMail = (Button) this.findViewById(R.id.syncMail);
 		syncMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				setFlag(false, false, true);
-				
-				if (!isSetting()) {
-					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-				} else {
-					isSyncMail = false;
-					mailCount = 0;
-					command = Constants.COMMAND_READ;
-					subCommand = Constants.COMMAND_INIT;
-					ArrayList<String> localArrayList = new ArrayList<String>();
-					localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
-					doReadMail(localArrayList);
+				if (microphoneDone && speechDone) {
+					setFlag(false, false, true);
+
+					if (!isSetting()) {
+						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
+					} else {
+						isSyncMail = false;
+						mailCount = 0;
+						command = Constants.COMMAND_READ;
+						subCommand = Constants.COMMAND_INIT;
+						ArrayList<String> localArrayList = new ArrayList<String>();
+						localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
+						doReadMail(localArrayList);
+					}
 				}
 			}
 		});
@@ -175,15 +184,17 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		searchMail.setVisibility(View.GONE);
 		searchMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				setFlag(true, true, true);
-				
-				if (!isSetting()) {
-					ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-				} else {
-					command = Constants.COMMAND_SEARCH;
-					subCommand = Constants.COMMAND_INIT;
-					mailCount = 0;
-					ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
+				if (microphoneDone && speechDone) {
+					setFlag(true, true, true);
+
+					if (!isSetting()) {
+						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
+					} else {
+						command = Constants.COMMAND_SEARCH;
+						subCommand = Constants.COMMAND_INIT;
+						mailCount = 0;
+						ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
+					}
 				}
 			}
 		});
@@ -230,20 +241,26 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	}
 
 	public void startRecognizer(int ms) {
-		if (ms > 0) {
-			SystemClock.sleep(ms);
+		if (microphoneDone) {
+			if (ms > 0) {
+				SystemClock.sleep(ms);
+			}
+
+			if ((Constants.COMMAND_READ.equals(command) && mailCount <= mailSize)
+					|| (Constants.COMMAND_SEARCH.equals(command) && mailCount <= searchSize)) {
+				handler.postDelayed(checkRecognizer, 10000);
+			}
+
+			startActivityForResult(intent, VOICE_RECOGNITION);
+
+			microphoneDone = false;
 		}
-		
-		if ((Constants.COMMAND_READ.equals(command) && mailCount <= mailSize) ||
-			(Constants.COMMAND_SEARCH.equals(command) && mailCount <= searchSize)	) {
-			handler.postDelayed(checkRecognizer, 10000);
-		}
-		
-	    startActivityForResult(intent, VOICE_RECOGNITION); 
 	}
 
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
+	    	microphoneDone = true;
+	    	
 	    	if (readBodyDone) {
 	    		readOneMessage();
 	    	} else {
@@ -265,8 +282,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
 
 			@Override
-			public synchronized void onDone(String utteranceId) {
-				logStr.add("************ onDone " + command + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+			public synchronized void onDone(String utteranceId) {				
+				logStr.add("************ onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+				System.out.println("************ onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 
 				if (Constants.COMMAND_READ.equals(command) && (mailCount > mailSize)) {
 					microphoneOn = false;
@@ -274,6 +292,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (microphoneOn) {
 					startRecognizer(0);
 					microphoneOn = false;
+				}
+				if (microphoneDone && !speechDone) {
+					speechDone = true;
 				}
 				
 	            switch (command) {
@@ -296,6 +317,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								}
 							}
 						} else {
+					    	microphoneDone = true;
+					    	speechDone = true;
 							finishActivity(VOICE_RECOGNITION);
 							endDialog();
 						}
@@ -386,6 +409,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
+    	microphoneDone = true;
+    	speechDone = true;
+    	
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
     	}
@@ -536,18 +562,23 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
+    	speechDone = false;
+    	
 		microphoneOn = true;
 		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsNoMicrophone(String msg) {
+    	speechDone = false;
 		microphoneOn = false;
 		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
+    	speechDone = false;
+    	
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
     	}
