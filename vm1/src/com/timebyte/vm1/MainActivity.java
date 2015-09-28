@@ -29,6 +29,7 @@ import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public abstract class MainActivity extends Activity implements OnInitListener  {
@@ -111,6 +112,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					if (!isSetting()) {
 						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 					} else {
+						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 						command = Constants.COMMAND_READ;
 						mailCount = 0;
 
@@ -168,6 +170,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					if (!isSetting()) {
 						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 					} else {
+						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 						isSyncMail = false;
 						mailCount = 0;
 						command = Constants.COMMAND_READ;
@@ -190,6 +193,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					if (!isSetting()) {
 						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 					} else {
+						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 						command = Constants.COMMAND_SEARCH;
 						subCommand = Constants.COMMAND_INIT;
 						mailCount = 0;
@@ -403,6 +407,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		getPreferenceFromFile();
 
 		readDone = true;
+		
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 	
     @Override  
@@ -604,6 +610,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     		processDialog.dismiss();
     	}
     	
+    	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     	readDone = true;
     }
     
