@@ -264,6 +264,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
 	    	microphoneDone = true;
+	    	finishActivity(VOICE_RECOGNITION);
 	    	
 	    	if (readBodyDone) {
 	    		readOneMessage();
