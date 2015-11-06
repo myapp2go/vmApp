@@ -30,7 +30,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	
 	protected void doReadMail(ArrayList<String> matches) {
 		logStr.add("************** doReadMail ");
-		System.out.println("************** doReadMail " + subCommand);
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
@@ -38,9 +37,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.READ_OPTION_SUBJECT_ONLY :
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				
-				//				doReadOffLines();
+				doReadOffLines();
 				if ((mailSubject == null || mailSubject.length <= 0) || !isSyncMail) {
-					new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
+//					new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				}
 				isSyncMail = true;
 				break;
@@ -50,7 +49,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			break;
 		case Constants.SUBCOMMAND_RETRIEVE :
 			String answer = matchReadCommand(matches);
-			System.out.println("************** answer " + answer);
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
 				bodyReaded = 0;
@@ -100,7 +98,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		mailIndex = new int[len + 1];
 		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
 		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;	
-		microphoneOn = false;
 		
 		int index = 0;
 		for (int i = end - 1; i >= start; i--, index++) {
@@ -198,15 +195,20 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	public void readMailDone(String msg) {
 		endDialog();
 		
+		logStr.add("[readMailDone]");
 		if (msg != null) {
 			System.out.println("*******DONE");
-			ttsNoMicrophone(msg);
+			logStr.add("[readMailDoneA]");
+			doReadOffLines();
+			logStr.add("[readMailDoneB]");
+			if ((mailSubject == null || mailSubject.length <= 0) || !isSyncMail) {
+				logStr.add("[readMailDoneC]");
+				ttsNoMicrophone(msg);
+			}
 		}
 	}
 
 	protected void readMessageBody() {
-		System.out.println("************ ttsNoMicrophone222 " + android.os.Process.myTid());
-
 		int count = mailIndex[mailCount - 1];
 		String body = mailBody[count];
 		int len = body.length();
@@ -237,10 +239,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 	}
 	
-	
 	protected void readOneMessage() {
-		System.out.println("************ ttsNoMicrophone111 " + android.os.Process.myTid());
-
 		System.out.println("************ readOneMessage " + mailCount + " * " + mailSize);
 		bodyReaded = 0;
 		readBodyDone = true;
@@ -331,6 +330,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				searchSize = count;
 				readOneMessage();
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+			} else {
+				ttsNoMicrophone("Nothing found");
 			}
 		}
 	}
