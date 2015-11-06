@@ -30,6 +30,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	
 	protected void doReadMail(ArrayList<String> matches) {
 		logStr.add("************** doReadMail ");
+		System.out.println("************** doReadMail " + subCommand);
 		
 		switch (subCommand) {
 		case Constants.COMMAND_INIT :
@@ -49,6 +50,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			break;
 		case Constants.SUBCOMMAND_RETRIEVE :
 			String answer = matchReadCommand(matches);
+			System.out.println("************** answer " + answer);
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
 				bodyReaded = 0;
@@ -71,7 +73,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.COMMAND_NONE :
 				if (retry < maxRetry) {	
 					retry++;
-					ttsAndPlayEarcon("money");
+					ttsAndPlayEarcon("beep15");
 				} else {
 					retry = 0;
 				}
@@ -115,13 +117,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					mailBody[index] = "";
 					for (int j = 0; j < multipart.getCount(); j++) {
 						BodyPart bodyPart = multipart.getBodyPart(j);
-						int pos = bodyPart.getContentType().indexOf("PLAIN");						
+						int pos = bodyPart.getContentType().toUpperCase().indexOf("PLAIN");						
 						if (pos > 0) {
 							found = true;
 							mailBody[index] += parseMessage(bodyPart.getContent().toString());
 						}
 						
-						pos = bodyPart.getContentType().indexOf("ALTERNATIVE");
+						pos = bodyPart.getContentType().toUpperCase().indexOf("ALTERNATIVE");
 						if (pos > 0) {
 							found = true;
 							if (bodyPart.getContent() instanceof Multipart) {
@@ -129,7 +131,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 								String content = "";
 								for (int k = 0; k < nestpart.getCount(); k++) {
 									BodyPart nestBodyPart = nestpart.getBodyPart(j);
-									int nestpos =nestBodyPart.getContentType().indexOf("PLAIN");
+									int nestpos =nestBodyPart.getContentType().toUpperCase().indexOf("PLAIN");
 									if ((nestpos > 0) && (nestBodyPart.getContent() != null) && !nestBodyPart.getContent().toString().equals("null")) {
 										content = nestBodyPart.getContent().toString();
 									}
@@ -139,7 +141,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 						}
 						String disposition = bodyPart.getDisposition();
 						if (disposition != null && (disposition.equals(Part.ATTACHMENT) || disposition.equals(Part.INLINE))) {	
-							mailBody[i] += Constants.MAIL_BODY_HAVE_ATTACHMENT;
+							mailBody[index] += Constants.MAIL_BODY_HAVE_ATTACHMENT;
 						}
 					}
 									
@@ -147,7 +149,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 						mailBody[index] += Constants.MAIL_BODY_NOT_SUPPORT;
 					}
 				} else {
-					int pos = msg.getContentType().indexOf("PLAIN");
+					int pos = msg.getContentType().toUpperCase().indexOf("PLAIN");
 					if (pos == -1) {
 						mailBody[index] += Constants.MAIL_BODY_IS_HTML;
 					} else {
@@ -193,11 +195,18 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		return sub;
 	}
 	
-	public void readMailDone() {
+	public void readMailDone(String msg) {
 		endDialog();
+		
+		if (msg != null) {
+			System.out.println("*******DONE");
+			ttsNoMicrophone(msg);
+		}
 	}
 
 	protected void readMessageBody() {
+		System.out.println("************ ttsNoMicrophone222 " + android.os.Process.myTid());
+
 		int count = mailIndex[mailCount - 1];
 		String body = mailBody[count];
 		int len = body.length();
@@ -228,7 +237,10 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 	}
 	
+	
 	protected void readOneMessage() {
+		System.out.println("************ ttsNoMicrophone111 " + android.os.Process.myTid());
+
 		System.out.println("************ readOneMessage " + mailCount + " * " + mailSize);
 		bodyReaded = 0;
 		readBodyDone = true;
@@ -247,7 +259,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}			
 	}
 	
-	private String parseMessage(String paramString) {
+	private String parseMessage(String str) {
+		String paramString = str.toLowerCase();
 	    int start = paramString.indexOf("http", 0);
 	    StringBuffer localStringBuffer = new StringBuffer();
 
@@ -297,26 +310,28 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		boolean found = false;
 		
 		int count = 0;
-		for (int i = 0; i < mailSubject.length-1; i++) {
-			String subject = mailSubject[i];
-			found = false;
-			if (subject == null) {
-				found = true;
-			}
-			for (int j = 0; !found && (j < matches.size()); j++) {
-				String str = matches.get(j);
-				if (subject.indexOf(str) >= 0) {
-					mailIndex[count++] = i;
+		if (mailSubject != null) {
+			for (int i = 0; i < mailSubject.length - 1; i++) {
+				String subject = mailSubject[i];
+				found = false;
+				if (subject == null) {
 					found = true;
 				}
+				for (int j = 0; !found && (j < matches.size()); j++) {
+					String str = matches.get(j);
+					if (subject.indexOf(str) >= 0) {
+						mailIndex[count++] = i;
+						found = true;
+					}
+				}
 			}
-		}
-		
-		if (count > 0) {
-			mailCount = 0;
-			searchSize = count;
-			readOneMessage();
-			subCommand = Constants.SUBCOMMAND_RETRIEVE;
+
+			if (count > 0) {
+				mailCount = 0;
+				searchSize = count;
+				readOneMessage();
+				subCommand = Constants.SUBCOMMAND_RETRIEVE;
+			}
 		}
 	}
 

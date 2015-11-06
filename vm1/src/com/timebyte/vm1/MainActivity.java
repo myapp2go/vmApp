@@ -85,6 +85,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private Button searchMail;
 	private Button offLine;
 	
+	private String mailAccount = "";
+	private String messageQueue = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,6 +120,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						mailCount = 0;
 
 						ArrayList<String> localArrayList = new ArrayList<String>();
+						if (!mailAccount.equalsIgnoreCase(sharedPreferences.getString("myEmail", ""))) {
+							isSyncMail = false;
+						}
 						if (isSyncMail) {
 							subCommand = Constants.SUBCOMMAND_RETRIEVE;
 							localArrayList.add(Constants.ANSWER_CONTINUE);
@@ -245,6 +251,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	}
 
 	public void startRecognizer(int ms) {
+    	System.out.println("******startRecognizer " + android.os.Process.myTid());
+
 		if (microphoneDone) {
 			if (ms > 0) {
 				SystemClock.sleep(ms);
@@ -283,19 +291,31 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		tts.addEarcon("beethoven", "com.timebyte.vm1", R.raw.beethoven);
 		tts.addEarcon("jetsons", "com.timebyte.vm1", R.raw.jetsons);
 		tts.addEarcon("pinkpanther", "com.timebyte.vm1", R.raw.pinkpanther);
-		
+		tts.addEarcon("beep15", "com.timebyte.vm1", R.raw.beep15);
+		tts.addEarcon("beep17", "com.timebyte.vm1", R.raw.beep17);
+		tts.addEarcon("beep21", "com.timebyte.vm1", R.raw.beep21);
+
 		tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 				logStr.add("************ onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println("************ onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+				System.out.println("************ onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 
+				if (isPlayEarcon) {
+					isPlayEarcon = false;
+					if (messageQueue != null) {
+						ttsNoMicrophone(messageQueue);
+						messageQueue = null;
+					}
+					return;
+				}
+				
 				if (Constants.COMMAND_READ.equals(command) && (mailCount > mailSize)) {
 					microphoneOn = false;
 				}
 				if (microphoneOn) {
-					startRecognizer(0);
+//					startRecognizer(0);
 					microphoneOn = false;
 				}
 				if (microphoneDone && !speechDone) {
@@ -305,11 +325,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	            switch (command) {
 	            case Constants.COMMAND_READ:
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
-						if (mailCount <= mailSize) {
+						if ((mailSize > 0) && (mailCount <= mailSize)) {
 							if (readBodyDone) {
 								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
 									if (!isPlayEarcon) {
-										ttsAndPlayEarcon("beethoven");
+										ttsAndPlayEarcon("beep21");
 									}
 								} else {
 									if (!isPlayEarcon) {
@@ -318,7 +338,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 								}
 							} else {
 								if (!isPlayEarcon) {
-									ttsAndPlayEarcon("pinkpanther");
+									ttsAndPlayEarcon("beep17");
 								}
 							}
 						} else {
@@ -338,7 +358,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							if (searchSize > 0) {
 								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
 									if (!isPlayEarcon) {
-										ttsAndPlayEarcon("beethoven");
+										ttsAndPlayEarcon("beep21");
 									}
 								} else {
 									if (!isPlayEarcon) {
@@ -348,7 +368,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							}
 						} else {
 							if (!isPlayEarcon) {
-								ttsAndPlayEarcon("pinkpanther");
+								ttsAndPlayEarcon("beep17");
 							}
 						}
 					} else {
@@ -368,7 +388,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public void onStart(String utteranceId) {
-//				System.out.println("onStart ");
+				System.out.println("onStart " + android.os.Process.myTid());
 			}
 
 			@Override
@@ -407,6 +427,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
 
+		mailAccount = sharedPreferences.getString("myEmail", "");
+		
 		readDone = true;
 		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -433,6 +455,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             
             switch (command) {
             case Constants.COMMAND_READ:
+            	System.out.println("******onActivityResult " + android.os.Process.myTid());
+
             	doReadMail(matches);
             	break;
             case Constants.COMMAND_WRITE : 
@@ -569,21 +593,31 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
+    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid());
+
     	speechDone = false;
     	
 		microphoneOn = true;
-		isPlayEarcon = false;
+//		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsNoMicrophone(String msg) {
+    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
+ 
+    	if (isPlayEarcon) {
+    		messageQueue = msg;
+    		return;
+    	}
+    	
     	speechDone = false;
 		microphoneOn = false;
-		isPlayEarcon = false;
+//		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
+    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid());
     	speechDone = false;
     	
     	if (handler != null) {
@@ -593,6 +627,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		microphoneOn = true;
 		isPlayEarcon = true;
 		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, map);
+		startRecognizer(0);
     }
     
     private void startDialogOld() {
@@ -604,14 +639,16 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void endDialog() {
-    	searchMail.setVisibility(View.VISIBLE);
+    	if (mailSize > 0) {
+    		searchMail.setVisibility(View.VISIBLE);
+    	}
 //    	offLine.setVisibility(View.VISIBLE);
     	
     	if (processDialog != null) {
     		processDialog.dismiss();
     	}
     	
-    	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//    	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     	readDone = true;
     }
     

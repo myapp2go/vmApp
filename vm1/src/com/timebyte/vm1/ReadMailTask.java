@@ -119,7 +119,7 @@ public class ReadMailTask extends AsyncTask {
 	public void onPostExecute(Object result) {
 		statusDialog.dismiss();
 		
-		readMailActivity.readMailDone();
+		readMailActivity.readMailDone(Constants.SETTING_ACCOUNT_ERROR);
 	}
 	
 }
