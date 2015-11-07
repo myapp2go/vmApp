@@ -56,6 +56,7 @@ public final class Constants {
 	public static String SETTING_ACCOUNT_NOTICE = "You did not set up your account yet";
 	public static String SETTING_CONTACT_NOTICE = "You did not set up your contact list yet";
 	public static String SETTING_ACCOUNT_ERROR = "Please verify your account and password.";
+	public static String NETWORK_ERROR = "Please verify your network connection.";
 
 	public static final String COMMAND_WRITE = "write";
 	public static final String SUBCOMMAND_TO = "to";

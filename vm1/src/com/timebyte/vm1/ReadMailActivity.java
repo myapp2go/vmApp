@@ -200,7 +200,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			if ((mailSubject == null || mailSubject.length <= 0) || !isSyncMail) {
 				ttsNoMicrophone(msg);
 			}
-f		}
+		}
 	}
 
 	protected void readMessageBody() {

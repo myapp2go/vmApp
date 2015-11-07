@@ -141,18 +141,22 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
 		writeMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (microphoneDone && speechDone) {
-					setFlag(readDone, true, false);
+				if (isOffline) {
+					ttsNoMicrophone(Constants.NETWORK_ERROR);
+				} else {
+					if (microphoneDone && speechDone) {
+						setFlag(readDone, true, false);
 
-					if (!isSetting()) {
-						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-					} else {
-						if (!syncContact() && contacts.isEmpty()) {
-							ttsNoMicrophone(Constants.SETTING_CONTACT_NOTICE);
+						if (!isSetting()) {
+							ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
 						} else {
-							command = Constants.COMMAND_WRITE;
-							subCommand = Constants.SUBCOMMAND_TO;
-							ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
+							if (!syncContact() && contacts.isEmpty()) {
+								ttsNoMicrophone(Constants.SETTING_CONTACT_NOTICE);
+							} else {
+								command = Constants.COMMAND_WRITE;
+								subCommand = Constants.SUBCOMMAND_TO;
+								ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
+							}
 						}
 					}
 				}
@@ -483,7 +487,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             	break;
             }
         } else {
-        	System.out.println("10 *** No Match ");
+        	if (Constants.COMMAND_WRITE.equals(command)) {
+        		ttsNoMicrophone(Constants.NETWORK_ERROR);
+        	}
+//        	System.out.println("10 *** No Match ");
         }
     }    
 
