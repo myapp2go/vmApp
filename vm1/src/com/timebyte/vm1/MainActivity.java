@@ -64,6 +64,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
     protected boolean microphoneOn = false;
     protected boolean isSyncMail = false;
+    protected boolean isOffline = false;
     
 	protected HashMap<String, String> contacts = new HashMap<String, String>();
     
@@ -251,7 +252,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	}
 
 	public void startRecognizer(int ms) {
-    	System.out.println("******startRecognizer " + android.os.Process.myTid());
+//    	System.out.println("******startRecognizer " + android.os.Process.myTid());
 
 		if (microphoneDone) {
 			if (ms > 0) {
@@ -300,7 +301,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 				logStr.add("************ onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println("************ onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+//				System.out.println("************ onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 
 				if (isPlayEarcon) {
 					isPlayEarcon = false;
@@ -388,7 +389,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public void onStart(String utteranceId) {
-				System.out.println("onStart " + android.os.Process.myTid());
+//				System.out.println("onStart " + android.os.Process.myTid());
 			}
 
 			@Override
@@ -455,8 +456,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             
             switch (command) {
             case Constants.COMMAND_READ:
-            	System.out.println("******onActivityResult " + android.os.Process.myTid());
-
             	doReadMail(matches);
             	break;
             case Constants.COMMAND_WRITE : 
@@ -593,7 +592,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
-    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid());
+//    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid());
 
     	speechDone = false;
     	
@@ -603,7 +602,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsNoMicrophone(String msg) {
-    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
+ //   	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
  
     	if (isPlayEarcon) {
     		messageQueue = msg;
@@ -617,7 +616,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndPlayEarcon(String msg) {
-    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid());
+//    	System.out.println("*****ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
     	speechDone = false;
     	
     	if (handler != null) {
@@ -688,7 +687,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	        int ind = key.indexOf(Constants.CONTACT_MARKER);
     	        if (ind == 0 && (key.length() > Constants.CONTACT_MARKER.length())) {
         	        String name = key.substring(Constants.CONTACT_MARKER.length(), key.length());
-        	        System.out.println("***********NNN " + name);
+ //       	        System.out.println("***********NNN " + name);
     	        	contacts.put(name, pair.getValue().toString());
     	        	flag = true;
     	        }

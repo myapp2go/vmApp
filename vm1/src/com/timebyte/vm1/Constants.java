@@ -86,6 +86,7 @@ public final class Constants {
 	public static final String ANSWER_SKIP = "3";
 	public static final String ANSWER_STOP = "4";
 	public static final String ANSWER_REPEAT = "5";
+	public static final String ANSWER_NOT_VALID = "Please speak 1 to 4";
 	
 	public static final String ANSWER_YES = "yes";
 	public static final String ANSWER_NO = "no";

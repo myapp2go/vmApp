@@ -36,10 +36,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			switch (matches.get(0)) {
 			case Constants.READ_OPTION_SUBJECT_ONLY :
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
-				
-				doReadOffLines();
+				//				doReadOffLines();
 				if ((mailSubject == null || mailSubject.length <= 0) || !isSyncMail) {
-//					new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
+					new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				}
 				isSyncMail = true;
 				break;
@@ -71,7 +70,8 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.COMMAND_NONE :
 				if (retry < maxRetry) {	
 					retry++;
-					ttsAndPlayEarcon("beep15");
+					ttsNoMicrophone(Constants.ANSWER_NOT_VALID);
+//					ttsAndPlayEarcon("beep15");
 				} else {
 					retry = 0;
 				}
@@ -195,17 +195,12 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	public void readMailDone(String msg) {
 		endDialog();
 		
-		logStr.add("[readMailDone]");
 		if (msg != null) {
-			System.out.println("*******DONE");
-			logStr.add("[readMailDoneA]");
 			doReadOffLines();
-			logStr.add("[readMailDoneB]");
 			if ((mailSubject == null || mailSubject.length <= 0) || !isSyncMail) {
-				logStr.add("[readMailDoneC]");
 				ttsNoMicrophone(msg);
 			}
-		}
+f		}
 	}
 
 	protected void readMessageBody() {
