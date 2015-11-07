@@ -305,7 +305,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 				logStr.add("************ onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-//				System.out.println("************ onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+				System.out.println("************ onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 
 				if (isPlayEarcon) {
 					isPlayEarcon = false;
@@ -355,7 +355,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 					}
 					break;
 	            case Constants.COMMAND_WRITE : 
-
+	            	ttsAndPlayEarcon("beep15");
 	            	break;
 	            case Constants.COMMAND_SEARCH : 
 					if (mailCount <= searchSize) {
@@ -381,19 +381,23 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						endDialog();
 					}
 	            	break;
-	            case Constants.COMMAND_SETTING :
+	            case Constants.COMMAND_SETTING :            	
+	            	break;
+	            case Constants.COMMAND_COMMAND_RECORD :
+	            	ttsAndPlayEarcon("beep21");
 	            	break;
 	            case Constants.COMMAND_STOP:
 	            	break;	
 	            default :								// INIT
 	            	System.out.println("*** ERROR96 ");
+//	            	ttsNoMicrophone(Constants.NETWORK_ERROR);
 	            	break;
 	            }
 			}
 
 			@Override
 			public void onStart(String utteranceId) {
-//				System.out.println("onStart " + android.os.Process.myTid());
+				System.out.println("onStart " + android.os.Process.myTid());
 			}
 
 			@Override
@@ -445,6 +449,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	super.onActivityResult(requestCode, resultCode, data);
     	microphoneDone = true;
     	speechDone = true;
+    	isOffline = false;
     	
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
@@ -488,9 +493,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             }
         } else {
         	if (Constants.COMMAND_WRITE.equals(command)) {
-        		ttsNoMicrophone(Constants.NETWORK_ERROR);
+        		isOffline = true;
+//        		ttsNoMicrophone(Constants.NETWORK_ERROR);
         	}
-//        	System.out.println("10 *** No Match ");
+        	System.out.println("10 *** No Match " + command);
         }
     }    
 
