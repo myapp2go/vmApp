@@ -103,7 +103,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		for (int i = end - 1; i >= start; i--, index++) {
 			try {
 				Message msg = messages[i];
-				mailSubject[index] = parseFrom(msg.getFrom()[0].toString()) + " send " + msg.getSubject();
+				mailSubject[index] = parseFrom(msg.getFrom()[0].toString()) + " send " + msg.getSubject().toLowerCase();
 				mailIndex[index] = index;
 				
 				Object msgContent = msg.getContent();
@@ -314,7 +314,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					found = true;
 				}
 				for (int j = 0; !found && (j < matches.size()); j++) {
-					String str = matches.get(j);
+					String str = matches.get(j).toLowerCase();
 					if (subject.indexOf(str) >= 0) {
 						mailIndex[count++] = i;
 						found = true;
@@ -427,67 +427,4 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 	}
 	
-	private String matchReadModeOld(ArrayList<String> matches) {
-		boolean found = false;
-		String sub = Constants.COMMAND_NONE;
-		
-		for (int i = 0; !found && (i < matches.size()); i++) {
-			switch (matches.get(i)) {
-			case Constants.ANSWER_CONTINUE:
-				found = true;
-				sub = Constants.ANSWER_CONTINUE;
-				break;
-			case Constants.SBCOMMAND_UP:
-				found = true;
-				sub = Constants.SBCOMMAND_UP;
-				break;
-			case Constants.SUBCOMMAND_ADD:
-				found = true;
-				sub = Constants.SUBCOMMAND_ADD;
-			case Constants.ANSWER_STOP:
-				found = true;
-				sub = Constants.COMMAND_STOP;
-				break;
-			case Constants.ANSWER_SKIP:
-				found = true;
-				sub = Constants.SUBCOMMAND_SKIP;
-				break;
-			case Constants.SUBCOMMAND_DETAIL:
-				found = true;
-				sub = Constants.SUBCOMMAND_DETAIL;
-				break;
-			case Constants.SUBCOMMAND_REPEAT:
-				found = true;
-				sub = Constants.SUBCOMMAND_REPEAT;
-				break;	
-			}
-		}
-		
-		return sub;
-	}
-	
-	private String matchReadCommandOld(ArrayList<String> matches) {
-		// TODO Auto-generated method stub
-        boolean found = false;
-        String ans = Constants.COMMAND_NONE;
-		
-        for (int i = 0; !found && (i < matches.size()); i++) {
-        	switch (matches.get(i)) {
-        	case Constants.ANSWER_CONTINUE :
-        		found = true;
-        		ans = Constants.ANSWER_CONTINUE;
-        		break;
-        	case Constants.ANSWER_STOP :
-        		found = true;
-        		ans = Constants.ANSWER_STOP;
-        		break;	
-        	case Constants.ANSWER_SKIP :
-        		found = true;
-        		ans = Constants.ANSWER_SKIP;
-        		break;		
-        	}
-        }
-        
-        return ans;
-	}	
 }

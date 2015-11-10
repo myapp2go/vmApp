@@ -334,53 +334,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				
 	            switch (command) {
 	            case Constants.COMMAND_READ:
-	            	/*
-					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
-						if ((mailSize > 0) && (mailCount <= mailSize)) {
-							if (readBodyDone) {
-								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
-									ttsAndPlayEarcon("beep21");
-								} else {
-									readOneMessage();
-								}
-							} else {
-								ttsAndPlayEarcon("beep17");
-							}
-						} else {
-					    	microphoneDone = true;
-					    	speechDone = true;
-							finishActivity(VOICE_RECOGNITION);
-							endDialog();
-						}
-					} */
 	            	ttsAndPlayEarcon("beep21");
 					break;
 	            case Constants.COMMAND_WRITE : 
 	            	ttsAndPlayEarcon("beep15");
 	            	break;
 	            case Constants.COMMAND_SEARCH : 
-					if (mailCount <= searchSize) {
-						if (readBodyDone) {
-							if (searchSize > 0) {
-								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
-									if (!isPlayEarcon) {
-										ttsAndPlayEarcon("beep21");
-									}
-								} else {
-									if (!isPlayEarcon) {
-										readOneMessage();
-									}
-								}
-							}
-						} else {
-							if (!isPlayEarcon) {
-								ttsAndPlayEarcon("beep17");
-							}
-						}
-					} else {
-						finishActivity(VOICE_RECOGNITION);
-						endDialog();
-					}
+	            	ttsAndPlayEarcon("beep21");
 	            	break;
 	            case Constants.COMMAND_SETTING :            	
 	            	break;
