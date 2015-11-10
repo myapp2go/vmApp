@@ -20,6 +20,7 @@ public class ReadMailTask extends AsyncTask {
 
 	private static String imapHost = "imap.gmail.com";
 	private static String imapStoreType = "imaps";
+	private static String errorMsg = null;
 	
 	private ReadMailActivity readMailActivity;
 	private ProgressDialog statusDialog;
@@ -87,6 +88,7 @@ public class ReadMailTask extends AsyncTask {
 		} catch (NoSuchProviderException e) {
 			e.printStackTrace();
 		} catch (MessagingException e) {
+			errorMsg = Constants.SETTING_ACCOUNT_ERROR;
 			e.printStackTrace();	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,7 +121,7 @@ public class ReadMailTask extends AsyncTask {
 	public void onPostExecute(Object result) {
 		statusDialog.dismiss();
 		
-		readMailActivity.readMailDone(Constants.SETTING_ACCOUNT_ERROR);
+		readMailActivity.readMailDone(errorMsg);
 	}
 	
 }

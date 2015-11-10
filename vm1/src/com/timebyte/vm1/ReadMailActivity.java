@@ -70,7 +70,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			case Constants.COMMAND_NONE :
 				if (retry < maxRetry) {	
 					retry++;
-					ttsNoMicrophone(Constants.ANSWER_NOT_VALID);
+					ttsAndMicrophone(Constants.ANSWER_NOT_VALID);
 //					ttsAndPlayEarcon("beep15");
 				} else {
 					retry = 0;
@@ -161,7 +161,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			
 			if (index == 0) {
 				mailCount++;
-				ttsNoMicrophone("mail number" + (index + 1) + " " + mailSubject[index]);
+				ttsAndMicrophone("mail number" + (index + 1) + " " + mailSubject[index]);
 			}
 		}
 		
@@ -198,7 +198,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		if (msg != null) {
 			doReadOffLines();
 			if ((mailSubject == null || mailSubject.length <= 0) || !isSyncMail) {
-				ttsNoMicrophone(msg);
+				ttsAndMicrophone(msg);
 			}
 		} else {
 			doSaveOffLines();
@@ -232,7 +232,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				readBodyDone = true;
 			}
 
-			ttsNoMicrophone(body);
+			ttsAndMicrophone(body);
 		}
 	}
 	
@@ -247,7 +247,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		}
 		
 		if (mailCount < size) {
-			ttsNoMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
+			ttsAndMicrophone("mail number" + (mailCount+1)  + " " + mailSubject[mailIndex[mailCount]]);		
 			mailCount++;
 		} else {
 			ttsNoMicrophone("End of mail");
@@ -365,7 +365,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		if (mailSubject == null || mailSubject.length <= 0) {
 			System.out.println("No File found");
 		} else {
-			ttsNoMicrophone("mail number " + (mailCount+1) + " " + mailSubject[mailCount]);
+			ttsAndMicrophone("mail number " + (mailCount+1) + " " + mailSubject[mailCount]);
 			mailCount++;
 		}
 	}

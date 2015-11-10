@@ -88,6 +88,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	private String mailAccount = "";
 	private String messageQueue = null;
+	private String earconQueue = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -223,7 +224,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		});
 		
 		final Button debugging = (Button) this.findViewById(R.id.debugging);
-//		debugging.setVisibility(View.GONE);
+		debugging.setVisibility(View.GONE);
 		debugging.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				startDebugging();
@@ -304,13 +305,17 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {				
-				logStr.add("************ onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println("************ onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-
+//				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+//				System.out.println("***********onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + microphoneOn + " * " + microphoneDone + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+				
+				if (!microphoneOn) {
+					return;
+				}
+				
 				if (isPlayEarcon) {
 					isPlayEarcon = false;
 					if (messageQueue != null) {
-						ttsNoMicrophone(messageQueue);
+						ttsAndMicrophone(messageQueue);
 						messageQueue = null;
 					}
 					return;
@@ -321,7 +326,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				}
 				if (microphoneOn) {
 //					startRecognizer(0);
-					microphoneOn = false;
+//					microphoneOn = false;
 				}
 				if (microphoneDone && !speechDone) {
 					speechDone = true;
@@ -329,22 +334,17 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				
 	            switch (command) {
 	            case Constants.COMMAND_READ:
+	            	/*
 					if (Constants.SUBCOMMAND_RETRIEVE.equals(subCommand)) {
 						if ((mailSize > 0) && (mailCount <= mailSize)) {
 							if (readBodyDone) {
 								if ((mailCount % Constants.MAIL_PER_PAGE) == 0) {
-									if (!isPlayEarcon) {
-										ttsAndPlayEarcon("beep21");
-									}
+									ttsAndPlayEarcon("beep21");
 								} else {
-									if (!isPlayEarcon) {
-										readOneMessage();
-									}
+									readOneMessage();
 								}
 							} else {
-								if (!isPlayEarcon) {
-									ttsAndPlayEarcon("beep17");
-								}
+								ttsAndPlayEarcon("beep17");
 							}
 						} else {
 					    	microphoneDone = true;
@@ -352,7 +352,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							finishActivity(VOICE_RECOGNITION);
 							endDialog();
 						}
-					}
+					} */
+	            	ttsAndPlayEarcon("beep21");
 					break;
 	            case Constants.COMMAND_WRITE : 
 	            	ttsAndPlayEarcon("beep15");
@@ -397,7 +398,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public void onStart(String utteranceId) {
-				System.out.println("onStart " + android.os.Process.myTid());
+//				System.out.println("onStart " + android.os.Process.myTid());
 			}
 
 			@Override
@@ -605,32 +606,38 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
-//    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid());
+//    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid() + msg);
 
-    	speechDone = false;
+    	if (isPlayEarcon) {
+    		messageQueue = msg;
+    		return;
+    	}
+    	
+//    	speechDone = false;
     	
 		microphoneOn = true;
 //		isPlayEarcon = false;
+
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsNoMicrophone(String msg) {
- //   	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
+//    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
  
     	if (isPlayEarcon) {
     		messageQueue = msg;
     		return;
     	}
     	
-    	speechDone = false;
+  //  	speechDone = false;
 		microphoneOn = false;
 //		isPlayEarcon = false;
 		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
-//    	System.out.println("*****ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
-    	speechDone = false;
+//    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
+//    	speechDone = false;
     	
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
