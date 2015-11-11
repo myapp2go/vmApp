@@ -18,7 +18,9 @@ import android.os.AsyncTask;
 
 public class ReadMailTask extends AsyncTask {
 
-	private static String imapHost = "imap.gmail.com";
+	private static String imapGmailHost = "imap.gmail.com";
+	private static String imapYahooHost = "imap.mail.yahoo.com";
+	private static String imapOutlookHost = "imap-mail.outlook.com";
 	private static String imapStoreType = "imaps";
 	private static String errorMsg = null;
 	
@@ -46,14 +48,43 @@ public class ReadMailTask extends AsyncTask {
 		String myEmail = pref.getString("myEmail", "");
 		String myPassword = pref.getString("myPassword", "");
 		String readOPtion = pref.getString("readOPtion", "");
-
-		System.out.println("*************************TASK " + myEmail + " * " + myPassword + " * " + readOPtion);
-		readGEmailByIMAP(myEmail, myPassword);
+		String host = findHost(myEmail);
 		
+		System.out.println("*************************TASK " + myEmail + " * " + myPassword + " * " + readOPtion);
+		switch (host) {
+		case "gmail" :
+			readGEmailByIMAP(imapGmailHost, myEmail, myPassword);
+			break;
+		case "yahoo" :
+			readGEmailByIMAP(imapYahooHost, myEmail, myPassword);
+			break;
+		case "outlook" :
+			readGEmailByIMAP(imapOutlookHost, myEmail, myPassword);
+			break;
+		default :
+			errorMsg = Constants.SETTING_ACCOUNT_ERROR;
+			break;
+		}
+			
 		return null;
 	}
 
-	public void readGEmailByIMAP(String mailAccount, String password) {	
+	private String findHost(String paramString) {
+		String str = "";
+
+		if (paramString != null) {
+			int i = paramString.indexOf("@");
+			if (i > 0) {
+				int j = paramString.indexOf(".", i);
+				if (j > 0) {
+					str = paramString.substring(i + 1, j).toLowerCase();
+				}
+			}
+		}
+		return str.toLowerCase();
+	}
+	
+	public void readGEmailByIMAP(String imapHost, String mailAccount, String password) {	
 		Store emailStore = null;
 		Folder emailFolder = null;
 	
