@@ -66,7 +66,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
 	
-    protected boolean microphoneOn = false;
     protected boolean isSyncMail = false;
     protected boolean isOffline = false;
     
@@ -83,7 +82,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private static boolean readDone = true;
 	private static boolean readStop = false;
 	private static boolean writeStop = false;
-	private static boolean microphoneDone = true;
 	private static String speechDone = null;
 	
 	protected Vector<String> logStr = new Vector<String>();
@@ -171,9 +169,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button settings = (Button) this.findViewById(R.id.settings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				setFlag(readDone, true, false);
+				if (speechDone == null) {
+					setFlag(readDone, true, false);
 				
-				startSettings();
+					startSettings();
+				}
 			}
 		});
 		
@@ -263,7 +263,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	public void startRecognizer(int ms) {
 //    	System.out.println("******startRecognizer " + android.os.Process.myTid());
 
-		if (microphoneDone) {
+		if (mapEarconID.equals(speechDone)) {
 			if (ms > 0) {
 				SystemClock.sleep(ms);
 			}
@@ -274,14 +274,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			}
 
 			startActivityForResult(intent, VOICE_RECOGNITION);
-
-			microphoneDone = false;
 		}
 	}
 
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
-	    	microphoneDone = true;
 	    	finishActivity(VOICE_RECOGNITION);
 	    	
 	    	if (readBodyDone) {
@@ -312,7 +309,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println("&&&&& " + utteranceId + "***********onDone " + android.os.Process.myTid() + " * " + command + " * " + microphoneOn + " * " + microphoneDone + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+//				System.out.println("&&&&& " + utteranceId + "***********onDone " + android.os.Process.myTid() + " * " + command + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 		
 				switch (utteranceId) {
 				case mapTTSID :
@@ -374,7 +371,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public void onStart(String utteranceId) {
-				System.out.println("&&&&& " + utteranceId + "***onStart " + android.os.Process.myTid());
+//				System.out.println("&&&&& " + utteranceId + "***onStart " + android.os.Process.myTid());
 			}
 
 			@Override
@@ -424,8 +421,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
-    	microphoneDone = true;
-//    	speechDone = true;
     	isOffline = false;
     	
     	if (handler != null) {
@@ -479,7 +474,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
     public void commandRecord(String type) {
     	command = Constants.COMMAND_COMMAND_RECORD;
-    	microphoneOn = true;
     	commandType = type;
     	
         switch (type) {
@@ -582,7 +576,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
-    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid() + msg);
+//    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid() + msg);
 
     	if (mapEarconID.equals(speechDone)) {
     		messageQueue = msg;
@@ -594,14 +588,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     		System.out.println("***********ERROR_01, should not happen. " + speechDone);
     	} else {
     		speechDone = mapTTSPhoneID;	
-    		microphoneOn = true;
-//			isPlayEarcon = false;
     		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTSPhone);
     	}
     }
     
     protected void ttsNoMicrophone(String msg) {
-    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
+//    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
  
     	if (mapEarconID.equals(speechDone)) {
     		messageQueue = msg;
@@ -613,14 +605,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     		System.out.println("***********ERROR_02, should not happen. " + speechDone);
     	} else {
     		speechDone = mapTTSID;
-    		microphoneOn = false;
-//		isPlayEarcon = false;
     		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
     	}
     }
     
     protected void ttsAndPlayEarcon(String msg) {
-    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
+//    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
 
     	if (speechDone != null) {
     		System.out.println("***********ERROR_03, should not happen. " + speechDone);
@@ -631,8 +621,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     			handler.removeCallbacks(checkRecognizer);
     		}
     	
-    		microphoneOn = true;
-//    		isPlayEarcon = true;
     		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
     		startRecognizer(0);
     	}
