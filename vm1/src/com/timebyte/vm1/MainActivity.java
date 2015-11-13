@@ -53,16 +53,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	HashMap<String, String> mapTTS = new HashMap<String, String>();
 	HashMap<String, String> mapTTSPhone = new HashMap<String, String>();
 	HashMap<String, String> mapEarcon = new HashMap<String, String>();
-	private static String mapTTSID = "mapTTSID";
-	private static String mapTTSPhoneID = "mapTTSPhoneID";
-	private static String mapEarconID = "mapEarconID";
+	private static final String mapTTSID = "mapTTSID";
+	private static final String mapTTSPhoneID = "mapTTSPhoneID";
+	private static final String mapEarconID = "mapEarconID";
 	
 	protected int mailCount = 0;
 	protected int mailSize = 0;
 	protected int searchSize = 0;
 	protected int maxReadCount = 200;
     protected boolean readBodyDone = true;
-    protected boolean isPlayEarcon = false;
     
 	protected String command = Constants.COMMAND_INIT;
     protected String subCommand = Constants.COMMAND_INIT;
@@ -85,7 +84,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private static boolean readStop = false;
 	private static boolean writeStop = false;
 	private static boolean microphoneDone = true;
-	private static boolean speechDone = true;
+	private static String speechDone = null;
 	
 	protected Vector<String> logStr = new Vector<String>();
 	private Button searchMail;
@@ -116,7 +115,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (microphoneDone && speechDone) {
+				if (speechDone == null) {
 					setFlag(false, false, true);
 
 					if (!isSetting()) {
@@ -150,7 +149,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (isOffline) {
 					ttsNoMicrophone(Constants.NETWORK_ERROR);
 				} else {
-					if (microphoneDone && speechDone) {
+					if (speechDone == null) {
 						setFlag(readDone, true, false);
 
 						if (!isSetting()) {
@@ -181,7 +180,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button syncMail = (Button) this.findViewById(R.id.syncMail);
 		syncMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (microphoneDone && speechDone) {
+				if (speechDone == null) {
 					setFlag(false, false, true);
 
 					if (!isSetting()) {
@@ -204,7 +203,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		searchMail.setVisibility(View.GONE);
 		searchMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (microphoneDone && speechDone) {
+				if (speechDone == null) {
 					setFlag(true, true, true);
 
 					if (!isSetting()) {
@@ -313,30 +312,40 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println("&&&&& " + utteranceId + "***********onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + microphoneOn + " * " + microphoneDone + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				
-				if (!microphoneOn) {
-					return;
-				}
-				
-				if (isPlayEarcon) {
-					isPlayEarcon = false;
-					if (messageQueue != null) {
-						ttsAndMicrophone(messageQueue);
-						messageQueue = null;
+				System.out.println("&&&&& " + utteranceId + "***********onDone " + android.os.Process.myTid() + " * " + command + " * " + microphoneOn + " * " + microphoneDone + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+		
+				switch (utteranceId) {
+				case mapTTSID :
+					if (mapTTSID.equals(speechDone)) {
+						speechDone = null;
+						return;
+					} else {
+			    		System.out.println("***********ERROR_onDone_01, should not happen. " + speechDone);
 					}
+					break;
+				case mapTTSPhoneID :
+					if (mapTTSPhoneID.equals(speechDone)) {
+						speechDone = null;
+						// then call bell
+					} else {
+			    		System.out.println("***********ERROR_onDone_02, should not happen. " + speechDone);
+					}
+					break;		
+				case mapEarconID :
+					if (mapEarconID.equals(speechDone)) {
+						speechDone = null;
+						if (messageQueue != null) {
+							ttsAndMicrophone(messageQueue);
+							messageQueue = null;
+						}
+						return;
+					} else {
+			    		System.out.println("***********ERROR_onDone_03, should not happen. " + speechDone);
+					}
+					break;		
+				default :
+					System.out.println("***********ERROR_onDone_04, should not happen. " + speechDone);
 					return;
-				}
-				
-				if (Constants.COMMAND_READ.equals(command) && (mailCount > mailSize)) {
-					microphoneOn = false;
-				}
-				if (microphoneOn) {
-//					startRecognizer(0);
-//					microphoneOn = false;
-				}
-				if (microphoneDone && !speechDone) {
-					speechDone = true;
 				}
 				
 	            switch (command) {
@@ -416,7 +425,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     {  
     	super.onActivityResult(requestCode, resultCode, data);
     	microphoneDone = true;
-    	speechDone = true;
+//    	speechDone = true;
     	isOffline = false;
     	
     	if (handler != null) {
@@ -575,45 +584,58 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void ttsAndMicrophone(String msg) {
     	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid() + msg);
 
-    	if (isPlayEarcon) {
+    	if (mapEarconID.equals(speechDone)) {
     		messageQueue = msg;
     		return;
     	}
-    	
-//    	speechDone = false;
-    	
-		microphoneOn = true;
-//		isPlayEarcon = false;
-
-		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
+ 
+    	// either mapTTSID or mapTTSPhoneID
+    	if (speechDone != null) {
+    		System.out.println("***********ERROR_01, should not happen. " + speechDone);
+    	} else {
+    		speechDone = mapTTSPhoneID;	
+    		microphoneOn = true;
+//			isPlayEarcon = false;
+    		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTSPhone);
+    	}
     }
     
     protected void ttsNoMicrophone(String msg) {
     	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
  
-    	if (isPlayEarcon) {
+    	if (mapEarconID.equals(speechDone)) {
     		messageQueue = msg;
     		return;
     	}
-    	
-  //  	speechDone = false;
-		microphoneOn = false;
+ 
+    	// either mapTTSID or mapTTSPhoneID
+    	if (speechDone != null) {
+    		System.out.println("***********ERROR_02, should not happen. " + speechDone);
+    	} else {
+    		speechDone = mapTTSID;
+    		microphoneOn = false;
 //		isPlayEarcon = false;
-		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTSPhone);
+    		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
+    	}
     }
     
     protected void ttsAndPlayEarcon(String msg) {
     	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
-//    	speechDone = false;
+
+    	if (speechDone != null) {
+    		System.out.println("***********ERROR_03, should not happen. " + speechDone);
+    	} else {
+    		speechDone = mapEarconID;
+
+    		if (handler != null) {
+    			handler.removeCallbacks(checkRecognizer);
+    		}
     	
-    	if (handler != null) {
-    		handler.removeCallbacks(checkRecognizer);
+    		microphoneOn = true;
+//    		isPlayEarcon = true;
+    		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
+    		startRecognizer(0);
     	}
-    	
-		microphoneOn = true;
-		isPlayEarcon = true;
-		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
-		startRecognizer(0);
     }
     
     private void startDialogOld() {
