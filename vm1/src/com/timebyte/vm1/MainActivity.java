@@ -50,7 +50,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	protected TextToSpeech tts;
 	protected Intent intent;
-	HashMap<String, String> map = new HashMap<String, String>();
+	HashMap<String, String> mapTTS = new HashMap<String, String>();
+	HashMap<String, String> mapTTSPhone = new HashMap<String, String>();
+	HashMap<String, String> mapEarcon = new HashMap<String, String>();
+	private static String mapTTSID = "mapTTSID";
+	private static String mapTTSPhoneID = "mapTTSPhoneID";
+	private static String mapEarconID = "mapEarconID";
 	
 	protected int mailCount = 0;
 	protected int mailSize = 0;
@@ -289,7 +294,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	};
 	
 	private void initTTS() {		
-		map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
+		mapTTS.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapTTSID);
+		mapTTSPhone.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapTTSPhoneID);
+		mapEarcon.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapEarconID);
 		
 		tts = new TextToSpeech(this, this);
 		
@@ -306,7 +313,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-//				System.out.println("***********onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + microphoneOn + " * " + microphoneDone + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+				System.out.println("&&&&& " + utteranceId + "***********onDone " + android.os.Process.myTid() + " * " + isPlayEarcon + " * " + command + " * " + microphoneOn + " * " + microphoneDone + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 				
 				if (!microphoneOn) {
 					return;
@@ -358,7 +365,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public void onStart(String utteranceId) {
-//				System.out.println("onStart " + android.os.Process.myTid());
+				System.out.println("&&&&& " + utteranceId + "***onStart " + android.os.Process.myTid());
 			}
 
 			@Override
@@ -566,7 +573,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndMicrophone(String msg) {
-//    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid() + msg);
+    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid() + msg);
 
     	if (isPlayEarcon) {
     		messageQueue = msg;
@@ -578,11 +585,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		microphoneOn = true;
 //		isPlayEarcon = false;
 
-		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
+		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
     }
     
     protected void ttsNoMicrophone(String msg) {
-//    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
+    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
  
     	if (isPlayEarcon) {
     		messageQueue = msg;
@@ -592,11 +599,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
   //  	speechDone = false;
 		microphoneOn = false;
 //		isPlayEarcon = false;
-		tts.speak(msg, TextToSpeech.QUEUE_ADD, map);
+		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTSPhone);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
-//    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
+    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
 //    	speechDone = false;
     	
     	if (handler != null) {
@@ -605,7 +612,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	
 		microphoneOn = true;
 		isPlayEarcon = true;
-		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, map);
+		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
 		startRecognizer(0);
     }
     
@@ -636,7 +643,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	readStop = cmdStop;
     	writeStop = cmdWrite;
     	
-    	tts.playEarcon("", TextToSpeech.QUEUE_FLUSH, map);
+    	tts.playEarcon("", TextToSpeech.QUEUE_FLUSH, mapEarcon);
     	if (readStop || writeStop) {
     		finishActivity(VOICE_RECOGNITION);
     	}
