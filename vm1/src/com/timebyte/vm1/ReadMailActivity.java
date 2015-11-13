@@ -237,7 +237,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	}
 	
 	protected void readOneMessage() {
-		System.out.println("************ readOneMessage " + mailCount + " * " + mailSize);
+//		System.out.println("************ readOneMessage " + mailCount + " * " + mailSize);
 		bodyReaded = 0;
 		readBodyDone = true;
 		
@@ -345,7 +345,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	protected void doSaveOffLine(String dest, String[] src) {
 		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
 		File file = new File(folder, dest);
-		System.out.println("***OUT " + dest);
 		
 		ObjectOutputStream outputString = null;
 		try {
