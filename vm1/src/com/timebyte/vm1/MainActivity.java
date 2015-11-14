@@ -353,7 +353,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	            	ttsAndPlayEarcon("beep21");
 					break;
 	            case Constants.COMMAND_WRITE : 
-	            	ttsAndPlayEarcon("beep15");
+	            	ttsAndPlayEarcon("beep21");
 	            	break;
 	            case Constants.COMMAND_SEARCH : 
 	            	ttsAndPlayEarcon("beep21");

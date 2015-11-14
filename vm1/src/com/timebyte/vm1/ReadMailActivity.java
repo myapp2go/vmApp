@@ -27,6 +27,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	private int retry = 0;
 	private int bodyReaded = 0;
 //	private boolean skipLink = true;
+	private static String linkSkip = "";
 	
 	protected void doReadMail(ArrayList<String> matches) {
 		logStr.add("************** doReadMail ");
@@ -272,7 +273,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	    int end = paramString.length();
 	    while (start >= 0) {
 	    	if (("http:".equals(paramString.substring(start, start + 5))) || ("https:".equals(paramString.substring(start, start + 6)))) {
-	    		localStringBuffer.append(paramString.substring(ind, start) + "  link skip");
+	    		localStringBuffer.append(paramString.substring(ind, start) + linkSkip);
 	    		ind = paramString.indexOf(" ", start);
 	    		if (ind == -1) {
 	    			ind = end;
