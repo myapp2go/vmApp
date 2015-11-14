@@ -424,7 +424,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
     	super.onActivityResult(requestCode, resultCode, data);
-    	isOffline = false;
     	
     	if (handler != null) {
     		handler.removeCallbacks(checkRecognizer);
@@ -673,6 +672,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     		} else {
     			readBodyDone = true;
     		}
+    	} else {
+        	isOffline = false;
     	}
     }
     
