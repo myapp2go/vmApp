@@ -40,6 +40,12 @@ public class WriteMailTask extends AsyncTask {
 	private static String user;
 	private static String pwd;
 
+	private static String smtpGmailHost = "smtp.gmail.com";
+	private static String smtpYahooHost = "smtp.mail.yahoo.com";
+	private static String smtpOutlookHost = "smtp-mail.outlook.com";
+	private String hostServer = null;
+	private static String errorMsg = null;
+	
 	public WriteMailTask(WriteMailActivity mainActivity) {
 		writeMailActivity = mainActivity;
 	}
@@ -52,12 +58,47 @@ public class WriteMailTask extends AsyncTask {
 		SharedPreferences pref  = (SharedPreferences) params[1];
 		String myEmail = pref.getString("myEmail", "");
 		String myPassword = pref.getString("myPassword", "");
+
+		String host = findHost(myEmail);
 		
-		writeMail(debug, myEmail, myPassword, params[2].toString(), params[3].toString(), params[4].toString());
+		System.out.println("*************************TASK " + myEmail + " * " + myPassword + " * ");
+		switch (host) {
+		case "gmail" :
+			hostServer = smtpGmailHost;
+			break;
+		case "yahoo" :
+			hostServer = smtpYahooHost;
+			break;
+		case "outlook" :
+			hostServer = smtpOutlookHost;
+			break;
+		default :
+			errorMsg = Constants.SETTING_ACCOUNT_ERROR;
+			break;
+		}
+		
+		if (hostServer != null) {
+			writeMail(debug, hostServer, myEmail, myPassword, params[2].toString(), params[3].toString(), params[4].toString());
+		}
 		return null;
 	}
 
-	private void writeMail(boolean debug, String mailAccount, String password, String mailTo, String mailSubject, String mailBody) {
+	private String findHost(String paramString) {
+		String str = "";
+
+		if (paramString != null) {
+			int i = paramString.indexOf("@");
+			if (i > 0) {
+				int j = paramString.indexOf(".", i);
+				if (j > 0) {
+					str = paramString.substring(i + 1, j).toLowerCase();
+				}
+			}
+		}
+		return str.toLowerCase();
+	}
+	
+	private void writeMail(boolean debug, String hostServer, String mailAccount, String password, String mailTo, String mailSubject, String mailBody) {
 		// TODO Auto-generated method stub
 		String host = "smtp.gmail.com";
 
@@ -94,7 +135,7 @@ public class WriteMailTask extends AsyncTask {
 			System.out.println("*******WRITE BEFORE");
 			Transport transport = session.getTransport("smtp");
 			
-			transport.connect("smtp.gmail.com", mailAccount,
+			transport.connect(hostServer, mailAccount,
 					password);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
