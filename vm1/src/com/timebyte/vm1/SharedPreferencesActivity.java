@@ -79,7 +79,10 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 					break;
 				case "myPassword" :
 					editor.putString("myPassword", value);
-					break;	
+					break;
+				case "bodyDoneFlag" :
+					editor.putString("bodyDoneFlag", value);
+					break;
 				default :
 					contacts.put(name, value);
 					break;

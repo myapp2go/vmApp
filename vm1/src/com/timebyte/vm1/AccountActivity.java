@@ -11,12 +11,15 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class AccountActivity extends Activity {
 
 	protected SharedPreferences sharedPreferences;
+	private String bodyDoneFlag = "T";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,18 @@ public class AccountActivity extends Activity {
 				onBackPressed();
 			}
 		});
+		
+		final CheckBox chkBody = (CheckBox) findViewById(R.id.chkBody);
+		chkBody.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				// is chkIos checked?
+				if (((CheckBox) v).isChecked()) {
+					bodyDoneFlag = "F";
+				} else {
+					bodyDoneFlag = "T";
+				}
+			}
+		});
     }
     
 	private void savePreference() {
@@ -53,6 +68,7 @@ public class AccountActivity extends Activity {
 		editor.putString("myPassword", myPassword);
 		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
 		editor.putInt("increment", 10);
+		editor.putString("bodyDoneFlag", bodyDoneFlag);
 		editor.commit();
 
 		String FILENAME = "pcMailAccount";
@@ -73,7 +89,9 @@ public class AccountActivity extends Activity {
 			fos.write(string.getBytes());
 	        string = "myPassword:" + myPassword + del;
 			fos.write(string.getBytes());
-
+	        string = "bodyDoneFlag:" + bodyDoneFlag + del;
+			fos.write(string.getBytes());
+			
 			fos.close();
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();

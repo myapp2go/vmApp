@@ -49,12 +49,21 @@
         android:text="@string/mailPassword"
         android:textColor="#000000" />
 
+    <CheckBox
+        android:id="@+id/chkBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_column="0"
+        android:layout_row="2"
+        android:text="@string/readbody" />
+        
     <Button
         android:id="@+id/setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
-        android:layout_row="2"
+        android:layout_row="3"
         android:text="@string/addContact" />
  
     <Button
@@ -62,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
-        android:layout_row="3"
+        android:layout_row="4"
         android:text="@string/cancel" />
     
 </GridLayout>

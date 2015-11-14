@@ -221,15 +221,21 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 					}
 					body = mailBody[count].substring(bodyReaded, ind);
 					bodyReaded = ind;
-					readBodyDone = false;
+					if (!isOffline) {
+						readBodyDone = false;
+					}
 				} else {
 					body = mailBody[count].substring(bodyReaded, len-1);
 					bodyReaded = len;
-					readBodyDone = true;
+					if (!isOffline) {
+						readBodyDone = true;
+					}
 				}			
 			} else {
 				bodyReaded = len;
-				readBodyDone = true;
+				if (!isOffline) {
+					readBodyDone = true;
+				}
 			}
 
 			ttsAndMicrophone(body);
@@ -239,7 +245,9 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 	protected void readOneMessage() {
 //		System.out.println("************ readOneMessage " + mailCount + " * " + mailSize);
 		bodyReaded = 0;
-		readBodyDone = true;
+		if (!isOffline) {
+			readBodyDone = true;
+		}
 		
 		int size = mailSize;
 		if (Constants.COMMAND_SEARCH.equals(command)) {

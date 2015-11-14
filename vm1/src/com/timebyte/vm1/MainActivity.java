@@ -657,6 +657,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	if (readStop || writeStop) {
     		finishActivity(VOICE_RECOGNITION);
     	}
+    	
+    	if (isOffline) {
+    		String str = sharedPreferences.getString("bodyDoneFlag", "");
+    		if ("F".equals(str)) {
+    			readBodyDone = false;
+    		} else {
+    			readBodyDone = true;
+    		}
+    	}
     }
     
     private boolean isSetting() {
