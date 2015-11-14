@@ -42,7 +42,7 @@ public class WriteMailTask extends AsyncTask {
 
 	private static String smtpGmailHost = "smtp.gmail.com";
 	private static String smtpYahooHost = "smtp.mail.yahoo.com";
-	private static String smtpOutlookHost = "smtp-mail.outlook.com";
+	private static String smtpOutlookHost = "smtp.live.com";
 	private String hostServer = null;
 	private static String errorMsg = null;
 	
@@ -73,7 +73,7 @@ public class WriteMailTask extends AsyncTask {
 			hostServer = smtpOutlookHost;
 			break;
 		default :
-			errorMsg = Constants.SETTING_ACCOUNT_ERROR;
+			errorMsg = Constants.MAIL_SERVER_NOT_SUPPORT;
 			break;
 		}
 		
@@ -139,7 +139,7 @@ public class WriteMailTask extends AsyncTask {
 					password);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
-			System.out.println("*******WRITE AFTER");
+			System.out.println("******WRITE AFTER");
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
