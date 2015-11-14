@@ -9,7 +9,9 @@
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.INTERNET"/>
-       
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
+      
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -21,7 +23,9 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".WriteMailActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:keepScreenOn="true" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,11 +34,31 @@
         </activity>
         <activity
         	android:name="com.timebyte.vm1.SettingActivity"
+        	android:screenOrientation="portrait"
         	android:label="@string/settings" >
         	<meta-data
             	android:name="android.support.PARENT_ACTIVITY"
             	android:value="com.pc.pcand.MainActivity" />
+        </activity>	
+    	<activity
+        	android:name="com.timebyte.vm1.DebuggingActivity"
+        	android:screenOrientation="portrait"
+        	android:label="@string/debugging" >
+        	<meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="com.pc.pcand.MainActivity" />
     	</activity>
+    	
+		<activity 
+		    android:name=".AccountActivity" 
+		    android:screenOrientation="portrait" />
+		<activity 
+		    android:name=".ContactActivity"
+		    android:screenOrientation="portrait" />
+		<activity 
+		    android:name=".CommandActivity"
+		    android:screenOrientation="portrait" />
+	
     </application>
 
 </manifest>

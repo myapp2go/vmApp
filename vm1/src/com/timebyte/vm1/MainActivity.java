@@ -15,9 +15,12 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -658,7 +661,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     		finishActivity(VOICE_RECOGNITION);
     	}
     	
-    	if (isOffline) {
+        ConnectivityManager connMgr = (ConnectivityManager) 
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+    	
+    	if (networkInfo == null) {
+    		isOffline = true;
     		String str = sharedPreferences.getString("bodyDoneFlag", "");
     		if ("F".equals(str)) {
     			readBodyDone = false;
