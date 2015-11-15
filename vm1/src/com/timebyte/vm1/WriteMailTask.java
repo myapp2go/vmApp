@@ -42,7 +42,7 @@ public class WriteMailTask extends AsyncTask {
 
 	private static String smtpGmailHost = "smtp.gmail.com";
 	private static String smtpYahooHost = "smtp.mail.yahoo.com";
-	private static String smtpOutlookHost = "smtp.live.com";
+	private static String smtpOutlookHost = "smtp.mail.outlook.com";
 	private String hostServer = null;
 	private static String errorMsg = null;
 	
