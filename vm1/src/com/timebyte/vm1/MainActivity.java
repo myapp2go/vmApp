@@ -90,6 +90,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected Vector<String> logStr = new Vector<String>();
 	private Button searchMail;
 	private Button offLine;
+	private boolean once = false;
 	
 	private String mailAccount = "";
 	private String messageQueue = null;
@@ -313,7 +314,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public synchronized void onDone(String utteranceId) {				
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 //				System.out.println("&&&&& " + utteranceId + "***********onDone " + android.os.Process.myTid() + " * " + command + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-		
+				if (!once) {
+					endDialog();
+					once = true;
+				}
+				
 				switch (utteranceId) {
 				case mapTTSID :
 					if (mapTTSID.equals(speechDone)) {
@@ -409,6 +414,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
 		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
+		startDialog();
 		
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
@@ -628,9 +634,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	}
     }
     
-    private void startDialogOld() {
+    private void startDialog() {
 		processDialog = new ProgressDialog(this);
-		processDialog.setMessage("Process command, please wait...");
+		processDialog.setMessage("Start speech engine, please wait...");
 		processDialog.setIndeterminate(false);
 		processDialog.setCancelable(false);
 		processDialog.show();
