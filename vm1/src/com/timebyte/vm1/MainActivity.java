@@ -441,7 +441,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             		(RecognizerIntent.EXTRA_RESULTS); 
             recognizerResult.add(matches.toString());
             
-            logStr.add("[** " + matches.toString() + " **]");
+//            logStr.add("[** " + matches.toString() + " **]");
+//            System.out.println("[** " + matches.toString() + " **]");
             
             switch (command) {
             case Constants.COMMAND_READ:
@@ -473,7 +474,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             }
         } else {
         	if (Constants.COMMAND_WRITE.equals(command)) {
-        		isOffline = true;
+//        		isOffline = true;
 //        		ttsNoMicrophone(Constants.NETWORK_ERROR);
         	}
         	System.out.println("10 *** No Match " + command);
