@@ -261,7 +261,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	    intent.putExtra(
 	    	RecognizerIntent.EXTRA_LANGUAGE_MODEL, 
 	        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);  
-//	    intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(50000000));
+	    intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(1000));
 	}
 
 	public void startRecognizer(int ms) {
