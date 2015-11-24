@@ -18,6 +18,7 @@
         android:editable="true"
         android:enabled="true"
         android:padding="5dp"
+        android:layout_marginLeft="20dp"
         android:text="paul"
         android:textColor="#000000"
         android:width="100dp" />
