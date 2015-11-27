@@ -25,13 +25,13 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		case Constants.COMMAND_INIT :
 			switch (matches.get(0)) {
 			case Constants.READ_OPTION_SUBJECT_ONLY :
-				readMode = Constants.READ_OPTION_SUBJECT_ONLY;
+//				readMode = Constants.READ_OPTION_SUBJECT_ONLY;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				isSyncMail = true;
 				break;
 			case Constants.READ_OPTION_SUBJECT_BODY :
-				readMode = Constants.READ_OPTION_SUBJECT_BODY;
+//				readMode = Constants.READ_OPTION_SUBJECT_BODY;
 				subCommand = Constants.SUBCOMMAND_RETRIEVE;
 				new ReadMailTask(ReadMailActivity.this).execute(sharedPreferences);
 				isSyncMail = true;
@@ -45,6 +45,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 
 			switch (answer) {
 			case Constants.ANSWER_CONTINUE :
+				/*
 				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
 					// PC522 Handle readBodyDone
 //					waitBodyCommand = false;
@@ -52,6 +53,7 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				} else {
 					readMessage();
 				}
+				*/
 				break;
 			case Constants.ANSWER_STOP :
 				mailCount = 0;
@@ -62,18 +64,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				bodyReaded = 0;
 //				mailCount = 0;
 //				readBodyDone = true;
-				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
-					readBodyDone = true;
-					mailCount++;
-					readMessageBody();
-				} else {
-					if (retry < maxRetry) {	
-						retry++;
-						ttsAndPlayEarcon("jetsons");
-					} else {
-						retry = 0;
-					}
-				}
 				break;	
 			case Constants.COMMAND_NONE :
 				if (retry < maxRetry) {	
@@ -115,11 +105,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 			}
 			break;
 			*/
-		case Constants.COMMAND_NEXT :
-			microphoneOn = false;
-			mailCount--;
-			readMessage();
-			break;
 		case Constants.COMMAND_STOP :
 			mailCount = 0;
 //			commandReset();
@@ -141,13 +126,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 		mailBody = new String[len + 1];
 		mailSubject[0] = Constants.COMMAND_ADVERTISE_SUBJECT;
 		mailBody[0] = Constants.COMMAND_ADVERTISE_BODY;	
-		microphoneOn = false;
-		if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
-			readMessageBody();
-		} else {
-			mailCount++;
-			ttsNoMicrophone("mail number 1 " + " " + mailSubject[0]);
-		}
 		
 		int index = 1;
 		for (int i = end-1; i > start; i--, index++) {
@@ -210,15 +188,6 @@ public abstract class ReadMailActivity extends SharedPreferencesActivity {
 				e.printStackTrace();
 			}
 			
-			if (index < 5) {
-				microphoneOn = false;
-				if (Constants.READ_OPTION_SUBJECT_BODY.equals(readMode)) {
-					readMessageBody();
-				} else {
-					mailCount++;
-					ttsNoMicrophone("mail number" + (index+1) + " " + mailSubject[index]);
-				}
-			}
 		}
 		
 //		dump();

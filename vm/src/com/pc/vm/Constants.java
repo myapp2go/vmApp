@@ -4,9 +4,10 @@ public final class Constants {
 
 	private static final String Activity_Recognition = "https://github.com/myapp2go/vmApp.git";
 
-	public static final int MAIL_PER_PAGE = 5;
+	public static final int MAIL_PER_PAGE = 1;
 	
 	public static final String EMPTY_STRING = "";
+	public static final String CONTACT_MARKER = "__M_A_R_K_E_R__";
 
 	public static String COMMAND_GREETING = "Please speak read, write or setting";
 
@@ -18,6 +19,7 @@ public final class Constants {
 	public static final String COMMAND_SKIP_GREETING = "skip mail";
 	
 	public static final String COMMAND_TO_GREETING = "Who you want to send";
+	public static final String COMMAND_MAILHOST_GREETING = "Please speak mail host";
 	public static final String COMMAND_SUBJECT_GREETING = "Please speak subject";
 	public static final String COMMAND_BODY_GREETING = "Please speak message";
 	public static final String COMMAND_DONE_GREETING = "Please speak send or add or save or stop";
@@ -29,7 +31,7 @@ public final class Constants {
 	// READ
 	public static String COMMAND_READ_GREETING = "Please speak 1 for reading subject, 2 for reading subject and message";
 	public static String COMMAND_READ_SUBJECT = "voice command 1 for continue, 2 for stop";
-	public static String COMMAND_READ_SUBJECT_BODY = "voice command 1 for continue, 2 for stop, 3 for skip";	
+	public static String COMMAND_READ_SUBJECT_BODY = "voice command 1 for next mail, 2 for mail detail, 3 for skip detail, 4 for stop";	
 //	public static String COMMAND_READ_RETRIEVE = "Retrieve mail, please wait";	
 	
 	public static final String COMMAND_INIT = "init";
@@ -49,9 +51,18 @@ public final class Constants {
 	public static final String SBCOMMAND_NEXT = "next";
 	public static final String READ_OPTION_SUBJECT_ONLY = "subjectOnly";
 	public static final String READ_OPTION_SUBJECT_BODY = "subjectBody";
-	
+
+	public static String COMMAND_SEARCH_GREETING = "search";
+
+	public static String SETTING_ACCOUNT_NOTICE = "You did not set up your account yet";
+	public static String SETTING_CONTACT_NOTICE = "You did not set up your contact list yet";
+	public static String SETTING_ACCOUNT_ERROR = "Please verify your account and password.";
+	public static String NETWORK_ERROR = "Please verify your network connection.";
+	public static String MAIL_SERVER_NOT_SUPPORT = "This mail server is not support yet.";
+
 	public static final String COMMAND_WRITE = "write";
 	public static final String SUBCOMMAND_TO = "to";
+	public static final String SUBCOMMAND_MAILHOST = "mailhost";
 	public static final String SUBCOMMAND_VERIFY_TO = "verifyTo";
 	public static final String SUBCOMMAND_SUBJECFT = "subject";
 	public static final String SUBCOMMAND_BODY = "body";
@@ -63,21 +74,25 @@ public final class Constants {
 	
 	public static final String COMMAND_SETTING = "setting";
 
+	public static final String COMMAND_SEARCH = "search";
+	public static final String COMMAND_OFFLINE = "offLine";
+	
 	public static final String COMMAND_COMMAND_RECORD = "commandRecord";
 	public static final String COMMAND_COMMAND1_GREETING = "please speak 1";
 	public static final String COMMAND_COMMAND2_GREETING = "please speak 2";
 	public static final String COMMAND_COMMAND3_GREETING = "please speak 3";
+	public static final String COMMAND_COMMAND4_GREETING = "please speak 4";
 	
 	public static final String ANSWER_CLEAN = "-1";
 	public static final String ANSWER_SAVE = "0";
 	public static final String ANSWER_CONTINUE = "1";
 	public static final String ANSWER_DETAIL = "2";
 	public static final String ANSWER_SKIP = "3";
-	public static final String ANSWER_REPEAT = "4";
-	public static final String ANSWER_STOP = "5";
+	public static final String ANSWER_STOP = "4";
+	public static final String ANSWER_REPEAT = "5";
+	public static final String ANSWER_NOT_VALID = "Please speak 1 to 4";
 	
 	public static final String ANSWER_YES = "yes";
 	public static final String ANSWER_NO = "no";
 	
-	public static final String COMMAND_NEXT = "next";
 }

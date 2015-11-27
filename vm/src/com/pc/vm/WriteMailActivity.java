@@ -129,5 +129,23 @@ public class WriteMailActivity extends ReadMailActivity {
 		new WriteMailTask(WriteMailActivity.this).execute(sharedPreferences, mailTo, mailSubject, mailBody);
 
 	}
+
+	@Override
+	protected void doSearchMail(ArrayList<String> matches) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doSaveOffLines() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void readOneMessage() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
