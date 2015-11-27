@@ -44,7 +44,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	public static MainActivity mainActivity;
 	
-	abstract protected void doWriteMail(ArrayList<String> matches);
+//	abstract protected void doWriteMail(ArrayList<String> matches);
 	
 	private final int VOICE_RECOGNITION = 1234;
 	protected SharedPreferences sharedPreferences;
