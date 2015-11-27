@@ -44,14 +44,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	public static MainActivity mainActivity;
 	
-	abstract protected void doReadMail(ArrayList<String> matches);
-	abstract protected void doSearchMail(ArrayList<String> matches);
-	abstract protected void doSaveOffLines();
-	abstract protected void readMessageBody();
-	abstract protected void readOneMessage();
 	abstract protected void doWriteMail(ArrayList<String> matches);
-	abstract protected void doDebugMail(String myEmail, String myPassword, String mailTo, String mailSubject, String mailBody);
-	abstract protected void getPreferenceFromFile();
 	
 	private final int VOICE_RECOGNITION = 1234;
 	protected SharedPreferences sharedPreferences;
@@ -137,7 +130,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 							localArrayList
 									.add(Constants.READ_OPTION_SUBJECT_ONLY);
 						}
-						doReadMail(localArrayList);
+//						doReadMail(localArrayList);
 					}
 				}
 			}
@@ -187,7 +180,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	public void startDebugging() {
 		String msg = logStr.toString();
 		
-		doDebugMail(sharedPreferences.getString("myEmail", ""), sharedPreferences.getString("myPassword", ""), "paulchennk@gmail.com", "VoiceMailDebug", msg);
 	}
 	
 	public void initRecognizer() {	
