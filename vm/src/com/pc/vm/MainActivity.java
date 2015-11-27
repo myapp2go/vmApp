@@ -154,8 +154,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 		for(PackageInfo pack : packages) {
 //	        PackageInfo p = packs.get(i);
-			System.out.println("***package " + pack.applicationInfo.loadLabel(getPackageManager()).toString());
-			System.out.println("***packageName " + pack.packageName);
+//			System.out.println("***package " + pack.applicationInfo.loadLabel(getPackageManager()).toString());
+//			System.out.println("***packageName " + pack.packageName);
 			
 		    ActivityInfo[] activityInfo;
 			try {
@@ -201,29 +201,22 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	public void startRecognizer(int ms) {
 //    	System.out.println("******startRecognizer " + android.os.Process.myTid());
 
-		if (mapEarconID.equals(speechDone)) {
+//		if (mapEarconID.equals(speechDone)) {
 			if (ms > 0) {
 				SystemClock.sleep(ms);
 			}
 
-			if ((Constants.COMMAND_READ.equals(command) && mailCount <= mailSize)
-					|| (Constants.COMMAND_SEARCH.equals(command) && mailCount <= searchSize)) {
-				handler.postDelayed(checkRecognizer, 10000);
-			}
+			handler.postDelayed(checkRecognizer, 10000);
 
 			startActivityForResult(intent, VOICE_RECOGNITION);
-		}
+//		}
 	}
 
 	private Runnable checkRecognizer = new Runnable() {
 	    public void run() {	
 	    	finishActivity(VOICE_RECOGNITION);
 	    	
-	    	if (readBodyDone) {
-	    		readOneMessage();
-	    	} else {
-	    		readMessageBody();
-	    	}
+	    	ttsAndPlayEarcon("beep21");
 	    }
 	};
 	
@@ -247,68 +240,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-//				System.out.println("&&&&& " + utteranceId + "***********onDone " + android.os.Process.myTid() + " * " + command + " * " + speechDone + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				if (!once) {
-					endDialog();
-					once = true;
-				}
-				
-				switch (utteranceId) {
-				case mapTTSID :
-					if (mapTTSID.equals(speechDone)) {
-						speechDone = null;
-						return;
-					} else {
-			    		System.out.println("***********ERROR_onDone_01, should not happen. " + speechDone);
-					}
-					break;
-				case mapTTSPhoneID :
-					if (mapTTSPhoneID.equals(speechDone)) {
-						speechDone = null;
-						// then call bell
-					} else {
-			    		System.out.println("***********ERROR_onDone_02, should not happen. " + speechDone);
-					}
-					break;		
-				case mapEarconID :
-					if (mapEarconID.equals(speechDone)) {
-						speechDone = null;
-						if (messageQueue != null) {
-							ttsAndMicrophone(messageQueue);
-							messageQueue = null;
-						}
-						return;
-					} else {
-			    		System.out.println("***********ERROR_onDone_03, should not happen. " + speechDone);
-					}
-					break;		
-				default :
-					System.out.println("***********ERROR_onDone_04, should not happen. " + speechDone);
-					return;
-				}
-				
-	            switch (command) {
-	            case Constants.COMMAND_READ:
-	            	ttsAndPlayEarcon("beep21");
-					break;
-	            case Constants.COMMAND_WRITE : 
-	            	ttsAndPlayEarcon("beep21");
-	            	break;
-	            case Constants.COMMAND_SEARCH : 
-	            	ttsAndPlayEarcon("beep21");
-	            	break;
-	            case Constants.COMMAND_SETTING :            	
-	            	break;
-	            case Constants.COMMAND_COMMAND_RECORD :
-	            	ttsAndPlayEarcon("beep21");
-	            	break;
-	            case Constants.COMMAND_STOP:
-	            	break;	
-	            default :								// INIT
-	            	System.out.println("*** ERROR96 ");
-//	            	ttsNoMicrophone(Constants.NETWORK_ERROR);
-	            	break;
-	            }
+				System.out.println("&&&&&onDone " + utteranceId);
 			}
 
 			@Override
@@ -347,14 +279,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	@Override
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
-		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
+		ttsAndPlayEarcon("beep21");
 		startDialog();
 		
-		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
-		getPreferenceFromFile();
-
-		mailAccount = sharedPreferences.getString("myEmail", "");
-
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 	
@@ -375,36 +302,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
             
 //            logStr.add("[** " + matches.toString() + " **]");
             System.out.println("[** " + matches.toString() + " **]");
-            
-            switch (command) {
-            case Constants.COMMAND_READ:
-            	doReadMail(matches);
-            	break;
-            case Constants.COMMAND_WRITE : 
-            	doWriteMail(matches);
-            	break;
-            case Constants.COMMAND_SEARCH:
-            	if (Constants.COMMAND_INIT.equals(subCommand)) {
-            		doSearchMail(matches);
-            	} else {
-            		doReadMail(matches);
-            	}
-            	break;
-            case Constants.COMMAND_SETTING :
-            	break;
-            case Constants.COMMAND_STOP :
-            	break;
-            case Constants.COMMAND_COMMAND_RECORD :
-            	break;	
-            default :								// INIT
-            	System.out.println("*** ERROR ");
-            	break;
-            }
+            ttsAndPlayEarcon("beep21");
         } else {
-        	if (Constants.COMMAND_WRITE.equals(command)) {
-//        		isOffline = true;
-//        		ttsNoMicrophone(Constants.NETWORK_ERROR);
-        	}
         	System.out.println("10 *** No Match " + command);
         }
     }    
@@ -461,7 +360,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     
     protected void ttsAndPlayEarcon(String msg) {
 //    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
-
+    	speechDone = null;
+    	
     	if (speechDone != null) {
     		System.out.println("***********ERROR_03, should not happen. " + speechDone);
     	} else {
