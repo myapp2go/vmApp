@@ -1,282 +1,376 @@
 package com.timebyte.appvoice;
 
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.speech.tts.TextToSpeech.OnInitListener;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-/*
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
-import com.facebook.widget.LoginButton.UserInfoChangedCallback;
-*/
-public class MainActivity extends FragmentActivity {
 
-//	private LoginButton loginBtn;
-	private Button postImageBtn;
-	private Button updateStatusBtn;
+public abstract class MainActivity extends Activity implements OnInitListener  {
 
-	private TextView userName;
-
-//	private UiLifecycleHelper uiHelper;
-
-	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
-
-	private static String message = "Sample status posted from android app";
-
-	private CallbackManager callbackManager;
-	private LoginButton loginButton;
+	public static MainActivity mainActivity;
+	
+//	abstract protected void doWriteMail(ArrayList<String> matches);
+	
+	private final int VOICE_RECOGNITION = 1234;
+	protected SharedPreferences sharedPreferences;
+	
+	protected TextToSpeech tts;
+	protected Intent intent;
+	HashMap<String, String> mapTTS = new HashMap<String, String>();
+	HashMap<String, String> mapTTSPhone = new HashMap<String, String>();
+	HashMap<String, String> mapEarcon = new HashMap<String, String>();
+	private static final String mapTTSID = "mapTTSID";
+	private static final String mapTTSPhoneID = "mapTTSPhoneID";
+	private static final String mapEarconID = "mapEarconID";
+	
+	HashMap<String, String> installedApp = new HashMap<String, String>();
+	
+	protected int mailCount = 0;
+	protected int mailSize = 0;
+	protected int searchSize = 0;
+	protected int maxReadCount = 200;
+    protected boolean readBodyDone = true;
+    
+	protected String command = Constants.COMMAND_INIT;
+    protected String subCommand = Constants.COMMAND_INIT;
+	
+    protected boolean isSyncMail = false;
+    protected boolean isOffline = false;
+    
+	protected HashMap<String, String> contacts = new HashMap<String, String>();
+    
+	private String commandType = Constants.ANSWER_CONTINUE;
+	HashMap<String, String> commandMap = new HashMap<String, String>();
+	
+	ArrayList<String> recognizerResult = new ArrayList<String>();
+	
+	private Handler handler;
+	
+	private static String speechDone = null;
+	
+	protected Vector<String> logStr = new Vector<String>();
+	private boolean once = false;
+	
+	private String mailAccount = "";
+	private String messageQueue = null;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		if (BuildConfig.DEBUG) {
+			logStr.add("[onCreate called]");
+		}
 		
-		FacebookSdk.sdkInitialize(this.getApplicationContext());
-
-		callbackManager = CallbackManager.Factory.create();
-		/*
-	    LoginManager.getInstance().registerCallback(callbackManager,
-	            new FacebookCallback<LoginResult>() {
-	                @Override
-	                public void onSuccess(LoginResult loginResult) {
-	                    // App code
-	                	System.out.println("**** onSuccess");
-	                }
-
-	                @Override
-	                public void onCancel() {
-	                     // App code
-	                	System.out.println("**** onCancel");
-	                }
-
-	                @Override
-	                public void onError(FacebookException exception) {
-	                     // App code  
-	                	System.out.println("**** onError");
-	                }
-	    });
-*/	    
-		loginButton = (LoginButton) findViewById(R.id.login_button);
+		mainActivity = this;
 		
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+		getInstalledList();
+		
+		handler = new Handler();
+		
+		initTTS();
+		
+		initRecognizer();
+		
+		final Button readMail = (Button) this.findViewById(R.id.update_status);
+		readMail.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if (speechDone == null) {
+					setFlag(false, false, true);
 
-			@Override
-			public void onSuccess(LoginResult result) {
-				// TODO Auto-generated method stub
-				
-			}
+					if (!isSetting()) {
+						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
+					} else {
+						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+						command = Constants.COMMAND_READ;
+						mailCount = 0;
 
-			@Override
-			public void onCancel() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onError(FacebookException error) {
-				// TODO Auto-generated method stub
-				
-			}  });
-
-//		uiHelper = new UiLifecycleHelper(this, statusCallback);
-//		uiHelper.onCreate(savedInstanceState);
-
-//		setContentView(R.layout.activity_main);
-
-		userName = (TextView) findViewById(R.id.user_name);
-/*
-		loginBtn = (LoginButton) findViewById(R.id.fb_login_button);
-		loginBtn.setUserInfoChangedCallback(new UserInfoChangedCallback() {
-			@Override
-			public void onUserInfoFetched(GraphUser user) {
-				if (user != null) {
-					userName.setText("Hello, " + user.getName());
-				} else {
-					userName.setText("You are not logged");
+						ArrayList<String> localArrayList = new ArrayList<String>();
+						if (!mailAccount.equalsIgnoreCase(sharedPreferences.getString("myEmail", ""))) {
+							isSyncMail = false;
+						}
+						if (isSyncMail) {
+							subCommand = Constants.SUBCOMMAND_RETRIEVE;
+							localArrayList.add(Constants.ANSWER_CONTINUE);
+						} else {
+							subCommand = Constants.COMMAND_INIT;
+							localArrayList
+									.add(Constants.READ_OPTION_SUBJECT_ONLY);
+						}
+//						doReadMail(localArrayList);
+					}
 				}
 			}
 		});
-*/
-		postImageBtn = (Button) findViewById(R.id.post_image);
-		postImageBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-//				postImage();
-			}
-		});
-
-		updateStatusBtn = (Button) findViewById(R.id.update_status);
-		updateStatusBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-
-//		buttonsEnabled(false);
-	}
-	
-	public View onCreateView(
-	        LayoutInflater inflater,
-	        ViewGroup container,
-	        Bundle savedInstanceState) {
-	    View view = inflater.inflate(R.layout.splash, container, false);
-
-//	    LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-	    loginButton.setReadPermissions("user_friends");
-	    // If using in a fragment
-	    loginButton.setFragment(this);    
-	    // Other app specific specialization
-
-	    // Callback registration
-	    loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-	        @Override
-	        public void onSuccess(LoginResult loginResult) {
-	            // App code
-	        }
-
-	        @Override
-	        public void onCancel() {
-	            // App code
-	        }
-
-	        @Override
-	        public void onError(FacebookException exception) {
-	            // App code
-	        }
-	    });    
-	}
-	
-/*
-	private Session.StatusCallback statusCallback = new Session.StatusCallback() {
-		@Override
-		public void call(Session session, SessionState state,
-				Exception exception) {
-			if (state.isOpened()) {
-				buttonsEnabled(true);
-				Log.d("FacebookSampleActivity", "Facebook session opened");
-			} else if (state.isClosed()) {
-				buttonsEnabled(false);
-				Log.d("FacebookSampleActivity", "Facebook session closed");
-			}
+		
+		if (BuildConfig.DEBUG) {
+			logStr.add("[onCreate done]");
 		}
+	}
+
+	public void getInstalledList() {
+		ArrayList<String> aplist = new ArrayList<String>();
+		List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
+
+		for(PackageInfo pack : packages) {
+//	        PackageInfo p = packs.get(i);
+//			System.out.println("***package " + pack.applicationInfo.loadLabel(getPackageManager()).toString());
+//			System.out.println("***packageName " + pack.packageName);
+			installedApp.put(pack.applicationInfo.loadLabel(getPackageManager()).toString(), pack.packageName);
+
+			ActivityInfo[] activityInfo;
+			try {
+				activityInfo = getPackageManager().getPackageInfo(pack.packageName, PackageManager.GET_ACTIVITIES).activities;
+			    if(activityInfo!=null)
+			    {
+			        for(int i=0; i<activityInfo.length; i++)
+			        {
+//			            Log.i("PC",""+ activityInfo[i]);
+	/*
+			            if (myList != null)
+			                myList = new ArrayList();
+
+			            myList.add(pack.packageName);
+			            */
+			        }
+
+			        aplist.add(pack.packageName);
+			    }
+			} catch (NameNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//		    Log.i("Pranay", pack.packageName + " has total " + ((activityInfo==null)?0:activityInfo.length) + " activities");
+
+		}
+	}
+		
+	public void startDebugging() {
+		String msg = logStr.toString();
+		
+	}
+	
+	public void initRecognizer() {	
+		intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);  
+	    intent.putExtra(
+	    	RecognizerIntent.EXTRA_LANGUAGE_MODEL, 
+	        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);  
+	    intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(1000));
+	}
+
+	public void startRecognizer(int ms) {
+//    	System.out.println("******startRecognizer " + android.os.Process.myTid());
+
+//		if (mapEarconID.equals(speechDone)) {
+			if (ms > 0) {
+				SystemClock.sleep(ms);
+			}
+
+			handler.postDelayed(checkRecognizer, 10000);
+
+			startActivityForResult(intent, VOICE_RECOGNITION);
+//		}
+	}
+
+	private Runnable checkRecognizer = new Runnable() {
+	    public void run() {	
+	    	finishActivity(VOICE_RECOGNITION);
+	    	
+	    	ttsAndPlayEarcon("beep21");
+	    }
 	};
+	
+	private void initTTS() {		
+		mapTTS.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapTTSID);
+		mapTTSPhone.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapTTSPhoneID);
+		mapEarcon.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapEarconID);
+		
+		tts = new TextToSpeech(this, this);
+		
+		tts.addEarcon("money", "com.timebyte.vm1", R.raw.money);
+		tts.addEarcon("beethoven", "com.timebyte.vm1", R.raw.beethoven);
+		tts.addEarcon("jetsons", "com.timebyte.vm1", R.raw.jetsons);
+		tts.addEarcon("pinkpanther", "com.timebyte.vm1", R.raw.pinkpanther);
+		tts.addEarcon("beep15", "com.timebyte.vm1", R.raw.beep15);
+		tts.addEarcon("beep17", "com.timebyte.vm1", R.raw.beep17);
+		tts.addEarcon("beep21", "com.timebyte.vm1", R.raw.beep21);
 
-	public void buttonsEnabled(boolean isEnabled) {
-		postImageBtn.setEnabled(isEnabled);
-		updateStatusBtn.setEnabled(isEnabled);
+		tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+
+			@Override
+			public synchronized void onDone(String utteranceId) {				
+//				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
+				System.out.println("&&&&&onDone " + utteranceId);
+			}
+
+			@Override
+			public void onStart(String utteranceId) {
+//				System.out.println("&&&&& " + utteranceId + "***onStart " + android.os.Process.myTid());
+			}
+
+			@Override
+			public void onError(String arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("onError");				
+			}
+		});
+		
 	}
-
-	public void postImage() {
-		if (checkPermissions()) {
-			Bitmap img = BitmapFactory.decodeResource(getResources(),
-					R.drawable.ic_launcher);
-			Request uploadRequest = Request.newUploadPhotoRequest(
-					Session.getActiveSession(), img, new Request.Callback() {
-						@Override
-						public void onCompleted(Response response) {
-							Toast.makeText(MainActivity.this,
-									"Photo uploaded successfully",
-									Toast.LENGTH_LONG).show();
-						}
-					});
-			uploadRequest.executeAsync();
-		} else {
-			requestPermissions();
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
 		}
-	}
-
-	public void postStatusMessage() {
-		if (checkPermissions()) {
-			Request request = Request.newStatusUpdateRequest(
-					Session.getActiveSession(), message,
-					new Request.Callback() {
-						@Override
-						public void onCompleted(Response response) {
-							if (response.getError() == null)
-								Toast.makeText(MainActivity.this,
-										"Status updated successfully",
-										Toast.LENGTH_LONG).show();
-						}
-					});
-			request.executeAsync();
-		} else {
-			requestPermissions();
-		}
-	}
-
-	public boolean checkPermissions() {
-		Session s = Session.getActiveSession();
-		if (s != null) {
-			return s.getPermissions().contains("publish_actions");
-		} else
-			return false;
-	}
-
-	public void requestPermissions() {
-		Session s = Session.getActiveSession();
-		if (s != null)
-			s.requestNewPublishPermissions(new Session.NewPermissionsRequest(
-					this, PERMISSIONS));
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		uiHelper.onResume();
-		buttonsEnabled(Session.getActiveSession().isOpened());
+	public void onInit(int arg0) {
+		// TODO Auto-generated method stub
+		ttsAndPlayEarcon("beep21");
+		startDialog();
+		
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
+	
+    @Override  
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)  
+    {  
+    	super.onActivityResult(requestCode, resultCode, data);
+    	
+    	if (handler != null) {
+    		handler.removeCallbacks(checkRecognizer);
+    	}
+    	
+        if (requestCode == VOICE_RECOGNITION && resultCode == RESULT_OK)
+        {  
+            ArrayList<String> matches = data.getStringArrayListExtra
+            		(RecognizerIntent.EXTRA_RESULTS); 
+            recognizerResult.add(matches.toString());
+            
+//            logStr.add("[** " + matches.toString() + " **]");
+            System.out.println("[** " + matches.toString() + " **]");
+            ttsAndPlayEarcon("beep21");
+        } else {
+        	System.out.println("10 *** No Match " + command);
+        }
+    }    
+    
+    protected void ttsAndMicrophone(String msg) {
+//    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid() + msg);
 
-	@Override
-	public void onPause() {
-		super.onPause();
-		uiHelper.onPause();
-	}
+    	if (mapEarconID.equals(speechDone)) {
+    		messageQueue = msg;
+    		return;
+    	}
+ 
+    	// either mapTTSID or mapTTSPhoneID
+    	if (speechDone != null) {
+    		System.out.println("***********ERROR_01, should not happen. " + speechDone);
+    	} else {
+    		speechDone = mapTTSPhoneID;	
+    		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTSPhone);
+    	}
+    }
+    
+    protected void ttsNoMicrophone(String msg) {
+//    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
+ 
+    	if (mapEarconID.equals(speechDone)) {
+    		messageQueue = msg;
+    		return;
+    	}
+ 
+    	// either mapTTSID or mapTTSPhoneID
+    	if (speechDone != null) {
+    		System.out.println("***********ERROR_02, should not happen. " + speechDone);
+    	} else {
+    		speechDone = mapTTSID;
+    		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
+    	}
+    }
+    
+    protected void ttsAndPlayEarcon(String msg) {
+//    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
+    	speechDone = null;
+    	
+    	if (speechDone != null) {
+    		System.out.println("***********ERROR_03, should not happen. " + speechDone);
+    	} else {
+    		speechDone = mapEarconID;
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		uiHelper.onDestroy();
-	}
+    		if (handler != null) {
+    			handler.removeCallbacks(checkRecognizer);
+    		}
+    	
+    		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
+    		startRecognizer(0);
+    	}
+    }
+    
+    private void startDialog() {
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		uiHelper.onActivityResult(requestCode, resultCode, data);
-	}
+    }
+    
+    protected void endDialog() {
 
-	@Override
-	public void onSaveInstanceState(Bundle savedState) {
-		super.onSaveInstanceState(savedState);
-		uiHelper.onSaveInstanceState(savedState);
-	}
-*/	
+    }
+    
+    protected void setFlag(boolean cmdDone, boolean cmdStop, boolean cmdWrite) {			
+
+    }
+    
+    private boolean isSetting() {
+    	boolean flag = false;
+
+    	return flag;
+    }
+    
 }

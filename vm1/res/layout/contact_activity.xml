@@ -168,12 +168,21 @@
         android:textColor="#000000" >
     </EditText>
 
+    <CheckBox
+        android:id="@+id/writeToType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_column="0"
+        android:layout_row="6"
+        android:text="@string/writeToType" />
+        
     <Button
         android:id="@+id/setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
-        android:layout_row="6"
+        android:layout_row="7"
         android:text="@string/addContact" />
     
      <Button
@@ -181,7 +190,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
-        android:layout_row="7"
+        android:layout_row="8"
         android:text="@string/cancel" />   
         
 </GridLayout>

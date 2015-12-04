@@ -27,8 +27,8 @@ public final class R {
         public static final int voice=0x7f020002;
     }
     public static final class id {
-        public static final int LinearLayout01=0x7f090020;
-        public static final int action_settings=0x7f090021;
+        public static final int LinearLayout01=0x7f090021;
+        public static final int action_settings=0x7f090022;
         public static final int cancel=0x7f090004;
         public static final int chkBody=0x7f090002;
         public static final int clean=0x7f090012;
@@ -49,7 +49,7 @@ public final class R {
         public static final int contactName5=0x7f09001b;
         public static final int contactName6=0x7f09001d;
         public static final int debugging=0x7f09000c;
-        public static final int months_list=0x7f09001f;
+        public static final int months_list=0x7f090020;
         public static final int myEmail=0x7f090000;
         public static final int myPassword=0x7f090001;
         public static final int offLine=0x7f09000b;
@@ -61,6 +61,7 @@ public final class R {
         public static final int syncMail=0x7f09000a;
         public static final int title=0x7f090005;
         public static final int writeMail=0x7f090007;
+        public static final int writeToType=0x7f09001f;
     }
     public static final class layout {
         public static final int account_activity=0x7f030000;
@@ -86,12 +87,12 @@ public final class R {
         public static final int action_settings=0x7f060002;
         public static final int addContact=0x7f060014;
         public static final int app_name=0x7f060000;
-        public static final int cancel=0x7f060015;
-        public static final int clean=0x7f06001c;
-        public static final int cmd_continue=0x7f060017;
-        public static final int cmd_detail=0x7f060018;
-        public static final int cmd_skip=0x7f060019;
-        public static final int cmd_stop=0x7f06001a;
+        public static final int cancel=0x7f060016;
+        public static final int clean=0x7f06001d;
+        public static final int cmd_continue=0x7f060018;
+        public static final int cmd_detail=0x7f060019;
+        public static final int cmd_skip=0x7f06001a;
+        public static final int cmd_stop=0x7f06001b;
         public static final int contact=0x7f060013;
         public static final int debugging=0x7f060008;
         public static final int emailAddressHint=0x7f06000f;
@@ -102,16 +103,17 @@ public final class R {
         public static final int myEmail=0x7f06000d;
         public static final int myPassword=0x7f060010;
         public static final int offLine=0x7f06000b;
-        public static final int ok=0x7f060016;
+        public static final int ok=0x7f060017;
         public static final int readBodyMail=0x7f060004;
         public static final int readMail=0x7f060003;
         public static final int readbody=0x7f060012;
-        public static final int save=0x7f06001b;
+        public static final int save=0x7f06001c;
         public static final int searchMail=0x7f06000a;
         public static final int settings=0x7f060007;
         public static final int skipMail=0x7f060005;
         public static final int syncMail=0x7f060009;
         public static final int writeMail=0x7f060006;
+        public static final int writeToType=0x7f060015;
     }
     public static final class style {
         /** 

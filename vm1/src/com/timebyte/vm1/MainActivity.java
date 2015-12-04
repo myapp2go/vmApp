@@ -25,7 +25,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -95,7 +97,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private String mailAccount = "";
 	private String messageQueue = null;
 	private String earconQueue = null;
-	
+
+	private SpeechRecognizer sr;
+	   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -257,11 +261,22 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	}
 	
 	public void initRecognizer() {	
+        sr = SpeechRecognizer.createSpeechRecognizer(this);       
+        sr.setRecognitionListener(new listener()); 
+        
+        intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);        
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
+
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5); 
+        
+        /*        
 		intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);  
 	    intent.putExtra(
 	    	RecognizerIntent.EXTRA_LANGUAGE_MODEL, 
 	        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);  
 	    intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(1000));
+*/
 	}
 
 	public void startRecognizer(int ms) {
@@ -277,7 +292,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				handler.postDelayed(checkRecognizer, 10000);
 			}
 
-			startActivityForResult(intent, VOICE_RECOGNITION);
+//			startActivityForResult(intent, VOICE_RECOGNITION);
+			
+			sr.startListening(intent);
 		}
 	}
 
@@ -718,4 +735,54 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	
     	return flag;
     }
+    
+    class listener implements RecognitionListener          
+    {
+             public void onReadyForSpeech(Bundle params)
+             {
+                      System.out.println("001 onReadyForSpeech");
+             }
+             public void onBeginningOfSpeech()
+             {
+             	System.out.println("02 onBeginningOfSpeech");
+             }
+             public void onRmsChanged(float rmsdB)
+             {
+             	System.out.println("03 onRmsChanged");
+             }
+             public void onBufferReceived(byte[] buffer)
+             {
+             	System.out.println("04 nonBufferReceived");
+             }
+             public void onEndOfSpeech()
+             {
+             	System.out.println("05 onEndofSpeech");
+             }
+             public void onError(int error)
+             {
+             	System.out.println("06 errorNum " +  error);
+//                      mText.setText("error " + error);
+             }
+             public void onResults(Bundle results)                   
+             {
+                      String str = new String();
+                      System.out.println("07 onResults " + results);
+                      ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                      for (int i = 0; i < data.size(); i++)
+                      {
+                     	 System.out.println("result " + data.get(i));
+                                str += data.get(i);
+                      }
+//                      mText.setText("results: "+String.valueOf(data.size()));        
+             }
+             public void onPartialResults(Bundle partialResults)
+             {
+             	System.out.println("08 onPartialResults");
+             }
+             public void onEvent(int eventType, Bundle params)
+             {
+             	System.out.println("09 onEvent " + eventType);
+             }
+    }
+
 }
