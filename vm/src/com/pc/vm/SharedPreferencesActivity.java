@@ -29,17 +29,75 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 
 	protected void getPreferenceFromFile() {
 		getPreferenceFromFile("pcMailAccount");
-		getPreferenceFromFile("pcVoiceMail");
+		getPreferenceFromFile("pcMailContacts");
 	}
 	
 	protected void getPreferenceFromFile(String filename) {
+		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
+
+		File file = new File(folder, filename);
+		if (file.exists()) {
+			// Read text from file
+			StringBuilder text = new StringBuilder();
+
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String line;
+
+				while ((line = br.readLine()) != null) {
+					text.append(line);
+					text.append('\n');
+				}
+				br.close();
+			} catch (IOException e) {
+				// You'll need to add proper error handling here
+				e.printStackTrace();
+			}
+
+			setupPreferences(text);
+		}
 	}
 
-	protected void settingNotice() {
-		popupDialog();
+	private void setupPreferences(StringBuilder text) {
+		// TODO Auto-generated method stub
+		String del = "_____";
+		
+		StringTokenizer st = new StringTokenizer(text.toString(), del);
+		
+		Editor editor = sharedPreferences.edit();
+		
+		while (st.hasMoreTokens()) {
+			String str = st.nextToken();
+			int ind = str.indexOf(":");
+			if (ind > 0) {
+				String name = str.substring(0, ind);
+				String value = str.substring(ind+1);
+				switch (name) {
+				case "myEmail" :
+					logStr.add("***getPreferenceFromFilemyEmail " + value);
+					editor.putString("myEmail", value);
+					break;
+				case "myPassword" :
+					editor.putString("myPassword", value);
+					break;
+				case "bodyDoneFlag" :
+					editor.putString("bodyDoneFlag", value);
+					break;
+				default :
+					contacts.put(name, value);
+					break;
+				}
+			}
+		}
+		
+		editor.commit();
+	}
+
+	protected void settingNoticeOld() {
+		popupDialogOld();
 	}
 	
-	private void popupDialog() {
+	private void popupDialogOld() {
 		new AlertDialog.Builder(this)
 	    .setTitle("Setting Account")
 	    .setMessage("You did not set up your account yet!")
@@ -57,38 +115,4 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 	     .show();
 	}
 	
-	private void setupPreferences(StringBuilder text) {
-		// TODO Auto-generated method stub
-		String del = "_____";
-		
-		StringTokenizer st = new StringTokenizer(text.toString(), del);
-		
-		Editor editor = sharedPreferences.edit();
-		
-		while (st.hasMoreTokens()) {
-			String str = st.nextToken();
-			int ind = str.indexOf(":");
-			if (ind > 0) {
-				String name = str.substring(0, ind);
-				String value = str.substring(ind+1);
-				switch (name) {
-				case "myEmail" :
-					editor.putString("myEmail", value);
-					if (value != null) {
-//						isSetting = true;
-					}
-					break;
-				case "myPassword" :
-					editor.putString("myPassword", value);
-					break;	
-				default :
-					contacts.put(name, value);
-					break;
-				}
-			}
-		}
-		
-		editor.commit();
-	}
-
 }

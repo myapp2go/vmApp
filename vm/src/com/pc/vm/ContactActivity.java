@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -32,19 +33,20 @@ public class ContactActivity extends Activity {
 			}
 		});
 		
+		final Button cancelButton = (Button) this.findViewById(R.id.cancel);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
     }
     
-	private void savePreference() {
-		// TODO Auto-generated method stub
-		
+	private void savePreference() {	
 		Editor editor = sharedPreferences.edit();
 		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
 		editor.putInt("increment", 10);
-		editor.commit();
-
-		String FILENAME = "pcVoiceMail";
-		String string = "hello  world!";
-		String del = "_____";
+		
+		String FILENAME = "pcMailContacts";
 		
 		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
 		folder.mkdirs();
@@ -54,17 +56,14 @@ public class ContactActivity extends Activity {
 			folder.createNewFile();
 //			fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
 	        fos = new FileOutputStream(new File(folder, FILENAME));
-			string = ((TextView) findViewById(R.id.contactName1)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail1)).getText().toString() + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName2)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail2)).getText().toString() + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName3)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail3)).getText().toString() + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName4)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail4)).getText().toString() + del;
-			fos.write(string.getBytes());
-			string = ((TextView) findViewById(R.id.contactName5)).getText().toString() + ":" + ((TextView) findViewById(R.id.contactEmail5)).getText().toString() + del;
-			fos.write(string.getBytes());
 
+	        setContact(fos, editor, R.id.contactName1, R.id.contactEmail1);
+	        setContact(fos, editor, R.id.contactName2, R.id.contactEmail2);
+	        setContact(fos, editor, R.id.contactName3, R.id.contactEmail3);
+	        setContact(fos, editor, R.id.contactName4, R.id.contactEmail4);
+	        setContact(fos, editor, R.id.contactName5, R.id.contactEmail5);
+	        setContact(fos, editor, R.id.contactName6, R.id.contactEmail6);
+	        
 			fos.close();
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -72,6 +71,15 @@ public class ContactActivity extends Activity {
 			e.printStackTrace();
 		}
 		
+		editor.commit();		
 	}
 
+	private void setContact(FileOutputStream fos, Editor editor, int nameId, int contactId) throws IOException {	
+		String name = ((TextView) findViewById(nameId)).getText().toString();
+        String contact = ((TextView) findViewById(contactId)).getText().toString();
+        if (name != null && contact != null) {
+        	fos.write((name+":"+contact+Constants.CONTACT_MARKER).getBytes());
+        	editor.putString((Constants.CONTACT_MARKER+name), contact);
+        }
+	}
 }

@@ -19,7 +19,6 @@ public final class Constants {
 	public static final String COMMAND_SKIP_GREETING = "skip mail";
 	
 	public static final String COMMAND_TO_GREETING = "Who you want to send";
-	public static final String COMMAND_MAILHOST_GREETING = "Please speak mail host";
 	public static final String COMMAND_SUBJECT_GREETING = "Please speak subject";
 	public static final String COMMAND_BODY_GREETING = "Please speak message";
 	public static final String COMMAND_DONE_GREETING = "Please speak send or add or save or stop";
@@ -62,7 +61,6 @@ public final class Constants {
 
 	public static final String COMMAND_WRITE = "write";
 	public static final String SUBCOMMAND_TO = "to";
-	public static final String SUBCOMMAND_MAILHOST = "mailhost";
 	public static final String SUBCOMMAND_VERIFY_TO = "verifyTo";
 	public static final String SUBCOMMAND_SUBJECFT = "subject";
 	public static final String SUBCOMMAND_BODY = "body";

@@ -11,12 +11,15 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class AccountActivity extends Activity {
 
 	protected SharedPreferences sharedPreferences;
+	private String bodyDoneFlag = "T";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,12 +27,33 @@ public class AccountActivity extends Activity {
         setContentView(R.layout.account_activity);
 
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
-		
+		((TextView)findViewById(R.id.myEmail)).setText(sharedPreferences.getString("myEmail", ""));
+		((TextView)findViewById(R.id.myPassword)).setText(sharedPreferences.getString("myPassword", ""));		
+        
 		final Button settingButton = (Button) this.findViewById(R.id.setting);
 		settingButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				savePreference();
 				onBackPressed();
+			}
+		});
+		
+		final Button cancelButton = (Button) this.findViewById(R.id.cancel);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
+		
+		final CheckBox chkBody = (CheckBox) findViewById(R.id.chkBody);
+		chkBody.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				// is chkIos checked?
+				if (((CheckBox) v).isChecked()) {
+					bodyDoneFlag = "F";
+				} else {
+					bodyDoneFlag = "T";
+				}
 			}
 		});
     }
@@ -44,6 +68,7 @@ public class AccountActivity extends Activity {
 		editor.putString("myPassword", myPassword);
 		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
 		editor.putInt("increment", 10);
+		editor.putString("bodyDoneFlag", bodyDoneFlag);
 		editor.commit();
 
 		String FILENAME = "pcMailAccount";
@@ -64,7 +89,9 @@ public class AccountActivity extends Activity {
 			fos.write(string.getBytes());
 	        string = "myPassword:" + myPassword + del;
 			fos.write(string.getBytes());
-
+	        string = "bodyDoneFlag:" + bodyDoneFlag + del;
+			fos.write(string.getBytes());
+			
 			fos.close();
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
