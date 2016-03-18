@@ -3,7 +3,9 @@ package com.timebyte.appstock;
 import java.util.List;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.Menu;
 
@@ -14,7 +16,12 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		DatabaseHandler db = new DatabaseHandler(this);
+        Boolean hasSD = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+        String sdLoc = "";
+        if (hasSD) {
+        	sdLoc = Environment.getExternalStorageDirectory().toString() + "/DCIM/SQLite/";
+        }
+		DatabaseHandler db = new DatabaseHandler(this, sdLoc);
 		 
         /**
          * CRUD Operations
@@ -33,7 +40,7 @@ public class MainActivity extends Activity {
         for (Contact cn : contacts) {
             String log = "Id: "+cn.getID()+" ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
                 // Writing Contacts to log
-        Log.d("Name: ", log);
+            System.out.println("Name: " + log);
     }
 	}
 

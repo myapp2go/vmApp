@@ -1,13 +1,17 @@
 package com.timebyte.appstock;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
  
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
+import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	 
@@ -16,8 +20,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
  
     // Database Name
-    private static final String DATABASE_NAME = "contactsManager";
- 
+//    private static final String DATABASE_NAME = "contactsManager";
+    private static final String DATABASE_LOC = "/DCIM?SQLite/";
+    private static final String DATABASE_NAME = "pc.db";
+    
     // Contacts table name
     private static final String TABLE_CONTACTS = "contacts";
  
@@ -25,29 +31,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_PH_NO = "phone_number";
- 
+
+    public DatabaseHandler(final Context context, String sdLoc) {
+    	super(context, sdLoc+DATABASE_NAME, null, DATABASE_VERSION);
+    }
+    
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        
-        String path = context.getDatabasePath(DATABASE_NAME).toString();
-        System.out.println("DBPATH " + path);
-        
-        Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-
-        if(isSDPresent)
-        {
-        	System.out.println("has BPATH ");
-        	/*
-        	super(context, Environment.getExternalStorageDirectory()
-                    + File.separator + FILE_DIR
-                    + File.separator + DATABASE_NAME, null, DATABASE_VERSION);
-        	
-        	   super(context, "/sdcard/"+DATABASE_NAME, null, DATABASE_VERSION);
-        	    SQLiteDatabase.openOrCreateDatabase("/sdcard/"+DATABASE_NAME,null);
-        	    */
-        } else {
-        	System.out.println("No has BPATH ");
-        }
+       
         //3rd argument to be passed is CursorFactory instance
     }
  
@@ -160,5 +151,53 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return count
         return cursor.getCount();
     }
- 
+
+    class DatabaseContext extends ContextWrapper {
+
+    	private static final String DEBUG_CONTEXT = "DatabaseContext";
+
+    	public DatabaseContext(Context base) {
+    	    super(base);
+    	}
+
+    	@Override
+    	public File getDatabasePath(String name) 
+    	{
+    	    File sdcard = Environment.getExternalStorageDirectory();    
+    	    String dbfile = sdcard.getAbsolutePath() + File.separator+ "databases" + File.separator + name;
+
+    	    if (!dbfile.endsWith(".db"))
+    	    {
+    	        dbfile += ".db" ;
+    	    }
+
+    	    File result = new File(dbfile);
+
+    	    if (!result.getParentFile().exists())
+    	    {
+    	        result.getParentFile().mkdirs();
+    	    }
+
+    	    if (Log.isLoggable(DEBUG_CONTEXT, Log.WARN))
+    	    {
+    	        Log.w(DEBUG_CONTEXT,
+    	                "getDatabasePath(" + name + ") = " + result.getAbsolutePath());
+    	    }
+
+    	    return result;
+    	}
+
+    	@Override
+    	public SQLiteDatabase openOrCreateDatabase(String name, int mode, SQLiteDatabase.CursorFactory factory) 
+    	{
+    	    SQLiteDatabase result = SQLiteDatabase.openOrCreateDatabase(getDatabasePath(name), null);
+    	    // SQLiteDatabase result = super.openOrCreateDatabase(name, mode, factory);
+    	    if (Log.isLoggable(DEBUG_CONTEXT, Log.WARN))
+    	    {
+    	        Log.w(DEBUG_CONTEXT,
+    	                "openOrCreateDatabase(" + name + ",,) = " + result.getPath());
+    	    }
+    	    return result;
+    	}
+    }
 }
