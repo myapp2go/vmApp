@@ -28,9 +28,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_CONTACTS = "contacts";
  
     // Contacts Table Columns names
-    private static final String KEY_ID = "id";
-    private static final String KEY_NAME = "name";
-    private static final String KEY_PH_NO = "phone_number";
+    private static final String COL_ID = "id";
+    private static final String COL_SYMBOL = "SYM";
+    private static final String COL_TotalRevenue = "I_T_R";
+    private static final String COL_CostofRevenue = "I_C_R";
+    private static final String COL_ResearchDevelopment = "I_R_D";
+    private static final String COL_SellingGeneralandAdministrative = "I_S_G";
+    private static final String COL_NonRecurring = "I_N_R";
+    
+    private static final String COL_NAME = "name";
+    private static final String COL_PH_NO = "phoneNumber";
 
     public DatabaseHandler(final Context context, String sdLoc) {
     	super(context, sdLoc+DATABASE_NAME, null, DATABASE_VERSION);
@@ -46,8 +53,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_PH_NO + " TEXT" + ")";
+                + COL_ID + " INTEGER PRIMARY KEY," 
+                + COL_SYMBOL + " TEXT,"
+                + COL_TotalRevenue + " REAL,"
+                + COL_CostofRevenue + " REAL,"
+                + COL_ResearchDevelopment + " REAL,"
+                + COL_SellingGeneralandAdministrative + " REAL,"
+                + COL_NonRecurring + " REAL,"
+        		+ COL_NAME + " TEXT,"
+                + COL_PH_NO + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
  
@@ -70,8 +84,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, contact.getName()); // Contact Name
-        values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
+        values.put(COL_NAME, contact.getName()); // Contact Name
+        values.put(COL_PH_NO, contact.getPhoneNumber()); // Contact Phone
  
         // Inserting Row
         db.insert(TABLE_CONTACTS, null, values);
@@ -83,8 +97,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     Contact getContact(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
  
-        Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,
-                KEY_NAME, KEY_PH_NO }, KEY_ID + "=?",
+        Cursor cursor = db.query(TABLE_CONTACTS, new String[] { COL_ID,
+                COL_NAME, COL_PH_NO }, COL_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -125,18 +139,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, contact.getName());
-        values.put(KEY_PH_NO, contact.getPhoneNumber());
+        values.put(COL_NAME, contact.getName());
+        values.put(COL_PH_NO, contact.getPhoneNumber());
  
         // updating row
-        return db.update(TABLE_CONTACTS, values, KEY_ID + " = ?",
+        return db.update(TABLE_CONTACTS, values, COL_ID + " = ?",
                 new String[] { String.valueOf(contact.getID()) });
     }
  
     // Deleting single contact
     public void deleteContact(Contact contact) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_CONTACTS, KEY_ID + " = ?",
+        db.delete(TABLE_CONTACTS, COL_ID + " = ?",
                 new String[] { String.valueOf(contact.getID()) });
         db.close();
     }

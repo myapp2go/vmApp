@@ -4,50 +4,55 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 
-public class PCStock {
+import android.app.Activity;
+import android.os.AsyncTask;
 
-	static float[] totalRevenue = new float[4];
-	static float[] costofRevenue = new float[4];
-	static float[] researchDevelopment = new float[4];
-	static float[] sellingGeneralandAdministrative = new float[4];
-	static float[] nonRecurring = new float[4];
+public class PCStock extends AsyncTask {
 
-	static float[] totalOtherIncomeExpensesNet = new float[4];
-	static float[] earningsBeforeInterestAndTaxes = new float[4];
-
-	static float[] interestExpense = new float[4];
-	static float[] incomeBeforeTax = new float[4];
-
-	static float[] incomeTaxExpense = new float[4];
-	static float[] minorityInterest = new float[4];
-
-	static float[] netIncomeApplicableToCommonShares = new float[4];
-
-	static float[] cashAndCashEquivalents = new float[4];
-	static float[] shortTermInvestments = new float[4];
+	private MainActivity mainActivity;
 	
-	static float[] commonStock = new float[4];
-	static float[] preferredStock = new float[4];
-	static float[] retainedEarnings = new float[4];
-	static float[] capitalSurplus = new float[4];
-	static float[] otherStockholderEquity = new float[4];
-	static float[] totalStockholderEquity = new float[4];
+	private float[] totalRevenue = new float[4];
+	private float[] costofRevenue = new float[4];
+	private float[] researchDevelopment = new float[4];
+	private float[] sellingGeneralandAdministrative = new float[4];
+	private float[] nonRecurring = new float[4];
 
-	static float[] depreciation = new float[4];
+	private float[] totalOtherIncomeExpensesNet = new float[4];
+	private float[] earningsBeforeInterestAndTaxes = new float[4];
+
+	private float[] interestExpense = new float[4];
+	private float[] incomeBeforeTax = new float[4];
+
+	private float[] incomeTaxExpense = new float[4];
+	private float[] minorityInterest = new float[4];
+
+	private float[] netIncomeApplicableToCommonShares = new float[4];
+
+	private float[] cashAndCashEquivalents = new float[4];
+	private float[] shortTermInvestments = new float[4];
 	
-	static String v = "";
+	private float[] commonStock = new float[4];
+	private float[] preferredStock = new float[4];
+	private float[] retainedEarnings = new float[4];
+	private float[] capitalSurplus = new float[4];
+	private float[] otherStockholderEquity = new float[4];
+	private float[] totalStockholderEquity = new float[4];
+
+	private float[] depreciation = new float[4];
+	
+	private String v = "";
 	
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		String stock = "CONN";
+	public void getStock(String stock) {
+	//	String stock = "CONN";
 		int count = 4;
 		
 		getReport(stock, count);
 	}
 	
-	private static void getReport(String stock, int count) {
+	private void getReport(String stock, int count) {
 		if (count == 3) {
 			getAnnualReport(stock, count);
 		} else {
@@ -61,7 +66,7 @@ public class PCStock {
 		}
 	}
 
-	private static void getQualterReport(String stock, int count) {
+	private void getQualterReport(String stock, int count) {
 		String doc = "";
 		
 		try {
@@ -88,7 +93,7 @@ public class PCStock {
 		}
 	}
 
-	private static void getAnnualReport(String stock, int count) {
+	private void getAnnualReport(String stock, int count) {
 		String doc = "";
 		
 		try {
@@ -112,7 +117,7 @@ public class PCStock {
 		}
 	}
 
-	private static void getIncomeStatement(String doc, int count) {
+	private void getIncomeStatement(String doc, int count) {
 		getValues("Total Revenue", totalRevenue, doc, count);
 		getValues("Cost of Revenue", costofRevenue, doc, count);
 
@@ -190,7 +195,7 @@ public class PCStock {
 		}		
 	}
 	
-	private static void sf(float value) {
+	private void sf(float value) {
 		v = "\t" + value;
 		System.out.print(v);
 		if (v.length() < 9) {
@@ -198,7 +203,7 @@ public class PCStock {
 		}
 	}
 	
-	private static void getBalanceSheet(String doc, int count) {
+	private void getBalanceSheet(String doc, int count) {
 		getValues("Cash And Cash Equivalents", cashAndCashEquivalents, doc, count);
 		getValues("Short Term Investments", shortTermInvestments, doc, count);
 
@@ -221,7 +226,7 @@ public class PCStock {
 		*/
 	}
 
-	private static void getCashFlow(String doc, int count) {
+	private void getCashFlow(String doc, int count) {
 		getValues("Depreciation", depreciation, doc, count);
 
 		// 049
@@ -232,7 +237,7 @@ public class PCStock {
 		*/
 	}
 
-	private static void getValues(String name, float[] valueAr, String doc, int count) {
+	private void getValues(String name, float[] valueAr, String doc, int count) {
 		int nameInd = doc.indexOf(name);
 		
 		int endIndex = nameInd;
@@ -261,6 +266,37 @@ public class PCStock {
 			valueAr[i] = val;
 //			System.out.println(val);
 		}
+	}
+
+	public PCStock(MainActivity activity) {
+		System.out.println("STOCK1: ");
+		
+		mainActivity = activity;
+	}
+
+	@Override
+	protected void onPreExecute() {
+		System.out.println("onPreExecute: ");
+	}
+	
+	@Override
+	public void onProgressUpdate(Object... values) {
+		System.out.println("onProgressUpdate: ");
+	}
+	
+	@Override
+	public void onPostExecute(Object result) {
+		System.out.println("onPostExecute: ");
+	}
+	
+	@Override
+	protected Object doInBackground(Object... arg0) {
+		// TODO Auto-generated method stub
+		System.out.println("doInBackground: ");
+		
+		getStock("CONN");
+		
+		return null;
 	}
 
 }
