@@ -1,15 +1,20 @@
 package com.timebyte.appstock;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.widget.TextView;
 
 public class PCStock extends AsyncTask {
 
 	private MainActivity mainActivity;
+	private DatabaseHandler db;
+	TextView postText;
+	private String posts = "";
 	
 	private float[] totalRevenue = new float[4];
 	private float[] costofRevenue = new float[4];
@@ -197,6 +202,7 @@ public class PCStock extends AsyncTask {
 	
 	private void sf(float value) {
 		v = "\t" + value;
+		posts += v;
 		System.out.print(v);
 		if (v.length() < 9) {
 			System.out.print("\t");
@@ -286,6 +292,23 @@ public class PCStock extends AsyncTask {
 	
 	@Override
 	public void onPostExecute(Object result) {
+        db.addContact(new Contact("Paul", "9100000000"));
+        db.addContact(new Contact("Srinivas", "9199999999"));
+        db.addContact(new Contact("Tommy", "9522222222"));
+        db.addContact(new Contact("Karthik", "9533333333"));
+ 
+        // Reading all contacts
+//        Log.d("Reading: ", "Reading all contacts..");
+        List<Contact> contacts = db.getAllContacts();       
+ 
+        for (Contact cn : contacts) {
+            String log = "Id: "+cn.getID()+" ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
+                // Writing Contacts to log
+            System.out.println("Name: " + log);
+        }
+        
+        postText.setText(posts);
+        
 		System.out.println("onPostExecute: ");
 	}
 	
@@ -293,6 +316,8 @@ public class PCStock extends AsyncTask {
 	protected Object doInBackground(Object... arg0) {
 		// TODO Auto-generated method stub
 		System.out.println("doInBackground: ");
+		db = (DatabaseHandler) arg0[0];
+		postText = (TextView) arg0[1];
 		
 		getStock("CONN");
 		
