@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 public class PCStock extends AsyncTask {
 
-	private MainActivity mainActivity;
+	private String[] symbol = {
+			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
+			};
+	
 	private DatabaseHandler db;
 	TextView postText;
 	private String posts = "";
@@ -276,8 +279,6 @@ public class PCStock extends AsyncTask {
 
 	public PCStock(MainActivity activity) {
 		System.out.println("STOCK1: ");
-		
-		mainActivity = activity;
 	}
 
 	@Override
@@ -319,6 +320,9 @@ public class PCStock extends AsyncTask {
 		db = (DatabaseHandler) arg0[0];
 		postText = (TextView) arg0[1];
 		
+		for (int i = 0; i < symbol.length; i++) {
+			posts += symbol[i] + "\n";
+		}
 		getStock("CONN");
 		
 		return null;
