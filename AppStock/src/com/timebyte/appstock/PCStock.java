@@ -5,19 +5,15 @@ import java.util.List;
 
 import org.jsoup.Jsoup;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.widget.TextView;
 
 public class PCStock extends AsyncTask {
 
-	private String[] symbol = {
+	protected String[] symbol = {
 			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
 			};
 	
-	private DatabaseHandler db;
-	TextView postText;
-	private String posts = "";
+	protected String posts = "";
 	
 	private float[] totalRevenue = new float[4];
 	private float[] costofRevenue = new float[4];
@@ -50,6 +46,14 @@ public class PCStock extends AsyncTask {
 	
 	private String v = "";
 	
+	public static void main(String[] args) {
+		String stock = "CONN";
+		int count = 4;
+		
+		PCStock stk = new PCStock();
+		stk.getReport(stock, count);
+	}
+
 	/**
 	 * @param args
 	 */
@@ -164,9 +168,9 @@ public class PCStock extends AsyncTask {
 		}
 
 		// % of Operating Expenses
-		System.out.print("\n% of Operating Expenses\t\t");		
+		posts += "\n% of Operating Expenses\t\t";		
 		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + ((researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) / totalRevenue[i]));
+			sf(((researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) / totalRevenue[i]));
 		}
 
 		// Operating Income or Loss
@@ -277,56 +281,11 @@ public class PCStock extends AsyncTask {
 		}
 	}
 
-	public PCStock(MainActivity activity) {
-		System.out.println("STOCK1: ");
-	}
-
-	@Override
-	protected void onPreExecute() {
-		System.out.println("onPreExecute: ");
-	}
-	
-	@Override
-	public void onProgressUpdate(Object... values) {
-		System.out.println("onProgressUpdate: ");
-	}
-	
-	@Override
-	public void onPostExecute(Object result) {
-        db.addContact(new Contact("Paul", "9100000000"));
-        db.addContact(new Contact("Srinivas", "9199999999"));
-        db.addContact(new Contact("Tommy", "9522222222"));
-        db.addContact(new Contact("Karthik", "9533333333"));
- 
-        // Reading all contacts
-//        Log.d("Reading: ", "Reading all contacts..");
-        List<Contact> contacts = db.getAllContacts();       
- 
-        for (Contact cn : contacts) {
-            String log = "Id: "+cn.getID()+" ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
-                // Writing Contacts to log
-            System.out.println("Name: " + log);
-        }
-        
-        postText.setText(posts);
-        
-		System.out.println("onPostExecute: ");
-	}
-	
-	@Override
-	protected Object doInBackground(Object... arg0) {
+	protected Object doInBackground(Object... params) {
 		// TODO Auto-generated method stub
-		System.out.println("doInBackground: ");
-		db = (DatabaseHandler) arg0[0];
-		postText = (TextView) arg0[1];
-		
-		for (int i = 0; i < symbol.length; i++) {
-			posts += symbol[i] + "\n";
-		}
-		getStock("CONN");
-		
 		return null;
 	}
+
 
 }
 

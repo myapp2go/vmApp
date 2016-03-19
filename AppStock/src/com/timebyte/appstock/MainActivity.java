@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
         }
 		DatabaseHandler db = new DatabaseHandler(this, sdLoc);
     
-		new PCStock(this).execute(db, postText);		
+		new AndroidStock().execute(db, postText);		
 	}
 
 	@Override
