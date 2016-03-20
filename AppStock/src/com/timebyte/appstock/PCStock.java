@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 
 public class PCStock extends AsyncTask {
 
+	protected Stock stk;
+	
 	protected String[] symbol = {
 			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
 			};
@@ -132,8 +134,10 @@ public class PCStock extends AsyncTask {
 	}
 
 	private void getIncomeStatement(String doc, int count) {
+		getValues("Total Revenue", stk.getTotalRevenue(), doc, count);
 		getValues("Total Revenue", totalRevenue, doc, count);
 		getValues("Cost of Revenue", costofRevenue, doc, count);
+		getValues("Cost of Revenue", stk.getCostofRevenue(), doc, count);
 
 		getValues("Research Development", researchDevelopment, doc, count);
 		getValues("Selling General and Administrative", sellingGeneralandAdministrative, doc, count);
@@ -149,6 +153,7 @@ public class PCStock extends AsyncTask {
 		getValues("Minority Interest", minorityInterest, doc, count);
 		
 		getValues("Net Income Applicable To Common Shares", netIncomeApplicableToCommonShares, doc, count);
+		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
 
 		// Gross Profit
 		posts += "\nGross Profit\t\t\t";		
