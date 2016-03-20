@@ -54,11 +54,9 @@ public class AndroidStock extends PCStock {
 		db = (DatabaseHandler) arg0[0];
 		postText = (TextView) arg0[1];
 		
-//		for (int i = 0; i < symbol.length; i++) {
-
-		for (int i = 0; i < 7; i++) {
-//			System.out.println("MMM " + symbol[i]);
-			posts += "\n" + symbol[i] + "\n";
+		for (int i = 0; i < symbol.length; i++) {
+//			System.out.println("\n*****MMM " + symbol[i]);
+			posts += "\n" + symbol[i];
 			getStock(symbol[i]);
 		}		
 		

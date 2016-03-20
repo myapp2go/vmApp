@@ -13,7 +13,7 @@ public class PCStock extends AsyncTask {
 			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
 			};
 	
-	protected String posts = "";
+	protected static String posts = "";
 	
 	private float[] totalRevenue = new float[4];
 	private float[] costofRevenue = new float[4];
@@ -52,13 +52,15 @@ public class PCStock extends AsyncTask {
 		
 		PCStock stk = new PCStock();
 		stk.getReport(stock, count);
+		
+		System.out.println("&&&& " + posts);
 	}
 
 	/**
 	 * @param args
 	 */
 	public void getStock(String stock) {
-	//	String stock = "CONN";
+	//	String stock = "BCE";
 		int count = 4;
 		
 		getReport(stock, count);
@@ -149,7 +151,7 @@ public class PCStock extends AsyncTask {
 		getValues("Net Income Applicable To Common Shares", netIncomeApplicableToCommonShares, doc, count);
 
 		// Gross Profit
-		System.out.print("Gross Profit\t\t\t");		
+		posts += "\nGross Profit\t\t\t";		
 		for (int i = 0; i < count; i++) {
 			sf((totalRevenue[i] - costofRevenue[i]));
 //			System.out.print("\t\t" + (totalRevenue[i] - costofRevenue[i]));
@@ -174,7 +176,7 @@ public class PCStock extends AsyncTask {
 		}
 
 		// Operating Income or Loss
-		System.out.print("\nOperating Income or Loss\t");		
+		posts += "\n\nOperating Income or Loss\t";		
 		for (int i = 0; i < count; i++) {
 			sf(((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i])));
 //			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i])));
@@ -187,7 +189,7 @@ public class PCStock extends AsyncTask {
 		}
 		
 		// Operating Income or Loss
-		System.out.print("\nEarnings Before Interest And Taxes");		
+		posts += "\n\nEarnings Before Interest And Taxes";		
 		for (int i = 0; i < count; i++) {
 			sf(((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) + totalOtherIncomeExpensesNet[i]));
 //			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) + totalOtherIncomeExpensesNet[i]));
@@ -200,7 +202,7 @@ public class PCStock extends AsyncTask {
 		}
 
 		// P49 
-		System.out.print("\nInterest Ratio\t\t\t");
+		posts += "\n\nInterest Ratio\t\t\t";
 		for (int i = 0; i < count; i++) {
 			sf(earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
 //			System.out.print("\t" + earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
@@ -272,7 +274,16 @@ public class PCStock extends AsyncTask {
 				break;
 			default:
 				endIndex = doc.indexOf("nbsp", beginIndex) - 1;
-				val = Integer.parseInt(doc.substring(beginIndex, endIndex).replace(",", ""));
+//	//			System.out.println("FFFFFFFFFFFFFF " + beginIndex + " KKK " + endIndex);
+				if (beginIndex < 0 || endIndex < 0 || (endIndex-beginIndex>20)) {
+					val = 0;
+				} else {
+					try {
+						val = Integer.parseInt(doc.substring(beginIndex, endIndex).replace(",", ""));
+					} catch (Exception e) {
+						val = 0;
+					}
+				}
 				break;
 			}
 			
