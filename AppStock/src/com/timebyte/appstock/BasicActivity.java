@@ -21,6 +21,10 @@ abstract class BasicActivity extends Activity {
 	abstract float[] calGrossProfitRatio(Stock stock);
 	abstract float[] calCostofRevenueRatio(Stock stock);
 	abstract float[] calOperatingExpensesRatio(Stock stock);
+	abstract float[] calOperatingIncomeorLossRatio(Stock stock);
+	abstract float[] calNetIncomeApplToCommonSharesRatio(Stock stock);
+	abstract float[] calnterestRatio(Stock stock);
+	abstract float[] calEPS(Stock stock);
 	
 	private String[] symbol = {
 			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
@@ -75,10 +79,14 @@ abstract class BasicActivity extends Activity {
         
         createRow("Total Revenue", stock.getTotalRevenue());
         createRow("Cost of Revenue", stock.getCostofRevenue());
-        
+
+        createRow("% of Cost of Revenue", calCostofRevenueRatio(stock));
         createRow("% Gross Profit", calGrossProfitRatio(stock));
-        createRow("of Operating Expenses", calCostofRevenueRatio(stock));
-        createRow("% of Cost of Revenue", calOperatingExpensesRatio(stock));
+        createRow("% of Operating Expenses", calOperatingExpensesRatio(stock));
+        createRow("% Operating Income or Loss Ratio", calOperatingIncomeorLossRatio(stock));
+        createRow("% Net Income Appl To Common Shares Ratio ", calNetIncomeApplToCommonSharesRatio(stock));
+        createRow("% Interest Ratio", calnterestRatio(stock));
+        createRow("% EPS", calEPS(stock));
 
         createRow("Net Income Applicable To Common Shares", stock.getNetIncomeApplicableToCommonShares());
 	}

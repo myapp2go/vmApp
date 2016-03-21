@@ -159,7 +159,7 @@ public class PCStock extends AsyncTask {
 //			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i])));
 		}
 
-		// Operating Income or Loss Ratio
+		// %%% Operating Income or Loss Ratio
 		System.out.print("\nOperating Income or Loss Ratio\t");		
 		for (int i = 0; i < count; i++) {
 			System.out.print("\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]))/totalRevenue[i]);
