@@ -67,13 +67,11 @@ public class MainActivity extends Activity {
         TextView symbol = new TextView(this);
         symbol.setText(stock.getSymbol());
         row.addView(symbol);
-//        stockTable.addView(row);
+        stockTable.addView(row);
         
         createRow("Total Revenue", stock.getTotalRevenue());
         createRow("Cost of Revenue", stock.getCostofRevenue());
         createRow("Net Income Applicable To Common Shares", stock.getNetIncomeApplicableToCommonShares());
-        
-        stockTable.addView(row);
 	}
 
 	private void createRow(String name, float[] vals) {
