@@ -71,7 +71,18 @@ public class MainActivity extends Activity {
         
         createRow("Total Revenue", stock.getTotalRevenue());
         createRow("Cost of Revenue", stock.getCostofRevenue());
+        createRow("% Gross Profit", calGrossProfitRatio(stock));
         createRow("Net Income Applicable To Common Shares", stock.getNetIncomeApplicableToCommonShares());
+	}
+
+	private float[] calGrossProfitRatio(Stock stock) {
+		float[] vals = new float[4];
+		
+		for (int i = 0; i < count; i++) {
+			vals[i] = (stock.getTotalRevenue()[i] - stock.getCostofRevenue()[i])/stock.getTotalRevenue()[i];
+		}
+
+		return vals;
 	}
 
 	private void createRow(String name, float[] vals) {
