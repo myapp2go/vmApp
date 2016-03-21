@@ -25,6 +25,11 @@ public class PCStock extends AsyncTask {
 		System.out.println("&&&& " + posts);
 	}
 
+	protected Stock createStock() {
+		stk = new Stock();
+		return stk;
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -35,7 +40,7 @@ public class PCStock extends AsyncTask {
 		getReport(stock, count);
 	}
 	
-	private void getReport(String stock, int count) {
+	protected void getReport(String stock, int count) {
 		if (count == 3) {
 			getAnnualReport(stock, count);
 		} else {

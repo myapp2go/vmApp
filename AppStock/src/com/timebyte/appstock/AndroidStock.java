@@ -5,12 +5,12 @@ import android.widget.TextView;
 
 public class AndroidStock extends PCStock {
 
-	private MainActivity mainActivity;
+	private BasicActivity mainActivity;
 	private DatabaseHandler db;
 
 	TextView postText;
 	
-	public AndroidStock(MainActivity activity) {
+	public AndroidStock(BasicActivity activity) {
 		mainActivity = activity;
 		// TODO Auto-generated constructor stub
 	}
