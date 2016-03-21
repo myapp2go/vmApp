@@ -16,8 +16,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class BasicActivity extends Activity {
+abstract class BasicActivity extends Activity {
 
+	abstract float[] calGrossProfitRatio(Stock stock);
+	abstract float[] calCostofRevenueRatio(Stock stock);
+	abstract float[] calOperatingExpensesRatio(Stock stock);
+	
 	private String[] symbol = {
 			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
 			};
@@ -71,28 +75,14 @@ public class BasicActivity extends Activity {
         
         createRow("Total Revenue", stock.getTotalRevenue());
         createRow("Cost of Revenue", stock.getCostofRevenue());
+        
         createRow("% Gross Profit", calGrossProfitRatio(stock));
-        createRow("% of Cost of Revenue", calCostofRevenueRatio(stock));
+        createRow("of Operating Expenses", calCostofRevenueRatio(stock));
+        createRow("% of Cost of Revenue", calOperatingExpensesRatio(stock));
 
         createRow("Net Income Applicable To Common Shares", stock.getNetIncomeApplicableToCommonShares());
 	}
 
-	private float[] calCostofRevenueRatio(Stock stock) {
-		float[] vals = new float[4];		
-		for (int i = 0; i < count; i++) {
-			vals[i] = (stock.getCostofRevenue()[i] / stock.getTotalRevenue()[i]);
-		}
-		return vals;
-	}
-
-	private float[] calGrossProfitRatio(Stock stock) {
-		float[] vals = new float[4];		
-		for (int i = 0; i < count; i++) {
-			vals[i] = (stock.getTotalRevenue()[i] - stock.getCostofRevenue()[i])/stock.getTotalRevenue()[i];
-		}
-		return vals;
-	}
-	
 	private void createRow(String name, float[] vals) {
 		// TODO Auto-generated method stub
         TableRow row= new TableRow(this);
