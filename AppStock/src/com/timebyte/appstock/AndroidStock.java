@@ -53,7 +53,7 @@ public class AndroidStock extends PCStock {
             System.out.println("Name: " + log);
         }
 */        
-        postText.setText(posts);
+//        postText.setText(posts);
         
 		System.out.println("onPostExecute: ");
 	}
