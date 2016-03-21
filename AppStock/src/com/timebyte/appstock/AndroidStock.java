@@ -62,20 +62,12 @@ public class AndroidStock extends PCStock {
 	protected Object doInBackground(Object... arg0) {
 		// TODO Auto-generated method stub
 		System.out.println("doInBackground: ");
-//		mainActivity = (MainActivity) arg0[0];
-		stk = (Stock) arg0[1];
-		db = (DatabaseHandler) arg0[2];
-		stockTable = (TableLayout) arg0[3];
-		postText = (TextView) arg0[4];
+		stk = (Stock) arg0[0];
+		db = (DatabaseHandler) arg0[1];
+		postText = (TextView) arg0[2];
 
-//		for (int i = 0; i < symbol.length; i++) {
-
-		for (int i = 0; i < 1; i++) {
-//			System.out.println("\n*****MMM " + symbol[i]);
-			posts += "\n" + symbol[i];
-			getStock(stk.getSymbol());
-//			createtableRow();
-		}		
+//			posts += "\n" + symbol[i];
+		getStock(stk.getSymbol());
 		
 		return null;
 	}

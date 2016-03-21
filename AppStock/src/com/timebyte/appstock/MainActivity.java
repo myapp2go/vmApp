@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 //		for (int i = 0; i < 1; i++) {
 			Stock stock = new Stock();
 			stock.setSymbol(symbol[i]);
-			new AndroidStock(MainActivity.this).execute(this, stock, db, stockTable, postText);		
+			new AndroidStock(MainActivity.this).execute(stock, db, postText);		
 		}
 	}
 	
