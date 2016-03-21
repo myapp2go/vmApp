@@ -80,7 +80,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
  
     // Adding new contact
-    void addContact(Contact contact) {
+    void addContact(Stock contact) {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
@@ -94,7 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
  
     // Getting single contact
-    Contact getContact(int id) {
+    Stock getContact(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_CONTACTS, new String[] { COL_ID,
@@ -103,15 +103,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
  
-        Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
+        Stock contact = new Stock(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2));
         // return contact
         return contact;
     }
  
     // Getting All Contacts
-    public List<Contact> getAllContacts() {
-        List<Contact> contactList = new ArrayList<Contact>();
+    public List<Stock> getAllContacts() {
+        List<Stock> contactList = new ArrayList<Stock>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS;
  
@@ -121,7 +121,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Contact contact = new Contact();
+            	Stock contact = new Stock();
                 contact.setID(Integer.parseInt(cursor.getString(0)));
                 contact.setName(cursor.getString(1));
                 contact.setPhoneNumber(cursor.getString(2));
@@ -135,7 +135,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
  
     // Updating single contact
-    public int updateContact(Contact contact) {
+    public int updateContact(Stock contact) {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
@@ -148,7 +148,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
  
     // Deleting single contact
-    public void deleteContact(Contact contact) {
+    public void deleteContact(Stock contact) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CONTACTS, COL_ID + " = ?",
                 new String[] { String.valueOf(contact.getID()) });

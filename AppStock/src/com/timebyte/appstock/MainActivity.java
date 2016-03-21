@@ -1,6 +1,6 @@
 package com.timebyte.appstock;
 
-public class MainActivity extends BasicActivity implements StockInterface {
+public class MainActivity extends BasicActivity {
 
 //	public int count = 4;
 
@@ -25,8 +25,19 @@ public class MainActivity extends BasicActivity implements StockInterface {
 		
 		MainActivity obj = new MainActivity();
 		obj.calCostofRevenueRatio(stk);
+		obj.calGrossProfitRatio(stk);
+		obj.calCostofRevenueRatio(stk);
 		
 //		System.out.println("&&&& " + posts);
+	}
+
+	public float[] calGrossProfitRatio(Stock stock) {
+		float[] vals = new float[4];		
+		for (int i = 0; i < count; i++) {
+			vals[i] = (stock.getTotalRevenue()[i] - stock.getCostofRevenue()[i])/stock.getTotalRevenue()[i];
+			sf(vals[i]);
+		}
+		return vals;
 	}
 	
 	public float[] calCostofRevenueRatio(Stock stock) {
@@ -38,10 +49,11 @@ public class MainActivity extends BasicActivity implements StockInterface {
 		return vals;
 	}
 
-	public float[] calGrossProfitRatio(Stock stock) {
+	public float[] calOperatingExpensesRatio(Stock stock) {
 		float[] vals = new float[4];		
 		for (int i = 0; i < count; i++) {
 			vals[i] = (stock.getTotalRevenue()[i] - stock.getCostofRevenue()[i])/stock.getTotalRevenue()[i];
+			sf(vals[i]);
 		}
 		return vals;
 	}
