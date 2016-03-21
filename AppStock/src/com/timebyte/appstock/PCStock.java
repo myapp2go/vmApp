@@ -11,40 +11,7 @@ public class PCStock extends AsyncTask {
 
 	protected Stock stk;
 	
-	protected String[] symbol = {
-			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
-			};
-	
 	protected static String posts = "";
-	
-	private float[] totalRevenue = new float[4];
-	private float[] costofRevenue = new float[4];
-	private float[] researchDevelopment = new float[4];
-	private float[] sellingGeneralandAdministrative = new float[4];
-	private float[] nonRecurring = new float[4];
-
-	private float[] totalOtherIncomeExpensesNet = new float[4];
-	private float[] earningsBeforeInterestAndTaxes = new float[4];
-
-	private float[] interestExpense = new float[4];
-	private float[] incomeBeforeTax = new float[4];
-
-	private float[] incomeTaxExpense = new float[4];
-	private float[] minorityInterest = new float[4];
-
-	private float[] netIncomeApplicableToCommonShares = new float[4];
-
-	private float[] cashAndCashEquivalents = new float[4];
-	private float[] shortTermInvestments = new float[4];
-	
-	private float[] commonStock = new float[4];
-	private float[] preferredStock = new float[4];
-	private float[] retainedEarnings = new float[4];
-	private float[] capitalSurplus = new float[4];
-	private float[] otherStockholderEquity = new float[4];
-	private float[] totalStockholderEquity = new float[4];
-
-	private float[] depreciation = new float[4];
 	
 	private String v = "";
 	
@@ -74,12 +41,13 @@ public class PCStock extends AsyncTask {
 		} else {
 			getQualterReport(stock, count);
 		}
-				
+/*				
 		// EPS
 		System.out.print("\nEPS\t\t\t\t");
 		for (int i = 0; i < count; i++) {
 			System.out.print("\t" + netIncomeApplicableToCommonShares[i]/(commonStock[i]*1000));
 		}
+		*/
 	}
 
 	private void getQualterReport(String stock, int count) {
@@ -94,7 +62,7 @@ public class PCStock extends AsyncTask {
 
 			doc = Jsoup.connect("http://finance.yahoo.com/q/cf?s="+stock).get().html();
 			getCashFlow(doc, count);
-
+/*
 			// EPS
 			for (int i = 0; i < count; i++) {
 //				System.out.println(netIncomeApplicableToCommonShares[i]/commonStock[i]);
@@ -103,6 +71,7 @@ public class PCStock extends AsyncTask {
 			for (int i = 0; i < count; i++) {
 //				System.out.println(depreciation[i]);
 			}
+			*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -135,26 +104,24 @@ public class PCStock extends AsyncTask {
 
 	private void getIncomeStatement(String doc, int count) {
 		getValues("Total Revenue", stk.getTotalRevenue(), doc, count);
-		getValues("Total Revenue", totalRevenue, doc, count);
-		getValues("Cost of Revenue", costofRevenue, doc, count);
 		getValues("Cost of Revenue", stk.getCostofRevenue(), doc, count);
 
-		getValues("Research Development", researchDevelopment, doc, count);
-		getValues("Selling General and Administrative", sellingGeneralandAdministrative, doc, count);
-		getValues("Non Recurring", nonRecurring, doc, count);
+		getValues("Research Development", stk.getResearchDevelopment(), doc, count);
+		getValues("Selling General and Administrative", stk.getSellingGeneralandAdministrative(), doc, count);
+		getValues("Non Recurring", stk.getNonRecurring(), doc, count);
 
-		getValues("Total Other Income/Expenses Net", totalOtherIncomeExpensesNet, doc, count);
-		getValues("Earnings Before Interest And Taxes", earningsBeforeInterestAndTaxes, doc, count);
+		getValues("Total Other Income/Expenses Net", stk.getTotalOtherIncomeExpensesNet(), doc, count);
+		getValues("Earnings Before Interest And Taxes", stk.getEarningsBeforeInterestAndTaxes(), doc, count);
 
-		getValues("Interest Expense", interestExpense, doc, count);
-// CAL		getValues("Income Before Tax", incomeBeforeTax, doc, count);
+		getValues("Interest Expense", stk.getInterestExpense(), doc, count);
+// CAL		getValues("Income Before Tax", stk.getIncomeBeforeTax(), doc, count);
 
-		getValues("Income Tax Expense", incomeTaxExpense, doc, count);
-		getValues("Minority Interest", minorityInterest, doc, count);
+		getValues("Income Tax Expense", stk.getIncomeTaxExpense(), doc, count);
+		getValues("Minority Interest", stk.getMinorityInterest(), doc, count);
 		
-		getValues("Net Income Applicable To Common Shares", netIncomeApplicableToCommonShares, doc, count);
 		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
-
+		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
+/*
 		// Gross Profit
 		posts += "\nGross Profit\t\t\t";		
 		for (int i = 0; i < count; i++) {
@@ -211,7 +178,8 @@ public class PCStock extends AsyncTask {
 		for (int i = 0; i < count; i++) {
 			sf(earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
 //			System.out.print("\t" + earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
-		}		
+		}
+		*/		
 	}
 	
 	private void sf(float value) {
@@ -224,16 +192,16 @@ public class PCStock extends AsyncTask {
 	}
 	
 	private void getBalanceSheet(String doc, int count) {
-		getValues("Cash And Cash Equivalents", cashAndCashEquivalents, doc, count);
-		getValues("Short Term Investments", shortTermInvestments, doc, count);
+		getValues("Cash And Cash Equivalents", stk.getCashAndCashEquivalents(), doc, count);
+		getValues("Short Term Investments", stk.getShortTermInvestments(), doc, count);
 
 		// extra Common Stock, so add < to filter out
-		getValues("Common Stock<", commonStock, doc, count);
-		getValues("Preferred Stock", preferredStock, doc, count);
-		getValues("Retained Earnings", retainedEarnings, doc, count);
-		getValues("Capital Surplus", capitalSurplus, doc, count);
-		getValues("Other Stockholder Equity", otherStockholderEquity, doc, count);
-		getValues("Total Stockholder Equity", totalStockholderEquity, doc, count);
+		getValues("Common Stock<", stk.getCommonStock(), doc, count);
+		getValues("Preferred Stock", stk.getPreferredStock(), doc, count);
+		getValues("Retained Earnings", stk.getRetainedEarnings(), doc, count);
+		getValues("Capital Surplus", stk.getCapitalSurplus(), doc, count);
+		getValues("Other Stockholder Equity", stk.getOtherStockholderEquity(), doc, count);
+		getValues("Total Stockholder Equity", stk.getTotalStockholderEquity(), doc, count);
 /*
 		for (int i = 0; i < 4; i++) {
 			System.out.println(commonStock[i]+retainedEarnings[i]+capitalSurplus[i]+otherStockholderEquity[i]);
@@ -247,7 +215,7 @@ public class PCStock extends AsyncTask {
 	}
 
 	private void getCashFlow(String doc, int count) {
-		getValues("Depreciation", depreciation, doc, count);
+		getValues("Depreciation", stk.getDepreciation(), doc, count);
 
 		// 049
 		/*

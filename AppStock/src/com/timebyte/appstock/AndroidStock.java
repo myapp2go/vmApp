@@ -1,15 +1,12 @@
 package com.timebyte.appstock;
 
 import java.util.List;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 public class AndroidStock extends PCStock {
 
 	private MainActivity mainActivity;
 	private DatabaseHandler db;
-	private TableLayout stockTable;
 
 	TextView postText;
 	
@@ -22,8 +19,8 @@ public class AndroidStock extends PCStock {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
 	}
+	
 	@Override
 	protected void onPreExecute() {
 		System.out.println("onPreExecute: ");
@@ -70,18 +67,6 @@ public class AndroidStock extends PCStock {
 		getStock(stk.getSymbol());
 		
 		return null;
-	}
-
-	private void createtableRow () {
-		// TODO Auto-generated method stub
-        TableRow row= new TableRow(mainActivity);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-        row.setLayoutParams(lp);
-        TextView symbol = new TextView(mainActivity);
-        symbol.setText("CONN");
-        row.addView(symbol);
-
-        stockTable.addView(row);
 	}
 
 }
