@@ -15,6 +15,7 @@ public class SinYi extends PCHouse {
 	private static int sinyiCount = 2;
 	private static int lineCount = sinyiCount*20*2;
 	private static String[][] data = new String[5][lineCount];
+	private static String fileName = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyi.txt";
 	
 	public static void main(String[] args) {		
 		SinYi house = new SinYi();
@@ -28,7 +29,7 @@ public class SinYi extends PCHouse {
 	private void readSinYi() {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-			        new FileInputStream("C:\\logs\\house\\sinyi.txt"), "UTF-8"));
+			        new FileInputStream(fileName), "UTF-8"));
 			
 			String sCurrentLine;
 			
@@ -55,7 +56,7 @@ public class SinYi extends PCHouse {
 
 	void getSinYi() {
 		try {
-			Writer w = new OutputStreamWriter(new FileOutputStream("C:\\logs\\house\\sinyi.txt"), "UTF-8");
+			Writer w = new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8");
 
 			for (int i = 1; i <= sinyiCount; i++) {
 				procSinYi(w, i);
