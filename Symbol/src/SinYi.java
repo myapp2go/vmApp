@@ -13,9 +13,11 @@ import java.util.StringTokenizer;
 public class SinYi extends PCHouse {
 
 	private static int sinyiCount = 2;
+	private static int fieldCount = 10;
 	private static int lineCount = sinyiCount*20*2;
-	private static String[][] data = new String[5][lineCount];
+	private static String[][] data = new String[fieldCount][lineCount];
 	private static String fileName = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyi.txt";
+	private static String mode = "";
 	
 	public static void main(String[] args) {		
 		SinYi house = new SinYi();
@@ -41,6 +43,7 @@ public class SinYi extends PCHouse {
 				while (st.hasMoreElements()) {
 //					System.out.println(st.nextElement());
 					data[field][line] = st.nextElement().toString();
+					System.out.println(data[field][line]);
 					field++;
 				}
 				line++;
@@ -124,9 +127,10 @@ public class SinYi extends PCHouse {
 		
 		try {
 			String id = doc.substring(end+2, end+9);
+			mode = "";
 			boolean isExist = checkID(id);
 			if (isExist) {
-				w.append("\nU\t");
+				w.append("\nU"+mode+"\t");
 			} else {
 				w.append("\nN\t");
 			}
@@ -150,6 +154,8 @@ public class SinYi extends PCHouse {
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
 				data[1][i] = "";
+				mode = data[0][i].substring(1);
+				System.out.println("mode " + mode);
 				found = true;
 			}
 //			System.out.println("IIII " + data[0][i]);
