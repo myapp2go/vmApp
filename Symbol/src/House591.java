@@ -18,11 +18,11 @@ public class House591 extends SinYi {
 	public static void main(String[] args) {		
 		House591 house = new House591();
 		
-//		house.readHouse(house591File, house591Data);
-//		house.getHouse591(house591File, house591Data);
+		house.readHouse(house591File, house591Data);
+		house.getHouse591(house591File, house591Data);
 		
-		house.readHouse(sinyiFile, sinyiData);
-		house.getSinYi(sinyiFile, sinyiData);
+//		house.readHouse(sinyiFile, sinyiData);
+//		house.getSinYi(sinyiFile, sinyiData);
 	}
 	
 	void getHouse591(String name, String[][] data) {
@@ -50,14 +50,13 @@ public class House591 extends SinYi {
 		try {
 			doc = Jsoup.connect(url).get().html();
 			
-			int nameInd = doc.indexOf("data-house-id");
+			int nameInd = doc.indexOf(" data-house-id");
 			int count = 0;
 			while (nameInd > 0 && count < 50) {
 				count++;
 				parseHouse591(doc, w, nameInd);
 
-//				boxInd = doc.indexOf("item_titlebox", nameInd+20);
-				nameInd = doc.indexOf("data-house-id", nameInd+20);
+				nameInd = doc.indexOf(" data-house-id", nameInd+20);
 			}
 //			get591(doc, w);			
 		} catch (IOException e) {
@@ -67,10 +66,8 @@ public class House591 extends SinYi {
 	}
 
 	private void parseHouse591(String doc, Writer w, int ind) {
-//		int nameInd = doc.indexOf("data-house-id");
-		
 		try {
-			int start = ind+15;
+			int start = ind+16;
 			int end = doc.indexOf("\"", start);
 			String hid = doc.substring(start, end);	
 			String floor = "";
@@ -88,7 +85,6 @@ public class House591 extends SinYi {
 				// price
 				start = doc.indexOf("n1\"", end) + 10;
 				end = doc.indexOf("<", start);
-				System.out.println(doc.substring(start, end));
 				w.append(doc.substring(start, end) + '\t');
 
 				w.append(doc.substring(start, end) + '\t');
@@ -119,7 +115,6 @@ public class House591 extends SinYi {
 				// title
 				start = doc.indexOf("n3\"", end) + 4;
 				end = doc.indexOf("<", start);
-				System.out.println(doc.substring(start, end));
 				w.append(doc.substring(start, end) + '\t');
 				
 				// date
@@ -140,8 +135,11 @@ public class House591 extends SinYi {
 			
 			int nameInd = doc.indexOf("price_num");
 			if (nameInd > 0) {
-				int start = nameInd+170;
-				start = doc.indexOf(">", start)+1;
+				int start = nameInd;
+				start = doc.indexOf("<b>", start)+3;
+				start = doc.indexOf("<b>", start)+3;
+				start = doc.indexOf("<b>", start)+3;
+				start = doc.indexOf("<b>", start)+10;
 				int end = doc.indexOf("<", start);
 				info[0] = doc.substring(start, end);
 				
@@ -149,8 +147,7 @@ public class House591 extends SinYi {
 				start = doc.indexOf("b>", end)+3;
 				start = doc.indexOf("b>", start)+2;
 				end = doc.indexOf("<", start);
-				info[1] = doc.substring(start, end);
-		
+				info[1] = doc.substring(start, end);		
 			}
 //			get591(doc, w);			
 		} catch (IOException e) {
