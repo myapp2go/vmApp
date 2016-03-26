@@ -22,14 +22,13 @@ public class SinYi extends PCHouse {
 	
 	public static void main(String[] args) {		
 		SinYi house = new SinYi();
-		house.getReport();
 		
 		house.readSinYi();
 
 		house.getSinYi();
 	}
 	
-	private void readSinYi() {
+	protected void readSinYi() {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 			        new FileInputStream(fileName), "UTF-8"));
