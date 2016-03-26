@@ -10,58 +10,30 @@ import java.io.Writer;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 
-
 public class SinYi extends PCHouse {
 
 	private static int sinyiCount = 2;
-	private static int fieldCount = 13;
 	private static int lineCount = sinyiCount*20*4;
-	private static String[][] data = new String[fieldCount][lineCount];
-	private static String fileName = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyiHouse.txt";
+	protected static String[][] sinyiData = new String[fieldCount][lineCount];
+	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyiHouse.txt";
 	private static String mode = "";
 	
 	public static void main(String[] args) {		
 		SinYi house = new SinYi();
 		
-		house.readSinYi();
+		house.readHouse(sinyiFile, sinyiData);
 
-		house.getSinYi();
+		house.getSinYi(sinyiFile, sinyiData);
 	}
 	
-	protected void readSinYi() {
+	void getSinYi(String name, String[][] data) {
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-			        new FileInputStream(fileName), "UTF-8"));
-			
-			String sCurrentLine;
-			
-			int line = 0;
-			while ((sCurrentLine = br.readLine()) != null) {
-				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
-				int field = 0;
-				while (st.hasMoreElements()) {
-					String val = st.nextElement().toString();
-					data[field][line] = val;
-					field++;
-				}
-				line++;
-			}
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}		
-	}
-
-	void getSinYi() {
-		try {
-			Writer w = new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8");
+			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
 			for (int i = 1; i <= sinyiCount; i++) {
 				procSinYi(w, i);
 			}
-			procDelete(w);
+			procDelete(w, data, lineCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -99,31 +71,15 @@ public class SinYi extends PCHouse {
 		}
 	}
 
-	private void procDelete(Writer w) {
-		try {
-			for (int i = 0; i < lineCount; i++) {
-				if (data[1][i] != null && data[1][i].length() > 2) {
-					w.append("\nD\t");
-					for (int j = 1; j < fieldCount-1; j++) {
-						w.append(data[j][i] + "\t");
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void parseSinYi(StringBuffer doc, Writer w, int nameInd) {
 		int start = doc.indexOf("html-attribute-value", nameInd) + 22;
 		int end = doc.indexOf(" ", start);		
 		
 		try {
 			String id = doc.substring(end+2, end+9);
-			mode = "";
-			boolean isExist = checkID(id);
-			if (isExist) {
-				w.append("\nU"+mode+"\t");
+			mode = checkID(id, sinyiData, lineCount);
+			if (mode != null) {
+				w.append("\n"+mode+"\t");
 			} else {
 				w.append("\nN\t");
 			}
@@ -175,18 +131,6 @@ public class SinYi extends PCHouse {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private boolean checkID(String id) {
-		boolean found = false;
-		for (int i = 0; !found && i < lineCount; i++) {
-			if (id.equals(data[1][i])) {
-				data[1][i] = "X";
-				mode = data[0][i].substring(1);
-				found = true;
-			}
-		}
-		return found;
 	}
 
 }

@@ -4,21 +4,22 @@ import org.jsoup.Jsoup;
 
 public class House591 extends SinYi {
 
+	private static String file591 = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\House591House.txt";
+
 	public static void main(String[] args) {		
 		House591 house = new House591();
 		house.get591House();
 		
-		house.readSinYi();
+		house.readHouse(sinyiFile, sinyiData);
 
-		house.getSinYi();
+		house.getSinYi(sinyiFile, sinyiData);
 	}
 	
 	protected void get591House() {
 		String doc = "";
-		String url = "";
+		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
 			
 		try {
-			url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
 			doc = Jsoup.connect(url).get().html();
 			get591(doc, 1);			
 		} catch (IOException e) {
