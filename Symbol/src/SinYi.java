@@ -37,17 +37,14 @@ public class SinYi extends PCHouse {
 			
 			int line = 0;
 			while ((sCurrentLine = br.readLine()) != null) {
-				System.out.println("** " + sCurrentLine);
+//				System.out.println("** " + sCurrentLine);
 				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
 				int field = 0;
 				while (st.hasMoreElements()) {
-//					System.out.println(st.nextElement());
 					data[field][line] = st.nextElement().toString();
-					System.out.println(data[field][line]);
 					field++;
 				}
 				line++;
-//				doc.append(sCurrentLine);
 			}
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -88,7 +85,6 @@ public class SinYi extends PCHouse {
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -107,7 +103,7 @@ public class SinYi extends PCHouse {
 		try {
 			for (int i = 0; i < lineCount; i++) {
 				if (data[1][i] != null && data[1][i].length() > 2) {
-					System.out.println("DDD " + data[1][i]);			
+//					System.out.println("DDD " + data[1][i]);			
 					w.append("\nD\t");
 					w.append(data[1][i] + "\t");
 					w.append(data[2][i] + "\t");
@@ -116,7 +112,6 @@ public class SinYi extends PCHouse {
 //			System.out.println("IIII " + data[0][i]);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -137,28 +132,47 @@ public class SinYi extends PCHouse {
 			
 			w.append(id + '\t');
 			w.append(doc.substring(start, end) + '\t');
+
+			start = doc.indexOf("detail_line1", end);
+			start = doc.indexOf("html-tag", start);
+			start = doc.indexOf("span>", start);
+			end = doc.indexOf("<", start);
+			w.append(doc.substring(start+5, end) + '\t');
+			
+			start = doc.indexOf("detail_line2", end);
+			start = doc.indexOf("num<", start)+22;
+			end = doc.indexOf("<", start);
+			System.out.println("IIIIOOO " + doc.substring(start, start+200));
+
+			w.append(doc.substring(start, end) + '\t');
+			
+			start = doc.indexOf("price_old", end);
+			int comp = doc.indexOf("price_new", end);
+			if (start > 0 && start < comp) {
+				start += 28;
+				end = doc.indexOf("<", start);
+				w.append(doc.substring(start, end) + '\t');
+			} else {
+				w.append("XXX" + '\t');
+			}
 			
 			start = doc.indexOf("price_new", end) + 28;
 			start = doc.indexOf("num", start) + 22;
 			end = doc.indexOf("<", start);
 			w.append(doc.substring(start, end) + '\t');
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private boolean checkID(String id) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
 				data[1][i] = "";
 				mode = data[0][i].substring(1);
-				System.out.println("mode " + mode);
 				found = true;
 			}
-//			System.out.println("IIII " + data[0][i]);
 		}
 		return found;
 	}
