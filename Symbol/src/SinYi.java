@@ -7,16 +7,17 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.Calendar;
 import java.util.StringTokenizer;
 
 
 public class SinYi extends PCHouse {
 
 	private static int sinyiCount = 2;
-	private static int fieldCount = 10;
-	private static int lineCount = sinyiCount*20*2;
+	private static int fieldCount = 13;
+	private static int lineCount = sinyiCount*20*4;
 	private static String[][] data = new String[fieldCount][lineCount];
-	private static String fileName = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyi.txt";
+	private static String fileName = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyiHouse.txt";
 	private static String mode = "";
 	
 	public static void main(String[] args) {		
@@ -37,11 +38,11 @@ public class SinYi extends PCHouse {
 			
 			int line = 0;
 			while ((sCurrentLine = br.readLine()) != null) {
-//				System.out.println("** " + sCurrentLine);
 				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
 				int field = 0;
 				while (st.hasMoreElements()) {
-					data[field][line] = st.nextElement().toString();
+					String val = st.nextElement().toString();
+					data[field][line] = val;
 					field++;
 				}
 				line++;
@@ -103,15 +104,13 @@ public class SinYi extends PCHouse {
 		try {
 			for (int i = 0; i < lineCount; i++) {
 				if (data[1][i] != null && data[1][i].length() > 2) {
-//					System.out.println("DDD " + data[1][i]);			
 					w.append("\nD\t");
-					w.append(data[1][i] + "\t");
-					w.append(data[2][i] + "\t");
-					w.append(data[3][i] + "\t");
+					for (int j = 1; j < fieldCount-1; j++) {
+						w.append(data[j][i] + "\t");
+					}
 				}
-//			System.out.println("IIII " + data[0][i]);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -138,14 +137,26 @@ public class SinYi extends PCHouse {
 			start = doc.indexOf("span>", start);
 			end = doc.indexOf("<", start);
 			w.append(doc.substring(start+5, end) + '\t');
-			
+
 			start = doc.indexOf("detail_line2", end);
 			start = doc.indexOf("num<", start)+22;
 			end = doc.indexOf("<", start);
-			System.out.println("IIIIOOO " + doc.substring(start, start+200));
-
 			w.append(doc.substring(start, end) + '\t');
 			
+			start = doc.indexOf("num<", end)+22;
+			end = doc.indexOf("<", start);
+			w.append(doc.substring(start, end) + '\t');
+
+			// year old
+			start = doc.indexOf("num<", end)+22;
+			end = doc.indexOf("<", start);
+			w.append(doc.substring(start, end) + '\t');
+
+			// floor
+			start = doc.indexOf("num<", end)+22;
+			end = doc.indexOf("<", start);
+			w.append("#" + doc.substring(start, end) + '\t');
+
 			start = doc.indexOf("price_old", end);
 			int comp = doc.indexOf("price_new", end);
 			if (start > 0 && start < comp) {
@@ -160,6 +171,8 @@ public class SinYi extends PCHouse {
 			start = doc.indexOf("num", start) + 22;
 			end = doc.indexOf("<", start);
 			w.append(doc.substring(start, end) + '\t');
+			
+			w.append(Calendar.getInstance().getTime().toString() + '\t');
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -169,7 +182,7 @@ public class SinYi extends PCHouse {
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
-				data[1][i] = "";
+				data[1][i] = "X";
 				mode = data[0][i].substring(1);
 				found = true;
 			}
