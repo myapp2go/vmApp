@@ -18,7 +18,9 @@ import org.jsoup.Jsoup;
 public class PCHouse extends AsyncTask {
 
 	protected static int fieldCount = 14;
-
+	protected static int extraCount = 2;
+	protected static String deleteMark = "X";
+	
 	protected void readHouse(String name, String[][] data) {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -29,11 +31,17 @@ public class PCHouse extends AsyncTask {
 			int line = 0;
 			while ((sCurrentLine = br.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
-				int field = 0;
-				while (st.hasMoreElements()) {
-					String val = st.nextElement().toString();
-					data[field][line] = val;
-					field++;
+				if (st.hasMoreElements()) {
+					String mode = st.nextElement().toString();
+					if (!deleteMark.equals(mode)) {
+						data[0][line] = mode;
+						int field = 1;
+						while (st.hasMoreElements()) {
+							String val = st.nextElement().toString();
+							data[field][line] = val;
+							field++;
+						}
+					}
 				}
 				line++;
 			}
@@ -65,7 +73,7 @@ public class PCHouse extends AsyncTask {
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
-				data[1][i] = "X";
+				data[1][i] = deleteMark;
 				mode = "\nU" + data[0][i].substring(1) + "\t";
 				found = true;
 			}

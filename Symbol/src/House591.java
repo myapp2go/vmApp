@@ -10,17 +10,18 @@ import org.jsoup.Jsoup;
 
 public class House591 extends SinYi {
 
-	protected static String house591File = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\house591House.txt";
-	private static int house591Count = 1;
-	private static int totalCount = 209;
-	private static int houseLineCount = house591Count*20*4;
-	protected static String[][] house591Data = new String[fieldCount][houseLineCount];
+	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\house591House.txt";
+	private static int housePageCount = 1;
+	private static int housePageSize = 40;
+	private static int houseTotalCount = 209;
+	private static int houseLineCount = housePageCount*housePageSize*extraCount;
+	protected static String[][] houseData = new String[fieldCount][houseLineCount];
 
 	public static void main(String[] args) {		
 		House591 house = new House591();
 		
-		house.readHouse(house591File, house591Data);
-		house.getHouse591(house591File, house591Data);
+		house.readHouse(houseFile, houseData);
+		house.getHouse591(houseFile, houseData);
 		
 //		house.readHouse(sinyiFile, sinyiData);
 //		house.getSinYi(sinyiFile, sinyiData);
@@ -30,7 +31,7 @@ public class House591 extends SinYi {
 		try {
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			for (int i = 1; i <= house591Count; i++) {
+			for (int i = 1; i <= housePageCount; i++) {
 				procHouse591(w, i);
 			}
 			
@@ -46,9 +47,8 @@ public class House591 extends SinYi {
 	
 	protected void procHouse591(Writer w, int fileCount) {
 		String doc = "";
-//		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
-		String url = "https://m.591.com.tw/mobile-list.html?firstRow=0&totalRows=209&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
-//		https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+//		String url = "https://m.591.com.tw/mobile-list.html?firstRow=0&totalRows=209&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
 			
 		try {
 			doc = Jsoup.connect(url).get().html();
@@ -72,13 +72,14 @@ public class House591 extends SinYi {
 		try {
 			int start = ind+16;
 			int end = doc.indexOf("\"", start);
-			String hid = doc.substring(start, end);	
+			String id = doc.substring(start, end);	
 			String[] info = new String[2];
-			boolean skip = getMoreInfo(hid, info);
+			boolean skip = getMoreInfo(id, info);
 			if (!skip) {
-				w.append("\n" + "N" + '\t');
+				String strMode = checkID(id, houseData, houseLineCount);
+				w.append(strMode);
 				
-				w.append(hid + '\t');
+				w.append(id + '\t');
 
 				// floor
 				w.append(info[0] + '\t');

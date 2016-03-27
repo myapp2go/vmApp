@@ -9,31 +9,33 @@ import org.jsoup.Jsoup;
 
 public class HouseYahoo extends House591 {
 
-	protected static String houseYahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\houseYahooHouse.txt";
-	private static int houseYahooCount = 1;
-	private static int yahooLineCount = houseYahooCount*20*20;
-	protected static String[][] houseYahooData = new String[fieldCount][yahooLineCount];
+	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\houseYahooHouse.txt";
+	private static int yahooPageCount = 1;
+	private static int yahooPageSize = 30;
+	private static int yahooLineCount = yahooPageCount*yahooPageSize*extraCount;
+	protected static String[][] yahooData = new String[fieldCount][yahooLineCount];
 
 	public static void main(String[] args) {		
 		HouseYahoo house = new HouseYahoo();
 
-		house.readHouse(houseYahooFile, houseYahooData);
-		house.getHouseYahoo(houseYahooFile, houseYahooData);
+		house.readHouse(yahooFile, yahooData);
+		house.getHouseYahoo(yahooFile, yahooData);
+		System.out.println("Yahoo DONE");
 		
-		house.readHouse(house591File, house591Data);
-		house.getHouse591(house591File, house591Data);
+		house.readHouse(houseFile, houseData);
+		house.getHouse591(houseFile, houseData);
+		System.out.println("House591 DONE");
 		
 		house.readHouse(sinyiFile, sinyiData);
-		house.getSinYi(sinyiFile, sinyiData);
-		
-		System.out.println("DONE");
+		house.getSinYi(sinyiFile, sinyiData);		
+		System.out.println("SinYi DONE");
 	}
 
 	private void getHouseYahoo(String name, String[][] data) {
 		try {
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			for (int i = 1; i <= houseYahooCount; i++) {
+			for (int i = 1; i <= yahooPageCount; i++) {
 				procHouseYahoo(w, i);
 			}
 			
@@ -121,7 +123,7 @@ public class HouseYahoo extends House591 {
 				
 			boolean skip = false; // checkFloor				
 			if (!skip) {
-				String strMode = checkID(id, houseYahooData, yahooLineCount);
+				String strMode = checkID(id, yahooData, yahooLineCount);
 				w.append(strMode);
 				
 				w.append(id + '\t');

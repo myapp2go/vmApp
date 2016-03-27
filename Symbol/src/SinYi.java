@@ -12,11 +12,11 @@ import java.util.StringTokenizer;
 
 public class SinYi extends PCHouse {
 
-	private static int sinyiCount = 2;
-	private static int sinyiLineCount = sinyiCount*20*4;
+	private static int sinyiPageCount = 2;
+	private static int sinyiPageSize = 20;
+	private static int sinyiLineCount = sinyiPageCount*sinyiPageSize*extraCount;
 	protected static String[][] sinyiData = new String[fieldCount][sinyiLineCount];
 	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyiHouse.txt";
-	private static String mode = "";
 	
 	public static void main(String[] args) {		
 		SinYi house = new SinYi();
@@ -30,7 +30,7 @@ public class SinYi extends PCHouse {
 		try {
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			for (int i = 1; i <= sinyiCount; i++) {
+			for (int i = 1; i <= sinyiPageCount; i++) {
 				procSinYi(w, i);
 			}
 			procDelete(w, data, sinyiLineCount);
