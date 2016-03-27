@@ -12,7 +12,7 @@ public class House591 extends SinYi {
 
 	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\house591House.txt";
 	private static int housePageCount = 1;
-	private static int housePageSize = 40;
+	private static int housePageSize = 30;
 	private static int houseTotalCount = 209;
 	private static int houseLineCount = housePageCount*housePageSize*extraCount;
 	protected static String[][] houseData = new String[fieldCount][houseLineCount];
@@ -31,7 +31,7 @@ public class House591 extends SinYi {
 		try {
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			for (int i = 1; i <= housePageCount; i++) {
+			for (int i = 0; i < housePageCount; i++) {
 				procHouse591(w, i);
 			}
 			
@@ -47,8 +47,8 @@ public class House591 extends SinYi {
 	
 	protected void procHouse591(Writer w, int fileCount) {
 		String doc = "";
-		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
-//		String url = "https://m.591.com.tw/mobile-list.html?firstRow=0&totalRows=209&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+//		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+		String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (fileCount*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
 			
 		try {
 			doc = Jsoup.connect(url).get().html();
@@ -73,16 +73,20 @@ public class House591 extends SinYi {
 			int start = ind+16;
 			int end = doc.indexOf("\"", start);
 			String id = doc.substring(start, end);	
-			String[] info = new String[2];
-			boolean skip = getMoreInfo(id, info);
+			String[] info = new String[3];
+
+			boolean skip = checkID(id, houseData, houseLineCount, info);
 			if (!skip) {
-				String strMode = checkID(id, houseData, houseLineCount);
-				w.append(strMode);
+				if (info[1] == null || info[2] == null) {
+					getMoreInfo(id, info);
+				}
+					
+				w.append(info[0]);
 				
 				w.append(id + '\t');
 
 				// floor
-				w.append(info[0] + '\t');
+				w.append(info[1] + '\t');
 
 				// price
 				start = doc.indexOf("n1\"", end) + 10;
@@ -92,7 +96,7 @@ public class House591 extends SinYi {
 				w.append(doc.substring(start, end) + '\t');
 
 				// year
-				w.append(info[1] + '\t');
+				w.append(info[2] + '\t');
 				
 				// room
 				start = doc.indexOf("<span", end) + 6;
@@ -143,13 +147,13 @@ public class House591 extends SinYi {
 				start = doc.indexOf("<b>", start)+3;
 				start = doc.indexOf("<b>", start)+10;
 				int end = doc.indexOf("<", start);
-				info[0] = doc.substring(start, end);
+				info[1] = doc.substring(start, end);
 				
 				// skip 2 <b> tab
 				start = doc.indexOf("b>", end)+3;
 				start = doc.indexOf("b>", start)+2;
 				end = doc.indexOf("<", start);
-				info[1] = doc.substring(start, end);		
+				info[2] = doc.substring(start, end);		
 			}
 //			get591(doc, w);			
 		} catch (IOException e) {

@@ -77,8 +77,9 @@ public class SinYi extends PCHouse {
 		
 		try {
 			String id = doc.substring(end+2, end+9);
-			
-			String strMode = checkID(id, sinyiData, sinyiLineCount);
+
+			String[] info = new String[3];
+			checkID(id, sinyiData, sinyiLineCount, info);
 						
 			// title
 			String title = doc.substring(start, end);
@@ -113,7 +114,7 @@ public class SinYi extends PCHouse {
 			boolean isSkip = checkyear(floorNum);
 			if (!isSkip) {
 				// mode
-				w.append(strMode);
+				w.append(info[0]);
 				
 				// id
 				w.append(id + '\t');

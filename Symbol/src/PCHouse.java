@@ -19,7 +19,7 @@ public class PCHouse extends AsyncTask {
 
 	protected static int fieldCount = 14;
 	protected static int extraCount = 2;
-	protected static String deleteMark = "X";
+	protected static String existMark = "X";
 	
 	protected void readHouse(String name, String[][] data) {
 		try {
@@ -33,7 +33,7 @@ public class PCHouse extends AsyncTask {
 				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
 				if (st.hasMoreElements()) {
 					String mode = st.nextElement().toString();
-					if (!deleteMark.equals(mode)) {
+					if (!existMark.equals(mode)) {
 						data[0][line] = mode;
 						int field = 1;
 						while (st.hasMoreElements()) {
@@ -68,18 +68,23 @@ public class PCHouse extends AsyncTask {
 		}
 	}
 	
-	protected String checkID(String id, String[][] data, int lineCount) {
-		String mode = "\nN\t";
+	protected boolean checkID(String id, String[][] data, int lineCount, String[] info) {
+		info[0] = "\nN\t";
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
-				data[1][i] = deleteMark;
-				mode = "\nU" + data[0][i].substring(1) + "\t";
+				data[1][i] = existMark;
+
+				info[0] = "\nU" + data[0][i].substring(1) + "\t";
+				info[1] = data[2][i];
+				info[2] = data[5][i];
 				found = true;
 			}
 		}
 		
-		return mode;
+		boolean skip = false;
+		
+		return skip;
 	}
 }
 

@@ -10,7 +10,7 @@ import org.jsoup.Jsoup;
 public class HouseYahoo extends House591 {
 
 	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\houseYahooHouse.txt";
-	private static int yahooPageCount = 1;
+	private static int yahooPageCount = 7;
 	private static int yahooPageSize = 30;
 	private static int yahooLineCount = yahooPageCount*yahooPageSize*extraCount;
 	protected static String[][] yahooData = new String[fieldCount][yahooLineCount];
@@ -123,8 +123,9 @@ public class HouseYahoo extends House591 {
 				
 			boolean skip = false; // checkFloor				
 			if (!skip) {
-				String strMode = checkID(id, yahooData, yahooLineCount);
-				w.append(strMode);
+				String[] info = new String[3];
+				checkID(id, yahooData, yahooLineCount, info);
+				w.append(info[0]);
 				
 				w.append(id + '\t');
 				
