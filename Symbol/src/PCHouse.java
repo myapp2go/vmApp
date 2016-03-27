@@ -17,7 +17,7 @@ import org.jsoup.Jsoup;
 
 public class PCHouse extends AsyncTask {
 
-	protected static int fieldCount = 13;
+	protected static int fieldCount = 14;
 
 	protected void readHouse(String name, String[][] data) {
 		try {

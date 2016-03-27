@@ -10,7 +10,7 @@ import org.jsoup.Jsoup;
 
 public class House591 extends SinYi {
 
-	private static String house591File = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\house591House.txt";
+	protected static String house591File = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\house591House.txt";
 	private static int house591Count = 1;
 	private static int lineCount = house591Count*20*4;
 	protected static String[][] house591Data = new String[fieldCount][lineCount];
@@ -70,8 +70,6 @@ public class House591 extends SinYi {
 			int start = ind+16;
 			int end = doc.indexOf("\"", start);
 			String hid = doc.substring(start, end);	
-			String floor = "";
-			String year = "";
 			String[] info = new String[2];
 			boolean skip = getMoreInfo(hid, info);
 			if (!skip) {
