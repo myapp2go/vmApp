@@ -17,14 +17,14 @@ public class HouseYahoo extends House591 {
 	public static void main(String[] args) {		
 		HouseYahoo house = new HouseYahoo();
 
-		house.readHouse(houseYahooFile, house591Data);
-		house.getHouseYahoo(houseYahooFile, house591Data);
+//		house.readHouse(houseYahooFile, house591Data);
+//		house.getHouseYahoo(houseYahooFile, house591Data);
 		
 //		house.readHouse(house591File, house591Data);
 //		house.getHouse591(house591File, house591Data);
 		
-//		house.readHouse(sinyiFile, sinyiData);
-//		house.getSinYi(sinyiFile, sinyiData);
+		house.readHouse(sinyiFile, sinyiData);
+		house.getSinYi(sinyiFile, sinyiData);
 	}
 
 	private void getHouseYahoo(String name, String[][] data) {
@@ -68,58 +68,60 @@ public class HouseYahoo extends House591 {
 	}
 
 	private void parseHouseYahoo(String doc, Writer w, int ind) {
-		try {
-			boolean skip = false; // checkID(" ", null, 0);
+		try {				
+			int start = doc.indexOf("href", ind) + 6;
+			int end = doc.indexOf("\"", start);
+			String href = doc.substring(start, end);
+
+			// address
+			start = doc.indexOf("<li>", end) + 8;
+			end = doc.indexOf("<", start);
+			String address = doc.substring(start, end);
+
+			// price
+			start = doc.indexOf("<li>", end) + 11;
+			end = doc.indexOf("<", start);
+			String price = doc.substring(start, end);
+
+			// size
+			start = doc.indexOf("<li>", end) + 7;
+			end = doc.indexOf("<", start);
+			String size = doc.substring(start, end);
+
+			// room
+			start = doc.indexOf("<li>", end) + 7;
+			end = doc.indexOf("<", start);
+			String room = doc.substring(start, end);
+
+			// floor
+			start = doc.indexOf("<li>", end) + 4;
+			start = doc.indexOf("<li>", start) + 7;
+			end = doc.indexOf("<", start);
+			String floor_car = doc.substring(start, end);
+			String floor = "XXX";
+			String car = floor_car;
+			if (floor_car.length() > 4) {
+				floor = floor_car.substring(4);
+				
+				start = doc.indexOf("<li>", end) + 7;
+				end = doc.indexOf("<", start);
+				car = doc.substring(start, end);					
+			}
+				
+			start = doc.indexOf("<li>", end) + 7;
+			end = doc.indexOf("<", start);
+			String year = doc.substring(start, end);
+				
+			// id
+			start = doc.indexOf("<li>", end) + 9;
+			end = doc.indexOf("<", start);
+			String id = doc.substring(start, end);
+				
+			boolean skip = false; // checkFloor				
 			if (!skip) {
-				w.append("\n" + "N" + '\t');
+				String strMode = checkID(id, houseYahooData, lineCount);
+				w.append(strMode);
 				
-				int start = doc.indexOf("href", ind) + 6;
-				int end = doc.indexOf("\"", start);
-				String href = doc.substring(start, end);
-
-				// address
-				start = doc.indexOf("<li>", end) + 8;
-				end = doc.indexOf("<", start);
-				String address = doc.substring(start, end);
-
-				// price
-				start = doc.indexOf("<li>", end) + 11;
-				end = doc.indexOf("<", start);
-				String price = doc.substring(start, end);
-
-				// size
-				start = doc.indexOf("<li>", end) + 7;
-				end = doc.indexOf("<", start);
-				String size = doc.substring(start, end);
-
-				// room
-				start = doc.indexOf("<li>", end) + 7;
-				end = doc.indexOf("<", start);
-				String room = doc.substring(start, end);
-
-				// floor
-				start = doc.indexOf("<li>", end) + 4;
-				start = doc.indexOf("<li>", start) + 7;
-				end = doc.indexOf("<", start);
-				String floor_car = doc.substring(start, end);
-				String floor = "XXX";
-				String car = floor_car;
-				if (floor_car.length() > 4) {
-					floor = floor_car.substring(4);
-
-					start = doc.indexOf("<li>", end) + 7;
-					end = doc.indexOf("<", start);
-					car = doc.substring(start, end);					
-				}
-				
-				start = doc.indexOf("<li>", end) + 7;
-				end = doc.indexOf("<", start);
-				String year = doc.substring(start, end);
-				
-				// id
-				start = doc.indexOf("<li>", end) + 9;
-				end = doc.indexOf("<", start);
-				String id = doc.substring(start, end);
 				w.append(id + '\t');
 				
 				w.append(floor + '\t');

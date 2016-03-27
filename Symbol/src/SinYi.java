@@ -78,13 +78,7 @@ public class SinYi extends PCHouse {
 		try {
 			String id = doc.substring(end+2, end+9);
 			
-			mode = checkID(id, sinyiData, lineCount);
-			String strMode = "";
-			if (mode != null) {
-				strMode = "\n"+mode+"\t";
-			} else {
-				strMode = "\nN\t";
-			}
+			String strMode = checkID(id, sinyiData, lineCount);
 						
 			// title
 			String title = doc.substring(start, end);

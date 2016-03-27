@@ -61,12 +61,12 @@ public class PCHouse extends AsyncTask {
 	}
 	
 	protected String checkID(String id, String[][] data, int lineCount) {
-		String mode = null;
+		String mode = "\nN\t";
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
 				data[1][i] = "X";
-				mode = "U" + data[0][i].substring(1);
+				mode = "\nU" + data[0][i].substring(1) + "\t";
 				found = true;
 			}
 		}
