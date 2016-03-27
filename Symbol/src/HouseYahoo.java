@@ -81,54 +81,65 @@ public class HouseYahoo extends House591 {
 				start = doc.indexOf("<li>", end) + 8;
 				end = doc.indexOf("<", start);
 				String address = doc.substring(start, end);
-				w.append(address + '\t');
 
 				// price
 				start = doc.indexOf("<li>", end) + 11;
 				end = doc.indexOf("<", start);
 				String price = doc.substring(start, end);
-				w.append(price + '\t');
 
 				// size
 				start = doc.indexOf("<li>", end) + 7;
 				end = doc.indexOf("<", start);
 				String size = doc.substring(start, end);
-				w.append(size + '\t');
 
 				// room
 				start = doc.indexOf("<li>", end) + 7;
 				end = doc.indexOf("<", start);
 				String room = doc.substring(start, end);
-				w.append(room + '\t');
 
 				// floor
 				start = doc.indexOf("<li>", end) + 4;
 				start = doc.indexOf("<li>", start) + 7;
 				end = doc.indexOf("<", start);
 				String floor_car = doc.substring(start, end);
+				String floor = "XXX";
+				String car = floor_car;
 				if (floor_car.length() > 4) {
-					String floor = floor_car.substring(4);
-					w.append(floor + '\t');
+					floor = floor_car.substring(4);
 
 					start = doc.indexOf("<li>", end) + 7;
 					end = doc.indexOf("<", start);
-					String car = doc.substring(start, end);
-					w.append(car + '\t');
-				} else {
-					w.append("XXX" + '\t');
-					w.append(floor_car + '\t');
+					car = doc.substring(start, end);					
 				}
 				
 				start = doc.indexOf("<li>", end) + 7;
 				end = doc.indexOf("<", start);
 				String year = doc.substring(start, end);
-				w.append(year + '\t');
 				
 				// id
 				start = doc.indexOf("<li>", end) + 9;
 				end = doc.indexOf("<", start);
 				String id = doc.substring(start, end);
 				w.append(id + '\t');
+				
+				w.append(floor + '\t');
+				
+				w.append(price + '\t');
+				w.append(price + '\t');
+				
+				w.append(year + '\t');
+				
+				w.append(room + '\t');
+
+				w.append(size + '\t');
+				w.append(size + '\t');
+				w.append(size + '\t');
+
+				w.append(address + '\t');
+
+				w.append(car + '\t');
+				
+				w.append(href + '\t');
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
