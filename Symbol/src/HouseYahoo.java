@@ -17,14 +17,16 @@ public class HouseYahoo extends House591 {
 	public static void main(String[] args) {		
 		HouseYahoo house = new HouseYahoo();
 
-//		house.readHouse(houseYahooFile, house591Data);
-//		house.getHouseYahoo(houseYahooFile, house591Data);
+		house.readHouse(houseYahooFile, houseYahooData);
+		house.getHouseYahoo(houseYahooFile, houseYahooData);
 		
-//		house.readHouse(house591File, house591Data);
-//		house.getHouse591(house591File, house591Data);
+		house.readHouse(house591File, house591Data);
+		house.getHouse591(house591File, house591Data);
 		
 		house.readHouse(sinyiFile, sinyiData);
 		house.getSinYi(sinyiFile, sinyiData);
+		
+		System.out.println("DONE");
 	}
 
 	private void getHouseYahoo(String name, String[][] data) {
