@@ -13,8 +13,8 @@ import java.util.StringTokenizer;
 public class SinYi extends PCHouse {
 
 	private static int sinyiCount = 2;
-	private static int lineCount = sinyiCount*20*4;
-	protected static String[][] sinyiData = new String[fieldCount][lineCount];
+	private static int sinyiLineCount = sinyiCount*20*4;
+	protected static String[][] sinyiData = new String[fieldCount][sinyiLineCount];
 	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyiHouse.txt";
 	private static String mode = "";
 	
@@ -33,7 +33,7 @@ public class SinYi extends PCHouse {
 			for (int i = 1; i <= sinyiCount; i++) {
 				procSinYi(w, i);
 			}
-			procDelete(w, data, lineCount);
+			procDelete(w, data, sinyiLineCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -78,7 +78,7 @@ public class SinYi extends PCHouse {
 		try {
 			String id = doc.substring(end+2, end+9);
 			
-			String strMode = checkID(id, sinyiData, lineCount);
+			String strMode = checkID(id, sinyiData, sinyiLineCount);
 						
 			// title
 			String title = doc.substring(start, end);

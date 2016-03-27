@@ -12,8 +12,9 @@ public class House591 extends SinYi {
 
 	protected static String house591File = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\house591House.txt";
 	private static int house591Count = 1;
-	private static int lineCount = house591Count*20*4;
-	protected static String[][] house591Data = new String[fieldCount][lineCount];
+	private static int totalCount = 209;
+	private static int houseLineCount = house591Count*20*4;
+	protected static String[][] house591Data = new String[fieldCount][houseLineCount];
 
 	public static void main(String[] args) {		
 		House591 house = new House591();
@@ -33,7 +34,7 @@ public class House591 extends SinYi {
 				procHouse591(w, i);
 			}
 			
-			procDelete(w, data, lineCount);
+			procDelete(w, data, houseLineCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -45,7 +46,9 @@ public class House591 extends SinYi {
 	
 	protected void procHouse591(Writer w, int fileCount) {
 		String doc = "";
-		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+//		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+		String url = "https://m.591.com.tw/mobile-list.html?firstRow=0&totalRows=209&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+//		https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
 			
 		try {
 			doc = Jsoup.connect(url).get().html();

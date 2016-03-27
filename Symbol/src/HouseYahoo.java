@@ -11,8 +11,8 @@ public class HouseYahoo extends House591 {
 
 	protected static String houseYahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\houseYahooHouse.txt";
 	private static int houseYahooCount = 1;
-	private static int lineCount = houseYahooCount*20*4;
-	protected static String[][] houseYahooData = new String[fieldCount][lineCount];
+	private static int yahooLineCount = houseYahooCount*20*20;
+	protected static String[][] houseYahooData = new String[fieldCount][yahooLineCount];
 
 	public static void main(String[] args) {		
 		HouseYahoo house = new HouseYahoo();
@@ -37,7 +37,7 @@ public class HouseYahoo extends House591 {
 				procHouseYahoo(w, i);
 			}
 			
-			procDelete(w, data, lineCount);
+			procDelete(w, data, yahooLineCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -121,7 +121,7 @@ public class HouseYahoo extends House591 {
 				
 			boolean skip = false; // checkFloor				
 			if (!skip) {
-				String strMode = checkID(id, houseYahooData, lineCount);
+				String strMode = checkID(id, houseYahooData, yahooLineCount);
 				w.append(strMode);
 				
 				w.append(id + '\t');
