@@ -18,7 +18,8 @@ public class SinYi extends PCHouse {
 	protected static String[][] sinyiData = new String[fieldCount][sinyiLineCount];
 	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyiHouse.txt";
 	
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+		System.out.println("SinYi Main");
 		SinYi house = new SinYi();
 		
 		house.readHouse(sinyiFile, sinyiData);

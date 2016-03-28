@@ -11,13 +11,14 @@ import org.jsoup.Jsoup;
 public class House591 extends SinYi {
 
 	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591House.txt";
-	private static int housePageCount = 1;
+	private static int housePageCount = 7;
 	private static int housePageSize = 30;
 	private static int houseTotalCount = 209;
 	private static int houseLineCount = housePageCount*housePageSize*extraCount;
 	protected static String[][] houseData = new String[fieldCount][houseLineCount];
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {	
+		System.out.println("House591 MAIN");
 		House591 house = new House591();
 		
 		house.readHouse(houseFile, houseData);

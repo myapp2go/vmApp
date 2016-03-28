@@ -10,12 +10,13 @@ import org.jsoup.Jsoup;
 public class HouseYahoo extends House591 {
 
 	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahooHouse.txt";
-	private static int yahooPageCount = 7;
+	private static int yahooPageCount = 1;
 	private static int yahooPageSize = 30;
 	private static int yahooLineCount = yahooPageCount*yahooPageSize*extraCount;
 	protected static String[][] yahooData = new String[fieldCount][yahooLineCount];
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+		System.out.println("START");
 		HouseYahoo house = new HouseYahoo();
 
 		house.readHouse(yahooFile, yahooData);

@@ -19,12 +19,16 @@ public class PCHouse extends AsyncTask {
 
 	protected static int fieldCount = 14;
 	protected static int extraCount = 4;
+
+	protected static String existMark = "X";
 	protected static String newMark = "N";
 	protected static String updateMark = "U";
-	protected static String oldMark = "O";
-	protected static String deleteMark = "D";
-	protected static String skipMark = "S";
-	protected static String existMark = "X";
+	
+	protected static String deleteMark = "D";	// REMOVE
+	
+	protected static String passMark = "P";		// skip
+	protected static String soldMark = "S";
+
 	
 	protected void readHouse(String name, String[][] data) {
 		try {
@@ -54,16 +58,17 @@ public class PCHouse extends AsyncTask {
 	protected void postProc(Writer w, String[][] data, int lineCount) {
 		try {
 			for (int i = 0; i < lineCount; i++) {
-				if (data[0][i] != null && data[1][i] != null && !existMark.equals(data[1][i])) {
+				if (data[0][i] != null && data[1][i] != null 
+						&& !existMark.equals(data[1][i]) && !deleteMark.equals(data[0][i])) {
 					switch (data[0][i]) {
-					case "S" :
-						w.append("\r\n" + skipMark + "\t");
+					case "P" :
+						w.append("\r\n" + passMark + "\t");
 						break;
-					case "D" :
-						w.append("\r\n" + deleteMark + "\t");
+					case "S" :
+						w.append("\r\n" + soldMark + "\t");
 						break;	
 					default :
-						w.append("\r\n" + oldMark + "\t");
+						w.append("\r\n" + soldMark + "\t");
 						break;							
 					}
 					
@@ -83,7 +88,7 @@ public class PCHouse extends AsyncTask {
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
-				if (skipMark.equals(data[0][i]) || deleteMark.equals(data[0][i])) {
+				if (passMark.equals(data[0][i]) || deleteMark.equals(data[0][i])) {
 					skip = true;
 				} else {
 					data[1][i] = existMark;
