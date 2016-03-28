@@ -16,13 +16,12 @@ public class SinYi extends PCHouse {
 	private static int sinyiPageSize = 20;
 	private static int sinyiLineCount = sinyiPageCount*sinyiPageSize*extraCount;
 	protected static String[][] sinyiData = new String[fieldCount][sinyiLineCount];
-	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\sinyiHouse.txt";
+	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyiHouse.txt";
 	
 	public static void main(String[] args) {		
 		SinYi house = new SinYi();
 		
 		house.readHouse(sinyiFile, sinyiData);
-
 		house.getSinYi(sinyiFile, sinyiData);
 	}
 	
@@ -33,7 +32,7 @@ public class SinYi extends PCHouse {
 			for (int i = 1; i <= sinyiPageCount; i++) {
 				procSinYi(w, i);
 			}
-			procDelete(w, data, sinyiLineCount);
+			postProc(w, data, sinyiLineCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -79,43 +78,42 @@ public class SinYi extends PCHouse {
 			String id = doc.substring(end+2, end+9);
 
 			String[] info = new String[3];
-			checkID(id, sinyiData, sinyiLineCount, info);
-						
-			// title
-			String title = doc.substring(start, end);
+			boolean skip = checkID(id, sinyiData, sinyiLineCount, info);
+			if (!skip) {
+				// title
+				String title = doc.substring(start, end);
 
-			// address
-			start = doc.indexOf("detail_line1", end);
-			start = doc.indexOf("html-tag", start);
-			start = doc.indexOf("span>", start);
-			end = doc.indexOf("<", start);
-			String address = doc.substring(start+5, end);
+				// address
+				start = doc.indexOf("detail_line1", end);
+				start = doc.indexOf("html-tag", start);
+				start = doc.indexOf("span>", start);
+				end = doc.indexOf("<", start);
+				String address = doc.substring(start + 5, end);
 
-			// size 1
-			start = doc.indexOf("detail_line2", end);
-			start = doc.indexOf("num<", start)+22;
-			end = doc.indexOf("<", start);
-			String size1 = doc.substring(start, end);
-			
-			// size 2
-			start = doc.indexOf("num<", end)+22;
-			end = doc.indexOf("<", start);
-			String size2 = doc.substring(start, end);
+				// size 1
+				start = doc.indexOf("detail_line2", end);
+				start = doc.indexOf("num<", start) + 22;
+				end = doc.indexOf("<", start);
+				String size1 = doc.substring(start, end);
 
-			// year old
-			start = doc.indexOf("num<", end)+22;
-			end = doc.indexOf("<", start);
-			String year = doc.substring(start, end);
+				// size 2
+				start = doc.indexOf("num<", end) + 22;
+				end = doc.indexOf("<", start);
+				String size2 = doc.substring(start, end);
 
-			// floor
-			start = doc.indexOf("num<", end)+22;
-			end = doc.indexOf("<", start);
-			String floorNum = doc.substring(start, end);
-			boolean isSkip = checkyear(floorNum);
-			if (!isSkip) {
+				// year old
+				start = doc.indexOf("num<", end) + 22;
+				end = doc.indexOf("<", start);
+				String year = doc.substring(start, end);
+
+				// floor
+				start = doc.indexOf("num<", end) + 22;
+				end = doc.indexOf("<", start);
+				String floorNum = doc.substring(start, end);
+
 				// mode
 				w.append(info[0]);
-				
+
 				// id
 				w.append(id + '\t');
 
@@ -123,10 +121,10 @@ public class SinYi extends PCHouse {
 				w.append("#" + floorNum + '\t');
 
 				// room
-				start = doc.indexOf("num<", end)+22;
+				start = doc.indexOf("num<", end) + 22;
 				end = doc.indexOf("<", start);
 				String room = doc.substring(start, end);
-				
+
 				// price_old
 				start = doc.indexOf("price_old", end);
 				int comp = doc.indexOf("price_new", end);
@@ -147,7 +145,7 @@ public class SinYi extends PCHouse {
 				w.append(year + '\t');
 
 				w.append(room + '\t');
-				
+
 				w.append(size1 + '\t');
 
 				w.append(size2 + '\t');
@@ -157,7 +155,7 @@ public class SinYi extends PCHouse {
 				w.append(address + '\t');
 
 				w.append(title + '\t');
-				
+
 				// date
 				w.append(Calendar.getInstance().getTime().toString() + '\t');
 			}

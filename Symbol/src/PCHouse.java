@@ -18,7 +18,12 @@ import org.jsoup.Jsoup;
 public class PCHouse extends AsyncTask {
 
 	protected static int fieldCount = 14;
-	protected static int extraCount = 2;
+	protected static int extraCount = 4;
+	protected static String newMark = "N";
+	protected static String updateMark = "U";
+	protected static String oldMark = "O";
+	protected static String deleteMark = "D";
+	protected static String skipMark = "S";
 	protected static String existMark = "X";
 	
 	protected void readHouse(String name, String[][] data) {
@@ -31,17 +36,10 @@ public class PCHouse extends AsyncTask {
 			int line = 0;
 			while ((sCurrentLine = br.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
-				if (st.hasMoreElements()) {
-					String mode = st.nextElement().toString();
-					if (!existMark.equals(mode)) {
-						data[0][line] = mode;
-						int field = 1;
-						while (st.hasMoreElements()) {
-							String val = st.nextElement().toString();
-							data[field][line] = val;
-							field++;
-						}
-					}
+				int field = 0;
+				while (st.hasMoreElements() && field < fieldCount) {
+					data[field][line] = st.nextElement().toString();
+					field++;
 				}
 				line++;
 			}
@@ -53,11 +51,22 @@ public class PCHouse extends AsyncTask {
 		}		
 	}
 
-	protected void procDelete(Writer w, String[][] data, int lineCount) {
+	protected void postProc(Writer w, String[][] data, int lineCount) {
 		try {
 			for (int i = 0; i < lineCount; i++) {
-				if (data[1][i] != null && data[1][i].length() > 2) {
-					w.append("\nD\t");
+				if (data[0][i] != null && data[1][i] != null && !existMark.equals(data[1][i])) {
+					switch (data[0][i]) {
+					case "S" :
+						w.append("\r\n" + skipMark + "\t");
+						break;
+					case "D" :
+						w.append("\r\n" + deleteMark + "\t");
+						break;	
+					default :
+						w.append("\r\n" + oldMark + "\t");
+						break;							
+					}
+					
 					for (int j = 1; j < fieldCount-1; j++) {
 						w.append(data[j][i] + "\t");
 					}
@@ -69,21 +78,23 @@ public class PCHouse extends AsyncTask {
 	}
 	
 	protected boolean checkID(String id, String[][] data, int lineCount, String[] info) {
-		info[0] = "\nN\t";
+		boolean skip = false;
+		info[0] = "\r\n" + newMark + "\t";
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
-				data[1][i] = existMark;
-
-				info[0] = "\nU" + data[0][i].substring(1) + "\t";
-				info[1] = data[2][i];
-				info[2] = data[5][i];
+				if (skipMark.equals(data[0][i]) || deleteMark.equals(data[0][i])) {
+					skip = true;
+				} else {
+					data[1][i] = existMark;
+					info[0] = "\r\n" + updateMark + data[0][i].substring(1) + "\t";
+					info[1] = data[2][i];
+					info[2] = data[5][i];
+				}	
 				found = true;
 			}
 		}
-		
-		boolean skip = false;
-		
+				
 		return skip;
 	}
 }

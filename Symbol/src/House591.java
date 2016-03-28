@@ -10,7 +10,7 @@ import org.jsoup.Jsoup;
 
 public class House591 extends SinYi {
 
-	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\house591House.txt";
+	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591House.txt";
 	private static int housePageCount = 1;
 	private static int housePageSize = 30;
 	private static int houseTotalCount = 209;
@@ -35,7 +35,7 @@ public class House591 extends SinYi {
 				procHouse591(w, i);
 			}
 			
-			procDelete(w, data, houseLineCount);
+			postProc(w, data, houseLineCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -61,7 +61,6 @@ public class House591 extends SinYi {
 
 				nameInd = doc.indexOf(" data-house-id", nameInd+20);
 			}
-//			get591(doc, w);			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -155,7 +154,6 @@ public class House591 extends SinYi {
 				end = doc.indexOf("<", start);
 				info[2] = doc.substring(start, end);		
 			}
-//			get591(doc, w);			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

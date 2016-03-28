@@ -9,7 +9,7 @@ import org.jsoup.Jsoup;
 
 public class HouseYahoo extends House591 {
 
-	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\houseYahooHouse.txt";
+	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahooHouse.txt";
 	private static int yahooPageCount = 7;
 	private static int yahooPageSize = 30;
 	private static int yahooLineCount = yahooPageCount*yahooPageSize*extraCount;
@@ -39,7 +39,7 @@ public class HouseYahoo extends House591 {
 				procHouseYahoo(w, i);
 			}
 			
-			procDelete(w, data, yahooLineCount);
+			postProc(w, data, yahooLineCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
