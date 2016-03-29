@@ -28,6 +28,8 @@ public class SinYi extends PCHouse {
 	
 	void getSinYi(String name, String[][] data) {
 		try {
+			linkCount = 2;
+			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
 			for (int i = 1; i <= sinyiPageCount; i++) {
@@ -71,7 +73,6 @@ public class SinYi extends PCHouse {
 		}
 	}
 
-	public int linkCount = 1;
 	private void parseSinYi(StringBuffer doc, Writer w, int nameInd) {
 		int start = doc.indexOf("html-attribute-value", nameInd) + 22;
 		int end = doc.indexOf(" ", start);		
