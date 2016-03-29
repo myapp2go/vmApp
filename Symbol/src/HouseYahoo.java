@@ -27,8 +27,8 @@ public class HouseYahoo extends House591 {
 		house.getHouse591(houseFile, houseData);
 		System.out.println("House591 DONE");
 		
-		house.readHouse(sinyiFile, sinyiData);
-		house.getSinYi(sinyiFile, sinyiData);		
+//		house.readHouse(sinyiFile, sinyiData);
+//		house.getSinYi(sinyiFile, sinyiData);		
 		System.out.println("SinYi DONE");
 	}
 
@@ -72,6 +72,7 @@ public class HouseYahoo extends House591 {
 		}		
 	}
 
+	public int linkCount = 1;
 	private void parseHouseYahoo(String doc, Writer w, int ind) {
 		try {				
 			int start = doc.indexOf("href", ind) + 6;
@@ -152,6 +153,8 @@ public class HouseYahoo extends House591 {
 				w.append(car + '\t');
 				
 				w.append(href + '\t');
+				
+				w.append("=HYPERLINK(N" + (linkCount++) +")" + '\t');
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

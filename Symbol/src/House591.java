@@ -11,7 +11,7 @@ import org.jsoup.Jsoup;
 public class House591 extends SinYi {
 
 	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591House.txt";
-	private static int housePageCount = 7;
+	private static int housePageCount = 1;
 	private static int housePageSize = 30;
 	private static int houseTotalCount = 209;
 	private static int houseLineCount = housePageCount*housePageSize*extraCount;
@@ -131,6 +131,11 @@ public class House591 extends SinYi {
 				
 				// date
 				w.append(Calendar.getInstance().getTime().toString() + '\t');
+
+				String houseUrl = "https://m.591.com.tw/mobile-detail.html?houseId="+id;
+				w.append(houseUrl + '\t');
+				
+				w.append("=HYPERLINK(N" + (linkCount++) +")" + '\t');
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -85,7 +85,7 @@ public class PCHouse extends AsyncTask {
 	
 	protected boolean checkID(String id, String[][] data, int lineCount, String[] info) {
 		boolean skip = false;
-		info[0] = "\r\n" + newMark + "\t";
+		info[0] = "\r\n" + newMark;
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
