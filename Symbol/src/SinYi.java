@@ -71,6 +71,7 @@ public class SinYi extends PCHouse {
 		}
 	}
 
+	public int linkCount = 1;
 	private void parseSinYi(StringBuffer doc, Writer w, int nameInd) {
 		int start = doc.indexOf("html-attribute-value", nameInd) + 22;
 		int end = doc.indexOf(" ", start);		
@@ -168,6 +169,11 @@ public class SinYi extends PCHouse {
 
 				// date
 				w.append(Calendar.getInstance().getTime().toString() + '\t');
+
+				String houseUrl = "http://buy.sinyi.com.tw/house/" + id.substring(1) + ".html";
+				w.append(houseUrl + '\t');
+				
+				w.append("=HYPERLINK(N" + (linkCount++) +")" + '\t');
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

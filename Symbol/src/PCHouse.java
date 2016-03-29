@@ -17,7 +17,7 @@ import org.jsoup.Jsoup;
 
 public class PCHouse extends AsyncTask {
 
-	protected static int fieldCount = 14;
+	protected static int fieldCount = 16;
 	protected static int extraCount = 4;
 
 	protected static String existMark = "X";
