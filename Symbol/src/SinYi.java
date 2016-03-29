@@ -78,7 +78,7 @@ public class SinYi extends PCHouse {
 		try {
 			String id = doc.substring(end+2, end+9);
 
-			String[] info = new String[3];
+			String[] info = new String[4];
 			boolean skip = checkID(id, sinyiData, sinyiLineCount, info);
 			if (!skip) {
 				// title
@@ -112,15 +112,6 @@ public class SinYi extends PCHouse {
 				end = doc.indexOf("<", start);
 				String floorNum = doc.substring(start, end);
 
-				// mode
-				w.append(info[0]);
-
-				// id
-				w.append(id + '\t');
-
-				// floor
-				w.append("#" + floorNum + '\t');
-
 				// room
 				start = doc.indexOf("num<", end) + 22;
 				end = doc.indexOf("<", start);
@@ -129,19 +120,37 @@ public class SinYi extends PCHouse {
 				// price_old
 				start = doc.indexOf("price_old", end);
 				int comp = doc.indexOf("price_new", end);
+				String priceOld = "XXX";
 				if (start > 0 && start < comp) {
 					start += 28;
 					end = doc.indexOf("<", start);
-					w.append(doc.substring(start, end) + '\t');
-				} else {
-					w.append("XXX" + '\t');
+					priceOld = doc.substring(start, end);
 				}
 
 				// price_new
 				start = doc.indexOf("price_new", end) + 28;
 				start = doc.indexOf("num", start) + 22;
 				end = doc.indexOf("<", start);
-				w.append(doc.substring(start, end) + '\t');
+				String price = doc.substring(start, end);
+				
+				String changePrice = "";
+				if (info[3] != null && price != null && price.compareTo(info[3]) < 0) {
+					changePrice = "C";
+				}
+				
+				// mode
+				w.append(info[0] + changePrice + '\t');
+
+				// id
+				w.append(id + '\t');
+
+				// floor
+				w.append("#" + floorNum + '\t');
+				
+				// price old
+				w.append(priceOld + '\t');
+				
+				w.append(price + '\t');
 
 				w.append(year + '\t');
 

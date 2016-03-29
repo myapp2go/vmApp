@@ -23,6 +23,7 @@ public class PCHouse extends AsyncTask {
 	protected static String existMark = "X";
 	protected static String newMark = "N";
 	protected static String updateMark = "U";
+	protected static String priceMark = "C";
 	
 	protected static String deleteMark = "D";	// REMOVE
 	
@@ -92,9 +93,10 @@ public class PCHouse extends AsyncTask {
 					skip = true;
 				} else {
 					data[1][i] = existMark;
-					info[0] = "\r\n" + updateMark + data[0][i].substring(1) + "\t";
+					info[0] = "\r\n" + updateMark + data[0][i].substring(1);
 					info[1] = data[2][i];
 					info[2] = data[5][i];
+					info[3] = data[4][i];
 				}	
 				found = true;
 			}

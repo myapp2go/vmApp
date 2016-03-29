@@ -73,7 +73,7 @@ public class House591 extends SinYi {
 			int start = ind+16;
 			int end = doc.indexOf("\"", start);
 			String id = doc.substring(start, end);	
-			String[] info = new String[3];
+			String[] info = new String[4];
 
 			boolean skip = checkID(id, houseData, houseLineCount, info);
 			if (!skip) {
@@ -81,19 +81,25 @@ public class House591 extends SinYi {
 					getMoreInfo(id, info);
 				}
 					
-				w.append(info[0]);
+				// price
+				start = doc.indexOf("n1\"", end) + 10;
+				end = doc.indexOf("<", start);
+				String price = doc.substring(start, end);
+				String changePrice = "";
+				if (info[3] != null && price != null && price.compareTo(info[3]) < 0) {
+					changePrice = "C";
+				}				
+				
+				w.append(info[0] + changePrice + '\t');
 				
 				w.append(id + '\t');
 
 				// floor
-				w.append(info[1] + '\t');
+				w.append(info[1] + '\t');				
+				
+				w.append(price + '\t');
 
-				// price
-				start = doc.indexOf("n1\"", end) + 10;
-				end = doc.indexOf("<", start);
-				w.append(doc.substring(start, end) + '\t');
-
-				w.append(doc.substring(start, end) + '\t');
+				w.append(price + '\t');
 
 				// year
 				w.append(info[2] + '\t');

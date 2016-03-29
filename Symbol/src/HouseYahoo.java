@@ -121,12 +121,16 @@ public class HouseYahoo extends House591 {
 			start = doc.indexOf("<li>", end) + 9;
 			end = doc.indexOf("<", start);
 			String id = doc.substring(start, end);
-				
-			boolean skip = false; // checkFloor				
+
+			String[] info = new String[4];
+			boolean skip = checkID(id, yahooData, yahooLineCount, info);			
 			if (!skip) {
-				String[] info = new String[3];
-				checkID(id, yahooData, yahooLineCount, info);
-				w.append(info[0]);
+				String changePrice = "";
+				if (info[3] != null && price != null && price.compareTo(info[3]) < 0) {
+					changePrice = "C";
+				}
+				
+				w.append(info[0] + changePrice + '\t');
 				
 				w.append(id + '\t');
 				
