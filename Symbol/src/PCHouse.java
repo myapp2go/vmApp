@@ -20,6 +20,8 @@ public class PCHouse extends AsyncTask {
 	protected static int fieldCount = 16;
 	protected static int extraCount = 4;
 	protected static int linkCount = 2;
+
+	protected static String noDataMark = "XXX";
 	
 	protected static String existMark = "X";
 	protected static String newMark = "N";
@@ -96,7 +98,7 @@ public class PCHouse extends AsyncTask {
 				} else {
 					data[1][i] = existMark;
 					info[0] = "\r\n" + updateMark + data[0][i].substring(1);
-					info[1] = data[2][i];
+					info[1] = data[2][i];	// floor
 					info[2] = data[5][i];
 					info[3] = data[4][i];	// price
 				}	

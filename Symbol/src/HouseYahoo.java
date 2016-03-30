@@ -105,7 +105,7 @@ public class HouseYahoo extends House591 {
 			start = doc.indexOf("<li>", start) + 7;
 			end = doc.indexOf("<", start);
 			String floor_car = doc.substring(start, end);
-			String floor = "XXX";
+			String floor = noDataMark;
 			String car = floor_car;
 			if (floor_car.length() > 4) {
 				floor = floor_car.substring(4);
@@ -133,7 +133,11 @@ public class HouseYahoo extends House591 {
 				
 				w.append(id + '\t');
 				
-				w.append(floor + '\t');
+				if (noDataMark.equals(floor)) {
+					w.append(info[1] + '\t');
+				} else {
+					w.append(floor + '\t');
+				}
 				
 				if (changePrice.length() > 0) {
 					w.append(info[3] + '\t');
