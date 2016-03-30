@@ -19,6 +19,10 @@ public class HouseYahoo extends House591 {
 		System.out.println("START");
 		HouseYahoo house = new HouseYahoo();
 
+		house.readHouse(sinyiFile, sinyiData);
+		house.getSinYi(sinyiFile, sinyiData);		
+		System.out.println("SinYi DONE");
+		
 		house.readHouse(yahooFile, yahooData);
 		house.getHouseYahoo(yahooFile, yahooData);
 		System.out.println("Yahoo DONE");
@@ -26,10 +30,6 @@ public class HouseYahoo extends House591 {
 		house.readHouse(houseFile, houseData);
 		house.getHouse591(houseFile, houseData);
 		System.out.println("House591 DONE");
-		
-		house.readHouse(sinyiFile, sinyiData);
-		house.getSinYi(sinyiFile, sinyiData);		
-		System.out.println("SinYi DONE");
 	}
 
 	private void getHouseYahoo(String name, String[][] data) {
@@ -127,10 +127,7 @@ public class HouseYahoo extends House591 {
 			String[] info = new String[4];
 			boolean skip = checkID(id, yahooData, yahooLineCount, info);			
 			if (!skip) {
-				String changePrice = "";
-				if (info[3] != null && price != null && price.compareTo(info[3]) < 0) {
-					changePrice = "C";
-				}
+				String changePrice = priceChange(price, info);
 				
 				w.append(info[0] + changePrice + '\t');
 				
@@ -138,7 +135,11 @@ public class HouseYahoo extends House591 {
 				
 				w.append(floor + '\t');
 				
-				w.append(price + '\t');
+				if (changePrice.length() > 0) {
+					w.append(info[3] + '\t');
+				} else {
+					w.append(price + '\t');
+				}
 				w.append(price + '\t');
 				
 				w.append(year + '\t');

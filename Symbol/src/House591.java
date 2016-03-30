@@ -87,11 +87,8 @@ public class House591 extends SinYi {
 				start = doc.indexOf("n1\"", end) + 10;
 				end = doc.indexOf("<", start);
 				String price = doc.substring(start, end);
-				String changePrice = "";
-				if (info[3] != null && price != null && price.compareTo(info[3]) < 0) {
-					changePrice = "C";
-				}				
-				
+				String changePrice = priceChange(price, info);
+								
 				w.append(info[0] + changePrice + '\t');
 				
 				w.append(id + '\t');
@@ -99,7 +96,11 @@ public class House591 extends SinYi {
 				// floor
 				w.append(info[1] + '\t');				
 				
-				w.append(price + '\t');
+				if (changePrice.length() > 0) {
+					w.append(info[3] + '\t');
+				} else {
+					w.append(price + '\t');
+				}
 
 				w.append(price + '\t');
 

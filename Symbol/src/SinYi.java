@@ -135,10 +135,7 @@ public class SinYi extends PCHouse {
 				end = doc.indexOf("<", start);
 				String price = doc.substring(start, end);
 				
-				String changePrice = "";
-				if (info[3] != null && price != null && price.compareTo(info[3]) < 0) {
-					changePrice = "C";
-				}
+				String changePrice = priceChange(price, info);
 				
 				// mode
 				w.append(info[0] + changePrice + '\t');
