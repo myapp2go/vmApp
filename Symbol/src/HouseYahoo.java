@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.Calendar;
 
 import org.jsoup.Jsoup;
 
@@ -124,7 +125,7 @@ public class HouseYahoo extends House591 {
 			end = doc.indexOf("<", start);
 			String id = doc.substring(start, end);
 
-			String[] info = new String[4];
+			String[] info = new String[infoSize];
 			boolean skip = checkID(id, yahooData, yahooLineCount, info);			
 			if (!skip) {
 				String changePrice = priceChange(price, info);
@@ -158,9 +159,15 @@ public class HouseYahoo extends House591 {
 
 				w.append(car + '\t');
 				
+				if (info[5] != null) {
+					w.append(info[5] + '\t');					
+				} else {
+					w.append(Calendar.getInstance().getTime().toString() + '\t');
+				}
+				
 				w.append(href + '\t');
 				
-				w.append("=HYPERLINK(M" + (linkCount++) +")" + '\t');
+				w.append("=HYPERLINK(N" + (linkCount++) +")" + '\t');
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

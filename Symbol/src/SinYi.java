@@ -12,8 +12,8 @@ import java.util.StringTokenizer;
 
 public class SinYi extends PCHouse {
 
-	private static String city = "CH";
-	private static int sinyiPageCount = 5;
+	private static String city = "S";
+	private static int sinyiPageCount = 2;
 	private static int sinyiPageSize = 30;
 	private static int sinyiLineCount = sinyiPageCount*sinyiPageSize*extraCount;
 	protected static String[][] sinyiData = new String[fieldCount][sinyiLineCount];
@@ -25,6 +25,7 @@ public class SinYi extends PCHouse {
 		
 		house.readHouse(sinyiFile, sinyiData);
 		house.getSinYi(sinyiFile, sinyiData);
+		System.out.println("SinYi Done");
 	}
 	
 	void getSinYi(String name, String[][] data) {
@@ -81,7 +82,7 @@ public class SinYi extends PCHouse {
 		try {
 			String id = doc.substring(end+2, end+9);
 
-			String[] info = new String[4];
+			String[] info = new String[infoSize];
 			boolean skip = checkID(id, sinyiData, sinyiLineCount, info);
 			if (!skip) {
 				// title
@@ -167,12 +168,20 @@ public class SinYi extends PCHouse {
 				w.append(title + '\t');
 
 				// date
-				w.append(Calendar.getInstance().getTime().toString() + '\t');
-
+				if (info[5] != null) {
+					w.append(info[5] + '\t');					
+				} else {
+					w.append(Calendar.getInstance().getTime().toString() + '\t');
+				}
+				
 				String houseUrl = "http://buy.sinyi.com.tw/house/" + id.substring(1) + ".html";
 				w.append(houseUrl + '\t');
 				
 				w.append("=HYPERLINK(N" + (linkCount++) +")" + '\t');
+				
+				if (changePrice.length() > 0) {
+					w.append(info[4] + "|" + info[3] + '\t');
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

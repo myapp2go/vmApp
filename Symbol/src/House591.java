@@ -23,6 +23,7 @@ public class House591 extends SinYi {
 		
 		house.readHouse(houseFile, houseData);
 		house.getHouse591(houseFile, houseData);
+		System.out.println("House591 Done");
 		
 //		house.readHouse(sinyiFile, sinyiData);
 //		house.getSinYi(sinyiFile, sinyiData);
@@ -75,7 +76,7 @@ public class House591 extends SinYi {
 			int start = ind+16;
 			int end = doc.indexOf("\"", start);
 			String id = doc.substring(start, end);	
-			String[] info = new String[4];
+			String[] info = new String[infoSize];
 
 			boolean skip = checkID(id, houseData, houseLineCount, info);
 			if (!skip) {
@@ -133,8 +134,12 @@ public class House591 extends SinYi {
 				w.append(doc.substring(start, end) + '\t');
 				
 				// date
-				w.append(Calendar.getInstance().getTime().toString() + '\t');
-
+				if (info[5] != null) {
+					w.append(info[5] + '\t');					
+				} else {
+					w.append(Calendar.getInstance().getTime().toString() + '\t');
+				}
+				
 				String houseUrl = "https://m.591.com.tw/mobile-detail.html?houseId="+id;
 				w.append(houseUrl + '\t');
 				

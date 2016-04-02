@@ -1,3 +1,7 @@
+/**
+ * File get from GIT need to convert tp UTF-8 format
+ * File for excel *.csv need to save as unicode
+ */
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -20,7 +24,8 @@ public class PCHouse extends AsyncTask {
 	protected static int fieldCount = 16;
 	protected static int extraCount = 4;
 	protected static int linkCount = 2;
-
+	public static int infoSize = 6;
+	
 	protected static String noDataMark = "XXX";
 	
 	protected static String existMark = "X";
@@ -32,8 +37,8 @@ public class PCHouse extends AsyncTask {
 	protected static String deleteMark = "D";	// REMOVE
 	
 	protected static String passMark = "P";		// skip
-	protected static String soldMark = "S";
-
+	protected static final String passID = "1";
+	protected static final String soldMark = "S";
 	
 	protected void readHouse(String name, String[][] data) {
 		try {
@@ -66,10 +71,10 @@ public class PCHouse extends AsyncTask {
 				if (data[0][i] != null && data[1][i] != null 
 						&& !existMark.equals(data[1][i]) && !deleteMark.equals(data[0][i])) {
 					switch (data[0][i]) {
-					case "P" :
+					case passID :
 						w.append("\r\n" + passMark + "\t");
 						break;
-					case "S" :
+					case soldMark :
 						w.append("\r\n" + soldMark + "\t");
 						break;	
 					default :
@@ -93,7 +98,10 @@ public class PCHouse extends AsyncTask {
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
-				if (passMark.equals(data[0][i]) || deleteMark.equals(data[0][i])) {
+				if (passMark.equals(data[0][i])) {
+					data[0][i] = passID;
+					skip = true;
+				} else if (deleteMark.equals(data[0][i])) {
 					skip = true;
 				} else {
 					data[1][i] = existMark;
@@ -101,6 +109,8 @@ public class PCHouse extends AsyncTask {
 					info[1] = data[2][i];	// floor
 					info[2] = data[5][i];
 					info[3] = data[4][i];	// price
+					info[4] = data[15][i];	// old price
+					info[5] = data[12][i];	// old date
 				}	
 				found = true;
 			}
