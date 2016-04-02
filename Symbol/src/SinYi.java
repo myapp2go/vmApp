@@ -12,12 +12,11 @@ import java.util.StringTokenizer;
 
 public class SinYi extends PCHouse {
 
-	private static String city = "S";
-	private static int sinyiPageCount = 2;
+	private static int sinyiPageCount = 4;
 	private static int sinyiPageSize = 30;
 	private static int sinyiLineCount = sinyiPageCount*sinyiPageSize*extraCount;
 	protected static String[][] sinyiData = new String[fieldCount][sinyiLineCount];
-	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi"+city+"House.txt";
+	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+city+"_House.txt";
 	
 	public static void main(String[] args) {
 		System.out.println("SinYi Main");
@@ -52,7 +51,7 @@ public class SinYi extends PCHouse {
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-			        new FileInputStream("C:\\logs\\house\\" + city + fileCount + ".html"), "UTF-8"));
+			        new FileInputStream("C:\\logs\\house\\" + city + "_" + fileCount + ".html"), "UTF-8"));
 			
 			String sCurrentLine;
 			while ((sCurrentLine = br.readLine()) != null) {

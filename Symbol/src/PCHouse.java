@@ -21,6 +21,8 @@ import org.jsoup.Jsoup;
 
 public class PCHouse extends AsyncTask {
 
+	protected static int city = 38;
+	
 	protected static int fieldCount = 16;
 	protected static int extraCount = 4;
 	protected static int linkCount = 2;
