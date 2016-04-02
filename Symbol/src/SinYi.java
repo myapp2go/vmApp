@@ -14,8 +14,7 @@ public class SinYi extends PCHouse {
 
 	private static int sinyiPageCount = 7;
 	private static int sinyiPageSize = 30;
-	private static int sinyiLineCount = sinyiPageCount*sinyiPageSize*extraCount;
-	protected static String[][] sinyiData = new String[fieldCount][sinyiLineCount];
+	protected static String[][] sinyiData = new String[fieldCount][sinyiPageCount*sinyiPageSize*extraCount];
 	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+city+"_House.txt";
 	
 	public static void main(String[] args) {
@@ -37,7 +36,7 @@ public class SinYi extends PCHouse {
 			for (int i = 1; found && i <= sinyiPageCount; i++) {
 				found = procSinYi(w, i);
 			}
-			postProc(w, data, sinyiLineCount);
+			postProc(w, data, constDataCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -88,7 +87,7 @@ public class SinYi extends PCHouse {
 			String id = doc.substring(end+2, end+9);
 
 			String[] info = new String[infoSize];
-			boolean skip = checkID(id, sinyiData, sinyiLineCount, info);
+			boolean skip = checkID(id, sinyiData, constDataCount, info);
 			if (!skip) {
 				// title
 				String title = doc.substring(start, end);

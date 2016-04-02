@@ -21,11 +21,12 @@ import org.jsoup.Jsoup;
 
 public class PCHouse extends AsyncTask {
 
-	protected static int city = 38;
+	protected static int city = 37;
 	
 	protected static int fieldCount = 16;
 	protected static int extraCount = 4;
 	protected static int linkCount = 2;
+	protected static int constDataCount = 2;
 	public static int infoSize = 6;
 	
 	protected static String noDataMark = "XXX";
@@ -59,6 +60,7 @@ public class PCHouse extends AsyncTask {
 				}
 				line++;
 			}
+			constDataCount = line;
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {

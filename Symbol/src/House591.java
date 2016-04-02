@@ -10,12 +10,20 @@ import org.jsoup.Jsoup;
 
 public class House591 extends SinYi {
 
-	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591House.txt";
-	private static int housePageCount = 7;
+	private static int housePageCount = 23;
+	
 	private static int housePageSize = 30;
-	private static int houseTotalCount = 209;
-	private static int houseLineCount = housePageCount*housePageSize*extraCount;
-	protected static String[][] houseData = new String[fieldCount][houseLineCount];
+	private static int houseTotalCount = 1;
+	
+	private static int priceInd = 0;
+	private static int[] priceAr = {4, 5};
+	private static int[] sharpAr = {1, 2, 3};
+	private static int[] areaAr = {2, 3, 4};
+	private static int[] ageAr = {1, 2, 3, 4};
+
+	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591_" + city + "_" + priceAr[priceInd] + "_House.txt";
+
+	protected static String[][] houseData = new String[fieldCount][housePageCount*housePageSize*extraCount];
 
 	public static void main(String[] args) {	
 		System.out.println("House591 MAIN");
@@ -24,9 +32,6 @@ public class House591 extends SinYi {
 		house.readHouse(houseFile, houseData);
 		house.getHouse591(houseFile, houseData);
 		System.out.println("House591 Done");
-		
-//		house.readHouse(sinyiFile, sinyiData);
-//		house.getSinYi(sinyiFile, sinyiData);
 	}
 	
 	void getHouse591(String name, String[][] data) {
@@ -35,11 +40,18 @@ public class House591 extends SinYi {
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			for (int i = 0; i < housePageCount; i++) {
-				procHouse591(w, i);
+			String urlBase = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+			String doc = procHouse591(w, urlBase);
+			houseTotalCount = getHouseTotalCount(doc);
+			housePageCount = houseTotalCount / housePageSize + 1;
+			
+			for (int i = 1; i < housePageCount; i++) {
+				String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (i*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+				procHouse591(w, url);
+				System.out.println("Page " + i);
 			}
 			
-			postProc(w, data, houseLineCount);
+			postProc(w, data, constDataCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -48,11 +60,12 @@ public class House591 extends SinYi {
 			e1.printStackTrace();
 		}	
 	}
-	
-	protected void procHouse591(Writer w, int fileCount) {
+
+
+	protected String procHouse591(Writer w, String url) {
 		String doc = "";
 //		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
-		String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (fileCount*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+//		String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (fileCount*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
 			
 		try {
 			doc = Jsoup.connect(url).get().html();
@@ -69,6 +82,8 @@ public class House591 extends SinYi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return doc;
 	}
 
 	private void parseHouse591(String doc, Writer w, int ind) {
@@ -78,7 +93,7 @@ public class House591 extends SinYi {
 			String id = doc.substring(start, end);	
 			String[] info = new String[infoSize];
 
-			boolean skip = checkID(id, houseData, houseLineCount, info);
+			boolean skip = checkID(id, houseData, constDataCount, info);
 			if (!skip) {
 				if (info[1] == null || info[2] == null) {
 					getMoreInfo(id, info);
@@ -181,5 +196,13 @@ public class House591 extends SinYi {
 		
 		return false;
 	}
-
+	
+	private int getHouseTotalCount(String doc) {
+		int start = doc.indexOf("total_count") + 10;
+		start = doc.indexOf("value", start) + 7;
+		int end = doc.indexOf("\"", start);
+		String val =  doc.substring(start, end);
+		
+		return Integer.valueOf(val);
+	}
 }

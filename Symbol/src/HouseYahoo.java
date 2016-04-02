@@ -10,26 +10,25 @@ import org.jsoup.Jsoup;
 
 public class HouseYahoo extends House591 {
 
-	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahooHouse.txt";
+	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + city + "_House.txt";
 	private static int yahooPageCount = 1;
 	private static int yahooPageSize = 30;
-	private static int yahooLineCount = yahooPageCount*yahooPageSize*extraCount;
-	protected static String[][] yahooData = new String[fieldCount][yahooLineCount];
+	protected static String[][] yahooData = new String[fieldCount][yahooPageCount*yahooPageSize*extraCount];
 
 	public static void main(String[] args) {
 		System.out.println("START");
 		HouseYahoo house = new HouseYahoo();
 
-		house.readHouse(sinyiFile, sinyiData);
-		house.getSinYi(sinyiFile, sinyiData);		
+//		house.readHouse(sinyiFile, sinyiData);
+//		house.getSinYi(sinyiFile, sinyiData);		
 		System.out.println("SinYi DONE");
 		
 		house.readHouse(yahooFile, yahooData);
 		house.getHouseYahoo(yahooFile, yahooData);
 		System.out.println("Yahoo DONE");
 		
-		house.readHouse(houseFile, houseData);
-		house.getHouse591(houseFile, houseData);
+//		house.readHouse(houseFile, houseData);
+//		house.getHouse591(houseFile, houseData);
 		System.out.println("House591 DONE");
 	}
 
@@ -43,7 +42,7 @@ public class HouseYahoo extends House591 {
 				procHouseYahoo(w, i);
 			}
 			
-			postProc(w, data, yahooLineCount);
+			postProc(w, data, constDataCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -126,7 +125,7 @@ public class HouseYahoo extends House591 {
 			String id = doc.substring(start, end);
 
 			String[] info = new String[infoSize];
-			boolean skip = checkID(id, yahooData, yahooLineCount, info);			
+			boolean skip = checkID(id, yahooData, constDataCount, info);			
 			if (!skip) {
 				String changePrice = priceChange(price, info);
 				
