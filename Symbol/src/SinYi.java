@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 
 public class SinYi extends PCHouse {
 
-	private static int sinyiPageCount = 4;
+	private static int sinyiPageCount = 7;
 	private static int sinyiPageSize = 30;
 	private static int sinyiLineCount = sinyiPageCount*sinyiPageSize*extraCount;
 	protected static String[][] sinyiData = new String[fieldCount][sinyiLineCount];
@@ -33,8 +33,9 @@ public class SinYi extends PCHouse {
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			for (int i = 1; i <= sinyiPageCount; i++) {
-				procSinYi(w, i);
+			boolean found = true;
+			for (int i = 1; found && i <= sinyiPageCount; i++) {
+				found = procSinYi(w, i);
 			}
 			postProc(w, data, sinyiLineCount);
 			
@@ -46,7 +47,8 @@ public class SinYi extends PCHouse {
 		}	
 	}
 	
-	private void procSinYi(Writer w, int fileCount) {
+	private boolean procSinYi(Writer w, int fileCount) {
+		boolean found = true;
 		StringBuffer doc = new StringBuffer();
 		
 		try {
@@ -58,9 +60,11 @@ public class SinYi extends PCHouse {
 				doc.append(sCurrentLine);
 			}
 		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+			found = false;
+			return found;
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			found = false;
+			return found;
 		}
 
 		int nameInd = doc.indexOf("item_title");
@@ -72,6 +76,8 @@ public class SinYi extends PCHouse {
 			boxInd = doc.indexOf("item_titlebox", nameInd+20);
 			nameInd = doc.indexOf("item_title", nameInd+20);
 		}
+		
+		return found;
 	}
 
 	private void parseSinYi(StringBuffer doc, Writer w, int nameInd) {
