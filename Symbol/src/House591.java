@@ -14,6 +14,7 @@ public class House591 extends SinYi {
 	
 	private static int housePageSize = 30;
 	private static int houseTotalCount = 1;
+	private static int houseRegionId = 3;
 	
 	private static int priceInd = 0;
 	private static int[] priceAr = {4, 5};
@@ -37,16 +38,19 @@ public class House591 extends SinYi {
 	void getHouse591(String name, String[][] data) {
 		try {
 			shareLinkCount = 2;
+			if (constCity < constTaipeiSize) {
+				houseRegionId = 3;
+			}
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			String urlBase = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+			String urlBase = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constCity + "&kind=9&price=4";
 			String doc = procHouse591(w, urlBase);
 			houseTotalCount = getHouseTotalCount(doc);
 			housePageCount = houseTotalCount / housePageSize + 1;
 			
 			for (int i = 1; i < housePageCount; i++) {
-				String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (i*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
+				String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (i*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constCity + "&kind=9&price=4";
 				procHouse591(w, url);
 				System.out.println("Page " + i);
 			}

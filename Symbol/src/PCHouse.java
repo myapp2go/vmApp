@@ -22,6 +22,7 @@ import org.jsoup.Jsoup;
 public class PCHouse extends AsyncTask {
 
 	protected static int constCity = 38;
+	protected static int constTaipeiSize = 12;
 	
 	protected static int constFieldCount = 16;
 	protected static int constExtraCount = 4;
