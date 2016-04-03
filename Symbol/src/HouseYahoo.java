@@ -18,7 +18,7 @@ public class HouseYahoo extends House591 {
 		};
 	
 	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + constCity + "_House.txt";
-	private static int yahooPageCount = 7;
+	private static int yahooPageCount = 30;
 	private static int yahooPageSize = 10;
 	protected static String[][] yahooData = new String[constFieldCount][yahooPageCount*yahooPageSize*constExtraCount];
 
@@ -49,8 +49,8 @@ public class HouseYahoo extends House591 {
 			String doc = procHouseYahoo(w, urlBase+1);
 			yahooPageCount = getHousePageCount(doc);
 			
-			for (int i = 1; i <= yahooPageCount; i++) {
-				procHouseYahoo(w, urlBase+i+1);
+			for (int i = 1; i < yahooPageCount; i++) {
+				procHouseYahoo(w, urlBase+(i+1));
 			}
 			
 			postProc(w, data, constDataCount);
@@ -66,9 +66,7 @@ public class HouseYahoo extends House591 {
 
 	private String procHouseYahoo(Writer w, String url) {
 		String doc = "";
-//		String url = "https://tw.v2.house.yahoo.com/object_search_result.html?&homes_type=preowned&zone=3&zip=234&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=";
-//		String url = "https://tw.house.yahoo.com/house-search-result/?homes_type=preowned&zone=3&zip=234&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=&page=1";
-			
+
 		try {
 			doc = Jsoup.connect(url).get().html();
 			
