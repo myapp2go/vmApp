@@ -21,13 +21,14 @@ import org.jsoup.Jsoup;
 
 public class PCHouse extends AsyncTask {
 
-	protected static int city = 37;
+	protected static int constCity = 38;
 	
-	protected static int fieldCount = 16;
-	protected static int extraCount = 4;
-	protected static int linkCount = 2;
+	protected static int constFieldCount = 16;
+	protected static int constExtraCount = 4;
+	protected static int shareLinkCount = 2;
 	protected static int constDataCount = 2;
-	public static int infoSize = 6;
+	protected static int constPageCount = 30;
+	public static int constInfoSize = 6;
 	
 	protected static String noDataMark = "XXX";
 	
@@ -40,7 +41,7 @@ public class PCHouse extends AsyncTask {
 	protected static String deleteMark = "D";	// REMOVE
 	
 	protected static String passMark = "P";		// skip
-	protected static final String passID = "1";
+	protected static final String passIDMark = "1";
 	protected static final String soldMark = "S";
 	
 	protected void readHouse(String name, String[][] data) {
@@ -54,7 +55,7 @@ public class PCHouse extends AsyncTask {
 			while ((sCurrentLine = br.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
 				int field = 0;
-				while (st.hasMoreElements() && field < fieldCount) {
+				while (st.hasMoreElements() && field < constFieldCount) {
 					data[field][line] = st.nextElement().toString();
 					field++;
 				}
@@ -75,7 +76,7 @@ public class PCHouse extends AsyncTask {
 				if (data[0][i] != null && data[1][i] != null 
 						&& !existMark.equals(data[1][i]) && !deleteMark.equals(data[0][i])) {
 					switch (data[0][i]) {
-					case passID :
+					case passIDMark :
 						w.append("\r\n" + passMark + "\t");
 						break;
 					case soldMark :
@@ -86,7 +87,7 @@ public class PCHouse extends AsyncTask {
 						break;							
 					}
 					
-					for (int j = 1; j < fieldCount-1; j++) {
+					for (int j = 1; j < constFieldCount-1; j++) {
 						w.append(data[j][i] + "\t");
 					}
 				}
@@ -103,7 +104,7 @@ public class PCHouse extends AsyncTask {
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
 				if (passMark.equals(data[0][i])) {
-					data[0][i] = passID;
+					data[0][i] = passIDMark;
 					skip = true;
 				} else if (deleteMark.equals(data[0][i])) {
 					skip = true;

@@ -10,10 +10,17 @@ import org.jsoup.Jsoup;
 
 public class HouseYahoo extends House591 {
 
-	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + city + "_House.txt";
-	private static int yahooPageCount = 1;
-	private static int yahooPageSize = 30;
-	protected static String[][] yahooData = new String[fieldCount][yahooPageCount*yahooPageSize*extraCount];
+	private static int[] yahooZip = {
+		101, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		101, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		101, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		101, 101, 101, 101, 101, 101, 233, 234, 235, 101
+		};
+	
+	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + constCity + "_House.txt";
+	private static int yahooPageCount = 7;
+	private static int yahooPageSize = 10;
+	protected static String[][] yahooData = new String[constFieldCount][yahooPageCount*yahooPageSize*constExtraCount];
 
 	public static void main(String[] args) {
 		System.out.println("START");
@@ -34,12 +41,16 @@ public class HouseYahoo extends House591 {
 
 	private void getHouseYahoo(String name, String[][] data) {
 		try {
-			linkCount = 2;
+			shareLinkCount = 2;
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
+			String urlBase = "https://tw.v2.house.yahoo.com/object_search_result.html?&homes_type=preowned&zone=3&zip=" + yahooZip[constCity] + "&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=&page=";
+			String doc = procHouseYahoo(w, urlBase+1);
+			yahooPageCount = getHousePageCount(doc);
+			
 			for (int i = 1; i <= yahooPageCount; i++) {
-				procHouseYahoo(w, i);
+				procHouseYahoo(w, urlBase+i+1);
 			}
 			
 			postProc(w, data, constDataCount);
@@ -53,9 +64,10 @@ public class HouseYahoo extends House591 {
 		
 	}
 
-	private void procHouseYahoo(Writer w, int i) {
+	private String procHouseYahoo(Writer w, String url) {
 		String doc = "";
-		String url = "https://tw.v2.house.yahoo.com/object_search_result.html?&homes_type=preowned&zone=3&zip=234&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=";
+//		String url = "https://tw.v2.house.yahoo.com/object_search_result.html?&homes_type=preowned&zone=3&zip=234&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=";
+//		String url = "https://tw.house.yahoo.com/house-search-result/?homes_type=preowned&zone=3&zip=234&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=&page=1";
 			
 		try {
 			doc = Jsoup.connect(url).get().html();
@@ -71,7 +83,9 @@ public class HouseYahoo extends House591 {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}	
+		
+		return doc;
 	}
 
 	private void parseHouseYahoo(String doc, Writer w, int ind) {
@@ -124,7 +138,7 @@ public class HouseYahoo extends House591 {
 			end = doc.indexOf("<", start);
 			String id = doc.substring(start, end);
 
-			String[] info = new String[infoSize];
+			String[] info = new String[constInfoSize];
 			boolean skip = checkID(id, yahooData, constDataCount, info);			
 			if (!skip) {
 				String changePrice = priceChange(price, info);
@@ -166,12 +180,24 @@ public class HouseYahoo extends House591 {
 				
 				w.append(href + '\t');
 				
-				w.append("=HYPERLINK(N" + (linkCount++) +")" + '\t');
+				w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
+	private int getHousePageCount(String doc) {
+		int ret = -1;
+		int start = doc.indexOf("yom-button last");
+		if (start > 0) {
+			start = doc.indexOf("page", start-30) + 5;
+			int end = doc.indexOf("\"", start);
+			String val =  doc.substring(start, end);
+			ret = Integer.valueOf(val);
+		}
+		
+		return ret;
+	}
 }

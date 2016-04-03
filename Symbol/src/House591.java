@@ -21,9 +21,9 @@ public class House591 extends SinYi {
 	private static int[] areaAr = {2, 3, 4};
 	private static int[] ageAr = {1, 2, 3, 4};
 
-	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591_" + city + "_" + priceAr[priceInd] + "_House.txt";
+	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591_" + constCity + "_" + priceAr[priceInd] + "_House.txt";
 
-	protected static String[][] houseData = new String[fieldCount][housePageCount*housePageSize*extraCount];
+	protected static String[][] houseData = new String[constFieldCount][housePageCount*housePageSize*constExtraCount];
 
 	public static void main(String[] args) {	
 		System.out.println("House591 MAIN");
@@ -36,7 +36,7 @@ public class House591 extends SinYi {
 	
 	void getHouse591(String name, String[][] data) {
 		try {
-			linkCount = 2;
+			shareLinkCount = 2;
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
@@ -91,7 +91,7 @@ public class House591 extends SinYi {
 			int start = ind+16;
 			int end = doc.indexOf("\"", start);
 			String id = doc.substring(start, end);	
-			String[] info = new String[infoSize];
+			String[] info = new String[constInfoSize];
 
 			boolean skip = checkID(id, houseData, constDataCount, info);
 			if (!skip) {
@@ -158,7 +158,7 @@ public class House591 extends SinYi {
 				String houseUrl = "https://m.591.com.tw/mobile-detail.html?houseId="+id;
 				w.append(houseUrl + '\t');
 				
-				w.append("=HYPERLINK(N" + (linkCount++) +")" + '\t');
+				w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

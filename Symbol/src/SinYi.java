@@ -14,8 +14,8 @@ public class SinYi extends PCHouse {
 
 	private static int sinyiPageCount = 7;
 	private static int sinyiPageSize = 30;
-	protected static String[][] sinyiData = new String[fieldCount][sinyiPageCount*sinyiPageSize*extraCount];
-	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+city+"_House.txt";
+	protected static String[][] sinyiData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
+	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+constCity+"_House.txt";
 	
 	public static void main(String[] args) {
 		System.out.println("SinYi Main");
@@ -28,7 +28,7 @@ public class SinYi extends PCHouse {
 	
 	void getSinYi(String name, String[][] data) {
 		try {
-			linkCount = 2;
+			shareLinkCount = 2;
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
@@ -52,7 +52,7 @@ public class SinYi extends PCHouse {
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-			        new FileInputStream("C:\\logs\\house\\" + city + "_" + fileCount + ".html"), "UTF-8"));
+			        new FileInputStream("C:\\logs\\house\\" + constCity + "_" + fileCount + ".html"), "UTF-8"));
 			
 			String sCurrentLine;
 			while ((sCurrentLine = br.readLine()) != null) {
@@ -86,7 +86,7 @@ public class SinYi extends PCHouse {
 		try {
 			String id = doc.substring(end+2, end+9);
 
-			String[] info = new String[infoSize];
+			String[] info = new String[constInfoSize];
 			boolean skip = checkID(id, sinyiData, constDataCount, info);
 			if (!skip) {
 				// title
@@ -181,7 +181,7 @@ public class SinYi extends PCHouse {
 				String houseUrl = "http://buy.sinyi.com.tw/house/" + id.substring(1) + ".html";
 				w.append(houseUrl + '\t');
 				
-				w.append("=HYPERLINK(N" + (linkCount++) +")" + '\t');
+				w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
 				
 				if (changePrice.length() > 0) {
 					w.append(info[4] + "|" + info[3] + '\t');
