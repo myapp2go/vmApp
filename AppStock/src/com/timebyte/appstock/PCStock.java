@@ -20,8 +20,10 @@ public class PCStock extends AsyncTask {
 		int count = 4;
 		
 		PCStock stk = new PCStock();
+		stk.createStock();
 		stk.getReport(stock, count);
 		
+		stk.pcPrintInfo(count);
 		System.out.println("&&&& " + posts);
 	}
 
@@ -126,65 +128,7 @@ public class PCStock extends AsyncTask {
 		
 		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
 		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
-/*
-		// Gross Profit
-		posts += "\nGross Profit\t\t\t";		
-		for (int i = 0; i < count; i++) {
-			sf((totalRevenue[i] - costofRevenue[i]));
-//			System.out.print("\t\t" + (totalRevenue[i] - costofRevenue[i]));
-		}
-
-		// Gross Profit Ratio
-		System.out.print("\nGross Profit Ratio\t\t");		
-		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + (totalRevenue[i] - costofRevenue[i])/totalRevenue[i]);
-		}
-		
-		// % of Cost of Revenue
-		System.out.print("\n% of Cost of Revenue\t\t");		
-		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + (costofRevenue[i] / totalRevenue[i]));
-		}
-
-		// % of Operating Expenses
-		posts += "\n% of Operating Expenses\t\t";		
-		for (int i = 0; i < count; i++) {
-			sf(((researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) / totalRevenue[i]));
-		}
-
-		// Operating Income or Loss
-		posts += "\nOperating Income or Loss\t";		
-		for (int i = 0; i < count; i++) {
-			sf(((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i])));
-//			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i])));
-		}
-
-		// %%% Operating Income or Loss Ratio
-		System.out.print("\nOperating Income or Loss Ratio\t");		
-		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]))/totalRevenue[i]);
-		}
-		
-		// Operating Income or Loss
-		posts += "\nEarnings Before Interest And Taxes";		
-		for (int i = 0; i < count; i++) {
-			sf(((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) + totalOtherIncomeExpensesNet[i]));
-//			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) + totalOtherIncomeExpensesNet[i]));
-		}
-
-		// NetIncome Applicable To CommonSh
-		System.out.print("\nNet Income Appl To Common Shares Ratio");		
-		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + (netIncomeApplicableToCommonShares[i])/totalRevenue[i]);
-		}
-
-		// P49 
-		posts += "\nInterest Ratio\t\t\t";
-		for (int i = 0; i < count; i++) {
-			sf(earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
-//			System.out.print("\t" + earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
-		}
-		*/		
+	
 	}
 	
 	private void sf(float value) {
@@ -275,6 +219,66 @@ public class PCStock extends AsyncTask {
 		return null;
 	}
 
+	private void pcPrintInfo(int count) {
+		
+		// Gross Profit
+		posts += "\nGross Profit\t\t\t";		
+		for (int i = 0; i < count; i++) {
+			sf((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]));
+//			System.out.print("\t\t" + (totalRevenue[i] - costofRevenue[i]));
+		}
 
+		// Gross Profit Ratio
+		System.out.print("\nGross Profit Ratio\t\t");		
+		for (int i = 0; i < count; i++) {
+			System.out.print("\t" + (stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i])/stk.getTotalRevenue()[i]);
+		}
+		
+		// % of Cost of Revenue
+		System.out.print("\n% of Cost of Revenue\t\t");		
+		for (int i = 0; i < count; i++) {
+			System.out.print("\t" + (stk.getCostofRevenue()[i] / stk.getTotalRevenue()[i]));
+		}
+
+		// % of Operating Expenses
+		posts += "\n% of Operating Expenses\t\t";		
+		for (int i = 0; i < count; i++) {
+			sf(((stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i]) / stk.getTotalRevenue()[i]));
+		}
+
+		// Operating Income or Loss
+		posts += "\nOperating Income or Loss\t";		
+		for (int i = 0; i < count; i++) {
+			sf(((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]) - (stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i])));
+//			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i])));
+		}
+
+		// %%% Operating Income or Loss Ratio
+		System.out.print("\nOperating Income or Loss Ratio\t");		
+		for (int i = 0; i < count; i++) {
+			System.out.print("\t" + ((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]) - (stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i]))/stk.getTotalRevenue()[i]);
+		}
+		
+		// Operating Income or Loss
+		posts += "\nEarnings Before Interest And Taxes";		
+		for (int i = 0; i < count; i++) {
+			sf(((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]) - (stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i]) + stk.getTotalOtherIncomeExpensesNet()[i]));
+//			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) + totalOtherIncomeExpensesNet[i]));
+		}
+
+		// NetIncome Applicable To CommonSh
+		System.out.print("\nNet Income Appl To Common Shares Ratio");		
+		for (int i = 0; i < count; i++) {
+			System.out.print("\t" + (stk.getNetIncomeApplicableToCommonShares()[i])/stk.getTotalRevenue()[i]);
+		}
+
+		// P49 
+		posts += "\nInterest Ratio\t\t\t";
+		for (int i = 0; i < count; i++) {
+			sf(stk.getEarningsBeforeInterestAndTaxes()[i]/stk.getInterestExpense()[i]);
+//			System.out.print("\t" + earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
+		}
+		
+	}
 }
 
