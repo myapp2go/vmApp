@@ -24,7 +24,7 @@ public class PCStock extends AsyncTask {
 		stk.getReport(stock, count);
 		
 		stk.pcPrintInfo(count);
-		System.out.println("&&&& " + posts);
+		System.out.println(posts);
 	}
 
 	protected Stock createStock() {
@@ -229,15 +229,15 @@ public class PCStock extends AsyncTask {
 		}
 
 		// Gross Profit Ratio
-		System.out.print("\nGross Profit Ratio\t\t");		
+		posts += "\nGross Profit Ratio\t\t";		
 		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + (stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i])/stk.getTotalRevenue()[i]);
+			sf((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i])/stk.getTotalRevenue()[i]);
 		}
 		
 		// % of Cost of Revenue
-		System.out.print("\n% of Cost of Revenue\t\t");		
+		posts += "\n% of Cost of Revenue\t\t";		
 		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + (stk.getCostofRevenue()[i] / stk.getTotalRevenue()[i]));
+			sf((stk.getCostofRevenue()[i] / stk.getTotalRevenue()[i]));
 		}
 
 		// % of Operating Expenses
@@ -254,9 +254,9 @@ public class PCStock extends AsyncTask {
 		}
 
 		// %%% Operating Income or Loss Ratio
-		System.out.print("\nOperating Income or Loss Ratio\t");		
+		posts += "\nOperating Income or Loss Ratio\t";		
 		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + ((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]) - (stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i]))/stk.getTotalRevenue()[i]);
+			sf(((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]) - (stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i]))/stk.getTotalRevenue()[i]);
 		}
 		
 		// Operating Income or Loss
@@ -267,9 +267,9 @@ public class PCStock extends AsyncTask {
 		}
 
 		// NetIncome Applicable To CommonSh
-		System.out.print("\nNet Income Appl To Common Shares Ratio");		
+		posts += "\nNet Income Appl To Common Shares Ratio";		
 		for (int i = 0; i < count; i++) {
-			System.out.print("\t" + (stk.getNetIncomeApplicableToCommonShares()[i])/stk.getTotalRevenue()[i]);
+			sf((stk.getNetIncomeApplicableToCommonShares()[i])/stk.getTotalRevenue()[i]);
 		}
 
 		// P49 
