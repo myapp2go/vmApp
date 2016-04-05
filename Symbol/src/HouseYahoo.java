@@ -86,6 +86,7 @@ public class HouseYahoo extends House591 {
 			int start = doc.indexOf("href", ind) + 6;
 			int end = doc.indexOf("\"", start);
 			String href = doc.substring(start, end);
+			href = href.replaceAll("amp;", "");
 
 			// title
 			start = doc.indexOf(">", end) + 1;
@@ -112,12 +113,16 @@ public class HouseYahoo extends House591 {
 			end = doc.indexOf("<", start);
 			String room = doc.substring(start, end);
 
+			// type
+			start = doc.indexOf("<li>", end) + 7;
+			end = doc.indexOf("<", start);
+			String floor = doc.substring(start, end);
+			
 			// floor
-			start = doc.indexOf("<li>", end) + 4;
+			String[] info = new String[constInfoSize];
 			start = doc.indexOf("<li>", start) + 7;
 			end = doc.indexOf("<", start);
 			String floor_car = doc.substring(start, end);
-			String floor = noDataMark;
 			String car = floor_car;
 			if (floor_car.length() > 4) {
 				floor = floor_car.substring(4);
@@ -125,6 +130,9 @@ public class HouseYahoo extends House591 {
 				start = doc.indexOf("<li>", end) + 7;
 				end = doc.indexOf("<", start);
 				car = doc.substring(start, end);					
+			} else {
+				getMoreInfo(href, info);
+				floor = info[1];
 			}
 				
 			start = doc.indexOf("<li>", end) + 7;
@@ -136,7 +144,6 @@ public class HouseYahoo extends House591 {
 			end = doc.indexOf("<", start);
 			String id = doc.substring(start, end);
 
-			String[] info = new String[constInfoSize];
 			boolean skip = checkID(id, yahooData, constDataCount, info);			
 			if (!skip) {
 				String changePrice = priceChange(price, info);
@@ -186,6 +193,96 @@ public class HouseYahoo extends House591 {
 		}
 	}
 
+	private boolean getMoreInfo(String url, String[] info) {
+		try {
+			String doc = "";
+			
+			if (url.indexOf("housefun") > 0) {
+				doc = Jsoup.connect(url).get().html();
+				getHousefunInfo(doc, info);
+			} else if (url.indexOf("etwarm") > 0) {
+				doc = Jsoup.connect(url).get().html();
+				getEtwarmInfo(doc, info);
+			} else if (url.indexOf("twhg") > 0) {
+//				getTwhgInfo(doc, info);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+						
+		return false;
+	}
+
+	private boolean getHousefunInfo(String doc, String[] info) {
+		int nameInd = doc.indexOf("title-list both");
+		if (nameInd > 0) {
+			int start = nameInd;
+			start = doc.indexOf("value", start)+5;
+			start = doc.indexOf("value", start)+5;
+			start = doc.indexOf("value", start)+5;
+			start = doc.indexOf("value", start)+5;
+			start = doc.indexOf("value", start)+5;
+			start = doc.indexOf("value", start)+5;
+			start = doc.indexOf(">", start)+1;
+			int end = doc.indexOf("<", start);
+			info[1] = doc.substring(start, end);
+		}
+		
+		return false;
+	}
+	
+	private boolean getEtwarmInfo(String doc, String[] info) {
+		int nameInd = doc.indexOf("obj_data_contain");
+		if (nameInd > 0) {
+			int start = nameInd;
+			start = doc.indexOf("obj_data_contain", start)+16;
+			start = doc.indexOf("obj_data_contain", start)+16;
+			start = doc.indexOf("obj_data_contain", start)+16;
+			String doc1 = doc.substring(start);
+			start = doc.indexOf("obj_data_contain", start)+16;
+			start = doc.indexOf("obj_data_contain", start)+16;
+			start = doc.indexOf(">", start)+10;
+			int end = doc.indexOf("<", start);
+			if (end - start > 15) {
+				info[1] = doc.substring(start, start+10);
+			}	
+		}
+		
+		return false;
+	}
+	
+	private boolean getTwhgInfo(String doc, String[] info) {
+			int nameInd = doc.indexOf("price_num");
+			/*
+			if (nameInd > 0) {
+				int start = nameInd;
+				start = doc.indexOf("<b>", start)+3;
+				start = doc.indexOf("<b>", start)+3;
+				start = doc.indexOf("<b>", start)+3;
+				start = doc.indexOf("<b>", start)+10;
+				int end = doc.indexOf("<", start);
+				info[1] = doc.substring(start, end);
+				
+				// year skip 2 <b> tab
+				start = doc.indexOf("b>", end)+3;
+				start = doc.indexOf("b>", start)+2;
+				end = doc.indexOf("<", start);
+				info[2] = doc.substring(start, end);	
+				
+				// car skip 2 <b> tab
+				start = doc.indexOf("<b>", end)+3;
+				start = doc.indexOf("<b>", start)+3;
+				start = doc.indexOf("<b>", start)+3;
+				start = doc.indexOf("b>", start)+2;
+				end = doc.indexOf("<", start);
+				info[6] = doc.substring(start, end);
+			}
+*/
+		
+		return false;
+	}
+	
 	private int getHousePageCount(String doc) {
 		int ret = -1;
 		int start = doc.indexOf("yom-button last");
