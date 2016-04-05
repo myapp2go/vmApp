@@ -15,7 +15,7 @@ public class SinYi extends PCHouse {
 	private static int sinyiPageCount = 7;
 	private static int sinyiPageSize = 30;
 	protected static String[][] sinyiData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
-	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+constCity+"_House.txt";
+	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+constCityZip+"_House.txt";
 	
 	public static void main(String[] args) {
 		System.out.println("SinYi Main");
@@ -52,7 +52,7 @@ public class SinYi extends PCHouse {
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-			        new FileInputStream("C:\\logs\\house\\" + constCity + "_" + fileCount + ".html"), "UTF-8"));
+			        new FileInputStream("C:\\logs\\house\\" + constCityZip + "_" + fileCount + ".html"), "UTF-8"));
 			
 			String sCurrentLine;
 			while ((sCurrentLine = br.readLine()) != null) {
@@ -165,7 +165,7 @@ public class SinYi extends PCHouse {
 
 				w.append(size2 + '\t');
 
-				w.append(size2 + '\t');
+				w.append(info[6] + '\t');
 
 				w.append(address + '\t');
 

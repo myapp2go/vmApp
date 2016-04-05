@@ -21,15 +21,33 @@ import org.jsoup.Jsoup;
 
 public class PCHouse extends AsyncTask {
 
-	protected static int constCity = 38;
-	protected static int constTaipeiSize = 12;
+	protected static int[] constZip = {
+		  1,   2,   2,   2,   3,   4,   5,   1,   6, 101,
+		110, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		120, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		130, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		140, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		150, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		160, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		170, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		180, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		190, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		200, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		210, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		220, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		230, 101, 101, 101,  37,  38, 101, 101, 101, 101,
+		240, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		250, 101, 101, 101, 101, 101, 101, 101, 101, 101
+		};
+	
+	protected static int constCityZip = 234;
 	
 	protected static int constFieldCount = 16;
 	protected static int constExtraCount = 4;
 	protected static int shareLinkCount = 2;
 	protected static int constDataCount = 2;
 	protected static int constPageCount = 30;
-	public static int constInfoSize = 6;
+	public static int constInfoSize = 7;
 	
 	protected static String noDataMark = "XXX";
 	
@@ -113,10 +131,11 @@ public class PCHouse extends AsyncTask {
 					data[1][i] = existMark;
 					info[0] = "\r\n" + updateMark + data[0][i].substring(1);
 					info[1] = data[2][i];	// floor
-					info[2] = data[5][i];
+					info[2] = data[5][i];	// year
 					info[3] = data[4][i];	// price
 					info[4] = data[15][i];	// old price
 					info[5] = data[12][i];	// old date
+					info[6] = data[9][i];	// car
 				}	
 				found = true;
 			}

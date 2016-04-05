@@ -10,14 +10,9 @@ import org.jsoup.Jsoup;
 
 public class HouseYahoo extends House591 {
 
-	private static int[] yahooZip = {
-		101, 101, 101, 101, 101, 101, 101, 101, 101, 101,
-		101, 101, 101, 101, 101, 101, 101, 101, 101, 101,
-		101, 101, 101, 101, 101, 101, 101, 101, 101, 101,
-		101, 101, 101, 101, 101, 101, 233, 234, 235, 101
-		};
+
 	
-	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + constCity + "_House.txt";
+	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + constCityZip + "_House.txt";
 	private static int yahooPageCount = 30;
 	private static int yahooPageSize = 10;
 	protected static String[][] yahooData = new String[constFieldCount][yahooPageCount*yahooPageSize*constExtraCount];
@@ -45,7 +40,7 @@ public class HouseYahoo extends House591 {
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			String urlBase = "https://tw.v2.house.yahoo.com/object_search_result.html?&homes_type=preowned&zone=3&zip=" + yahooZip[constCity] + "&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=&page=";
+			String urlBase = "https://tw.v2.house.yahoo.com/object_search_result.html?&homes_type=preowned&zone=3&zip=" + constCityZip + "&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=&page=";
 			String doc = procHouseYahoo(w, urlBase+1);
 			yahooPageCount = getHousePageCount(doc);
 			
@@ -92,6 +87,11 @@ public class HouseYahoo extends House591 {
 			int end = doc.indexOf("\"", start);
 			String href = doc.substring(start, end);
 
+			// title
+			start = doc.indexOf(">", end) + 1;
+			end = doc.indexOf("<", start);
+			String title = doc.substring(start, end);
+			
 			// address
 			start = doc.indexOf("<li>", end) + 8;
 			end = doc.indexOf("<", start);
@@ -164,11 +164,11 @@ public class HouseYahoo extends House591 {
 
 				w.append(size + '\t');
 				w.append(size + '\t');
-				w.append(size + '\t');
+				w.append(car + '\t');
 
 				w.append(address + '\t');
 
-				w.append(car + '\t');
+				w.append(title + '\t');
 				
 				if (info[5] != null) {
 					w.append(info[5] + '\t');					
