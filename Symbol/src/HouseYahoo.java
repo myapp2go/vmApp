@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -130,9 +131,6 @@ public class HouseYahoo extends House591 {
 				start = doc.indexOf("<li>", end) + 7;
 				end = doc.indexOf("<", start);
 				car = doc.substring(start, end);					
-			} else {
-				getMoreInfo(href, info);
-				floor = info[1];
 			}
 				
 			start = doc.indexOf("<li>", end) + 7;
@@ -146,6 +144,13 @@ public class HouseYahoo extends House591 {
 
 			boolean skip = checkID(id, yahooData, constDataCount, info);			
 			if (!skip) {
+				if (info[1] == null) {
+					getMoreInfo(href, info);
+					if (info[1] != null) {
+						floor = info[1];
+					}
+				}
+				
 				String changePrice = priceChange(price, info);
 				
 				w.append(info[0] + changePrice + '\t');
@@ -239,10 +244,10 @@ public class HouseYahoo extends House591 {
 			start = doc.indexOf("obj_data_contain", start)+16;
 			start = doc.indexOf("obj_data_contain", start)+16;
 			start = doc.indexOf("obj_data_contain", start)+16;
-			String doc1 = doc.substring(start);
 			start = doc.indexOf("obj_data_contain", start)+16;
 			start = doc.indexOf("obj_data_contain", start)+16;
 			start = doc.indexOf(">", start)+10;
+			String doc1 = doc.substring(start);
 			int end = doc.indexOf("<", start);
 			if (end - start > 15) {
 				info[1] = doc.substring(start, start+10);

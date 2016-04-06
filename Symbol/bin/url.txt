@@ -1,0 +1,4 @@
+https://m.591.com.tw/mobile-list.html?firstRow=30&totalRows=209&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4
+https://m.591.com.tw/mobile-list.html?firstRow=60&totalRows=209&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4
+https://m.591.com.tw/mobile-list.html?firstRow=180&totalRows=209&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4
+https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&room=3&area=3&kind=9&shape=2&parking=1&price=5
