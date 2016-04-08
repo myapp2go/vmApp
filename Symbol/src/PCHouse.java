@@ -107,7 +107,11 @@ public class PCHouse extends AsyncTask {
 					}
 					
 					for (int j = 1; j < constFieldCount-1; j++) {
-						w.append(data[j][i] + "\t");
+						if (j == 14) {
+							w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
+						} else {
+							w.append(data[j][i] + "\t");
+						}
 					}
 				}
 			}
