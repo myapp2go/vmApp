@@ -98,9 +98,21 @@ public class SinYi extends PCHouse {
 				start = doc.indexOf("span>", start);
 				end = doc.indexOf("<", start);
 				String address = doc.substring(start + 5, end);
-
+				
 				// size 1
 				start = doc.indexOf("detail_line2", end);
+				
+				// check car
+				int carStart = doc.indexOf("line-content", end) + 5;
+				carStart = doc.indexOf("line-content", carStart) + 5;
+				carStart = doc.indexOf("line-content", carStart) + 5;
+
+				info[6] = "XXX";
+				if (carStart < start) {
+					int carEnd = doc.indexOf("<", carStart+3);
+					info[6] = doc.substring(carStart+69, carStart+73);
+				}
+				
 				start = doc.indexOf("num<", start) + 22;
 				end = doc.indexOf("<", start);
 				String size1 = doc.substring(start, end);
