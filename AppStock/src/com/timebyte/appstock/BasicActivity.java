@@ -32,7 +32,6 @@ abstract class BasicActivity extends Activity {
 	
 	TableLayout stockTable;
 	TextView titleText, postText;
-	String title, posts = "";
 	protected int count = 4;
 	
 	@Override

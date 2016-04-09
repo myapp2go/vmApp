@@ -1,7 +1,6 @@
 /**
  * 1. extends PCStock
  * 2. remove command on count
- * 3. uncommand df
  */
 package com.timebyte.appstock;
 
@@ -10,14 +9,11 @@ public class MainActivity extends BasicActivity {
 //	public int count = 4;
 
 	private void sf(float value) {
-		/*
 		String v = "\t" + value;
-		posts += v;
 		System.out.print(v);
 		if (v.length() < 9) {
 			System.out.print("\t");
 		}
-		*/
 	}
 	
 	public static void main(String[] args) {
@@ -29,16 +25,35 @@ public class MainActivity extends BasicActivity {
 		pcStock.getReport(name, count);
 		
 		MainActivity obj = new MainActivity();
+
+		System.out.print("\nTotal Revenue\t\t\t");	
+		obj.printStock(stk.getTotalRevenue());
+		System.out.print("\nCost of Revenue\t\t\t");	
+		obj.printStock(stk.getCostofRevenue());
+		
 		System.out.print("\n% of Cost of Revenue\t\t");	
 		obj.calCostofRevenueRatio(stk);
-		System.out.print("\nGross Profit Ratio\t\t");
+		System.out.print("\n% of Gross Profit\t\t");
 		obj.calGrossProfitRatio(stk);
-		System.out.print("\n% of Cost of Revenue\t\t");
-		obj.calCostofRevenueRatio(stk);
-		System.out.print("\nOperating Income or Loss Ratio\t");
+		System.out.print("\n% of Operating Expenses\t\t");
+		obj.calOperatingExpensesRatio(stk);
+		System.out.print("\n% Operating Income or Loss Ratio");
 		obj.calOperatingIncomeorLossRatio(stk);
+		System.out.print("\n% Net Income Appl To Common Sh Ratio");
+		obj.calNetIncomeApplToCommonSharesRatio(stk);
+		System.out.print("\n% Interest Ratio\t\t");
+		obj.calnterestRatio(stk);
+		System.out.print("\n% EPS\t\t\t\t");
+		obj.calEPS(stk);
 		
-//		System.out.println("&&&& " + posts);
+		System.out.print("\nNet Income App To Common Shares\t");	
+		obj.printStock(stk.getNetIncomeApplicableToCommonShares());
+	}
+
+	private void printStock(float[] vals) {
+		for (int i = 0; i < count; i++) {
+			sf(vals[i]);
+		}
 	}
 
 	public float[] calGrossProfitRatio(Stock stock) {

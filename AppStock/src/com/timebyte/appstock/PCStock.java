@@ -9,8 +9,6 @@ import android.os.AsyncTask;
 public class PCStock extends AsyncTask {
 
 	protected Stock stk;
-	
-	protected static String posts = "";
 		
 	public static void main(String[] args) {
 		System.out.println("Start with MainActivity");
