@@ -110,7 +110,10 @@ public class SinYi extends PCHouse {
 				info[6] = "XXX";
 				if (carStart < start) {
 					int carEnd = doc.indexOf("<", carStart+3);
-					info[6] = doc.substring(carStart+69, carStart+73);
+					String tmp = doc.substring(carStart+69, carStart+73);
+					if (tmp.indexOf("htm") < 0) {
+						info[6] = tmp;
+					}
 				}
 				
 				start = doc.indexOf("num<", start) + 22;
