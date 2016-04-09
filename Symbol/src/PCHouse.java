@@ -59,8 +59,7 @@ public class PCHouse extends AsyncTask {
 	
 	protected static String deleteMark = "D";	// REMOVE
 	
-	protected static String passMark = "P";		// skip
-	protected static final String passIDMark = "1";
+	protected static final String passMark = "P";		// skip
 	protected static final String soldMark = "S";
 	
 	protected void readHouse(String name, String[][] data) {
@@ -95,7 +94,7 @@ public class PCHouse extends AsyncTask {
 				if (data[0][i] != null && data[1][i] != null 
 						&& !existMark.equals(data[1][i]) && !deleteMark.equals(data[0][i])) {
 					switch (data[0][i]) {
-					case passIDMark :
+					case passMark :
 						w.append("\r\n" + passMark + "\t");
 						break;
 					case soldMark :
@@ -127,7 +126,7 @@ public class PCHouse extends AsyncTask {
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
 				if (passMark.equals(data[0][i])) {
-					data[0][i] = passIDMark;
+					data[0][i] = passMark;
 					skip = true;
 				} else if (deleteMark.equals(data[0][i])) {
 					skip = true;
