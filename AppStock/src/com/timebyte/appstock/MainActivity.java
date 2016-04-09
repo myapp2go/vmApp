@@ -1,3 +1,8 @@
+/**
+ * 1. extends PCStock
+ * 2. remove command on count
+ * 3. uncommand df
+ */
 package com.timebyte.appstock;
 
 public class MainActivity extends BasicActivity {
