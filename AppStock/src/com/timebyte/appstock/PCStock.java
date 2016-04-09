@@ -1,7 +1,6 @@
 package com.timebyte.appstock;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.jsoup.Jsoup;
 
@@ -12,19 +11,9 @@ public class PCStock extends AsyncTask {
 	protected Stock stk;
 	
 	protected static String posts = "";
-	
-	private String v = "";
-	
+		
 	public static void main(String[] args) {
-		String stock = "CONN";
-		int count = 4;
-		
-		PCStock stk = new PCStock();
-		stk.createStock();
-		stk.getReport(stock, count);
-		
-		stk.pcPrintInfo(count);
-		System.out.println(posts);
+		System.out.println("Start with MainActivity");
 	}
 
 	protected Stock createStock() {
@@ -36,7 +25,6 @@ public class PCStock extends AsyncTask {
 	 * @param args
 	 */
 	public void getStock(String stock) {
-	//	String stock = "BCE";
 		int count = 4;
 		
 		getReport(stock, count);
@@ -131,15 +119,6 @@ public class PCStock extends AsyncTask {
 	
 	}
 	
-	private void sf(float value) {
-		v = "\t" + value;
-		posts += v;
-		System.out.print(v);
-		if (v.length() < 9) {
-			System.out.print("\t");
-		}
-	}
-	
 	private void getBalanceSheet(String doc, int count) {
 		getValues("Cash And Cash Equivalents", stk.getCashAndCashEquivalents(), doc, count);
 		getValues("Short Term Investments", stk.getShortTermInvestments(), doc, count);
@@ -196,7 +175,6 @@ public class PCStock extends AsyncTask {
 				break;
 			default:
 				endIndex = doc.indexOf("nbsp", beginIndex) - 1;
-//	//			System.out.println("FFFFFFFFFFFFFF " + beginIndex + " KKK " + endIndex);
 				if (beginIndex < 0 || endIndex < 0 || (endIndex-beginIndex>20)) {
 					val = 0;
 				} else {
@@ -210,7 +188,6 @@ public class PCStock extends AsyncTask {
 			}
 			
 			valueAr[i] = val;
-//			System.out.println(val);
 		}
 	}
 
@@ -219,66 +196,5 @@ public class PCStock extends AsyncTask {
 		return null;
 	}
 
-	private void pcPrintInfo(int count) {
-		
-		// Gross Profit
-		posts += "\nGross Profit\t\t\t";		
-		for (int i = 0; i < count; i++) {
-			sf((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]));
-//			System.out.print("\t\t" + (totalRevenue[i] - costofRevenue[i]));
-		}
-
-		// Gross Profit Ratio
-		posts += "\nGross Profit Ratio\t\t";		
-		for (int i = 0; i < count; i++) {
-			sf((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i])/stk.getTotalRevenue()[i]);
-		}
-		
-		// % of Cost of Revenue
-		posts += "\n% of Cost of Revenue\t\t";		
-		for (int i = 0; i < count; i++) {
-			sf((stk.getCostofRevenue()[i] / stk.getTotalRevenue()[i]));
-		}
-
-		// % of Operating Expenses
-		posts += "\n% of Operating Expenses\t\t";		
-		for (int i = 0; i < count; i++) {
-			sf(((stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i]) / stk.getTotalRevenue()[i]));
-		}
-
-		// Operating Income or Loss
-		posts += "\nOperating Income or Loss\t";		
-		for (int i = 0; i < count; i++) {
-			sf(((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]) - (stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i])));
-//			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i])));
-		}
-
-		// %%% Operating Income or Loss Ratio
-		posts += "\nOperating Income or Loss Ratio\t";		
-		for (int i = 0; i < count; i++) {
-			sf(((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]) - (stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i]))/stk.getTotalRevenue()[i]);
-		}
-		
-		// Operating Income or Loss
-		posts += "\nEarnings Before Interest And Taxes";		
-		for (int i = 0; i < count; i++) {
-			sf(((stk.getTotalRevenue()[i] - stk.getCostofRevenue()[i]) - (stk.getResearchDevelopment()[i]+stk.getSellingGeneralandAdministrative()[i]+stk.getNonRecurring()[i]) + stk.getTotalOtherIncomeExpensesNet()[i]));
-//			System.out.print("\t\t" + ((totalRevenue[i] - costofRevenue[i]) - (researchDevelopment[i]+sellingGeneralandAdministrative[i]+nonRecurring[i]) + totalOtherIncomeExpensesNet[i]));
-		}
-
-		// NetIncome Applicable To CommonSh
-		posts += "\nNet Income Appl To Common Shares Ratio";		
-		for (int i = 0; i < count; i++) {
-			sf((stk.getNetIncomeApplicableToCommonShares()[i])/stk.getTotalRevenue()[i]);
-		}
-
-		// P49 
-		posts += "\nInterest Ratio\t\t\t";
-		for (int i = 0; i < count; i++) {
-			sf(stk.getEarningsBeforeInterestAndTaxes()[i]/stk.getInterestExpense()[i]);
-//			System.out.print("\t" + earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
-		}
-		
-	}
 }
 
