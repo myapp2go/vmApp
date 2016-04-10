@@ -49,6 +49,7 @@ public class HouseYahoo extends House591 {
 			
 			for (int i = 1; i < yahooPageCount; i++) {
 				procHouseYahoo(w, urlBase+(i+1));
+				System.out.println("Page " + i);
 			}
 			
 			postProc(w, data, constDataCount);
@@ -155,7 +156,16 @@ public class HouseYahoo extends House591 {
 				
 				String changePrice = priceChange(price, info);
 				
-				w.append(info[0] + changePrice + '\t');
+				String fl = info[1];
+				if (info[1] == null) {
+					fl = floor;
+				} 
+				String tmp = fl.substring(0,1);
+				if ((fl.indexOf("/4") > 0 || fl.indexOf("/5") > 0 || fl.indexOf("/ 4") > 0 || fl.indexOf("/ 5") > 0) && !tmp.equals("1") && !tmp.equals("B")) {
+					w.append("\r\n" + passMark + changePrice + '\t');
+				} else {
+					w.append(info[0] + changePrice + '\t');
+				}
 				
 				w.append(id + '\t');
 				
@@ -215,7 +225,8 @@ public class HouseYahoo extends House591 {
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR === " + url);
+//			e.printStackTrace();
 		}
 						
 		return false;
