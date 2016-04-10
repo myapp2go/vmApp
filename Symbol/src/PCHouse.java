@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -47,16 +48,16 @@ public class PCHouse extends AsyncTask {
 		250, 101, 101, 101, 101, 101, 101, 101, 101, 101
 		};
 	
-	protected static int constCityZip = 241;
+	protected static int constCityZip = 234;
 	
-	protected static int constFieldCount = 16;
+	protected static int constFieldCount = 17;
 	protected static int constExtraCount = 4;
 	protected static int shareLinkCount = 2;
 	protected static int constDataCount = 2;
 	protected static int constPageCount = 30;
 	public static int constInfoSize = 7;
 	
-	protected static String noDataMark = "XXX";
+	protected static String watchMark = "W";
 	
 	protected static String existMark = "X";
 	protected static String newMark = "N";
@@ -101,6 +102,7 @@ public class PCHouse extends AsyncTask {
 	protected void postProc(Writer w, String[][] data, int lineCount) {
 		try {
 			for (int i = 0; i < lineCount; i++) {
+				boolean sold = false;
 				if (data[0][i] != null && data[1][i] != null 
 						&& !existMark.equals(data[1][i]) && !deleteMark.equals(data[0][i])) {
 					switch (data[0][i].substring(0, 1)) {
@@ -108,12 +110,14 @@ public class PCHouse extends AsyncTask {
 						w.append("\r\n" + passMark + data[0][i].substring(1) + "\t");
 						break;
 					case passMark :
+						sold = true;
 						w.append("\r\n" + soldMark + data[0][i].substring(1) + "\t");
 						break;
 					case soldMark :
 						w.append("\r\n" + soldMark + data[0][i].substring(1) + "\t");
 						break;	
 					default :
+						sold = true;
 						w.append("\r\n" + soldMark + data[0][i].substring(1) + "\t");
 						break;							
 					}
@@ -123,6 +127,10 @@ public class PCHouse extends AsyncTask {
 							w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
 						} else {
 							w.append(data[j][i] + "\t");
+						}			
+						
+						if (sold && (j == 15)) {
+							w.append(Calendar.getInstance().getTime().toString() + '\t');
 						}
 					}
 				}
@@ -147,7 +155,9 @@ public class PCHouse extends AsyncTask {
 					data[1][i] = existMark;
 					if (soldMark.equals(data[0][i].substring(0, 1)) || repostMark.equals(data[0][i].substring(0, 1))) {
 						info[0] = "\r\n" + repostMark + data[0][i].substring(1);
-					} else {
+					} else if (watchMark.equals(data[0][i].substring(0, 1))) {
+						info[0] = "\r\n" + watchMark + data[0][i].substring(1);					
+					} else {	
 						info[0] = "\r\n" + updateMark + data[0][i].substring(1);
 					}
 					info[1] = data[2][i];	// floor
