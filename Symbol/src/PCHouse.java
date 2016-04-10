@@ -1,6 +1,10 @@
 /**
  * File get from GIT need to convert tp UTF-8 format
  * File for excel *.csv need to save as unicode
+ * 
+ * 1. read passMARK -> passIDMark
+ * 2. write passIDMark -> passMark
+ * 		passMark -> SoldMark
  */
 
 import java.io.BufferedReader;
@@ -60,7 +64,9 @@ public class PCHouse extends AsyncTask {
 	protected static String deleteMark = "D";	// REMOVE
 	
 	protected static final String passMark = "P";		// skip
+	protected static final String passIDMark = "I";
 	protected static final String soldMark = "S";
+	protected static final String repostMark = "R";
 	
 	protected void readHouse(String name, String[][] data) {
 		try {
@@ -94,8 +100,11 @@ public class PCHouse extends AsyncTask {
 				if (data[0][i] != null && data[1][i] != null 
 						&& !existMark.equals(data[1][i]) && !deleteMark.equals(data[0][i])) {
 					switch (data[0][i]) {
-					case passMark :
+					case passIDMark :
 						w.append("\r\n" + passMark + "\t");
+						break;
+					case passMark :
+						w.append("\r\n" + soldMark + "\t");
 						break;
 					case soldMark :
 						w.append("\r\n" + soldMark + "\t");
@@ -126,13 +135,17 @@ public class PCHouse extends AsyncTask {
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
 				if (passMark.equals(data[0][i])) {
-					data[0][i] = passMark;
+					data[0][i] = passIDMark;
 					skip = true;
 				} else if (deleteMark.equals(data[0][i])) {
 					skip = true;
 				} else {
 					data[1][i] = existMark;
-					info[0] = "\r\n" + updateMark + data[0][i].substring(1);
+					if (soldMark.equals(data[0][i]) || repostMark.equals(data[0][i])) {
+						info[0] = "\r\n" + repostMark + data[0][i].substring(1);
+					} else {
+						info[0] = "\r\n" + updateMark + data[0][i].substring(1);
+					}
 					info[1] = data[2][i];	// floor
 					info[2] = data[5][i];	// year
 					info[3] = data[4][i];	// price
