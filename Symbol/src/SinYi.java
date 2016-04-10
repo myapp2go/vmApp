@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -49,6 +50,8 @@ public class SinYi extends PCHouse {
 	private boolean procSinYi(Writer w, int fileCount) {
 		boolean found = true;
 		StringBuffer doc = new StringBuffer();
+        File f = new File("C:\\logs\\house\\" + constCityZip + "_" + fileCount + ".html");
+
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -159,7 +162,8 @@ public class SinYi extends PCHouse {
 				String changePrice = priceChange(price, info);
 				
 				// mode
-				if ((floorNum.indexOf("/4") > 0 || floorNum.indexOf("/5") > 0) && !"1".equals(floorNum.substring(0,1))) {
+				String tmp = floorNum.substring(0,1);
+				if ((floorNum.indexOf("/4") > 0 || floorNum.indexOf("/5") > 0) && (tmp != null) && !tmp.equals("1") && !tmp.equals("B")) {
 					w.append("\r\n" + passMark + changePrice + '\t');
 				} else {
 					w.append(info[0] + changePrice + '\t');
