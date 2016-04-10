@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class House591 extends SinYi {
 				houseRegionId = 1;
 			}
 			
+			File f = new File(name);
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
 			String urlBase = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[constCityZip-100] + "&kind=9&price=4";

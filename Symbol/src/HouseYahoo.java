@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -38,6 +39,7 @@ public class HouseYahoo extends House591 {
 	private void getHouseYahoo(String name, String[][] data) {
 		try {
 			shareLinkCount = 2;
+	        File f = new File(name);
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 

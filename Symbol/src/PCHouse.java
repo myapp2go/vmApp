@@ -5,9 +5,12 @@
  * 1. read passMARK -> passIDMark
  * 2. write passIDMark -> passMark
  * 		passMark -> SoldMark
+ * 
+ * 1. find zip code map(constZip) for 591
  */
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -40,11 +43,11 @@ public class PCHouse extends AsyncTask {
 		210, 101, 101, 101, 101, 101, 101, 101, 101, 101,
 		220, 101, 101, 101, 101, 101, 101, 101, 101, 101,
 		230, 101, 101, 101,  37,  38, 101, 101, 101, 101,
-		240, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		240,  43, 101, 101, 101, 101, 101, 101, 101, 101,
 		250, 101, 101, 101, 101, 101, 101, 101, 101, 101
 		};
 	
-	protected static int constCityZip = 234;
+	protected static int constCityZip = 241;
 	
 	protected static int constFieldCount = 16;
 	protected static int constExtraCount = 4;
@@ -70,6 +73,7 @@ public class PCHouse extends AsyncTask {
 	
 	protected void readHouse(String name, String[][] data) {
 		try {
+			File f = new File(name);
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 			        new FileInputStream(name), "UTF-8"));
 			
