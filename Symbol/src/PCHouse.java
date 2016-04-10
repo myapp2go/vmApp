@@ -48,7 +48,7 @@ public class PCHouse extends AsyncTask {
 		250, 101, 101, 101, 101, 101, 101, 101, 101, 101
 		};
 	
-	protected static int constCityZip = 234;
+	protected static int constCityZip = 235;
 	
 	protected static int constFieldCount = 17;
 	protected static int constExtraCount = 4;
@@ -125,13 +125,15 @@ public class PCHouse extends AsyncTask {
 					for (int j = 1; j < constFieldCount-1; j++) {
 						if (j == 14) {
 							w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
+						} else if (j == 15) {
+							if (sold) {
+								w.append(Calendar.getInstance().getTime().toString() + '\t');
+							} else {
+								w.append(data[j][i] + "\t");
+							}
 						} else {
 							w.append(data[j][i] + "\t");
 						}			
-						
-						if (sold && (j == 15)) {
-							w.append(Calendar.getInstance().getTime().toString() + '\t');
-						}
 					}
 				}
 			}
