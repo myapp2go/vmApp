@@ -99,18 +99,18 @@ public class PCHouse extends AsyncTask {
 			for (int i = 0; i < lineCount; i++) {
 				if (data[0][i] != null && data[1][i] != null 
 						&& !existMark.equals(data[1][i]) && !deleteMark.equals(data[0][i])) {
-					switch (data[0][i]) {
+					switch (data[0][i].substring(0, 1)) {
 					case passIDMark :
-						w.append("\r\n" + passMark + "\t");
+						w.append("\r\n" + passMark + data[0][i].substring(1) + "\t");
 						break;
 					case passMark :
-						w.append("\r\n" + soldMark + "\t");
+						w.append("\r\n" + soldMark + data[0][i].substring(1) + "\t");
 						break;
 					case soldMark :
-						w.append("\r\n" + soldMark + "\t");
+						w.append("\r\n" + soldMark + data[0][i].substring(1) + "\t");
 						break;	
 					default :
-						w.append("\r\n" + soldMark + "\t");
+						w.append("\r\n" + soldMark + data[0][i].substring(1) + "\t");
 						break;							
 					}
 					
@@ -134,14 +134,14 @@ public class PCHouse extends AsyncTask {
 		boolean found = false;
 		for (int i = 0; !found && i < lineCount; i++) {
 			if (id.equals(data[1][i])) {
-				if (passMark.equals(data[0][i])) {
-					data[0][i] = passIDMark;
+				if (passMark.equals(data[0][i].substring(0, 1))) {
+					data[0][i] = passIDMark + data[0][i].substring(1);
 					skip = true;
-				} else if (deleteMark.equals(data[0][i])) {
+				} else if (deleteMark.equals(data[0][i].substring(0, 1))) {
 					skip = true;
 				} else {
 					data[1][i] = existMark;
-					if (soldMark.equals(data[0][i]) || repostMark.equals(data[0][i])) {
+					if (soldMark.equals(data[0][i].substring(0, 1)) || repostMark.equals(data[0][i].substring(0, 1))) {
 						info[0] = "\r\n" + repostMark + data[0][i].substring(1);
 					} else {
 						info[0] = "\r\n" + updateMark + data[0][i].substring(1);

@@ -159,8 +159,12 @@ public class SinYi extends PCHouse {
 				String changePrice = priceChange(price, info);
 				
 				// mode
-				w.append(info[0] + changePrice + '\t');
-
+				if ((floorNum.indexOf("/4") > 0 || floorNum.indexOf("/5") > 0) && !"1".equals(floorNum.substring(0,1))) {
+					w.append("\r\n" + passMark + changePrice + '\t');
+				} else {
+					w.append(info[0] + changePrice + '\t');
+				}
+				
 				// id
 				w.append(id + '\t');
 
