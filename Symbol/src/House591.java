@@ -110,8 +110,13 @@ public class House591 extends SinYi {
 				end = doc.indexOf("<", start);
 				String price = doc.substring(start, end);
 				String changePrice = priceChange(price, info);
-								
-				w.append(info[0] + changePrice + '\t');
+				
+				String tmp = info[1].substring(0,1);
+				if ((info[1].indexOf("/4") > 0 || info[1].indexOf("/5") > 0) && (tmp != null) && !tmp.equals("1") && !tmp.equals("B")) {
+					w.append("\r\n" + passMark + changePrice + '\t');
+				} else {
+					w.append(info[0] + changePrice + '\t');
+				}
 				
 				w.append(id + '\t');
 
