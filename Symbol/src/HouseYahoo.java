@@ -11,8 +11,6 @@ import java.util.Calendar;
 import org.jsoup.Jsoup;
 
 public class HouseYahoo extends House591 {
-
-
 	
 	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + constCityZip + "_House.txt";
 	private static int yahooPageCount = 30;
@@ -169,7 +167,7 @@ public class HouseYahoo extends House591 {
 				
 				w.append(id + '\t');
 				
-				if (noDataMark.equals(floor)) {
+				if (info[1] != null) {
 					w.append(info[1] + '\t');
 				} else {
 					w.append(floor + '\t');
