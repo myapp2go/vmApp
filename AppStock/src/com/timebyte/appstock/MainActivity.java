@@ -17,7 +17,7 @@ public class MainActivity extends BasicActivity {
 	}
 	
 	public static void main(String[] args) {
-		String name = "CONN";
+		String name = "PFE";
 		int count = 4;
 		
 		PCStock pcStock = new PCStock();
@@ -45,6 +45,8 @@ public class MainActivity extends BasicActivity {
 		obj.calnterestRatio(stk);
 		System.out.print("\n% EPS\t\t\t\t");
 		obj.calEPS(stk);
+		System.out.print("\n% ROE\t\t\t\t");
+		obj.calROE(stk);
 		
 		System.out.print("\nNet Income App To Common Shares\t");	
 		obj.printStock(stk.getNetIncomeApplicableToCommonShares());
@@ -109,11 +111,20 @@ public class MainActivity extends BasicActivity {
 		}
 		return vals;
 	}
-	
+
 	public float[] calEPS(Stock stock) {
 		float[] vals = new float[4];		
 		for (int i = 0; i < count; i++) {
 			vals[i] = stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000);
+			sf(vals[i]);
+		}
+		return vals;
+	}
+	
+	public float[] calROE(Stock stock) {
+		float[] vals = new float[4];		
+		for (int i = 0; i < count; i++) {
+			vals[i] = stock.getNetIncomeApplicableToCommonShares()[i]/stock.getTotalStockholderEquity()[i]*100;
 			sf(vals[i]);
 		}
 		return vals;

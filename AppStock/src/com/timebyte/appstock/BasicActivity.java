@@ -25,6 +25,7 @@ abstract class BasicActivity extends Activity {
 	abstract float[] calNetIncomeApplToCommonSharesRatio(Stock stock);
 	abstract float[] calnterestRatio(Stock stock);
 	abstract float[] calEPS(Stock stock);
+	abstract float[] calROE(Stock stock);
 	
 	private String[] symbol = {
 			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
@@ -86,7 +87,8 @@ abstract class BasicActivity extends Activity {
         createRow("% Net Income Appl To Common Shares Ratio ", calNetIncomeApplToCommonSharesRatio(stock));
         createRow("% Interest Ratio", calnterestRatio(stock));
         createRow("% EPS", calEPS(stock));
-
+        createRow("ROE", calROE(stock));
+        
         createRow("Net Income Applicable To Common Shares", stock.getNetIncomeApplicableToCommonShares());
 	}
 

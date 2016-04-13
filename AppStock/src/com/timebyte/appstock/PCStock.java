@@ -113,7 +113,6 @@ public class PCStock extends AsyncTask {
 		getValues("Minority Interest", stk.getMinorityInterest(), doc, count);
 		
 		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
-		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
 	
 	}
 	
@@ -177,7 +176,7 @@ public class PCStock extends AsyncTask {
 					val = 0;
 				} else {
 					try {
-						val = Integer.parseInt(doc.substring(beginIndex, endIndex).replace(",", ""));
+						val = Integer.parseInt(doc.substring(beginIndex, endIndex).replaceAll(",", ""));
 					} catch (Exception e) {
 						val = 0;
 					}
