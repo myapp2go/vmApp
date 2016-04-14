@@ -42,7 +42,7 @@ public class PCHouse extends AsyncTask {
 		190, 101, 101, 101, 101, 101, 101, 101, 101, 101,
 		200, 101, 101, 101, 101, 101, 101, 101, 101, 101,
 		210, 101, 101, 101, 101, 101, 101, 101, 101, 101,
-		220, 101, 101, 101, 101, 101, 101, 101, 101, 101,
+		 26, 101, 101, 101, 101, 101, 101, 101, 101, 101,
 		230, 101, 101, 101,  37,  38, 101, 101, 101, 101,
 		240,  43, 101, 101, 101, 101, 101, 101, 101, 101,
 		250, 101, 101, 101, 101, 101, 101, 101, 101, 101
@@ -179,14 +179,30 @@ public class PCHouse extends AsyncTask {
 	protected String priceChange(String price, String[] info) {
 		String changePrice = "";
 		if (info[3] != null && price != null) {
-			if (price.compareTo(info[3]) < 0) {
+			int priceVal = getInt(price);
+			int infoVal = getInt(info[3]);
+			if (priceVal < infoVal) {
 				changePrice = priceLessMark;
-			} else if (price.compareTo(info[3]) > 0) {
+			} else if (priceVal > infoVal) {
 				changePrice = priceMoreMark;
 			}
 		}
 		
 		return changePrice;
+	}
+
+	private int getInt(String val) {
+		boolean found = true;
+		String tmp = "";
+		for (int i = 0; found && i < val.length(); i++) {
+			if (Character.isDigit(val.charAt(i))) {
+				tmp += val.charAt(i);
+			} else {
+				found = false;
+			}
+		}
+		
+		return Integer.parseInt(tmp);
 	}
 }
 

@@ -96,7 +96,7 @@ public class HouseYahoo extends House591 {
 			String title = doc.substring(start, end);
 			
 			// address
-			start = doc.indexOf("<li>", end) + 8;
+			start = doc.indexOf("<li>", end) + 7;
 			end = doc.indexOf("<", start);
 			String address = doc.substring(start, end);
 
