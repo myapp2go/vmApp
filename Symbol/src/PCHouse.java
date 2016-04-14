@@ -166,7 +166,9 @@ public class PCHouse extends AsyncTask {
 					info[2] = data[5][i];	// year
 					info[3] = data[4][i];	// price
 					info[4] = data[15][i];	// old price
-					info[5] = data[12][i];	// old date
+					if (data[12][i] != null && data[12][i].indexOf("http") < 0) {
+						info[5] = data[12][i];	// old date
+					}
 					info[6] = data[9][i];	// car
 				}	
 				found = true;
