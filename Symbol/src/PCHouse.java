@@ -129,7 +129,9 @@ public class PCHouse extends AsyncTask {
 							if (sold) {
 								w.append(Calendar.getInstance().getTime().toString() + '\t');
 							} else {
-								w.append(data[j][i] + "\t");
+								if (data[j][i] != null && data[j][i].length() > 4) {
+									w.append(data[j][i] + "\t");
+								}
 							}
 						} else {
 							w.append(data[j][i] + "\t");
