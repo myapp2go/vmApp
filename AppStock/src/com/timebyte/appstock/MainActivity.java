@@ -1,12 +1,14 @@
 /**
  * 1. extends PCStock
  * 2. remove command on count
+ * 3. remove command on main
  */
 package com.timebyte.appstock;
 
 public class MainActivity extends BasicActivity {
 
-//	public int count = 4;
+//	public static int count = 3;
+	public static float stockPrice = (float)18.1;
 
 	private void sf(float value) {
 		String v = "\t" + value;
@@ -17,15 +19,23 @@ public class MainActivity extends BasicActivity {
 	}
 	
 	public static void main(String[] args) {
-		String name = "PFE";
-		int count = 4;
+		String name = "LCI";
 		
 		PCStock pcStock = new PCStock();
 		Stock stk =pcStock.createStock();
-		pcStock.getReport(name, count);
-		
 		MainActivity obj = new MainActivity();
-
+		
+		System.out.print(name + " Annual Report");
+		pcStock.getReport(name, 3);
+		pcReport(obj, stk);
+		
+//		count = 4;
+		System.out.print("\n\nQuarterly Report");
+		pcStock.getReport(name, 4);
+		pcReport(obj, stk);
+	}
+	
+	private static void pcReport(MainActivity obj, Stock stk) {
 		System.out.print("\nTotal Revenue\t\t\t");	
 		obj.printStock(stk.getTotalRevenue());
 		System.out.print("\nCost of Revenue\t\t\t");	
@@ -43,9 +53,13 @@ public class MainActivity extends BasicActivity {
 		obj.calNetIncomeApplToCommonSharesRatio(stk);
 		System.out.print("\n% Interest Ratio\t\t");
 		obj.calnterestRatio(stk);
-		System.out.print("\n% EPS\t\t\t\t");
+		System.out.print("\nEPS\t\t\t\t");
 		obj.calEPS(stk);
-		System.out.print("\n% ROE\t\t\t\t");
+		System.out.print("\nPE\t\t\t\t");
+		obj.calPE(stk);
+		System.out.print("\nStockholderEquity Per Share\t");
+		obj.calStockholderEquityPerShare(stk);
+		System.out.print("\nROE\t\t\t\t");
 		obj.calROE(stk);
 		
 		System.out.print("\nNet Income App To Common Shares\t");	
@@ -116,6 +130,24 @@ public class MainActivity extends BasicActivity {
 		float[] vals = new float[4];		
 		for (int i = 0; i < count; i++) {
 			vals[i] = stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000);
+			sf(vals[i]);
+		}
+		return vals;
+	}
+
+	public float[] calPE(Stock stock) {
+		float[] vals = new float[4];
+		for (int i = 0; i < count; i++) {
+			vals[i] = stockPrice / (stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000));
+			sf(vals[i]);
+		}
+		return vals;
+	}
+
+	public float[] calStockholderEquityPerShare(Stock stock) {
+		float[] vals = new float[4];		
+		for (int i = 0; i < count; i++) {
+			vals[i] = stock.getTotalStockholderEquity()[i]/(stock.getCommonStock()[i]*1000);
 			sf(vals[i]);
 		}
 		return vals;
