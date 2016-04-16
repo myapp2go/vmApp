@@ -113,7 +113,9 @@ public class PCStock extends AsyncTask {
 		getValues("Minority Interest", stk.getMinorityInterest(), doc, count);
 		
 		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
-	
+
+		getString("scope", stk.getPeriodEnding(), doc, count);
+
 	}
 	
 	private void getBalanceSheet(String doc, int count) {
@@ -148,6 +150,19 @@ public class PCStock extends AsyncTask {
 			System.out.println(earningsBeforeInterestAndTaxes[i]/interestExpense[i]);
 		}
 		*/
+	}
+
+	private void getString(String name, String[] valueAr, String doc, int count) {
+		int nameInd = doc.indexOf(name);
+		
+		int endIndex = nameInd;
+		int beginIndex = 0;
+		for (int i = 0; i < count; i++) {
+			beginIndex = doc.indexOf(name, endIndex) + 7;
+			beginIndex = doc.indexOf(">", beginIndex) + 1;
+			endIndex = doc.indexOf("<", beginIndex);
+			valueAr[i] = doc.substring(beginIndex, endIndex);
+		}
 	}
 
 	private void getValues(String name, float[] valueAr, String doc, int count) {

@@ -6,6 +6,7 @@ public class Stock {
     int _id;
     
     private String symbol;
+    private String[] periodEnding = new String[4];
 	private float[] totalRevenue = new float[4];
 	private float[] costofRevenue = new float[4];
 	private float[] researchDevelopment = new float[4];
@@ -217,6 +218,12 @@ public class Stock {
 	}
 	public void setDepreciation(float[] depreciation) {
 		this.depreciation = depreciation;
+	}
+	public String[] getPeriodEnding() {
+		return periodEnding;
+	}
+	public void setPeriodEnding(String[] periodEnding) {
+		this.periodEnding = periodEnding;
 	}
 }
 

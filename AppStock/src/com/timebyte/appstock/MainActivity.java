@@ -8,7 +8,7 @@ package com.timebyte.appstock;
 public class MainActivity extends BasicActivity {
 
 //	public static int count = 3;
-	public static float stockPrice = (float)18.1;
+	public static float[] stockPrice = {(float)58.65, (float)49.96, (float)12.26, (float)18.1};
 
 	private void sf(float value) {
 		String v = "\t" + value;
@@ -138,7 +138,7 @@ public class MainActivity extends BasicActivity {
 	public float[] calPE(Stock stock) {
 		float[] vals = new float[4];
 		for (int i = 0; i < count; i++) {
-			vals[i] = stockPrice / (stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000));
+			vals[i] = stockPrice[i] / (stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000));
 			sf(vals[i]);
 		}
 		return vals;
