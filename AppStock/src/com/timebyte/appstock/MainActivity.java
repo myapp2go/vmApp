@@ -138,7 +138,7 @@ public class MainActivity extends BasicActivity {
 	public float[] calPE(Stock stock) {
 		float[] vals = new float[4];
 		for (int i = 0; i < count; i++) {
-			vals[i] = stockPrice[i] / (stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000));
+			vals[i] = stock.getStockPrice()[i] / (stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000));
 			sf(vals[i]);
 		}
 		return vals;

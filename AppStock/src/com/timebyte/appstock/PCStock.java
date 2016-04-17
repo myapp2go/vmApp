@@ -130,11 +130,13 @@ public class PCStock extends AsyncTask {
 			int index = data.indexOf(",");
 			String year = data.substring(index+2);
 			
-			getPrice(name, data, val, month, year);
+			stockPrice[i] = getPrice(name, data, val, month, year);
 		}		
 	}
 
-	private void getPrice(String name, String date, String[] val, String month, String year) {
+	private float getPrice(String name, String date, String[] val, String month, String year) {
+		float price = (float)0.0;
+		
 		String newYear = year;
 		if (month.equals("Dec")) {
 			newYear = "" + (Integer.parseInt(year) + 1);
@@ -163,12 +165,14 @@ public class PCStock extends AsyncTask {
 				start = hpDoc.indexOf("right", start) + 7;
 				start = hpDoc.indexOf("right", start) + 7;
 				int end = hpDoc.indexOf("<", start);
+				price = Float.parseFloat(hpDoc.substring(start, end));
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		return price;
 	}
 
 			
