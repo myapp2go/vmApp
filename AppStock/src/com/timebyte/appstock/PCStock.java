@@ -1,6 +1,7 @@
 package com.timebyte.appstock;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 
@@ -48,7 +49,7 @@ public class PCStock extends AsyncTask {
 		
 		try {
 			doc = Jsoup.connect("http://finance.yahoo.com/q/is?s="+stock).get().html();
-			getIncomeStatement(doc, count);
+			getIncomeStatement(stock, doc, count);
 
 			doc = Jsoup.connect("http://finance.yahoo.com/q/bs?s="+stock).get().html();
 			getBalanceSheet(doc, count);
@@ -76,7 +77,7 @@ public class PCStock extends AsyncTask {
 		
 		try {
 			doc = Jsoup.connect("http://finance.yahoo.com/q/is?s="+stock+"+Income+Statement&annual").get().html();
-			getIncomeStatement(doc, count);
+			getIncomeStatement(stock, doc, count);
 
 			doc = Jsoup.connect("http://finance.yahoo.com/q/bs?s="+stock+"+Balance+Sheet&annual").get().html();
 			getBalanceSheet(doc, count);
@@ -95,7 +96,7 @@ public class PCStock extends AsyncTask {
 		}
 	}
 
-	private void getIncomeStatement(String doc, int count) {
+	private void getIncomeStatement(String name, String doc, int count) {
 		getValues("Total Revenue", stk.getTotalRevenue(), doc, count);
 		getValues("Cost of Revenue", stk.getCostofRevenue(), doc, count);
 
@@ -115,9 +116,80 @@ public class PCStock extends AsyncTask {
 		getValues("Net Income Applicable To Common Shares", stk.getNetIncomeApplicableToCommonShares(), doc, count);
 
 		getString("scope", stk.getPeriodEnding(), doc, count);
+		
+		getStockPrice(name, stk.getStockPrice(), count);
 
 	}
 	
+	private void getStockPrice(String name, float[] stockPrice, int count) {
+		Map<String, String[]> map = stk.getMonthMap();
+		for (int i = 0; i < count; i++) {
+			String data = stk.getPeriodEnding()[i];
+			String month = data.substring(0, 3);
+			String[] val = map.get(month);
+			int index = data.indexOf(",");
+			String year = data.substring(index+2);
+			
+			getPrice(name, data, val, month, year);
+		}		
+	}
+
+	private void getPrice(String name, String date, String[] val, String month, String year) {
+		String newYear = year;
+		if (month.equals("Dec")) {
+			newYear = "" + (Integer.parseInt(year) + 1);
+		}
+		String url = "http://finance.yahoo.com/q/hp?s=" + name + "&a=" + val[0] + "&b=1&c=" + year + "&d=" + val[1] + "&e=7&f=" + newYear + "&g=d";
+		
+		try {
+			String hpDoc = Jsoup.connect(url).get().html();
+			int start = hpDoc.indexOf(date);
+			boolean found = false;
+			if (start < 0) {
+				for (int i = 0; !found && i < 10; i++) {
+					date = getNextDate(date, val);
+					start = hpDoc.indexOf(date);
+					if (start > 0) {
+						found = true;
+					}
+				}
+			} else {
+				found = true;
+			}
+			
+			if (found) {
+				start = hpDoc.indexOf("right", start) + 7;
+				start = hpDoc.indexOf("right", start) + 7;
+				start = hpDoc.indexOf("right", start) + 7;
+				start = hpDoc.indexOf("right", start) + 7;
+				int end = hpDoc.indexOf("<", start);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+			
+	private String getNextDate(String date, String[] val) {
+		int end = date.indexOf(",");
+		String month = date.substring(0, 3);
+		String day = date.substring(4, end);
+		String year = date.substring(end + 2);
+		String newDay = "1";
+		if (day.equals("31")) {
+			month = val[2];
+			if (month.equals("Jan")) {
+				year = "" + (Integer.parseInt(year) + 1);
+			}
+		} else {
+			newDay = "" + (Integer.parseInt(day) + 1);
+		}
+ 
+		return month + " " + newDay + ", " + year;
+	}
+
 	private void getBalanceSheet(String doc, int count) {
 		getValues("Cash And Cash Equivalents", stk.getCashAndCashEquivalents(), doc, count);
 		getValues("Short Term Investments", stk.getShortTermInvestments(), doc, count);
