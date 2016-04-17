@@ -125,12 +125,15 @@ public class PCStock extends AsyncTask {
 		Map<String, String[]> map = stk.getMonthMap();
 		for (int i = 0; i < count; i++) {
 			String data = stk.getPeriodEnding()[i];
-			String month = data.substring(0, 3);
-			String[] val = map.get(month);
-			int index = data.indexOf(",");
-			String year = data.substring(index+2);
-			
-			stockPrice[i] = getPrice(name, data, val, month, year);
+			if (data == null || data.length() < 2) {
+				stockPrice[i] = (float)0.0;
+			} else {
+				String month = data.substring(0, 3);
+				String[] val = map.get(month);
+				int index = data.indexOf(",");
+				String year = data.substring(index+2);
+				stockPrice[i] = getPrice(name, data, val, month, year);
+			}
 		}		
 	}
 
