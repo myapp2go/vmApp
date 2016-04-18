@@ -19,6 +19,15 @@ public class PCStock extends AsyncTask {
 	public static void main(String[] args) {
 		System.out.println("Start with MainActivity");
 	}
+
+	/**
+	 * @param args
+	 */
+	public void getStock(String stock) {
+		int count = 4;
+		
+		getReport(stock, count);
+	}
 	
 	/**
 	 * @param args
