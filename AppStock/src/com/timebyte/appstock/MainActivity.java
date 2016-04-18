@@ -7,7 +7,7 @@ package com.timebyte.appstock;
 
 public class MainActivity extends BasicActivity {
 
-//	public static int count = 3;
+	public static int count = 3;
 	public static float[] stockPrice = {(float)58.65, (float)49.96, (float)12.26, (float)18.1};
 
 	private void sf(float value) {
@@ -22,10 +22,15 @@ public class MainActivity extends BasicActivity {
 		String name = "LCI";
 		
 		PCStock pcStock = new PCStock();
-		Stock stk =pcStock.createStock();
+		Stock stk = pcStock.getStk();
+		
+		StockKeyStatistics stockKeyStatistics = new StockKeyStatistics();
+		KeyStatistics ks = stockKeyStatistics.getKs();
 		MainActivity obj = new MainActivity();
 		
 		System.out.print(name + " Annual Report");
+		stockKeyStatistics.getKeyStatisticsReport(name);
+		
 		pcStock.getReport(name, 3);
 		pcReport(obj, stk);
 		

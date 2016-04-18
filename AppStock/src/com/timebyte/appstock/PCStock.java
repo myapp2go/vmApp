@@ -10,30 +10,30 @@ import android.os.AsyncTask;
 public class PCStock extends AsyncTask {
 
 	protected Stock stk;
+	
+	public PCStock() {
+		super();
+		stk = new Stock();
+	}
 		
 	public static void main(String[] args) {
 		System.out.println("Start with MainActivity");
-	}
-
-	protected Stock createStock() {
-		stk = new Stock();
-		return stk;
 	}
 	
 	/**
 	 * @param args
 	 */
-	public void getStock(String stock) {
+	public void getStockReport(String stock) {
 		int count = 4;
 		
 		getReport(stock, count);
 	}
 	
-	protected void getReport(String stock, int count) {
+	protected void getReport(String name, int count) {
 		if (count == 3) {
-			getAnnualReport(stock, count);
+			getAnnualReport(name, count);
 		} else {
-			getQualterReport(stock, count);
+			getQualterReport(name, count);
 		}
 /*				
 		// EPS
@@ -44,17 +44,17 @@ public class PCStock extends AsyncTask {
 		*/
 	}
 
-	private void getQualterReport(String stock, int count) {
+	private void getQualterReport(String name, int count) {
 		String doc = "";
 		
 		try {
-			doc = Jsoup.connect("http://finance.yahoo.com/q/is?s="+stock).get().html();
-			getIncomeStatement(stock, doc, count);
+			doc = Jsoup.connect("http://finance.yahoo.com/q/is?s="+name).get().html();
+			getIncomeStatement(name, doc, count);
 
-			doc = Jsoup.connect("http://finance.yahoo.com/q/bs?s="+stock).get().html();
+			doc = Jsoup.connect("http://finance.yahoo.com/q/bs?s="+name).get().html();
 			getBalanceSheet(doc, count);
 
-			doc = Jsoup.connect("http://finance.yahoo.com/q/cf?s="+stock).get().html();
+			doc = Jsoup.connect("http://finance.yahoo.com/q/cf?s="+name).get().html();
 			getCashFlow(doc, count);
 /*
 			// EPS
@@ -72,17 +72,17 @@ public class PCStock extends AsyncTask {
 		}
 	}
 
-	private void getAnnualReport(String stock, int count) {
+	private void getAnnualReport(String name, int count) {
 		String doc = "";
 		
 		try {
-			doc = Jsoup.connect("http://finance.yahoo.com/q/is?s="+stock+"+Income+Statement&annual").get().html();
-			getIncomeStatement(stock, doc, count);
+			doc = Jsoup.connect("http://finance.yahoo.com/q/is?s="+name+"+Income+Statement&annual").get().html();
+			getIncomeStatement(name, doc, count);
 
-			doc = Jsoup.connect("http://finance.yahoo.com/q/bs?s="+stock+"+Balance+Sheet&annual").get().html();
+			doc = Jsoup.connect("http://finance.yahoo.com/q/bs?s="+name+"+Balance+Sheet&annual").get().html();
 			getBalanceSheet(doc, count);
 
-			doc = Jsoup.connect("http://finance.yahoo.com/q/cf?s="+stock+"&annual").get().html();
+			doc = Jsoup.connect("http://finance.yahoo.com/q/cf?s="+name+"&annual").get().html();
 			getCashFlow(doc, count);
 
 /*			
@@ -285,6 +285,14 @@ public class PCStock extends AsyncTask {
 	protected Object doInBackground(Object... params) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Stock getStk() {
+		return stk;
+	}
+
+	public void setStk(Stock stk) {
+		this.stk = stk;
 	}
 
 }

@@ -35,7 +35,7 @@ abstract class BasicActivity extends Activity {
 	
 	TableLayout stockTable;
 	TextView titleText, postText;
-	protected int count = 4;
+	protected int uiCount = 4;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +106,7 @@ abstract class BasicActivity extends Activity {
     	label.setText(name);
     	row.addView(label);
     	
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < uiCount; i++) {
         	TextView val = new TextView(this);
         	val.setText(""+vals[i]);
         	row.addView(val);
