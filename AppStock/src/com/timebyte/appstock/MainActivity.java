@@ -36,7 +36,7 @@ public class MainActivity extends BasicActivity {
 		checkSharesOutstanding(stk, ks);
 		pcReport(obj, stk);
 		
-//		count = 4;
+		count = 4;
 		System.out.print("\n\nQuarterly Report");
 		pcStock.getReport(name, 4);
 		checkSharesOutstanding(stk, ks);
@@ -157,8 +157,12 @@ public class MainActivity extends BasicActivity {
 
 	public float[] calPE(Stock stock) {
 		float[] vals = new float[4];
+		float ratio = (float)1.0;
+		if (count == 4) {
+			ratio = (float)0.25;
+		}
 		for (int i = 0; i < count; i++) {
-			vals[i] = stock.getStockPrice()[i] / (stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000));
+			vals[i] = stock.getStockPrice()[i] / (stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000)) * ratio;
 			sf(vals[i]);
 		}
 		return vals;
