@@ -26,20 +26,35 @@ public class MainActivity extends BasicActivity {
 		
 		StockKeyStatistics stockKeyStatistics = new StockKeyStatistics();
 		KeyStatistics ks = stockKeyStatistics.getKs();
+
 		MainActivity obj = new MainActivity();
 		
 		System.out.print(name + " Annual Report");
 		stockKeyStatistics.getKeyStatisticsReport(name);
 		
 		pcStock.getReport(name, 3);
+		checkSharesOutstanding(stk, ks);
 		pcReport(obj, stk);
 		
 //		count = 4;
 		System.out.print("\n\nQuarterly Report");
 		pcStock.getReport(name, 4);
+		checkSharesOutstanding(stk, ks);
 		pcReport(obj, stk);
 	}
 	
+	private static void checkSharesOutstanding(Stock stk, KeyStatistics ks) {
+		float ksShare = ks.getSharesOutstanding()[0];
+		float[] stkShare = stk.getCommonStock();
+		
+		float diff = stkShare[0] / ksShare;
+		if ((diff > 1.05) || (diff < 0.95)) {
+			for (int i = 0; i < 4; i++) {
+				stkShare[i] = ksShare;
+			}
+		}
+	}
+
 	private static void pcReport(MainActivity obj, Stock stk) {
 		System.out.print("\nTotal Revenue\t\t\t");	
 		obj.printStock(stk.getTotalRevenue());
