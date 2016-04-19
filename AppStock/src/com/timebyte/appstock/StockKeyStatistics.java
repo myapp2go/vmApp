@@ -46,18 +46,36 @@ public class StockKeyStatistics {
 	}
 
 	private void getKeyStatistics(String doc) {
-		getValues("Return on Equity (ttm)", ks.getReturnonEquity(), doc, "%");
-		getValues("Avg Vol (3 month)", ks.getAvgVol3M(), doc, "<");
-		getValues("Shares Outstanding", ks.getSharesOutstanding(), doc, "M");
+		getValues("Return on Equity (ttm)", ks.getReturnonEquity(), doc);
+		getValues("Avg Vol (3 month)", ks.getAvgVol3M(), doc);
+		getValues("Shares Outstanding", ks.getSharesOutstanding(), doc);
 		
 	}
 
 	// unit : %, M, B default <
-	private void getValues(String name, float[] valAr, String doc, String unit) {
+	private void getValues(String name, float[] valAr, String doc) {
 		int start = doc.indexOf(name);
 		start = doc.indexOf("yfnc_tabledata1", start) + 17;
-		int end = doc.indexOf(unit, start+2);
-		valAr[0] = Float.parseFloat(doc.substring(start, end).replaceAll(",", ""));
+		int end = doc.indexOf("<", start+2);
+		String str = doc.substring(start, end).replaceAll(",", "");
+		int len = str.length();
+		float mult = (float)1.0;
+		String last = str.substring(len-1, len);
+		switch (last) {
+		case "%" :
+			str = str.substring(0, len-1);
+			break;
+		case "M" :
+			str = str.substring(0, len-1);
+			break;
+		case "B" :
+			str = str.substring(0, len-1);
+			mult = (float)1000.0;
+			break;
+		default :
+			break;
+		}
+		valAr[0] = Float.parseFloat(str) * mult;
 		System.out.println(valAr[0]);
 	}
 
