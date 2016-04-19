@@ -26,6 +26,7 @@ abstract class BasicActivity extends Activity {
 	abstract float[] calnterestRatio(Stock stock);
 	abstract float[] calEPS(Stock stock);
 	abstract float[] calPE(Stock stock);
+	abstract float[] calPriceToBook(Stock stock);
 	abstract float[] calStockholderEquityPerShare(Stock stock);
 	abstract float[] calROE(Stock stock);
 	
@@ -90,6 +91,7 @@ abstract class BasicActivity extends Activity {
         createRow("% Interest Ratio", calnterestRatio(stock));
         createRow("EPS", calEPS(stock));
         createRow("PE", calPE(stock));
+        createRow("Price To Book", calPriceToBook(stock));
         createRow("StockholderEquity Per Share", calStockholderEquityPerShare(stock));
         createRow("ROE", calROE(stock));
         
