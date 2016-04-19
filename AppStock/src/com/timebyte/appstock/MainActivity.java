@@ -33,17 +33,17 @@ public class MainActivity extends BasicActivity {
 		stockKeyStatistics.getKeyStatisticsReport(name);
 		
 		pcStock.getReport(name, 3);
-		checkSharesOutstanding(stk, ks);
+		obj.checkSharesOutstanding(stk, ks);
 		pcReport(obj, stk);
 		
 		count = 4;
 		System.out.print("\n\nQuarterly Report");
 		pcStock.getReport(name, 4);
-		checkSharesOutstanding(stk, ks);
+		obj.checkSharesOutstanding(stk, ks);
 		pcReport(obj, stk);
 	}
 	
-	private static void checkSharesOutstanding(Stock stk, KeyStatistics ks) {
+	public void checkSharesOutstanding(Stock stk, KeyStatistics ks) {
 		float ksShare = ks.getSharesOutstanding()[0];
 		float[] stkShare = stk.getCommonStock();
 		

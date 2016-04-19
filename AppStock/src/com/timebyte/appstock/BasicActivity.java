@@ -29,6 +29,8 @@ abstract class BasicActivity extends Activity {
 	abstract float[] calPriceToBook(Stock stock);
 	abstract float[] calStockholderEquityPerShare(Stock stock);
 	abstract float[] calROE(Stock stock);
+
+	abstract void checkSharesOutstanding(Stock stk, KeyStatistics ks);
 	
 	private String[] symbol = {
 			"MMM", "T", "ABT", "ACN", "AXP", "AAPL", "AJG", "BBT", "BCE", "BDX", "CVX", "CSCO", "KO", "CL", "DE", "DEO", "EMR", "ES", "XOM", "GE", "GPC", "IBM", "ITW", "INTC", "JNJ", "JPM", "LEG", "LMT", "LOW", "MSFT", "NVS", "OXY", "OMC", "ORCL", "PH", "PFE", "PM", "PPG", "PG", "RTN", "TROW", "TXN", "UTX", "VZ", "VFC", "WM", "WFC", "AMLP"
@@ -117,7 +119,8 @@ abstract class BasicActivity extends Activity {
         stockTable.addView(row);
 	}
 	
-	public void procStock(Stock stock) {
+	public void procStock(Stock stock, KeyStatistics ks) {
+		checkSharesOutstanding(stock, ks);
 		createtableRow(stock);
 //		createtableRow();
 	}

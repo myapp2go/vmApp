@@ -7,7 +7,8 @@ public class AndroidStock extends PCStock {
 
 	private BasicActivity mainActivity;
 	private DatabaseHandler db;
-
+	private KeyStatistics ks;
+	
 	TextView postText;
 	
 	public AndroidStock(BasicActivity activity) {
@@ -33,7 +34,7 @@ public class AndroidStock extends PCStock {
 	
 	@Override
 	public void onPostExecute(Object result) {
-		mainActivity.procStock(stk);
+		mainActivity.procStock(stk, ks);
 /*		
         db.addContact(new Contact("Paul", "9100000000"));
         db.addContact(new Contact("Srinivas", "9199999999"));
@@ -62,6 +63,11 @@ public class AndroidStock extends PCStock {
 		stk = (Stock) arg0[0];
 		db = (DatabaseHandler) arg0[1];
 		postText = (TextView) arg0[2];
+
+		StockKeyStatistics stockKeyStatistics = new StockKeyStatistics();
+		ks = stockKeyStatistics.getKs();
+		
+		stockKeyStatistics.getKeyStatisticsReport(stk.getSymbol());
 
 //			posts += "\n" + symbol[i];
 		getStock(stk.getSymbol());
