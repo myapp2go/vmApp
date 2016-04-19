@@ -22,6 +22,7 @@ public class MainActivity extends BasicActivity {
 		String name = "LCI";
 		
 		PCStock pcStock = new PCStock();
+		pcStock.createStk();
 		Stock stk = pcStock.getStk();
 		
 		StockKeyStatistics stockKeyStatistics = new StockKeyStatistics();

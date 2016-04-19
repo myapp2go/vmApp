@@ -5,16 +5,9 @@ import java.util.Map;
 
 import org.jsoup.Jsoup;
 
-import android.os.AsyncTask;
-
-public class PCStock extends AsyncTask {
+public class PCStock {
 
 	protected Stock stk;
-	
-	public PCStock() {
-		super();
-		stk = new Stock();
-	}
 		
 	public static void main(String[] args) {
 		System.out.println("Start with MainActivity");
@@ -302,6 +295,11 @@ public class PCStock extends AsyncTask {
 
 	public void setStk(Stock stk) {
 		this.stk = stk;
+	}
+
+	public void createStk() {
+		// TODO Auto-generated method stub
+		stk = new Stock();
 	}
 
 }

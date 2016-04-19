@@ -1,13 +1,17 @@
 package com.timebyte.appstock;
 
 import java.util.List;
+
+import android.os.AsyncTask;
 import android.widget.TextView;
 
-public class AndroidStock extends PCStock {
+public class AndroidStock extends AsyncTask {
 
 	private BasicActivity mainActivity;
 	private DatabaseHandler db;
 	private KeyStatistics ks;
+	
+	private Stock stk;
 	
 	TextView postText;
 	
@@ -70,7 +74,11 @@ public class AndroidStock extends PCStock {
 		stockKeyStatistics.getKeyStatisticsReport(stk.getSymbol());
 
 //			posts += "\n" + symbol[i];
-		getStock(stk.getSymbol());
+		PCStock pcStock = new PCStock();
+		pcStock.setStk(stk);
+		pcStock.getReport(stk.getSymbol(), 3);
+		
+//		getStock(stk.getSymbol());
 		
 		return null;
 	}
