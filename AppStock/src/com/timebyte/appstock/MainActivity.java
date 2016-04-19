@@ -77,6 +77,8 @@ public class MainActivity extends BasicActivity {
 		obj.calEPS(stk);
 		System.out.print("\nPE\t\t\t\t");
 		obj.calPE(stk);
+		System.out.print("\nPrice To Book\t\t\t");
+		obj.calPriceToBook(stk);
 		System.out.print("\nStockholderEquity Per Share\t");
 		obj.calStockholderEquityPerShare(stk);
 		System.out.print("\nROE\t\t\t\t");
@@ -168,10 +170,19 @@ public class MainActivity extends BasicActivity {
 		return vals;
 	}
 
+	public float[] calPriceToBook(Stock stock) {
+		float[] vals = new float[4];		
+		for (int i = 0; i < count; i++) {
+			vals[i] = stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getCommonStock()[i]*1000);
+			sf(vals[i]);
+		}
+		return vals;
+	}
+	
 	public float[] calStockholderEquityPerShare(Stock stock) {
 		float[] vals = new float[4];		
 		for (int i = 0; i < count; i++) {
-			vals[i] = stock.getTotalStockholderEquity()[i]/(stock.getCommonStock()[i]*1000);
+			vals[i] = stock.getNetIncomeApplicableToCommonShares()[i]/(stock.getTotalStockholderEquity()[i]/(stock.getCommonStock()[i]*1000));
 			sf(vals[i]);
 		}
 		return vals;
