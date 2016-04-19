@@ -75,8 +75,11 @@ public class StockKeyStatistics {
 		default :
 			break;
 		}
-		valAr[0] = Float.parseFloat(str) * mult;
-		System.out.println(valAr[0]);
+		if (str == null || str.equals("N/A") || str.length() > 20) {
+			valAr[0] = (float)0.0;
+		} else {
+			valAr[0] = Float.parseFloat(str) * mult;
+		}
 	}
 
 	public KeyStatistics getKs() {
