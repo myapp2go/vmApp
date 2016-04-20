@@ -1,11 +1,5 @@
 package com.timebyte.appstock;
 
-import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;

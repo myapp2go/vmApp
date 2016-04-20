@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 
 public class StockKeyStatistics {
 
+	private static int timeout = 5000;
 	protected KeyStatistics ks;
 	
 	public StockKeyStatistics() {
@@ -36,7 +37,7 @@ public class StockKeyStatistics {
 		String doc = "";
 		
 		try {
-			doc = Jsoup.connect("http://finance.yahoo.com/q/ks?s="+name+"+Key+Statistics").get().html();
+			doc = Jsoup.connect("http://finance.yahoo.com/q/ks?s="+name+"+Key+Statistics").timeout(timeout).get().html();
 			getKeyStatistics(doc);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

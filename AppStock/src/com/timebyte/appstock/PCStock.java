@@ -1,3 +1,6 @@
+/**
+ * jsoup default timeout is 3 sec timeout(3000)
+ */
 package com.timebyte.appstock;
 
 import java.io.IOException;
@@ -7,6 +10,7 @@ import org.jsoup.Jsoup;
 
 public class PCStock {
 
+	private static int timeout = 5000;
 	protected Stock stk;
 		
 	public static void main(String[] args) {
@@ -50,13 +54,13 @@ public class PCStock {
 		String doc = "";
 		
 		try {
-			doc = Jsoup.connect("http://finance.yahoo.com/q/is?s="+name).get().html();
+			doc = Jsoup.connect("http://finance.yahoo.com/q/is?s="+name).timeout(timeout).get().html();
 			getIncomeStatement(name, doc, count);
 
-			doc = Jsoup.connect("http://finance.yahoo.com/q/bs?s="+name).get().html();
+			doc = Jsoup.connect("http://finance.yahoo.com/q/bs?s="+name).timeout(timeout).get().html();
 			getBalanceSheet(doc, count);
 
-			doc = Jsoup.connect("http://finance.yahoo.com/q/cf?s="+name).get().html();
+			doc = Jsoup.connect("http://finance.yahoo.com/q/cf?s="+name).timeout(timeout).get().html();
 			getCashFlow(doc, count);
 /*
 			// EPS
@@ -149,7 +153,7 @@ public class PCStock {
 		String url = "http://finance.yahoo.com/q/hp?s=" + name + "&a=" + val[0] + "&b=1&c=" + year + "&d=" + val[1] + "&e=7&f=" + newYear + "&g=d";
 		
 		try {
-			String hpDoc = Jsoup.connect(url).get().html();
+			String hpDoc = Jsoup.connect(url).timeout(timeout).get().html();
 			int start = hpDoc.indexOf(date);
 			boolean found = false;
 			if (start < 0) {
