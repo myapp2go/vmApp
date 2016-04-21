@@ -201,6 +201,10 @@ public class HouseYahoo extends House591 {
 				w.append(href + '\t');
 				
 				w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
+
+				if (changePrice.length() > 0) {
+					w.append(info[4] + "|" + info[3] + "|" + Calendar.getInstance().getTime().toString() + '\t');
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

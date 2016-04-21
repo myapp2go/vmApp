@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
 
 import org.jsoup.Jsoup;
 
-public class PCHouse extends AsyncTask {
+public class PCHouse {
 
 	protected static int[] constZip = {
 		  1,   2,   2,   2,   3,   4,   5,   1,   6, 101,

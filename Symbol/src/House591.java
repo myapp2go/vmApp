@@ -170,6 +170,10 @@ public class House591 extends SinYi {
 				w.append(houseUrl + '\t');
 				
 				w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
+
+				if (changePrice.length() > 0) {
+					w.append(info[4] + "|" + info[3] + "|" + Calendar.getInstance().getTime().toString() + '\t');
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

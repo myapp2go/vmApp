@@ -207,7 +207,7 @@ public class SinYi extends PCHouse {
 				w.append("=HYPERLINK(N" + (shareLinkCount++) +")" + '\t');
 				
 				if (changePrice.length() > 0) {
-					w.append(info[4] + "|" + info[3] + '\t');
+					w.append(info[4] + "|" + info[3] + "|" + Calendar.getInstance().getTime().toString() + '\t');
 				}
 			}
 		} catch (IOException e) {
