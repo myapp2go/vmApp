@@ -48,7 +48,7 @@ public class PCHouse {
 		250, 101, 101, 101, 101, 101, 101, 101, 101, 101
 		};
 	
-	protected static int constCityZip = 235;
+	protected static int constCityZip = 234;
 	
 	protected static int constFieldCount = 17;
 	protected static int constExtraCount = 4;
@@ -58,6 +58,7 @@ public class PCHouse {
 	public static int constInfoSize = 7;
 	
 	protected static String watchMark = "W";
+	protected static String bankOwnMark = "B";
 	
 	protected static String existMark = "X";
 	protected static String newMark = "N";
@@ -159,6 +160,8 @@ public class PCHouse {
 					data[1][i] = existMark;
 					if (soldMark.equals(data[0][i].substring(0, 1)) || repostMark.equals(data[0][i].substring(0, 1))) {
 						info[0] = "\r\n" + repostMark + data[0][i].substring(1);
+					} else if (bankOwnMark.equals(data[0][i].substring(0, 1))) {
+						info[0] = "\r\n" + bankOwnMark + data[0][i].substring(1);					
 					} else if (watchMark.equals(data[0][i].substring(0, 1))) {
 						info[0] = "\r\n" + watchMark + data[0][i].substring(1);					
 					} else {	

@@ -145,7 +145,7 @@ public class HouseYahoo extends House591 {
 
 			boolean skip = checkID(id, yahooData, constDataCount, info);			
 			if (!skip) {
-				if (info[1] == null) {
+				if (info[1] == null || info[1].length() < 3) {
 					getMoreInfo(href, info);
 					if (info[1] != null) {
 						floor = info[1];
