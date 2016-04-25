@@ -46,7 +46,7 @@ public class StockQuote {
 		// time_rtq_ticker
 		start = getValues("yfs_l84_"+name, quote.getPrice(), doc, start);
 		// Volume:
-		start = getValues("yfs_v53_"+name, quote.getPrice(), doc, start);
+		start = getValues("yfs_v53_"+name, quote.getVolume(), doc, start);
 
 	}
 
