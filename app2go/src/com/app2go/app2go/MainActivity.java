@@ -121,31 +121,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (speechDone == null) {
-					setFlag(false, false, true);
-
-					if (!isSetting()) {
-						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-					} else {
-						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-						command = Constants.COMMAND_READ;
-						mailCount = 0;
 
 						ArrayList<String> localArrayList = new ArrayList<String>();
-						if (!mailAccount.equalsIgnoreCase(sharedPreferences.getString("myEmail", ""))) {
-							isSyncMail = false;
-						}
-						if (isSyncMail) {
-							subCommand = Constants.SUBCOMMAND_RETRIEVE;
-							localArrayList.add(Constants.ANSWER_CONTINUE);
-						} else {
-							subCommand = Constants.COMMAND_INIT;
-							localArrayList
-									.add(Constants.READ_OPTION_SUBJECT_ONLY);
-						}
-//						doReadMail(localArrayList);
-					}
-				}
+
+						doReadStockQuote(localArrayList);
+
+
 			}
 		});
 		
@@ -330,12 +311,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println("&&&&& " + utteranceId + "***********onDone ");
+				System.out.println("PC&&&&& " + utteranceId + "***********onDone ");
 				if (!once) {
 					endDialog();
 					once = true;
 				}
-				
+				/*
 				switch (utteranceId) {
 				case mapTTSID :
 					if (mapTTSID.equals(speechDone)) {
@@ -392,6 +373,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 //	            	ttsNoMicrophone(Constants.NETWORK_ERROR);
 	            	break;
 	            }
+	            */
 			}
 
 			@Override
@@ -621,18 +603,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     protected void ttsNoMicrophone(String msg) {
 //    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
  
-    	if (mapEarconID.equals(speechDone)) {
-    		messageQueue = msg;
-    		return;
-    	}
- 
-    	// either mapTTSID or mapTTSPhoneID
-    	if (speechDone != null) {
-    		System.out.println("***********ERROR_02, should not happen. " + speechDone);
-    	} else {
-    		speechDone = mapTTSID;
+
     		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
-    	}
+
     }
     
     protected void ttsAndPlayEarcon(String msg) {
