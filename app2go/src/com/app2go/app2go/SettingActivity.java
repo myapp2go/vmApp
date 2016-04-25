@@ -21,19 +21,19 @@ public class SettingActivity extends TabActivity {
          * By using TabSpec setIndicator() we can set name to tab. */
         
         /* tid1 is firstTabSpec Id. Its used to access outside. */
-        TabSpec accountTabSpec = tabHost.newTabSpec("account");
-        TabSpec contactTabSpec = tabHost.newTabSpec("contact");
-        TabSpec commandTabSpec = tabHost.newTabSpec("command");
+        TabSpec quotesTabSpec = tabHost.newTabSpec("quotes");
+//        TabSpec contactTabSpec = tabHost.newTabSpec("contact");
+//        TabSpec commandTabSpec = tabHost.newTabSpec("command");
         
         /* TabSpec setIndicator() is used to set name for the tab. */
         /* TabSpec setContent() is used to set content for a particular tab. */
-//        accountTabSpec.setIndicator("Account").setContent(new Intent(this, AccountActivity.class));
+        quotesTabSpec.setIndicator("Quotes").setContent(new Intent(this, SetQuotesActivity.class));
 //        contactTabSpec.setIndicator("Contact").setContent(new Intent(this, ContactActivity.class));
 //        commandTabSpec.setIndicator("Command").setContent(new Intent(this, CommandActivity.class));
         
         /* Add tabSpec to the TabHost to display. */
-        tabHost.addTab(accountTabSpec);
-        tabHost.addTab(contactTabSpec);
-        tabHost.addTab(commandTabSpec);
+        tabHost.addTab(quotesTabSpec);
+//       tabHost.addTab(contactTabSpec);
+//        tabHost.addTab(commandTabSpec);
     }
 }

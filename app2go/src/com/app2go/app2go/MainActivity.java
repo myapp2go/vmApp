@@ -102,6 +102,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	private static int totalQuote = 15;
 	private static int quoteCount = 0;
+	private static boolean startFlag = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,37 +125,19 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button startQuote = (Button) this.findViewById(R.id.startQuote);
 		startQuote.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				startFlag = true;
+				quoteCount = 0;
+				ArrayList<String> localArrayList = new ArrayList<String>();
 
-						ArrayList<String> localArrayList = new ArrayList<String>();
-
-						doReadStockQuote(localArrayList);
-
-
+				doReadStockQuote(localArrayList);
 			}
 		});
 		
 		final Button stopQuote = (Button) this.findViewById(R.id.stopQuote);
 		stopQuote.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (isOffline) {
-					ttsNoMicrophone(Constants.NETWORK_ERROR);
-				} else {
-					if (speechDone == null) {
-						setFlag(readDone, true, false);
-
-						if (!isSetting()) {
-							ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-						} else {
-							if (!syncContact() && contacts.isEmpty()) {
-								ttsNoMicrophone(Constants.SETTING_CONTACT_NOTICE);
-							} else {
-								command = Constants.COMMAND_WRITE;
-								subCommand = Constants.SUBCOMMAND_TO;
-								ttsAndMicrophone(Constants.COMMAND_TO_GREETING);
-							}
-						}
-					}
-				}
+				quoteCount = 0;
+				startFlag = false;
 			}			
 		});
 		
@@ -318,7 +301,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
 				if (quoteCount == totalQuote) {
 					quoteCount = 0;
-					doReadStockQuote(null);
+					if (startFlag) {
+						doReadStockQuote(null);
+					}
 				}
 				if (!once) {
 //					endDialog();
