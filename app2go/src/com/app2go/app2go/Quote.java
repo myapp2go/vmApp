@@ -2,9 +2,18 @@ package com.app2go.app2go;
 
 public class Quote {
 
-	private String[] symbol = new String[1];
-	private float[] price  = new float[1];
-	private float[] volume  = new float[1];
+	private int quoteSize;
+	private String[] symbol;
+	private float[] price;
+	private float[] target;
+	private float[] volume;
+
+	public Quote(int count) {
+		super();
+		symbol = new String[count];
+		price  = new float[count];
+		volume  = new float[count];
+	}
 	
 	public String[] getSymbol() {
 		return symbol;
@@ -23,6 +32,22 @@ public class Quote {
 	}
 	public void setVolume(float[] volume) {
 		this.volume = volume;
+	}
+
+	public int getQuoteSize() {
+		return quoteSize;
+	}
+
+	public void setQuoteSize(int quoteSize) {
+		this.quoteSize = quoteSize;
+	}
+
+	public float[] getTarget() {
+		return target;
+	}
+
+	public void setTarget(float[] target) {
+		this.target = target;
 	}
 	
 }

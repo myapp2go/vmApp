@@ -5,7 +5,8 @@ import android.os.AsyncTask;
 
 public class StockQuoteTask extends AsyncTask {
 
-	StockQuote sq = new StockQuote();
+	StockQuote sq = null;
+	String[] quoteList = {"CLMT", "FUEL", "LCI", "ROVI", "CONN"};
 	
 	private StockQuoteActivity stockQuoteActivity;
 	
@@ -20,7 +21,13 @@ public class StockQuoteTask extends AsyncTask {
 	@Override
 	protected Object doInBackground(Object... arg0) {
 		SharedPreferences pref  = (SharedPreferences) arg0[0];
-		sq.getStockQuoteReport("LCI");
+		
+		int len = quoteList.length;
+		sq = new StockQuote(len);
+		sq.getQuote().setQuoteSize(len);
+		for (int i = 0; i < len; i++) {
+			sq.getStockQuoteReport(quoteList[i], i);
+		}
 		
 		return null;
 	}

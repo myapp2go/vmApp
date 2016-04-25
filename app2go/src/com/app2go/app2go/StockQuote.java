@@ -9,28 +9,28 @@ public class StockQuote {
 	private static int timeout = 5000;
 	protected Quote quote;
 
-	public StockQuote() {
+	public StockQuote(int count) {
 		super();
-		quote = new Quote();
+		quote = new Quote(count);
 	}
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		StockQuote sq = new StockQuote();
-		sq.getStockQuoteReport("LCI");
+		StockQuote sq = new StockQuote(1);
+		sq.getStockQuoteReport("LCI", 0);
 
 	}
 
-	public String getStockQuoteReport(String name) {
+	public String getStockQuoteReport(String name, int ind) {
 		String doc = "";
 		name = name.toLowerCase();
 		
 		try {
 			doc = Jsoup.connect("http://finance.yahoo.com/q?s=" + name).timeout(timeout).get().html();
 
-			getStockQuote(name, doc);
+			getStockQuote(name, doc, ind);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,19 +39,19 @@ public class StockQuote {
 		return doc;
 	}
 
-	private void getStockQuote(String name, String doc) {
+	private void getStockQuote(String name, String doc, int ind) {
 		int start = 0;
-		String[] sym = { name };
-		quote.setSymbol(sym);
+		String[] sym = quote.getSymbol();
+		sym[ind] = name;
 		// time_rtq_ticker
-		start = getValues("yfs_l84_"+name, quote.getPrice(), doc, start);
+		start = getValues("yfs_l84_"+name, quote.getPrice(), doc, start, ind);
 		// Volume:
-		start = getValues("yfs_v53_"+name, quote.getVolume(), doc, start);
+		start = getValues("yfs_v53_"+name, quote.getVolume(), doc, start, ind);
 
 	}
 
 	// unit : %, M, B default <
-	private int getValues(String name, float[] valAr, String doc, int start) {
+	private int getValues(String name, float[] valAr, String doc, int start, int ind) {
 		start = doc.indexOf(name, start) + name.length() + 2; 
 		int end = doc.indexOf("<", start);
 		String str = doc.substring(start, end).replaceAll(",", "");
@@ -73,9 +73,9 @@ public class StockQuote {
 			break;
 		}
 		if (str == null || str.equals("N/A") || str.length() > 20) {
-			valAr[0] = (float)0.0;
+			valAr[ind] = (float)0.0;
 		} else {
-			valAr[0] = Float.parseFloat(str) * mult;
+			valAr[ind] = Float.parseFloat(str) * mult;
 		}
 		
 		return start;
