@@ -99,7 +99,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private String earconQueue = null;
 
 	private SpeechRecognizer sr;
-	   
+	
+	private static int totalQuote = 15;
+	private static int quoteCount = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -310,10 +313,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {				
+				quoteCount++;
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println("PC&&&&& " + utteranceId + "***********onDone ");
+				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
+				if (quoteCount == totalQuote) {
+					quoteCount = 0;
+					doReadStockQuote(null);
+				}
 				if (!once) {
-					endDialog();
+//					endDialog();
 					once = true;
 				}
 				/*
@@ -412,8 +420,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	@Override
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
-		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
-		startDialog();
+//		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
+//		startDialog();
 		
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
@@ -625,7 +633,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	}
     }
     
-    private void startDialog() {
+    private void startDialog1() {
 		processDialog = new ProgressDialog(this);
 		processDialog.setMessage("Start speech engine, please wait...");
 		processDialog.setIndeterminate(false);
@@ -633,7 +641,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		processDialog.show();
     }
     
-    protected void endDialog() {
+    protected void endDialog1() {
     	if (mailSize > 0) {
     		searchMail.setVisibility(View.VISIBLE);
     	}
