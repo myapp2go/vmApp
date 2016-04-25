@@ -19,23 +19,23 @@
         android:textSize="24dip" />
 
     <Button
-        android:id="@+id/readMail"
+        android:id="@+id/startQuote"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
         android:layout_centerHorizontal="true"
-        android:text="@string/readMail"
+        android:text="@string/startQuote"
         android:textColor="#ff0000"
         android:textSize="30dip" />
    
     
     <Button
-        android:id="@+id/writeMail"
+        android:id="@+id/stopQuote"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/readMail"
+        android:layout_below="@id/startQuote"
         android:layout_centerHorizontal="true"
-        android:text="@string/writeMail"
+        android:text="@string/stopQuote"
         android:textColor="#00ff00"
         android:textSize="30dip" />
         
@@ -43,7 +43,7 @@
         android:id="@+id/searchMail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/writeMail"
+        android:layout_below="@id/stopQuote"
         android:layout_centerHorizontal="true"
         android:text="@string/searchMail"
         android:textColor="#ff0000"

@@ -121,8 +121,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		
 		getVoiceCommand();
 		
-		final Button readMail = (Button) this.findViewById(R.id.readMail);
-		readMail.setOnClickListener(new View.OnClickListener() {
+		final Button startQuote = (Button) this.findViewById(R.id.startQuote);
+		startQuote.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
 						ArrayList<String> localArrayList = new ArrayList<String>();
@@ -133,8 +133,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			}
 		});
 		
-		final Button writeMail = (Button) this.findViewById(R.id.writeMail);
-		writeMail.setOnClickListener(new View.OnClickListener() {
+		final Button stopQuote = (Button) this.findViewById(R.id.stopQuote);
+		stopQuote.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (isOffline) {
 					ttsNoMicrophone(Constants.NETWORK_ERROR);

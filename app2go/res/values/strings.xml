@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">vm1</string>
+    <string name="app_name">app2go</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
  
-    <string name="readMail">Read Mail</string>
-    <string name="readBodyMail">Read Subject, Body</string>
+    <string name="startQuote">Start Quote</string>
+    <string name="stopQuote">Stop Quote</string>
     <string name="skipMail">Skip Mail</string>
     <string name="writeMail">Write Mail</string>
     <string name="settings">Settings</string>
@@ -14,7 +14,7 @@
     <string name="syncMail">Sync Mail</string>
     <string name="searchMail">Search Mail</string>
     <string name="offLine">Off Line</string>
-    <string name="greeting">Welcome to Speak Mail</string>
+    <string name="greeting">Welcome to Voice Quote</string>
 
     <string name="myEmail">My eMail</string>
     <string name="mailAccount">andy1chennk@gmail.com</string>
