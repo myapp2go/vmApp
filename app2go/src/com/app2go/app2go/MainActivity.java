@@ -330,7 +330,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	@Override
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub
-		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
+//		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
 //		startDialog();
 		
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 

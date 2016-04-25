@@ -19,12 +19,7 @@ public class StockQuoteTask extends AsyncTask {
 	
 	@Override
 	protected Object doInBackground(Object... arg0) {
-
 		SharedPreferences pref  = (SharedPreferences) arg0[0];
-		// TODO Auto-generated method stub
-//		SharedPreferences pref = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
-
-//		StockQuote sq = new StockQuote();
 		sq.getStockQuoteReport("LCI");
 		
 		return null;
