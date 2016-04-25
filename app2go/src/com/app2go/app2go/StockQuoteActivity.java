@@ -12,7 +12,7 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 	}
 
 	public void readStockQuoteDone(Quote quote) {
-		ttsAndPlayEarcon("symbol " + quote.getSymbol()[0]);
-		ttsAndPlayEarcon("price " + quote.getPrice()[0]);
+		ttsNoMicrophone("symbol " + quote.getSymbol()[0]);
+		ttsNoMicrophone("price " + quote.getPrice()[0]);
 	}
 }

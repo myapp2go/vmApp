@@ -118,14 +118,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		
 		initRecognizer();
 		
-		getVoiceCommand();
-		
 		final Button readMail = (Button) this.findViewById(R.id.readMail);
 		readMail.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (speechDone == null) {
-					setFlag(false, false, true);
-
 					ArrayList<String> localArrayList = new ArrayList<String>();
 	
 					doReadStockQuote(localArrayList);
@@ -137,9 +133,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		final Button settings = (Button) this.findViewById(R.id.settings);
 		settings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (speechDone == null) {
-					setFlag(readDone, true, false);
-				
+				if (speechDone == null) {				
 					startSettings();
 				}
 			}
@@ -404,108 +398,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
         }
     }    
 
-    public void commandRecord(String type) {
-    	command = Constants.COMMAND_COMMAND_RECORD;
-    	commandType = type;
-    	
-        switch (type) {
-        case Constants.ANSWER_CONTINUE : 
-        	ttsAndMicrophone(Constants.COMMAND_COMMAND1_GREETING);
-        	break;
-        case Constants.ANSWER_DETAIL :
-        	ttsAndMicrophone(Constants.COMMAND_COMMAND2_GREETING);
-        	break;
-        case Constants.ANSWER_SKIP :
-        	ttsAndMicrophone(Constants.COMMAND_COMMAND3_GREETING);
-        	break;
-        case Constants.ANSWER_STOP :
-        	ttsAndMicrophone(Constants.COMMAND_COMMAND4_GREETING);
-        	break;
-        case Constants.ANSWER_SAVE :
-        	saveCommand();
-        	break;	
-        case Constants.ANSWER_CLEAN :
-        	commandMap = new HashMap<String, String>();
-        	initCommandMap();
-        	break;	
-        default :								// INIT
-        	System.out.println("*** ERROR ");
-        	break;
-        }
-    }
         
-    private void initCommandMap() {
-    	commandMap.put(Constants.ANSWER_DETAIL, Constants.ANSWER_DETAIL);
-    	commandMap.put(Constants.ANSWER_SKIP, Constants.ANSWER_SKIP);
-    	commandMap.put(Constants.ANSWER_STOP, Constants.ANSWER_STOP);
-    	commandMap.put(Constants.ANSWER_CONTINUE, Constants.ANSWER_CONTINUE);
-    }
-    
-    String FILENAME = "voiceCommand";
-    private void getVoiceCommand() {
-    	initCommandMap();
-    			
-		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
-
-		File file = new File(folder, FILENAME);
-		if (file.exists()) {
-			// Read text from file
-			StringBuilder text = new StringBuilder();
-
-			try {
-				BufferedReader br = new BufferedReader(new FileReader(file));
-				String line;
-
-				while ((line = br.readLine()) != null) {
-					text.append(line);
-					text.append('\n');
-				}
-
-				String del = "_";
-				StringTokenizer st = new StringTokenizer(text.toString(), del);
-				while (st.hasMoreTokens()) {
-					String str = st.nextToken();
-					if (str.length() > 2) {
-						String value = str.substring(0, 1);
-						String key = str.substring(2, str.length());
-						commandMap.put(key, value);
-					}
-				}
-
-				br.close();
-			} catch (IOException e) {
-				// You'll need to add proper error handling here
-				e.printStackTrace();
-			}
-		}
-    }
-    
-    private void saveCommand() {
-		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
-		if (!folder.isDirectory()) {
-			folder.mkdirs();
-		}
-        
-		FileOutputStream fos;
-		try {
-			folder.createNewFile();
-//			fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-	        fos = new FileOutputStream(new File(folder, FILENAME));
-	        
-	        Iterator it = commandMap.entrySet().iterator();
-	        while (it.hasNext()) {
-	            Map.Entry pair = (Map.Entry)it.next();
-	            String str = pair.getValue() + "," + pair.getKey() + "_";
-	            fos.write(str.getBytes());
-	        }
-
-			fos.close();
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
-    }
     
     protected void ttsAndMicrophone(String msg) {
 //    	System.out.println("******ttsAndMicrophone " + android.os.Process.myTid() + msg);
@@ -525,20 +418,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsNoMicrophone(String msg) {
-//    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
- 
-    	if (mapEarconID.equals(speechDone)) {
-    		messageQueue = msg;
-    		return;
-    	}
- 
-    	// either mapTTSID or mapTTSPhoneID
-    	if (speechDone != null) {
-    		System.out.println("***********ERROR_02, should not happen. " + speechDone);
-    	} else {
-    		speechDone = mapTTSID;
-    		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
-    	}
+    	tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
     }
     
     protected void ttsAndPlayEarcon(String msg) {
@@ -551,55 +431,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
 //    		startRecognizer(0);
 
-    }
-    
-    private void startDialog1() {
-		processDialog = new ProgressDialog(this);
-		processDialog.setMessage("Start speech engine, please wait...");
-		processDialog.setIndeterminate(false);
-		processDialog.setCancelable(false);
-		processDialog.show();
-    }
-    
-    protected void endDialog1() {
-    	if (mailSize > 0) {
-    		searchMail.setVisibility(View.VISIBLE);
-    	}
-//    	offLine.setVisibility(View.VISIBLE);
-    	
-    	if (processDialog != null) {
-    		processDialog.dismiss();
-    	}
-    	
-//    	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    	readDone = true;
-    }
-    
-    protected void setFlag(boolean cmdDone, boolean cmdStop, boolean cmdWrite) {			
-    	readDone = cmdDone;
-    	readStop = cmdStop;
-    	writeStop = cmdWrite;
-    	
-    	tts.playEarcon("", TextToSpeech.QUEUE_FLUSH, mapEarcon);
-    	if (readStop || writeStop) {
-    		finishActivity(VOICE_RECOGNITION);
-    	}
-    	
-        ConnectivityManager connMgr = (ConnectivityManager) 
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-    	
-    	if (networkInfo == null) {
-    		isOffline = true;
-    		String str = sharedPreferences.getString("bodyDoneFlag", "");
-    		if ("F".equals(str)) {
-    			readBodyDone = false;
-    		} else {
-    			readBodyDone = true;
-    		}
-    	} else {
-        	isOffline = false;
-    	}
     }
     
     private boolean isSetting() {
