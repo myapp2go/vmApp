@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 public abstract class SharedPreferencesActivity extends MainActivity {
 
-	Map<String, String> map = new HashMap<String, String>();
+	public static Map<String, String> map = new HashMap<String, String>();
 	
 	protected void doSetting() {
 //		doSettingWrite();

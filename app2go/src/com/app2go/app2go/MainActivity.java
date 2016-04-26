@@ -408,7 +408,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 //		ttsNoMicrophone(Constants.COMMAND_READ_SUBJECT_BODY);
 //		startDialog();
 		
-		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
+		sharedPreferences = getApplicationContext().getSharedPreferences(Constants.QUOTE_SHARE_PREFERENCES, MODE_PRIVATE); 
 		getPreferenceFromFile();
 
 		String tmp = sharedPreferences.getString("Quotes",  "");

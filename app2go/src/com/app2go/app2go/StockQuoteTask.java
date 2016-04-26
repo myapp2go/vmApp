@@ -25,7 +25,8 @@ public class StockQuoteTask extends AsyncTask {
 	
 	@Override
 	protected Object doInBackground(Object... arg0) {
-		Map map  = (Map) arg0[0];
+//		Map map  = (Map) arg0[0];
+		Map map = SharedPreferencesActivity.map;
 		int len = map.size();
 				
 		sq = new StockQuote(len);
