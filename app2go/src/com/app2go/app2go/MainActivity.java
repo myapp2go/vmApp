@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -39,6 +41,8 @@ import android.widget.Button;
 
 public abstract class MainActivity extends Activity implements OnInitListener  {
 
+	static Logger log = ALogger.getLogger(MainActivity.class);
+	
 	public static MainActivity mainActivity;
 	
 	abstract protected void doReadStockQuote(ArrayList<String> matches);
@@ -112,6 +116,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		if (BuildConfig.DEBUG) {
 			logStr.add("[onCreate called]");
 		}
+		log.debug("Hello this is a debug message");
 		
 		mainActivity = this;
 		
