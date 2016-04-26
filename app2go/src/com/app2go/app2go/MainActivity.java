@@ -245,7 +245,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (quoteCount == totalQuote) {
 					quoteCount = 0;
 					if (startFlag) {
-//						SystemClock.sleep(sleepTime*1000);
+						SystemClock.sleep(sleepTime*1000);
 						doReadStockQuote(null);
 					}
 				}
