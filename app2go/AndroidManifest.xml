@@ -39,9 +39,12 @@
             	android:value="com.pc.pcand.MainActivity" />
         </activity>	
         <activity 
+		    android:name=".EditQuotesActivity" 
+		    android:screenOrientation="portrait" />
+        <activity 
 		    android:name=".SetQuotesActivity" 
 		    android:screenOrientation="portrait" />
-        	
+                	
     </application>
 
 </manifest>
