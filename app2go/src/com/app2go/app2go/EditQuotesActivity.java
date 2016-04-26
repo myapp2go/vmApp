@@ -26,7 +26,7 @@ public class EditQuotesActivity extends Activity {
 		sharedPreferences = getApplicationContext().getSharedPreferences(
 				Constants.QUOTE_SHARE_PREFERENCES, MODE_PRIVATE);
 
-//		((TextView)findViewById(R.id.sleepTime)).setText(MainActivity.sleepTime);
+		((TextView)findViewById(R.id.sleepTime)).setText(""+MainActivity.sleepTime);
 		((TextView)findViewById(R.id.quoteList)).setText(SharedPreferencesActivity.quoteList);
 		
 		final Button saveQuoteButton = (Button) this.findViewById(R.id.saveQuote);
