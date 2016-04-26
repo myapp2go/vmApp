@@ -6,7 +6,7 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 
 	@Override
 	protected void doReadStockQuote(ArrayList<String> matches) {
-		new StockQuoteTask(StockQuoteActivity.this).execute(sharedPreferences);		
+		new StockQuoteTask(StockQuoteActivity.this).execute(map);		
 	}
 
 	public void readStockQuoteDone(Quote quote) {

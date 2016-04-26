@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import android.app.AlertDialog;
@@ -22,6 +24,8 @@ import android.widget.Toast;
 
 public abstract class SharedPreferencesActivity extends MainActivity {
 
+	Map<String, String> map = new HashMap<String, String>();
+	
 	protected void doSetting() {
 //		doSettingWrite();
 //		doSettingRead();
@@ -54,68 +58,25 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 				e.printStackTrace();
 			}
 
-			Editor editor = sharedPreferences.edit();
-			editor.putString("Quotes", text.toString());
-			editor.commit();
-//			setupPreferences(text);
+//			Editor editor = sharedPreferences.edit();
+//			editor.putString("Quotes", text.toString());
+//			editor.commit();
+			setupPreferences(text);
 		}
 	}
 
-	private void setupPreferences(StringBuilder text) {
-		// TODO Auto-generated method stub
-		String del = "_____";
-		
-		StringTokenizer st = new StringTokenizer(text.toString(), del);
-		
-		Editor editor = sharedPreferences.edit();
-		
+	private void setupPreferences(StringBuilder text) {	
+		StringTokenizer st = new StringTokenizer(text.toString(), Constants.CONTACT_MARKER);
+
 		while (st.hasMoreTokens()) {
 			String str = st.nextToken();
 			int ind = str.indexOf(":");
 			if (ind > 0) {
-				String name = str.substring(0, ind);
+				String key = str.substring(0, ind);
 				String value = str.substring(ind+1);
-				switch (name) {
-				case "myEmail" :
-					logStr.add("***getPreferenceFromFilemyEmail " + value);
-					editor.putString("myEmail", value);
-					break;
-				case "myPassword" :
-					editor.putString("myPassword", value);
-					break;
-				case "bodyDoneFlag" :
-					editor.putString("bodyDoneFlag", value);
-					break;
-				default :
-					contacts.put(name, value);
-					break;
-				}
+				map.put(key, value);
 			}
 		}
-		
-		editor.commit();
-	}
-
-	protected void settingNoticeOld() {
-		popupDialogOld();
-	}
-	
-	private void popupDialogOld() {
-		new AlertDialog.Builder(this)
-	    .setTitle("Setting Account")
-	    .setMessage("You did not set up your account yet!")
-	    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) { 
-	            // continue with delete
-	        }
-	     })
-	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) { 
-	            // do nothing
-	        }
-	     })
-	    .setIcon(android.R.drawable.ic_dialog_alert)
-	     .show();
 	}
 	
 }
