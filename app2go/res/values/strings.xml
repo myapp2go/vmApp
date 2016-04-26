@@ -7,6 +7,12 @@
  
     <string name="startQuote">Start Quote</string>
     <string name="stopQuote">Stop Quote</string>
+    
+    <string name="nextPage">Next Page</string>
+    <string name="prevPage">Prev Page</string>
+    <string name="addQuote">Add</string>
+    <string name="saveQuote">Save</string>
+            
     <string name="skipMail">Skip Mail</string>
     <string name="writeMail">Write Mail</string>
     <string name="settings">Settings</string>

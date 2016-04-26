@@ -25,6 +25,7 @@ import android.widget.Toast;
 public abstract class SharedPreferencesActivity extends MainActivity {
 
 	public static Map<String, String> map = new HashMap<String, String>();
+	public static String quoteList;
 	
 	protected void doSetting() {
 //		doSettingWrite();
@@ -61,6 +62,7 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 //			Editor editor = sharedPreferences.edit();
 //			editor.putString("Quotes", text.toString());
 //			editor.commit();
+			quoteList = text.toString();
 			setupPreferences(text);
 		}
 	}

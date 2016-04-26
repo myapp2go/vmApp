@@ -11,10 +11,21 @@
     android:columnOrderPreserved="false"
     android:useDefaultMargins="true" >
 
+        <EditText
+        android:id="@+id/pageNum"
+        android:layout_row="0"
+        android:editable="true"
+        android:enabled="true"
+        android:padding="5dp"
+        android:layout_marginLeft="20dp"
+        android:text="Page 1"
+        android:textColor="#000000"
+        android:width="100dp" />
+        
     <EditText
         android:id="@+id/quote1"
         android:layout_column="0"
-        android:layout_row="0"
+        android:layout_row="1"
         android:editable="true"
         android:enabled="true"
         android:padding="5dp"
@@ -28,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_row="0"
+        android:layout_row="1"
         android:editable="true"
         android:enabled="true"
         android:hint="@string/emailAddressHint"
@@ -41,7 +52,7 @@
     <EditText
         android:id="@+id/quote2"
         android:layout_column="0"
-        android:layout_row="1"
+        android:layout_row="2"
         android:editable="true"
         android:enabled="true"
         android:padding="5dp"
@@ -54,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_row="1"
+        android:layout_row="2"
         android:editable="true"
         android:enabled="true"
         android:hint="@string/emailAddressHint"
@@ -67,7 +78,7 @@
     <EditText
         android:id="@+id/quote3"
         android:layout_column="0"
-        android:layout_row="2"
+        android:layout_row="3"
         android:editable="true"
         android:enabled="true"
         android:padding="5dp"
@@ -80,7 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_row="2"
+        android:layout_row="3"
         android:editable="true"
         android:enabled="true"
         android:hint="@string/emailAddressHint"
@@ -93,7 +104,7 @@
     <EditText
         android:id="@+id/quote4"
         android:layout_column="0"
-        android:layout_row="3"
+        android:layout_row="4"
         android:editable="true"
         android:enabled="true"
         android:padding="5dp"
@@ -106,7 +117,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_row="3"
+        android:layout_row="4"
         android:editable="true"
         android:enabled="true"
         android:hint="@string/emailAddressHint"
@@ -119,7 +130,7 @@
     <EditText
         android:id="@+id/quote5"
         android:layout_column="0"
-        android:layout_row="4"
+        android:layout_row="5"
         android:editable="true"
         android:enabled="true"
         android:padding="5dp"
@@ -132,7 +143,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_row="4"
+        android:layout_row="5"
         android:editable="true"
         android:enabled="true"
         android:hint="@string/emailAddressHint"
@@ -141,49 +152,38 @@
         android:text="5.5"
         android:textColor="#000000" >
     </EditText>
-
-    <EditText
-        android:id="@+id/quote6"
-        android:layout_column="0"
-        android:layout_row="5"
-        android:editable="true"
-        android:enabled="true"
-        android:padding="5dp"
-        android:text=""
-        android:textColor="#000000"
-        android:width="100dp" />
-
-    <EditText
-        android:id="@+id/target6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_row="5"
-        android:editable="true"
-        android:enabled="true"
-        android:hint="@string/emailAddressHint"
-        android:inputType="textEmailAddress"
-        android:padding="5dp"
-        android:text=""
-        android:textColor="#000000" >
-    </EditText>
-
-    <CheckBox
-        android:id="@+id/writeToType"
+       
+    <Button
+        android:id="@+id/prevPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_columnSpan="2"
         android:layout_column="0"
         android:layout_row="6"
-        android:text="@string/writeToType" />
-        
+        android:text="@string/prevPage" />
+       
     <Button
-        android:id="@+id/setting"
+        android:id="@+id/nextPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_row="6"
+        android:text="@string/nextPage" />
+    
+    <Button
+        android:id="@+id/addQuote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_row="7"
-        android:text="@string/addContact" />
+        android:text="@string/addQuote" />
+    
+    <Button
+        android:id="@+id/saveQuote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_row="7"
+        android:text="@string/saveQuote" />
     
      <Button
         android:id="@+id/cancel"
