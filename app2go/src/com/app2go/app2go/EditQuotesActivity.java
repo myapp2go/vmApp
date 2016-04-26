@@ -26,6 +26,7 @@ public class EditQuotesActivity extends Activity {
 		sharedPreferences = getApplicationContext().getSharedPreferences(
 				Constants.QUOTE_SHARE_PREFERENCES, MODE_PRIVATE);
 
+//		((TextView)findViewById(R.id.sleepTime)).setText(MainActivity.sleepTime);
 		((TextView)findViewById(R.id.quoteList)).setText(SharedPreferencesActivity.quoteList);
 		
 		final Button saveQuoteButton = (Button) this.findViewById(R.id.saveQuote);
@@ -61,7 +62,7 @@ public class EditQuotesActivity extends Activity {
 			// fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
 			fos = new FileOutputStream(new File(folder, FILENAME));
 
-			setContact(fos, editor, R.id.note, R.id.quoteList);
+			setContact(fos, editor, R.id.sleepTime, R.id.quoteList);
 /*
 			setContact(fos, editor, R.id.quote2, R.id.target2);
 			setContact(fos, editor, R.id.quote3, R.id.target3);
@@ -80,12 +81,12 @@ public class EditQuotesActivity extends Activity {
 
 	private void setContact(FileOutputStream fos, Editor editor, int nameId,
 			int contactId) throws IOException {
-		String name = ((TextView) findViewById(nameId)).getText().toString();
+		String sleep = ((TextView) findViewById(nameId)).getText().toString();
 		String contact = ((TextView) findViewById(contactId)).getText()
 				.toString();
-		if (name != null && contact != null) {
-			fos.write((contact).getBytes());
-			editor.putString((Constants.CONTACT_MARKER + name), contact);
+		if (sleep != null && contact != null) {
+			fos.write((sleep + "#" + contact).getBytes());
+//			editor.putString((Constants.CONTACT_MARKER + name), contact);
 		}
 	}
 }

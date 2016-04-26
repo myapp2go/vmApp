@@ -62,13 +62,16 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 //			Editor editor = sharedPreferences.edit();
 //			editor.putString("Quotes", text.toString());
 //			editor.commit();
-			quoteList = text.toString();
-			setupPreferences(text);
+			String str = text.toString();
+			int ind = str.indexOf("#");
+			sleepTime = Integer.parseInt(str.substring(0, ind));
+			quoteList = str.substring(ind+1);
+			setupPreferences(quoteList);
 		}
 	}
 
-	private void setupPreferences(StringBuilder text) {	
-		StringTokenizer st = new StringTokenizer(text.toString(), Constants.CONTACT_MARKER);
+	private void setupPreferences(String text) {	
+		StringTokenizer st = new StringTokenizer(text, Constants.CONTACT_MARKER);
 
 		while (st.hasMoreTokens()) {
 			String str = st.nextToken();

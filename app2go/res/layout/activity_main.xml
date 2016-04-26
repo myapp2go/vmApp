@@ -27,8 +27,7 @@
         android:text="@string/startQuote"
         android:textColor="#ff0000"
         android:textSize="30dip" />
-   
-    
+       
     <Button
         android:id="@+id/stopQuote"
         android:layout_width="300dp"
@@ -38,55 +37,15 @@
         android:text="@string/stopQuote"
         android:textColor="#00ff00"
         android:textSize="30dip" />
-        
-    <Button
-        android:id="@+id/searchMail"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/stopQuote"
-        android:layout_centerHorizontal="true"
-        android:text="@string/searchMail"
-        android:textColor="#ff0000"
-        android:textSize="30dip" />
-    
+   
     <Button
         android:id="@+id/settings"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/searchMail"
+        android:layout_below="@id/stopQuote"
         android:layout_centerHorizontal="true"
         android:text="@string/settings"
         android:textColor="#0000ff"
         android:textSize="30dip" />
-
-    <Button
-        android:id="@+id/syncMail"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/settings"
-        android:layout_centerHorizontal="true"
-        android:text="@string/syncMail"
-        android:textColor="#ff0000"
-        android:textSize="30dip" />
-     
-    <Button
-        android:id="@+id/offLine"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/syncMail"
-        android:layout_centerHorizontal="true"
-        android:text="@string/offLine"
-        android:textColor="#ffff00"
-        android:textSize="30dip" />
-
-    <Button
-        android:id="@+id/debugging"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/offLine"
-        android:layout_centerHorizontal="true"
-        android:text="@string/debugging"
-        android:textColor="#ffff00"
-        android:textSize="30dip" />
- 
+      
 </RelativeLayout>

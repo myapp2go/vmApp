@@ -52,6 +52,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	private final int VOICE_RECOGNITION = 1234;
 	protected SharedPreferences sharedPreferences;
+	protected static int sleepTime = 1;
 	
 	protected TextToSpeech tts;
 	protected Intent intent;
@@ -152,64 +153,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			}
 		});
 		
-		final Button syncMail = (Button) this.findViewById(R.id.syncMail);
-		syncMail.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if (speechDone == null) {
-					setFlag(false, false, true);
-
-					if (!isSetting()) {
-						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-					} else {
-						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-						isSyncMail = false;
-						mailCount = 0;
-						command = Constants.COMMAND_READ;
-						subCommand = Constants.COMMAND_INIT;
-						ArrayList<String> localArrayList = new ArrayList<String>();
-						localArrayList.add(Constants.READ_OPTION_SUBJECT_ONLY);
-//						doReadMail(localArrayList);
-					}
-				}
-			}
-		});
-		
-		searchMail = (Button) this.findViewById(R.id.searchMail);
-		searchMail.setVisibility(View.GONE);
-		searchMail.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if (speechDone == null) {
-					setFlag(true, true, true);
-
-					if (!isSetting()) {
-						ttsNoMicrophone(Constants.SETTING_ACCOUNT_NOTICE);
-					} else {
-						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-						command = Constants.COMMAND_SEARCH;
-						subCommand = Constants.COMMAND_INIT;
-						mailCount = 0;
-						ttsAndMicrophone(Constants.COMMAND_SEARCH_GREETING);
-					}
-				}
-			}
-		});
-
-		offLine = (Button) this.findViewById(R.id.offLine);
-		offLine.setVisibility(View.GONE);
-		offLine.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-//				doSaveOffLines();
-			}
-		});
-		
-		final Button debugging = (Button) this.findViewById(R.id.debugging);
-		debugging.setVisibility(View.GONE);
-		debugging.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				startDebugging();
-			}
-		});
-		
 		if (BuildConfig.DEBUG) {
 			logStr.add("[onCreate done]");
 		}
@@ -302,6 +245,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (quoteCount == totalQuote) {
 					quoteCount = 0;
 					if (startFlag) {
+//						SystemClock.sleep(sleepTime*1000);
 						doReadStockQuote(null);
 					}
 				}
