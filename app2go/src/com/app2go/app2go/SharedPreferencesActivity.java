@@ -28,12 +28,12 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 	}
 
 	protected void getPreferenceFromFile() {
-		getPreferenceFromFile("pcMailAccount");
-		getPreferenceFromFile("pcMailContacts");
+		getPreferenceFromFile("pcStockQuotes");
+//		getPreferenceFromFile("pcMailContacts");
 	}
 	
 	protected void getPreferenceFromFile(String filename) {
-		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/VoiceMail");
+		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/Quotes");
 
 		File file = new File(folder, filename);
 		if (file.exists()) {
@@ -54,7 +54,10 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 				e.printStackTrace();
 			}
 
-			setupPreferences(text);
+			Editor editor = sharedPreferences.edit();
+			editor.putString("Quotes", text.toString());
+			editor.commit();
+//			setupPreferences(text);
 		}
 	}
 

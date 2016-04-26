@@ -411,6 +411,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		sharedPreferences = getApplicationContext().getSharedPreferences("VoiceMailPref", MODE_PRIVATE); 
 		getPreferenceFromFile();
 
+		String tmp = sharedPreferences.getString("Quotes",  "");
+		
 		mailAccount = sharedPreferences.getString("myEmail", "");
 		
 		readDone = true;

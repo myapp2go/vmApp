@@ -7,7 +7,7 @@ public final class Constants {
 	public static final int MAIL_PER_PAGE = 1;
 	
 	public static final String EMPTY_STRING = "";
-	public static final String CONTACT_MARKER = "__M_A_R_K_E_R__";
+	public static final String CONTACT_MARKER = ",";
 
 	public static String COMMAND_GREETING = "Please speak read, write or setting";
 

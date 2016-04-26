@@ -13,6 +13,7 @@ public class Quote {
 		symbol = new String[count];
 		price  = new float[count];
 		volume  = new float[count];
+		target  = new float[count];
 	}
 	
 	public String[] getSymbol() {
