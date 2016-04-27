@@ -246,7 +246,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			public synchronized void onDone(String utteranceId) {				
 				quoteCount++;
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
+//				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
 				if (quoteCount == totalQuote) {
 					quoteCount = 0;
 					if (startFlag) {
@@ -320,7 +320,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public void onStart(String utteranceId) {
-				System.out.println("&&&&& " + utteranceId + "***onStart ");
+//				System.out.println("&&&&& " + utteranceId + "***onStart ");
 			}
 
 			@Override

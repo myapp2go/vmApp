@@ -52,10 +52,10 @@ public class StockQuote {
 		String[] sym = quote.getSymbol();
 		sym[ind] = name;
 		// time_rtq_ticker
-		start = getValues(name.toUpperCase()+":value", ">", quote.getPrice(), doc, start, ind);
+		start = getValues(name.toUpperCase()+":value", ">", "<", 2, null, quote.getPrice(), doc, start, ind);
 
 		// Volume:
-		start = getValues(name.toUpperCase()+":longVolume", ">", quote.getVolume(), doc, start, ind);
+		start = getValues(name.toUpperCase()+":longVolume", ">", "<", 2, null, quote.getVolume(), doc, start, ind);
 	}
 
 	private int getStockQuote(String name, String doc, int ind) {
@@ -63,58 +63,67 @@ public class StockQuote {
 		String[] sym = quote.getSymbol();
 		sym[ind] = name;
 		// time_rtq_ticker
-		start = getValues("yfs_l84_"+name, null, quote.getPrice(), doc, start, ind);
+		start = getValues("yfs_l84_"+name, null, "<", 2, null, quote.getPrice(), doc, start, ind);
 		if (start > 0) {
+			// Up or Down
+			start = getValues("_arrow", "alt=\"", "\"", 2, quote.getArrow(), null, doc, start, ind);
+			// change
+			start = getValues(">", null, "<", 0, null, quote.getChange(), doc, start, ind);
 			// Volume:
-			start = getValues("yfs_v53_"+name, null, quote.getVolume(), doc, start, ind);
+			start = getValues("yfs_v53_"+name, null, "<", 2, null, quote.getVolume(), doc, start, ind);
+		
 		}
 		return start;
 	}
 
 	// unit : %, M, B default <
-	private int getValues(String name, String mark, float[] valAr, String doc, int start, int ind) {
-		log.debug("val : " + name);
+	private int getValues(String name, String stMark, String endMark, int delta, String[] strAr, float[] valAr, String doc, int start, int ind) {
+		log.debug(start + "val : " + name + "***" + doc.substring(start, start+100));
 		start = doc.indexOf(name, start);
-		log.debug("valstart : " + start);
+		log.debug(start + "NNN : " + name);
 		if (start > 0) {
-			if (mark != null) {
-				start = doc.indexOf(mark, start) + mark.length();
+			if (stMark != null) {
+				start = doc.indexOf(stMark, start) + stMark.length();
 			} else {
-				start += name.length() + 2;
+				start += name.length() + delta;
 			}
-//			log.debug("valdd : " + doc.substring(start));
-			int end = doc.indexOf("<", start);
+			log.debug("valdd : " + doc.substring(start, start+100));
+			int end = doc.indexOf(endMark, start);
 			String str = doc.substring(start, end).replaceAll(",", "");
 			log.debug("valddPPP : " + str);
-			int len = str.length();
-			float mult = (float) 1.0;
-			String last = str.substring(len - 1, len);
-			switch (last) {
-			case "%":
-				str = str.substring(0, len - 1);
-				break;
-			case "M":
-				str = str.substring(0, len - 1);
-				break;
-			case "k":
-			case "B":
-				str = str.substring(0, len - 1);
-				mult = (float) 1000.0;
-				break;
-			case "m":
-				str = str.substring(0, len - 1);
-				mult = (float) 1000000.0;
-				break;	
-			default:
-				break;
-			}
-			log.debug("valArSS : " + str);
-			if (str == null || str.equals("N/A") || str.length() > 20) {
-				valAr[ind] = (float) 0.0;
+			if (strAr != null) {
+				strAr[ind] = str;
 			} else {
-				valAr[ind] = Float.parseFloat(str) * mult;
+				int len = str.length();
+				float mult = (float) 1.0;
+				String last = str.substring(len - 1, len);
+				switch (last) {
+				case "%":
+					str = str.substring(0, len - 1);
+					break;
+				case "M":
+					str = str.substring(0, len - 1);
+					break;
+				case "k":
+				case "B":
+					str = str.substring(0, len - 1);
+					mult = (float) 1000.0;
+					break;
+				case "m":
+					str = str.substring(0, len - 1);
+					mult = (float) 1000000.0;
+					break;
+				default:
+					break;
+				}
+				log.debug("valArSS : " + str);
+				if (str == null || str.equals("N/A") || str.length() > 20) {
+					valAr[ind] = (float) 0.0;
+				} else {
+					valAr[ind] = Float.parseFloat(str) * mult;
+				}
+				log.debug("valAr : " + valAr[ind]);
 			}
-			log.debug("valAr : " + valAr[ind]);
 		}
 		
 		return start;

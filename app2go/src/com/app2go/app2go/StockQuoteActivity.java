@@ -13,6 +13,8 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 		for (int i = 0; i < quote.getQuoteSize(); i++) {
 			ttsNoMicrophone(quote.getSymbol()[i]);
 			ttsNoMicrophone("price " + quote.getPrice()[i]);
+			ttsNoMicrophone(" " + quote.getArrow()[i]);
+			ttsNoMicrophone(" " + quote.getChange()[i]);
 			ttsNoMicrophone("volume " + quote.getVolume()[i]/1000);
 		}
 	}

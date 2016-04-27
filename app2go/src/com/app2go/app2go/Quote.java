@@ -5,6 +5,8 @@ public class Quote {
 	private int quoteSize;
 	private String[] symbol;
 	private float[] price;
+	private String[] arrow;
+	private float[] change;
 	private float[] target;
 	private float[] volume;
 
@@ -12,6 +14,8 @@ public class Quote {
 		super();
 		symbol = new String[count];
 		price  = new float[count];
+		arrow = new String[count];
+		change  = new float[count];
 		volume  = new float[count];
 		target  = new float[count];
 	}
@@ -49,6 +53,22 @@ public class Quote {
 
 	public void setTarget(float[] target) {
 		this.target = target;
+	}
+
+	public String[] getArrow() {
+		return arrow;
+	}
+
+	public void setArrow(String[] arrow) {
+		this.arrow = arrow;
+	}
+
+	public float[] getChange() {
+		return change;
+	}
+
+	public void setChange(float[] change) {
+		this.change = change;
 	}
 	
 }
