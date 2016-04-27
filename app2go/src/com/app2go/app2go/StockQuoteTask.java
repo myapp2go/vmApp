@@ -4,11 +4,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 
 public class StockQuoteTask extends AsyncTask {
+
+	static Logger log = ALogger.getLogger(StockQuoteTask.class);
 
 	StockQuote sq = null;
 	String[] quoteList = {"CLMT", "FUEL", "LCI", "ROVI", "CONN"};
@@ -34,7 +38,7 @@ public class StockQuoteTask extends AsyncTask {
 		String[] symbols = setQuotes(map);
 		
 		for (int i = 0; i < len; i++) {
-			System.out.println("SSS " + symbols[i]);
+			log.debug("Quote : " + symbols[i]);
 			sq.getStockQuoteReport(symbols[i], i);
 		}
 		
