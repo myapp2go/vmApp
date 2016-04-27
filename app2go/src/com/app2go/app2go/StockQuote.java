@@ -53,9 +53,25 @@ public class StockQuote {
 		sym[ind] = name;
 		// time_rtq_ticker
 		start = getValues(name.toUpperCase()+":value", ">", "<", 2, null, quote.getPrice(), doc, start, ind);
+		// Up or Down
+		start = getValues(name.toUpperCase()+":chg", ">", "<", 2, quote.getArrow(), null, doc, start, ind);
+		// change
+		getChange(ind);
+//		start = getValues(">", null, "<", 0, null, quote.getChange(), doc, start, ind);
 
 		// Volume:
 		start = getValues(name.toUpperCase()+":longVolume", ">", "<", 2, null, quote.getVolume(), doc, start, ind);
+	}
+
+	private void getChange(int ind) {
+		if (quote.getArrow()[ind].charAt(0) == '+') {
+			quote.getChange()[ind] = Float.parseFloat(quote.getArrow()[ind].substring(1));
+			quote.getArrow()[ind] = "Up";
+		} else if (quote.getArrow()[ind].charAt(0) == '-') {
+			quote.getChange()[ind] = Float.parseFloat(quote.getArrow()[ind].substring(1));
+			quote.getArrow()[ind] = "Down";			
+		}
+		
 	}
 
 	private int getStockQuote(String name, String doc, int ind) {
