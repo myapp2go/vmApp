@@ -12,7 +12,7 @@ public class ALogger {
 	
     public static org.apache.log4j.Logger getLogger(Class clazz) {
         final LogConfigurator logConfigurator = new LogConfigurator();
-        logConfigurator.setFileName(Environment.getExternalStorageDirectory().toString() + File.separator + "DCIM/Quotes/file.log");
+        logConfigurator.setFileName(Environment.getExternalStorageDirectory().toString() + File.separator + "DCIM/Quotes/log.txt");
         logConfigurator.setRootLevel(Level.ALL);
         logConfigurator.setLevel("org.apache", Level.ALL);
         logConfigurator.setUseFileAppender(true);

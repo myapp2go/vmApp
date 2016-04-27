@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,6 +26,8 @@ import android.widget.Toast;
 
 public abstract class SharedPreferencesActivity extends MainActivity {
 
+	static Logger log = ALogger.getLogger(SharedPreferencesActivity.class);
+	
 	public static Map<String, String> map = new HashMap<String, String>();
 	public static String quoteList;
 	
@@ -68,6 +72,7 @@ System.out.println("path " + folder.getAbsolutePath());
 			int ind = str.indexOf("#");
 			sleepTime = Integer.parseInt(str.substring(0, ind));
 			quoteList = str.substring(ind+1);
+			log.debug("Quote List: " + quoteList);
 			setupPreferences(quoteList);
 		}
 	}
