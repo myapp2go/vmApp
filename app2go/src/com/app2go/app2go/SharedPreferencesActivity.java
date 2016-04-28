@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -28,7 +28,7 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 
 	static Logger log = ALogger.getLogger(SharedPreferencesActivity.class);
 	
-	public static Map<String, String> map = new HashMap<String, String>();
+	public static Map<String, String> map = new LinkedHashMap<String, String>();
 	public static String quoteList;
 	
 	protected void doSetting() {
