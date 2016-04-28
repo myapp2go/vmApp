@@ -33,7 +33,11 @@ public class StockQuoteTask extends AsyncTask {
 		Map map = SharedPreferencesActivity.map;
 		int len = map.size();
 				
-		sq = new StockQuote(len);
+		if (MainActivity.quoteType.equals("US")) {
+			sq = new StockQuote(len);
+		} else {
+			sq = new TwStockQuote(len);
+		}
 		sq.getQuote().setQuoteSize(len);
 		String[] symbols = setQuotes(map);
 		

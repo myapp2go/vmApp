@@ -15,6 +15,7 @@ public class Quote {
 		super();
 		symbol = new String[count];
 		price  = new float[count];
+		yesterdayClose  = new float[count];
 		arrow = new String[count];
 		change  = new float[count];
 		volume  = new float[count];

@@ -88,8 +88,6 @@ public class TwStockQuote {
 			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
 			// sold
 			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
-			// buy
-			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
 			// up down
 			start = getValues("nowrap", null, "<", 2, quote.getArrow(), null, doc, start, ind);
 			// quantity

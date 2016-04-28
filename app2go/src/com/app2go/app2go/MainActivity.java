@@ -45,6 +45,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	public static MainActivity mainActivity;
 	
+	public static String quoteType = "US";
+	
 	abstract protected void doReadStockQuote(ArrayList<String> matches);
 //	abstract protected void doSearchMail(ArrayList<String> matches);
 //	abstract protected void doSaveOffLines();

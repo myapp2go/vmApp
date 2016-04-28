@@ -43,9 +43,6 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 	
 	protected void getPreferenceFromFile(String filename) {
 		File folder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DCIM + "/Quotes");
-System.out.println("DIR " + Environment.getExternalStorageDirectory());
-System.out.println("DCMI " + Environment.DIRECTORY_DCIM);
-System.out.println("path " + folder.getAbsolutePath());
 		File file = new File(folder, filename);
 		if (file.exists()) {
 			// Read text from file
