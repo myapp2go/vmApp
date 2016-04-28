@@ -239,9 +239,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 //		tts.addEarcon("beethoven", "com.timebyte.vm1", R.raw.beethoven);
 //		tts.addEarcon("jetsons", "com.timebyte.vm1", R.raw.jetsons);
 //		tts.addEarcon("pinkpanther", "com.timebyte.vm1", R.raw.pinkpanther);
-		tts.addEarcon("beep15", "com.timebyte.vm1", R.raw.beep15);
-		tts.addEarcon("beep17", "com.timebyte.vm1", R.raw.beep17);
-		tts.addEarcon("beep21", "com.timebyte.vm1", R.raw.beep21);
+		tts.addEarcon("beep15", "com.app2go.app2go", R.raw.beep15);
+		tts.addEarcon("beep17", "com.app2go.app2go", R.raw.beep17);
+		tts.addEarcon("beep21", "com.app2go.app2go", R.raw.beep21);
+		tts.addEarcon("a1", "com.app2go.app2go", R.raw.a1);
 
 		tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
 

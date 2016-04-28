@@ -10,7 +10,11 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 	}
 
 	public void readStockQuoteDone(Quote quote) {
-		readTwStockQuoteDone(quote);
+		if (MainActivity.quoteType.equals("US")) {
+			readStockQuoteDone(quote);
+		} else {
+			readTwStockQuoteDone(quote);
+		}
 	}
 
 	public void readTwStockQuoteDone(Quote quote) {
