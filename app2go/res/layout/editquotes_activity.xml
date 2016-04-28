@@ -34,7 +34,7 @@
         android:hint="@string/emailAddressHint"
         android:inputType="textEmailAddress"
         android:padding="5dp"
-        android:text="GOOG:0.0,AAPL:0.0"
+        android:text="UCO:0.0,SCO:2.0,GASL:3.0,GASX:4.0,ERX:5.5,ERY:5.0,UGAZ:5.5,DGAZ:5.0,NUGT:5.5,DUST:5.0,SPXL:5.5,SPXS:5.0,FAS:5.5,FAZ:5.0,TECL:5.5,TECS:5.0,TQQQ:5.5,SQQQ:5.0,SOXL:5.5,SOXS:5.0,EDC:5.5,EDZ:5.0,YINN:5.5,YANG:5.0,BIB:5.5,URE:5.5,DRN:5.5,DRV:5.0"
         android:textColor="#000000" >
     </EditText>
     
