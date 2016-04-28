@@ -14,7 +14,7 @@ public class StockQuoteTask extends AsyncTask {
 
 	static Logger log = ALogger.getLogger(StockQuoteTask.class);
 
-	StockQuote sq = null;
+	TwStockQuote sq = null;
 	String[] quoteList = {"CLMT", "FUEL", "LCI", "ROVI", "CONN"};
 	
 	private StockQuoteActivity stockQuoteActivity;

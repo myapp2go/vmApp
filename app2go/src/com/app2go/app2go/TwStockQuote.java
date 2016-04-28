@@ -5,16 +5,16 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 
-public class StockQuote extends TwStockQuote {
+public class TwStockQuote {
 
-	static Logger log = ALogger.getLogger(StockQuote.class);
+	static Logger log = ALogger.getLogger(TwStockQuote.class);
 
-//	private static int timeout = 5000;
-//	protected Quote quote;
+	protected static int timeout = 5000;
+	protected Quote quote;
 
-	public StockQuote(int count) {
-		super(count);
-//		quote = new Quote(count);
+	public TwStockQuote(int count) {
+		super();
+		quote = new Quote(count);
 	}
 	
 	/**
@@ -29,15 +29,16 @@ public class StockQuote extends TwStockQuote {
 	public String getStockQuoteReport(String name, int ind) {
 		String doc = "";
 		name = name.toLowerCase();
-		log.debug("BEF : ");
-		
+		System.out.println("FF ");
 		try {
-			doc = Jsoup.connect("http://finance.yahoo.com/q?s=" + name).timeout(timeout).get().html();
-
-			int retval = getStockQuote(name, doc, ind);
-			log.debug("retval : " + retval);
+//			doc = Jsoup.connect("http://finance.yahoo.com/q?s=" + name).timeout(timeout).get().html();
+//			doc = Jsoup.connect("https://tw.finance.yahoo.com/q/q?s=" + "2723").timeout(timeout).get().html();
+			doc = Jsoup.connect("https://tw.finance.yahoo.com/q/q?s=2723").timeout(timeout).get().html();
+			System.out.println("AAFF " + doc);
+			
+			int retval = getTwStockQuote(name, doc, ind);
 			if (retval < 0) {
-				getMobileStockQuote(name, doc, ind);
+//				getTwMobileStockQuote(name, doc, ind);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -47,7 +48,7 @@ public class StockQuote extends TwStockQuote {
 		return doc;
 	}
 
-	private void getMobileStockQuote(String name, String doc, int ind) {
+	private void getTwMobileStockQuote(String name, String doc, int ind) {
 		int start = 0;
 		String[] sym = quote.getSymbol();
 		sym[ind] = name;
@@ -56,37 +57,51 @@ public class StockQuote extends TwStockQuote {
 		// Up or Down
 		start = getValues(name.toUpperCase()+":chg", ">", "<", 2, quote.getArrow(), null, doc, start, ind);
 		// change
-		getChange(ind);
+		getTwChange(ind);
 //		start = getValues(">", null, "<", 0, null, quote.getChange(), doc, start, ind);
 
 		// Volume:
 		start = getValues(name.toUpperCase()+":longVolume", ">", "<", 2, null, quote.getVolume(), doc, start, ind);
 	}
 
-	private void getChange(int ind) {
+	private void getTwChange(int ind) {
 		if (quote.getArrow()[ind].charAt(0) == '+') {
 			quote.getChange()[ind] = Float.parseFloat(quote.getArrow()[ind].substring(1));
 			quote.getArrow()[ind] = "Up";
 		} else if (quote.getArrow()[ind].charAt(0) == '-') {
 			quote.getChange()[ind] = Float.parseFloat(quote.getArrow()[ind].substring(1));
 			quote.getArrow()[ind] = "Down";			
-		}
-		
+		}		
 	}
 
-	private int getStockQuote(String name, String doc, int ind) {
+	private int getTwStockQuote(String name, String doc, int ind) {
 		int start = 0;
 		String[] sym = quote.getSymbol();
 		sym[ind] = name;
 		// time_rtq_ticker
-		start = getValues("yfs_l84_"+name, null, "<", 2, null, quote.getPrice(), doc, start, ind);
+		start = getValues("stocklist=", "nowrap", "<", 2, quote.getArrow(), null, doc, start, ind);
 		if (start > 0) {
-			// Up or Down
-			start = getValues("_arrow", "alt=\"", "\"", 2, quote.getArrow(), null, doc, start, ind);
-			// change
-			start = getValues(">", null, "<", 0, null, quote.getChange(), doc, start, ind);
-			// Volume:
-			start = getValues("yfs_v53_"+name, null, "<", 2, null, quote.getVolume(), doc, start, ind);
+			// price
+			start = getValues("nowrap", "b>", "<", 1, null, quote.getPrice(), doc, start, ind);
+
+			// buy
+			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			// sold
+			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			// buy
+			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			// up down
+			start = getValues("nowrap", null, "<", 2, quote.getArrow(), null, doc, start, ind);
+			// quantity
+			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			// yesterday close
+			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			// open
+			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			// high
+			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			// low
+			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
 		
 		}
 		return start;
@@ -94,19 +109,15 @@ public class StockQuote extends TwStockQuote {
 
 	// unit : %, M, B default <
 	private int getValues(String name, String stMark, String endMark, int delta, String[] strAr, float[] valAr, String doc, int start, int ind) {
-		log.debug(start + "val : " + name + "***" + doc.substring(start, start+100));
 		start = doc.indexOf(name, start);
-		log.debug(start + "NNN : " + name);
 		if (start > 0) {
 			if (stMark != null) {
 				start = doc.indexOf(stMark, start) + stMark.length();
 			} else {
 				start += name.length() + delta;
 			}
-			log.debug("valdd : " + doc.substring(start, start+100));
 			int end = doc.indexOf(endMark, start);
 			String str = doc.substring(start, end).replaceAll(",", "");
-			log.debug("valddPPP : " + str);
 			if (strAr != null) {
 				strAr[ind] = str;
 			} else {
@@ -132,19 +143,17 @@ public class StockQuote extends TwStockQuote {
 				default:
 					break;
 				}
-				log.debug("valArSS : " + str);
 				if (str == null || str.equals("N/A") || str.length() > 20) {
 					valAr[ind] = (float) 0.0;
 				} else {
 					valAr[ind] = Float.parseFloat(str) * mult;
 				}
-				log.debug("valAr : " + valAr[ind]);
 			}
 		}
 		
 		return start;
 	}
-/*
+
 	public Quote getQuote() {
 		return quote;
 	}
@@ -152,5 +161,5 @@ public class StockQuote extends TwStockQuote {
 	public void setQuote(Quote quote) {
 		this.quote = quote;
 	}
-*/
+
 }
