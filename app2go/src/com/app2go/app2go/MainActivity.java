@@ -108,7 +108,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	private SpeechRecognizer sr;
 	
 	protected static int totalQuote = 28;
-	private static int totalItem = 5;
+	protected static int totalItem = 5;
 	private static int quoteCount = 0;
 	private static boolean startFlag = true;
 	
@@ -254,7 +254,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				if (quoteCount == totalQuote*totalItem) {
 					quoteCount = 0;
 					if (startFlag) {
-//						SystemClock.sleep(sleepTime*1000);
+						SystemClock.sleep(sleepTime*1000);
 						doReadStockQuote(null);
 					}
 				}

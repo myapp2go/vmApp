@@ -10,11 +10,7 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 	}
 
 	public void readStockQuoteDone(Quote quote) {
-		if (MainActivity.quoteType.equals("US")) {
-			readStockQuoteDone(quote);
-		} else {
-			readTwStockQuoteDone(quote);
-		}
+		readTwStockQuoteDone(quote);
 	}
 
 	public void readTwStockQuoteDone(Quote quote) {
@@ -38,7 +34,11 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 	
 	public void readUsStockQuote(Quote quote) {
 		for (int i = 0; i < quote.getQuoteSize(); i++) {
-			ttsNoMicrophone(quote.getSymbol()[i]);
+			String str = quote.getSymbol()[i];
+			MainActivity.totalItem = str.length() + 4;
+			for (int j = 0; j < str.length(); j++) {
+				ttsNoMicrophone(str.substring(j, j+1));
+			}
 			ttsNoMicrophone("price " + quote.getPrice()[i]);
 			ttsNoMicrophone(" " + quote.getArrow()[i]);
 			ttsNoMicrophone(" " + quote.getChange()[i]);
