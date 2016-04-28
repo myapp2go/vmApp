@@ -5,6 +5,7 @@ public class Quote {
 	private int quoteSize;
 	private String[] symbol;
 	private float[] price;
+	private float[] yesterdayClose;
 	private String[] arrow;
 	private float[] change;
 	private float[] target;
@@ -69,6 +70,14 @@ public class Quote {
 
 	public void setChange(float[] change) {
 		this.change = change;
+	}
+
+	public float[] getYesterdayClose() {
+		return yesterdayClose;
+	}
+
+	public void setYesterdayClose(float[] yesterdayClose) {
+		this.yesterdayClose = yesterdayClose;
 	}
 	
 }

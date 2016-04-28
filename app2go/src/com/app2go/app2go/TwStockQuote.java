@@ -33,7 +33,7 @@ public class TwStockQuote {
 		try {
 //			doc = Jsoup.connect("http://finance.yahoo.com/q?s=" + name).timeout(timeout).get().html();
 //			doc = Jsoup.connect("https://tw.finance.yahoo.com/q/q?s=" + "2723").timeout(timeout).get().html();
-			doc = Jsoup.connect("https://tw.finance.yahoo.com/q/q?s=2723").timeout(timeout).get().html();
+			doc = Jsoup.connect("https://tw.finance.yahoo.com/q/q?s=" + name).timeout(timeout).get().html();
 			System.out.println("AAFF " + doc);
 			
 			int retval = getTwStockQuote(name, doc, ind);
@@ -85,23 +85,23 @@ public class TwStockQuote {
 			start = getValues("nowrap", "b>", "<", 1, null, quote.getPrice(), doc, start, ind);
 
 			// buy
-			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
 			// sold
-			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
 			// buy
-			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
 			// up down
 			start = getValues("nowrap", null, "<", 2, quote.getArrow(), null, doc, start, ind);
 			// quantity
-			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			start = getValues("nowrap", null, "<", 1, null, quote.getVolume(), doc, start, ind);
 			// yesterday close
-			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			start = getValues("nowrap", null, "<", 1, null, quote.getYesterdayClose(), doc, start, ind);
 			// open
-			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
 			// high
-			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
 			// low
-			start = getValues("nowrap", null, "<", 1, null, quote.getPrice(), doc, start, ind);
+			start = getValues("nowrap", null, "<", 1, null, quote.getChange(), doc, start, ind);
 		
 		}
 		return start;
