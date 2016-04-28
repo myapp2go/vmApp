@@ -27,7 +27,10 @@ public class EditQuotesActivity extends Activity {
 				Constants.QUOTE_SHARE_PREFERENCES, MODE_PRIVATE);
 
 		((TextView)findViewById(R.id.sleepTime)).setText(""+MainActivity.sleepTime);
-		((TextView)findViewById(R.id.quoteList)).setText(SharedPreferencesActivity.quoteList);
+		String str = SharedPreferencesActivity.quoteList;
+		if (str != null && str.length() > 1) {
+			((TextView)findViewById(R.id.quoteList)).setText(SharedPreferencesActivity.quoteList);
+		}
 		
 		final Button saveQuoteButton = (Button) this.findViewById(R.id.saveQuote);
 		saveQuoteButton.setOnClickListener(new View.OnClickListener() {

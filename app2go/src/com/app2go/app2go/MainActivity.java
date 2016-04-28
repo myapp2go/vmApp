@@ -105,7 +105,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	private SpeechRecognizer sr;
 	
-	private static int totalQuote = 15;
+	protected static int totalQuote = 28;
+	private static int totalItem = 5;
 	private static int quoteCount = 0;
 	private static boolean startFlag = true;
 	
@@ -247,10 +248,10 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				quoteCount++;
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
 //				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
-				if (quoteCount == totalQuote) {
+				if (quoteCount == totalQuote*totalItem) {
 					quoteCount = 0;
 					if (startFlag) {
-						SystemClock.sleep(sleepTime*1000);
+//						SystemClock.sleep(sleepTime*1000);
 						doReadStockQuote(null);
 					}
 				}
@@ -701,5 +702,12 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
              	System.out.println("09 onEvent " + eventType);
              }
     }
+
+	public static int getTotalQuote() {
+		return totalQuote;
+	}
+	public static void setTotalQuote(int totalQuote) {
+		MainActivity.totalQuote = totalQuote;
+	}
 
 }

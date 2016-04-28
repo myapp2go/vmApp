@@ -74,6 +74,7 @@ System.out.println("path " + folder.getAbsolutePath());
 			quoteList = str.substring(ind+1);
 			log.debug("Quote List: " + quoteList);
 			setupPreferences(quoteList);
+			totalQuote = map.size();
 		}
 	}
 
