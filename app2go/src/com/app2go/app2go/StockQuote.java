@@ -94,16 +94,13 @@ public class StockQuote extends TwStockQuote {
 
 	// unit : %, M, B default <
 	private int getValues(String name, String stMark, String endMark, int delta, String[] strAr, float[] valAr, String doc, int start, int ind) {
-		log.debug(start + "val : " + name + "***" + doc.substring(start, start+100));
 		start = doc.indexOf(name, start);
-		log.debug(start + "NNN : " + name);
 		if (start > 0) {
 			if (stMark != null) {
 				start = doc.indexOf(stMark, start) + stMark.length();
 			} else {
 				start += name.length() + delta;
 			}
-			log.debug("valdd : " + doc.substring(start, start+100));
 			int end = doc.indexOf(endMark, start);
 			String str = doc.substring(start, end).replaceAll(",", "");
 			log.debug("valddPPP : " + str);
@@ -132,13 +129,11 @@ public class StockQuote extends TwStockQuote {
 				default:
 					break;
 				}
-				log.debug("valArSS : " + str);
 				if (str == null || str.equals("N/A") || str.length() > 20) {
 					valAr[ind] = (float) 0.0;
 				} else {
 					valAr[ind] = Float.parseFloat(str) * mult;
 				}
-				log.debug("valAr : " + valAr[ind]);
 			}
 		}
 		
