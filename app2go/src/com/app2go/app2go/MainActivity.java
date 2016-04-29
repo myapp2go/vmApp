@@ -251,7 +251,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 			@Override
 			public synchronized void onDone(String utteranceId) {				
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
+//				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
 				if (mapTTSEndID.equals(utteranceId)) {
 					if (startFlag) {
 						SystemClock.sleep(sleepTime*1000);

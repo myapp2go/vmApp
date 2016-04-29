@@ -26,7 +26,9 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 			}
 //			ttsNoMicrophone(quote.getSymbol()[i]);
 			ttsNoMicrophone("price " + quote.getPrice()[i]);
+			ttsNoMicrophone(quote.getArrow()[i]);
 
+			ttsNoMicrophone(" " + quote.getChange()[i]);
 			
 			if (i == len) {
 				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, true);
@@ -59,31 +61,4 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 		}
 	}
 	
-	public void readUsStockQuoteDone1(Quote quote) {
-		int len = quote.getQuoteSize() - 1;
-		for (int i = 0; i <= len; i++) {
-			ttsNoMicrophone(quote.getSymbol()[i]);
-			ttsNoMicrophone("price " + quote.getPrice()[i]);
-
-			
-			if (i == len) {
-				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, true);
-			} else {
-				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, false);				
-			}
-		}
-	}
-	
-	public void readUsStockQuote1(Quote quote) {
-		for (int i = 0; i < quote.getQuoteSize(); i++) {
-			String str = quote.getSymbol()[i];
-			for (int j = 0; j < str.length(); j++) {
-				ttsNoMicrophone(str.substring(j, j+1));
-			}
-			ttsNoMicrophone("price " + quote.getPrice()[i]);
-			ttsNoMicrophone(" " + quote.getArrow()[i]);
-			ttsNoMicrophone(" " + quote.getChange()[i]);
-			ttsNoMicrophone("volume " + quote.getVolume()[i]/1000);
-		}
-	}
 }
