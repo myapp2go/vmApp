@@ -10,8 +10,30 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 	}
 
 	public void readStockQuoteDone(Quote quote) {
-		// PC522 stackoverflow ???
-		readTwStockQuoteDone(quote);
+		if (MainActivity.preferenceFile.equals(Constants.PREFERENCE_FILE)) {
+			readUsStockQuoteDone(quote);
+		} else {
+			readTwStockQuoteDone(quote);
+		}
+	}
+
+	public void readUsStockQuoteDone(Quote quote) {
+		int len = quote.getQuoteSize() - 1;
+		for (int i = 0; i <= len; i++) {
+			String str = quote.getSymbol()[i];
+			for (int j = 0; j < str.length(); j++) {
+				ttsNoMicrophone(str.substring(j, j+1));
+			}
+//			ttsNoMicrophone(quote.getSymbol()[i]);
+			ttsNoMicrophone("price " + quote.getPrice()[i]);
+
+			
+			if (i == len) {
+				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, true);
+			} else {
+				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, false);				
+			}
+		}
 	}
 
 	public void readTwStockQuoteDone(Quote quote) {
@@ -37,7 +59,22 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 		}
 	}
 	
-	public void readUsStockQuote(Quote quote) {
+	public void readUsStockQuoteDone1(Quote quote) {
+		int len = quote.getQuoteSize() - 1;
+		for (int i = 0; i <= len; i++) {
+			ttsNoMicrophone(quote.getSymbol()[i]);
+			ttsNoMicrophone("price " + quote.getPrice()[i]);
+
+			
+			if (i == len) {
+				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, true);
+			} else {
+				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, false);				
+			}
+		}
+	}
+	
+	public void readUsStockQuote1(Quote quote) {
 		for (int i = 0; i < quote.getQuoteSize(); i++) {
 			String str = quote.getSymbol()[i];
 			for (int j = 0; j < str.length(); j++) {
