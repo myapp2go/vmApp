@@ -15,7 +15,7 @@ public class StockQuoteTask extends AsyncTask {
 	static Logger log = ALogger.getLogger(StockQuoteTask.class);
 
 	TwStockQuote sq = null;
-	String[] quoteList = {"CLMT", "FUEL", "LCI", "ROVI", "CONN"};
+//	String[] quoteList = {"CLMT", "FUEL", "LCI", "ROVI", "CONN"};
 	
 	private StockQuoteActivity stockQuoteActivity;
 	
@@ -31,19 +31,26 @@ public class StockQuoteTask extends AsyncTask {
 	protected Object doInBackground(Object... arg0) {
 //		Map map  = (Map) arg0[0];
 		Map map = SharedPreferencesActivity.map;
-		int len = map.size();
+		int mSize = map.size();
+		int indexSize = StockQuoteActivity.indexList.length;
+		int len = mSize + indexSize;
 				
 		if (MainActivity.preferenceFile.equals(Constants.PREFERENCE_FILE)) {
 			sq = new StockQuote(len);
 		} else {
-			sq = new TwStockQuote(len);
+			sq = new TwStockQuote(mSize);
 		}
 		sq.getQuote().setQuoteSize(len);
 		String[] symbols = setQuotes(map);
 		
-		for (int i = 0; i < len; i++) {
+		for (int i = 0; i < mSize; i++) {
 			log.debug("Quote : " + symbols[i]);
 			sq.getStockQuoteReport(symbols[i], i);
+		}
+
+		for (int i = 0; i < indexSize; i++) {
+			log.debug("list : " + StockQuoteActivity.indexList[i]);
+			sq.getStockIndexReport(StockQuoteActivity.indexList[i], i+mSize);
 		}
 		
 		return null;

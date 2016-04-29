@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public class StockQuoteActivity extends SharedPreferencesActivity {
 
+//	public static String[] indexList = {"^dji"};
+	public static String[] indexList = {"^dji", "^ixic", "^gspc"};
+	
 	@Override
 	protected void doReadStockQuote(ArrayList<String> matches) {
 		new StockQuoteTask(StockQuoteActivity.this).execute(map);		
