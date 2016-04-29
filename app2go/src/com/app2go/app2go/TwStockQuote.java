@@ -8,7 +8,7 @@ import org.jsoup.Jsoup;
 public class TwStockQuote {
 
 	static Logger log = ALogger.getLogger(TwStockQuote.class);
-
+	
 	protected static int timeout = 5000;
 	protected Quote quote;
 
@@ -26,6 +26,10 @@ public class TwStockQuote {
 
 	}
 
+	public String getStockIndexReport(String name, int ind) {
+		return "";
+	}
+		
 	public String getStockQuoteReport(String name, int ind) {
 		String doc = "";
 		name = name.toLowerCase();

@@ -5,14 +5,14 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 
-public class StockQuote extends StockIndex {
+public class StockIndex extends TwStockQuote {
 
-	static Logger log = ALogger.getLogger(StockQuote.class);
+	static Logger log = ALogger.getLogger(StockIndex.class);
 
 //	private static int timeout = 5000;
 //	protected Quote quote;
 
-	public StockQuote(int count) {
+	public StockIndex(int count) {
 		super(count);
 //		quote = new Quote(count);
 	}
@@ -26,7 +26,7 @@ public class StockQuote extends StockIndex {
 
 	}
 
-	public String getStockQuoteReport(String name, int ind) {
+	public String getStockIndexReport(String name, int ind) {
 		String doc = "";
 		name = name.toLowerCase();
 		log.debug("BEF : ");
@@ -34,10 +34,10 @@ public class StockQuote extends StockIndex {
 		try {
 			doc = Jsoup.connect("http://finance.yahoo.com/q?s=" + name).timeout(timeout).get().html();
 
-			int retval = getStockQuote(name, doc, ind);
+			int retval = getStockIndex(name, doc, ind);
 			log.debug("retval : " + retval);
 			if (retval < 0) {
-				getMobileStockQuote(name, doc, ind);
+				getMobileStockIndex(name, doc, ind);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -47,7 +47,7 @@ public class StockQuote extends StockIndex {
 		return doc;
 	}
 
-	private void getMobileStockQuote(String name, String doc, int ind) {
+	private void getMobileStockIndex(String name, String doc, int ind) {
 		int start = 0;
 		String[] sym = quote.getSymbol();
 		sym[ind] = name;
@@ -62,8 +62,26 @@ public class StockQuote extends StockIndex {
 		// Volume:
 		start = getValues(name.toUpperCase()+":longVolume", ">", "<", 2, null, quote.getVolume(), doc, start, ind);
 	}
-/*
-	private void getChange(int ind) {
+
+	private int getStockIndex(String name, String doc, int ind) {
+		int start = 0;
+		String[] sym = quote.getSymbol();
+		sym[ind] = name;
+		// time_rtq_ticker
+		start = getValues("yfs_l10_"+name, null, "<", 2, null, quote.getPrice(), doc, start, ind);
+		if (start > 0) {
+			// Up or Down
+			start = getValues("_arrow", "alt=\"", "\"", 2, quote.getArrow(), null, doc, start, ind);
+			// change
+			start = getValues(">", null, "<", 0, null, quote.getChange(), doc, start, ind);
+			// Volume:
+//			start = getValues("yfs_v53_"+name, null, "<", 2, null, quote.getVolume(), doc, start, ind);
+		
+		}
+		return start;
+	}
+
+	protected void getChange(int ind) {
 		if (quote.getArrow()[ind].charAt(0) == '+') {
 			quote.getChange()[ind] = Float.parseFloat(quote.getArrow()[ind].substring(1));
 			quote.getArrow()[ind] = "Up";
@@ -73,27 +91,9 @@ public class StockQuote extends StockIndex {
 		}
 		
 	}
-*/
-	private int getStockQuote(String name, String doc, int ind) {
-		int start = 0;
-		String[] sym = quote.getSymbol();
-		sym[ind] = name;
-		// time_rtq_ticker
-		start = getValues("yfs_l84_"+name, null, "<", 2, null, quote.getPrice(), doc, start, ind);
-		if (start > 0) {
-			// Up or Down
-			start = getValues("_arrow", "alt=\"", "\"", 2, quote.getArrow(), null, doc, start, ind);
-			// change
-			start = getValues(">", null, "<", 0, null, quote.getChange(), doc, start, ind);
-			// Volume:
-			start = getValues("yfs_v53_"+name, null, "<", 2, null, quote.getVolume(), doc, start, ind);
-		
-		}
-		return start;
-	}
-/*
+
 	// unit : %, M, B default <
-	private int getValues(String name, String stMark, String endMark, int delta, String[] strAr, float[] valAr, String doc, int start, int ind) {
+	protected int getValues(String name, String stMark, String endMark, int delta, String[] strAr, float[] valAr, String doc, int start, int ind) {
 		start = doc.indexOf(name, start);
 		if (start > 0) {
 			if (stMark != null) {
@@ -140,12 +140,4 @@ public class StockQuote extends StockIndex {
 		return start;
 	}
 
-	public Quote getQuote() {
-		return quote;
-	}
-
-	public void setQuote(Quote quote) {
-		this.quote = quote;
-	}
-*/
 }
