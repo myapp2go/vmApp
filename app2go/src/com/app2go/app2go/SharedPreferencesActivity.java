@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 public abstract class SharedPreferencesActivity extends MainActivity {
 
-	static Logger log = ALogger.getLogger(SharedPreferencesActivity.class);
+//	static Logger log = ALogger.getLogger(SharedPreferencesActivity.class);
 	
 	public static Map<String, String> map = new LinkedHashMap<String, String>();
 	public static String quoteList;
@@ -68,7 +68,7 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 			int ind = str.indexOf("#");
 			sleepTime = Integer.parseInt(str.substring(0, ind));
 			quoteList = str.substring(ind+1);
-			log.debug("Quote List: " + quoteList);
+//			log.debug("Quote List: " + quoteList);
 			setupPreferences(quoteList);
 		}
 	}

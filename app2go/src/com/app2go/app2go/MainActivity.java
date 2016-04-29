@@ -41,7 +41,7 @@ import android.widget.Button;
 
 public abstract class MainActivity extends Activity implements OnInitListener  {
 
-	static Logger log = ALogger.getLogger(MainActivity.class);
+//	static Logger log = ALogger.getLogger(MainActivity.class);
 	
 	public static MainActivity mainActivity;
 	

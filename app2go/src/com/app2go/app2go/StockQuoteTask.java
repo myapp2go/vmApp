@@ -12,7 +12,7 @@ import android.os.AsyncTask;
 
 public class StockQuoteTask extends AsyncTask {
 
-	static Logger log = ALogger.getLogger(StockQuoteTask.class);
+//	static Logger log = ALogger.getLogger(StockQuoteTask.class);
 
 	TwStockQuote sq = null;
 //	String[] quoteList = {"CLMT", "FUEL", "LCI", "ROVI", "CONN"};
@@ -44,12 +44,12 @@ public class StockQuoteTask extends AsyncTask {
 		String[] symbols = setQuotes(map);
 		
 		for (int i = 0; i < mSize; i++) {
-			log.debug("Quote : " + symbols[i]);
+//			log.debug("Quote : " + symbols[i]);
 			sq.getStockQuoteReport(symbols[i], i);
 		}
 
 		for (int i = 0; i < indexSize; i++) {
-			log.debug("list : " + StockQuoteActivity.indexList[i]);
+//			log.debug("list : " + StockQuoteActivity.indexList[i]);
 			sq.getStockIndexReport(StockQuoteActivity.indexList[i], i+mSize);
 		}
 		

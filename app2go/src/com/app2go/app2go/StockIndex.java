@@ -7,7 +7,7 @@ import org.jsoup.Jsoup;
 
 public class StockIndex extends TwStockQuote {
 
-	static Logger log = ALogger.getLogger(StockIndex.class);
+//	static Logger log = ALogger.getLogger(StockIndex.class);
 
 //	private static int timeout = 5000;
 //	protected Quote quote;
