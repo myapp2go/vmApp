@@ -63,9 +63,11 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected TextToSpeech tts;
 	protected Intent intent;
 	HashMap<String, String> mapTTS = new HashMap<String, String>();
+	HashMap<String, String> mapTTSEnd = new HashMap<String, String>();
 	HashMap<String, String> mapTTSPhone = new HashMap<String, String>();
 	HashMap<String, String> mapEarcon = new HashMap<String, String>();
 	private static final String mapTTSID = "mapTTSID";
+	private static final String mapTTSEndID = "mapTTSEndID";
 	private static final String mapTTSPhoneID = "mapTTSPhoneID";
 	private static final String mapEarconID = "mapEarconID";
 	
@@ -107,8 +109,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 	private SpeechRecognizer sr;
 	
-	protected static int totalQuote = 28;
-	protected static int totalItem = 5;
+//	protected static int totalQuote = 28;
+//	protected static int totalItem = 5;
 	private static int quoteCount = 0;
 	private static boolean startFlag = true;
 	
@@ -229,6 +231,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	private void initTTS() {		
 		mapTTS.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapTTSID);
+		mapTTSEnd.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapTTSEndID);
 		mapTTSPhone.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapTTSPhoneID);
 		mapEarcon.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, mapEarconID);
 		
@@ -247,11 +250,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 
 			@Override
 			public synchronized void onDone(String utteranceId) {				
-				quoteCount++;
 //				logStr.add("************onDone " + command + " * " + speechDone + " * " + microphoneDone + " * " + microphoneOn + " * " + readBodyDone + " * " + mailCount + " * " + mailSize);
-//				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
-				if (quoteCount == totalQuote*totalItem) {
-					quoteCount = 0;
+				System.out.println(quoteCount + "PC&&&&& " + utteranceId + "***********onDone ");
+				if (mapTTSEndID.equals(utteranceId)) {
 					if (startFlag) {
 						SystemClock.sleep(sleepTime*1000);
 						doReadStockQuote(null);
@@ -546,13 +547,17 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTSPhone);
     	}
     }
-    
+
     protected void ttsNoMicrophone(String msg) {
-//    	System.out.println("******ttsNoMicrophone " + android.os.Process.myTid());
- 
-
+    	ttsNoMicrophone(msg, false);
+    }
+    
+    protected void ttsNoMicrophone(String msg, boolean isEnd) {
+    	if (isEnd) {
+    		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTSEnd);
+    	} else {
     		tts.speak(msg, TextToSpeech.QUEUE_ADD, mapTTS);
-
+    	}
     }
     
     protected void ttsAndPlayEarcon(String msg) {
@@ -704,12 +709,5 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
              	System.out.println("09 onEvent " + eventType);
              }
     }
-
-	public static int getTotalQuote() {
-		return totalQuote;
-	}
-	public static void setTotalQuote(int totalQuote) {
-		MainActivity.totalQuote = totalQuote;
-	}
 
 }

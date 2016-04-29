@@ -10,11 +10,13 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 	}
 
 	public void readStockQuoteDone(Quote quote) {
+		// PC522 stackoverflow ???
 		readTwStockQuoteDone(quote);
 	}
 
 	public void readTwStockQuoteDone(Quote quote) {
-		for (int i = 0; i < quote.getQuoteSize(); i++) {
+		int len = quote.getQuoteSize() - 1;
+		for (int i = 0; i <= len; i++) {
 			ttsNoMicrophone(quote.getSymbol()[i]);
 			ttsNoMicrophone("price " + quote.getPrice()[i]);
 			float diff = quote.getPrice()[i] - quote.getYesterdayClose()[i];
@@ -27,15 +29,17 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 			} else {
 				ttsNoMicrophone(" " + "No Change");
 				ttsNoMicrophone(" " + diff);
+			}if (i == len) {
+				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, true);
+			} else {
+				ttsNoMicrophone("volume " + quote.getVolume()[i]/1000, false);				
 			}
-			ttsNoMicrophone("volume " + quote.getVolume()[i]/1000);
 		}
 	}
 	
 	public void readUsStockQuote(Quote quote) {
 		for (int i = 0; i < quote.getQuoteSize(); i++) {
 			String str = quote.getSymbol()[i];
-			MainActivity.totalItem = str.length() + 4;
 			for (int j = 0; j < str.length(); j++) {
 				ttsNoMicrophone(str.substring(j, j+1));
 			}
