@@ -53,7 +53,7 @@ public class EditQuotesActivity extends Activity {
 		editor.putString("readOPtion", Constants.READ_OPTION_SUBJECT_ONLY);
 		editor.putInt("increment", 10);
 
-		String FILENAME = "pcStockQuotes";
+		String FILENAME = MainActivity.preferenceFile;
 
 		File folder = new File(Environment.getExternalStorageDirectory(),
 				Environment.DIRECTORY_DCIM + "/Quotes");

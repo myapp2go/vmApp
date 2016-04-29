@@ -4,6 +4,9 @@ public final class Constants {
 
 	private static final String Activity_Recognition = "https://github.com/myapp2go/vmApp.git";
 
+	public static final String PREFERENCE_FILE = "pcStockQuotes";
+	public static final String TW_PREFERENCE_FILE = "twStockQuotes";
+	
 	public static final String QUOTE_SHARE_PREFERENCES = "VoiceStockPref";
 
 	public static final int MAIL_PER_PAGE = 1;

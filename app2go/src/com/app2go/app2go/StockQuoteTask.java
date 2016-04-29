@@ -33,7 +33,7 @@ public class StockQuoteTask extends AsyncTask {
 		Map map = SharedPreferencesActivity.map;
 		int len = map.size();
 				
-		if (MainActivity.quoteType.equals("US")) {
+		if (MainActivity.preferenceFile.equals(Constants.PREFERENCE_FILE)) {
 			sq = new StockQuote(len);
 		} else {
 			sq = new TwStockQuote(len);

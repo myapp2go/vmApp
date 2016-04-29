@@ -37,8 +37,7 @@ public abstract class SharedPreferencesActivity extends MainActivity {
 	}
 
 	protected void getPreferenceFromFile() {
-		getPreferenceFromFile("pcStockQuotes");
-//		getPreferenceFromFile("pcMailContacts");
+		getPreferenceFromFile(MainActivity.preferenceFile);
 	}
 	
 	protected void getPreferenceFromFile(String filename) {

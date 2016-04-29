@@ -29,12 +29,8 @@ public class TwStockQuote {
 	public String getStockQuoteReport(String name, int ind) {
 		String doc = "";
 		name = name.toLowerCase();
-		System.out.println("FF ");
 		try {
-//			doc = Jsoup.connect("http://finance.yahoo.com/q?s=" + name).timeout(timeout).get().html();
-//			doc = Jsoup.connect("https://tw.finance.yahoo.com/q/q?s=" + "2723").timeout(timeout).get().html();
 			doc = Jsoup.connect("https://tw.finance.yahoo.com/q/q?s=" + name).timeout(timeout).get().html();
-			System.out.println("AAFF " + doc);
 			
 			int retval = getTwStockQuote(name, doc, ind);
 			if (retval < 0) {

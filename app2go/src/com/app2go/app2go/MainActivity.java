@@ -45,7 +45,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	
 	public static MainActivity mainActivity;
 	
-	public static String quoteType = "US";
+	public static String preferenceFile = Constants.PREFERENCE_FILE;
 	
 	abstract protected void doReadStockQuote(ArrayList<String> matches);
 //	abstract protected void doSearchMail(ArrayList<String> matches);
@@ -119,7 +119,6 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		if (BuildConfig.DEBUG) {
 			logStr.add("[onCreate called]");
 		}
-		log.debug("Hello this is a debug message");
 		
 		mainActivity = this;
 		
