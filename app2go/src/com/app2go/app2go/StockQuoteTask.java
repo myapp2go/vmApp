@@ -41,26 +41,26 @@ public class StockQuoteTask extends AsyncTask {
 			sq = new TwStockQuote(mSize);
 		}
 		sq.getQuote().setQuoteSize(len);
-		String[] symbols = setQuotes(map);
+		String[] symbols = setQuotes(map, indexSize);
 		
 		for (int i = 0; i < mSize; i++) {
-//			log.debug("Quote : " + symbols[i]);
-			sq.getStockQuoteReport(symbols[i], i);
+////			log.debug("Quote : " + symbols[i]);
+			sq.getStockQuoteReport(symbols[i+indexSize], i+indexSize);
 		}
 
 		for (int i = 0; i < indexSize; i++) {
 //			log.debug("list : " + StockQuoteActivity.indexList[i]);
-			sq.getStockIndexReport(StockQuoteActivity.indexList[i], i+mSize);
+			sq.getStockIndexReport(StockQuoteActivity.indexList[i], i);
 		}
 		
 		return null;
 	}
 	
-	private String[] setQuotes(Map map) {
+	private String[] setQuotes(Map map, int indexSize) {
 		String[] symbols = sq.getQuote().getSymbol();
 		float[] targets = sq.getQuote().getTarget();
 		
-		int count = 0;
+		int count = indexSize;
 	    Iterator it = map.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
