@@ -19,7 +19,8 @@ public class House591 extends SinYi {
 	private static int houseTotalCount = 1;
 	private static int houseRegionId = 3;
 	
-	private static int priceInd = 0;
+	// change to 0 or 1 for 800-1200 or 1200-2000
+	private static int priceInd = 1;
 	private static int[] priceAr = {4, 5};
 	private static int[] sharpAr = {1, 2, 3};
 	private static int[] areaAr = {2, 3, 4};
@@ -48,13 +49,13 @@ public class House591 extends SinYi {
 			File f = new File(name);
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			String urlBase = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[constCityZip-100] + "&kind=9&price=4";
+			String urlBase = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[constCityZip-100] + "&kind=9&price=" + priceAr[priceInd];
 			String doc = procHouse591(w, urlBase);
 			houseTotalCount = getHouseTotalCount(doc);
 			housePageCount = houseTotalCount / housePageSize + 1;
 			
 			for (int i = 1; i < housePageCount; i++) {
-				String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (i*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[constCityZip-100] + "&kind=9&price=4";
+				String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (i*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[constCityZip-100] + "&kind=9&price=" + priceAr[priceInd];
 				procHouse591(w, url);
 				System.out.println("Page " + i);
 			}
@@ -72,8 +73,6 @@ public class House591 extends SinYi {
 
 	protected String procHouse591(Writer w, String url) {
 		String doc = "";
-//		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
-//		String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (fileCount*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
 			
 		try {
 			doc = Jsoup.connect(url).timeout(TIMEOUT).get().html();
@@ -185,10 +184,10 @@ public class House591 extends SinYi {
 
 	private boolean getMoreInfo(String hid, String[] info) {
 		String doc = "";
-		String url = "https://m.591.com.tw/mobile-detail.html?type=sale&regionid=3&sectionidStr=37&price=4&room=&area=&kind=9&shape=&firstRow=0&houseId="+hid;
+		String url = "https://m.591.com.tw/mobile-detail.html?type=sale&regionid=3&sectionidStr=37&price=" + priceAr[priceInd] + "&room=&area=&kind=9&shape=&firstRow=0&houseId="+hid;
 			
 		try {
-			doc = Jsoup.connect(url).get().html();
+			doc = Jsoup.connect(url).timeout(TIMEOUT).get().html();
 			
 			int nameInd = doc.indexOf("price_num");
 			if (nameInd > 0) {
