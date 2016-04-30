@@ -561,20 +561,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     }
     
     protected void ttsAndPlayEarcon(String msg) {
-//    	System.out.println("******ttsAndPlayEarcon " + android.os.Process.myTid() +  " * " + msg);
-
-    	if (speechDone != null) {
-    		System.out.println("***********ERROR_03, should not happen. " + speechDone);
-    	} else {
-    		speechDone = mapEarconID;
-
-    		if (handler != null) {
-    			handler.removeCallbacks(checkRecognizer);
-    		}
-    	
-    		tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
-    		startRecognizer(0);
-    	}
+    	tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
     }
     
     private void startDialog1() {

@@ -17,12 +17,41 @@ public class StockQuoteActivity extends SharedPreferencesActivity {
 
 	public void readStockQuoteDone(Quote quote) {
 		if (MainActivity.preferenceFile.equals(Constants.PREFERENCE_FILE)) {
+			checkTarget(quote);
 			readUsStockQuoteDone(quote);
 		} else {
 			readTwStockQuoteDone(quote);
 		}
 	}
 
+	private void checkTarget(Quote quote) {
+		int len = quote.getQuoteSize() - 1;
+		for (int i = indexList.length; i <= len; i++) {
+			if (quote.getAboveTarget()[i] > 0) {
+				if (quote.getPrice()[i] > quote.getAboveTarget()[i]) {
+					ttsAndPlayEarcon("beep21");
+					readSymbol(quote, i);
+					ttsNoMicrophone("price " + quote.getPrice()[i] + " is above target " + quote.getAboveTarget()[i]);
+				}
+			}
+			
+			if (quote.getBelowTarget()[i] > 0) {
+				if (quote.getPrice()[i] < quote.getBelowTarget()[i]) {
+					ttsAndPlayEarcon("beep17");
+					readSymbol(quote, i);
+					ttsNoMicrophone("price " + quote.getPrice()[i] + " is below target " + quote.getBelowTarget()[i]);					
+				}
+			}
+		}
+	}
+
+	public void readSymbol(Quote quote, int i) {
+		String str = quote.getSymbol()[i];
+		for (int j = 0; j < str.length(); j++) {
+			ttsNoMicrophone(str.substring(j, j + 1));
+		}		
+	}
+	
 	public void readUsStockQuoteDone(Quote quote) {
 		indexCount--;
 		int len = quote.getQuoteSize() - 1;
