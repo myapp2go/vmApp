@@ -76,7 +76,7 @@ public class House591 extends SinYi {
 //		String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (fileCount*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=3&sectionidStr=37&kind=9&price=4";
 			
 		try {
-			doc = Jsoup.connect(url).timeout(5000).get().html();
+			doc = Jsoup.connect(url).timeout(TIMEOUT).get().html();
 			
 			int nameInd = doc.indexOf(" data-house-id");
 			int count = 0;

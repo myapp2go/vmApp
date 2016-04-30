@@ -67,7 +67,7 @@ public class HouseYahoo extends House591 {
 		String doc = "";
 
 		try {
-			doc = Jsoup.connect(url).get().html();
+			doc = Jsoup.connect(url).timeout(TIMEOUT).get().html();
 			
 			int nameInd = doc.indexOf("info-title");
 			int count = 0;
