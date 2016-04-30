@@ -8,7 +8,8 @@ public class Quote {
 	private float[] yesterdayClose;
 	private String[] arrow;
 	private float[] change;
-	private float[] target;
+	private float[] aboveTarget;
+	private float[] belowTarget;
 	private float[] volume;
 
 	public Quote(int count) {
@@ -19,7 +20,8 @@ public class Quote {
 		arrow = new String[count];
 		change  = new float[count];
 		volume  = new float[count];
-		target  = new float[count];
+		aboveTarget  = new float[count];
+		belowTarget  = new float[count];
 	}
 	
 	public String[] getSymbol() {
@@ -49,14 +51,6 @@ public class Quote {
 		this.quoteSize = quoteSize;
 	}
 
-	public float[] getTarget() {
-		return target;
-	}
-
-	public void setTarget(float[] target) {
-		this.target = target;
-	}
-
 	public String[] getArrow() {
 		return arrow;
 	}
@@ -79,6 +73,22 @@ public class Quote {
 
 	public void setYesterdayClose(float[] yesterdayClose) {
 		this.yesterdayClose = yesterdayClose;
+	}
+
+	public float[] getAboveTarget() {
+		return aboveTarget;
+	}
+
+	public void setAboveTarget(float[] aboveTarget) {
+		this.aboveTarget = aboveTarget;
+	}
+
+	public float[] getBelowTarget() {
+		return belowTarget;
+	}
+
+	public void setBelowTarget(float[] belowTarget) {
+		this.belowTarget = belowTarget;
 	}
 	
 }

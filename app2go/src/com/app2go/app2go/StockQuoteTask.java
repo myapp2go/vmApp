@@ -58,7 +58,8 @@ public class StockQuoteTask extends AsyncTask {
 	
 	private String[] setQuotes(Map map, int indexSize) {
 		String[] symbols = sq.getQuote().getSymbol();
-		float[] targets = sq.getQuote().getTarget();
+		float[] aboveTargets = sq.getQuote().getAboveTarget();
+		float[] belowTargets = sq.getQuote().getBelowTarget();
 		
 		int count = indexSize;
 	    Iterator it = map.entrySet().iterator();
@@ -66,9 +67,15 @@ public class StockQuoteTask extends AsyncTask {
 	        Map.Entry pair = (Map.Entry)it.next();
 			symbols[count] = (String) pair.getKey();
 			try {
-				targets[count] = Float.parseFloat((String)pair.getValue());
+				String val = (String)pair.getValue();
+				int del = val.indexOf("/");
+				String above = val.substring(0, del);
+				String below = val.substring(del+1);
+				aboveTargets[count] = Float.parseFloat(above);
+				belowTargets[count] = Float.parseFloat(below);
 			} catch (Exception e) {
-				targets[count] = (float)0.0;
+				aboveTargets[count] = (float)0.0;
+				belowTargets[count] = (float)0.0;
 			}
 			count++;
 	    }
