@@ -29,13 +29,13 @@ public class StockIndex extends TwStockQuote {
 	public String getStockIndexReport(String name, int ind) {
 		String doc = "";
 		name = name.toLowerCase();
-		log.debug("BEF : ");
+//		log.debug("BEF : ");
 		
 		try {
 			doc = Jsoup.connect("http://finance.yahoo.com/q?s=" + name).timeout(timeout).get().html();
 
 			int retval = getStockIndex(name, doc, ind);
-			log.debug("retval : " + retval);
+//			log.debug("retval : " + retval);
 			if (retval < 0) {
 				getMobileStockIndex(name, doc, ind);
 			}
@@ -103,36 +103,43 @@ public class StockIndex extends TwStockQuote {
 			}
 			int end = doc.indexOf(endMark, start);
 			String str = doc.substring(start, end).replaceAll(",", "");
-			log.debug("valddPPP : " + str);
-			if (strAr != null) {
-				strAr[ind] = str;
-			} else {
-				int len = str.length();
-				float mult = (float) 1.0;
-				String last = str.substring(len - 1, len);
-				switch (last) {
-				case "%":
-					str = str.substring(0, len - 1);
-					break;
-				case "M":
-					str = str.substring(0, len - 1);
-					break;
-				case "k":
-				case "B":
-					str = str.substring(0, len - 1);
-					mult = (float) 1000.0;
-					break;
-				case "m":
-					str = str.substring(0, len - 1);
-					mult = (float) 1000000.0;
-					break;
-				default:
-					break;
-				}
-				if (str == null || str.equals("N/A") || str.length() > 20) {
+//			log.debug("valddPPP : " + str);
+			if (str == null || str.length() < 2) {
+				if (valAr != null) {
 					valAr[ind] = (float) 0.0;
+				}
+			} else {
+//				log.debug("valddPPPSSS : " + str.length());
+				if (strAr != null) {
+					strAr[ind] = str;
 				} else {
-					valAr[ind] = Float.parseFloat(str) * mult;
+					int len = str.length();
+					float mult = (float) 1.0;
+					String last = str.substring(len - 1, len);
+					switch (last) {
+					case "%":
+						str = str.substring(0, len - 1);
+						break;
+					case "M":
+						str = str.substring(0, len - 1);
+						break;
+					case "k":
+					case "B":
+						str = str.substring(0, len - 1);
+						mult = (float) 1000.0;
+						break;
+					case "m":
+						str = str.substring(0, len - 1);
+						mult = (float) 1000000.0;
+						break;
+					default:
+						break;
+					}
+					if (str == null || str.equals("N/A") || str.length() > 20) {
+						valAr[ind] = (float) 0.0;
+					} else {
+						valAr[ind] = Float.parseFloat(str) * mult;
+					}
 				}
 			}
 		}

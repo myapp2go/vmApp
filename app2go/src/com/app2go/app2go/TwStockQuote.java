@@ -7,7 +7,7 @@ import org.jsoup.Jsoup;
 
 public class TwStockQuote {
 
-	static Logger log = ALogger.getLogger(TwStockQuote.class);
+//	static Logger log = ALogger.getLogger(TwStockQuote.class);
 	
 	protected static int timeout = 5000;
 	protected Quote quote;

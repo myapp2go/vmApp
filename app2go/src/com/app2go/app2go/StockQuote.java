@@ -29,13 +29,13 @@ public class StockQuote extends StockIndex {
 	public String getStockQuoteReport(String name, int ind) {
 		String doc = "";
 		name = name.toLowerCase();
-		log.debug("BEF : ");
+//		log.debug("BEF : ");
 		
 		try {
 			doc = Jsoup.connect("http://finance.yahoo.com/q?s=" + name).timeout(timeout).get().html();
 
 			int retval = getStockQuote(name, doc, ind);
-			log.debug("retval : " + retval);
+//			log.debug("retval : " + retval);
 			if (retval < 0) {
 				getMobileStockQuote(name, doc, ind);
 			}
