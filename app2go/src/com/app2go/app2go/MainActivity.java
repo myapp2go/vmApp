@@ -101,7 +101,8 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 	protected Vector<String> logStr = new Vector<String>();
 	private Button searchMail;
 	private Button offLine;
-	private boolean once = false;
+	private boolean onceStart = false;
+	private boolean onceEnd = false;
 	
 	private String mailAccount = "";
 	private String messageQueue = null;
@@ -139,7 +140,15 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 				quoteCount = 0;
 				ArrayList<String> localArrayList = new ArrayList<String>();
 
+				if (!onceStart) {
+					startDialog();
+					onceStart = true;
+				}
+				
 				doReadStockQuote(localArrayList);
+				System.out.println("onCreate1");
+
+//				startVoiceStock();
 			}
 		});
 		
@@ -167,6 +176,13 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		}
 	}
 
+	public void startVoiceStock() {
+		System.out.println("onCreate2");
+		Intent vsIntent = new Intent(this, MyService.class);
+		System.out.println("onCreate3");
+		startService(vsIntent);
+	}
+	
 	public void startSettings() {
 		Intent ttsIntent = new Intent(this, SettingActivity.class);
 		
@@ -258,9 +274,9 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 						doReadStockQuote(null);
 					}
 				}
-				if (!once) {
-//					endDialog();
-					once = true;
+				if (!onceEnd) {
+					endDialog();
+					onceEnd = true;
 				}
 				/*
 				switch (utteranceId) {
@@ -564,7 +580,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
     	tts.playEarcon(msg, TextToSpeech.QUEUE_ADD, mapEarcon);
     }
     
-    private void startDialog1() {
+    private void startDialog() {
 		processDialog = new ProgressDialog(this);
 		processDialog.setMessage("Start speech engine, please wait...");
 		processDialog.setIndeterminate(false);
@@ -572,7 +588,7 @@ public abstract class MainActivity extends Activity implements OnInitListener  {
 		processDialog.show();
     }
     
-    protected void endDialog1() {
+    protected void endDialog() {
     	if (mailSize > 0) {
     		searchMail.setVisibility(View.VISIBLE);
     	}
