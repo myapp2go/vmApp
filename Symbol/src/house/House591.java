@@ -20,7 +20,7 @@ public class House591 extends SinYi {
 	private static int houseRegionId = 3;
 	
 	// change to 0 or 1 for 800-1200 or 1200-2000
-	private static int priceInd = 1;
+	private static int priceInd = 0;
 	private static int[] priceAr = {4, 5};
 	private static int[] sharpAr = {1, 2, 3};
 	private static int[] areaAr = {2, 3, 4};
