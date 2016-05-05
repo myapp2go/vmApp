@@ -14,26 +14,25 @@ import org.jsoup.Jsoup;
 
 public class HouseYahoo extends House591 {
 	
-	protected static String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + constCityZip + "_House.txt";
 	private static int yahooPageCount = 30;
 	private static int yahooPageSize = 10;
-	protected static String[][] yahooData = new String[constFieldCount][yahooPageCount*yahooPageSize*constExtraCount];
 
 	public static void main(String[] args) {
 		System.out.println("START");
 		HouseYahoo house = new HouseYahoo();
-
-//		house.readHouse(sinyiFile, sinyiData);
-//		house.getSinYi(sinyiFile, sinyiData);		
-		System.out.println("SinYi DONE");
 		
-		house.readHouse(yahooFile, yahooData);
-		house.getHouseYahoo(yahooFile, yahooData);
+		for (int i = 0; i < houseList.length; i++) {
+			setCityZip(houseList[i]);
+			System.out.println("Yahoo " + houseList[i]);
+			
+			yahooPageCount = house.getHousePageCount();
+			String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + getCityZip() + "_House.txt";
+			String[][] yahooData = new String[constFieldCount][yahooPageCount*yahooPageSize*constExtraCount];
+				
+			house.readHouse(yahooFile, yahooData);
+			house.getHouseYahoo(yahooFile, yahooData);
+		}
 		System.out.println("Yahoo DONE");
-		
-//		house.readHouse(houseFile, houseData);
-//		house.getHouse591(houseFile, houseData);
-		System.out.println("House591 DONE");
 	}
 
 	private void getHouseYahoo(String name, String[][] data) {
@@ -43,12 +42,9 @@ public class HouseYahoo extends House591 {
 			
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			String urlBase = "https://tw.v2.house.yahoo.com/object_search_result.html?&homes_type=preowned&zone=3&zip=" + constCityZip + "&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=&page=";
-			String doc = procHouseYahoo(w, urlBase+1);
-			yahooPageCount = getHousePageCount(doc);
-			
-			for (int i = 1; i < yahooPageCount; i++) {
-				procHouseYahoo(w, urlBase+(i+1));
+			String urlBase = getUrlBase();			
+			for (int i = 0; i < yahooPageCount; i++) {
+				procHouseYahoo(w, urlBase+(i+1), data);
 				System.out.println("Page " + i);
 			}
 			
@@ -63,7 +59,7 @@ public class HouseYahoo extends House591 {
 		
 	}
 
-	private String procHouseYahoo(Writer w, String url) {
+	private String procHouseYahoo(Writer w, String url, String[][] data) {
 		String doc = "";
 
 		try {
@@ -73,7 +69,7 @@ public class HouseYahoo extends House591 {
 			int count = 0;
 			while (nameInd > 0 && count < 50) {
 				count++;
-				parseHouseYahoo(doc, w, nameInd);
+				parseHouseYahoo(doc, w, nameInd, data);
 
 				nameInd = doc.indexOf("info-title", nameInd+20);
 			}
@@ -85,7 +81,7 @@ public class HouseYahoo extends House591 {
 		return doc;
 	}
 
-	private void parseHouseYahoo(String doc, Writer w, int ind) {
+	private void parseHouseYahoo(String doc, Writer w, int ind, String[][] data) {
 		try {				
 			int start = doc.indexOf("href", ind) + 6;
 			int end = doc.indexOf("\"", start);
@@ -145,7 +141,7 @@ public class HouseYahoo extends House591 {
 			end = doc.indexOf("<", start);
 			String id = doc.substring(start, end);
 
-			boolean skip = checkID(id, yahooData, constDataCount, info);			
+			boolean skip = checkID(id, data, constDataCount, info);			
 			if (!skip) {
 				if (info[1] == null || info[1].length() < 3) {
 					getMoreInfo(href, info);
@@ -305,16 +301,32 @@ public class HouseYahoo extends House591 {
 		return false;
 	}
 	
-	private int getHousePageCount(String doc) {
-		int ret = -1;
-		int start = doc.indexOf("yom-button last");
-		if (start > 0) {
-			start = doc.indexOf("page", start-30) + 5;
-			int end = doc.indexOf("\"", start);
-			String val =  doc.substring(start, end);
-			ret = Integer.valueOf(val);
+	private int getHousePageCount() {
+		int ret = 1;
+		String doc = "";
+		// first page
+		String url = getUrlBase()+1;
+
+		try {
+			doc = Jsoup.connect(url).timeout(TIMEOUT).get().html();
+
+			int start = doc.indexOf("yom-button last");
+			if (start > 0) {
+				start = doc.indexOf("page", start-30) + 5;
+				int end = doc.indexOf("\"", start);
+				String val =  doc.substring(start, end);
+				ret = Integer.valueOf(val);
+			}
+		} catch (IOException e) {
+			ret = 1;
 		}
 		
 		return ret;
+	}
+	
+	private String getUrlBase() {
+		String urlBase = "https://tw.v2.house.yahoo.com/object_search_result.html?&homes_type=preowned&zone=3&zip=" + getCityZip() + "&price_min=800&price_max=1500&area_min=30&area_max=60&preowned_main_type=1&preowned_sub_type=0&preowned_keyword=&homes_search=&page=";
+		
+		return urlBase;
 	}
 }

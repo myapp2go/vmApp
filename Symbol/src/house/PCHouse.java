@@ -51,7 +51,10 @@ public class PCHouse {
 		250,  50, 101, 101, 101, 101, 101, 101, 101, 101
 		};
 	
+//	protected static int[] houseList = {234, 235, 242, 244};
+	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
 	protected static int constCityZip = 221;
+	protected static int cityZip = 221;
 	
 	protected static int constFieldCount = 17;
 	protected static int constExtraCount = 4;
@@ -213,6 +216,14 @@ public class PCHouse {
 		}
 		
 		return Integer.parseInt(tmp);
+	}
+
+	public static int getCityZip() {
+		return cityZip;
+	}
+
+	public static void setCityZip(int cityZip) {
+		PCHouse.cityZip = cityZip;
 	}
 }
 
