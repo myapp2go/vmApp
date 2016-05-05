@@ -15,17 +15,23 @@ import java.util.StringTokenizer;
 
 public class SinYi extends PCHouse {
 
-	private static int sinyiPageCount = 7;
+	private static int sinyiPageCount = 50;
 	private static int sinyiPageSize = 30;
-	protected static String[][] sinyiData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
-	protected static String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+constCityZip+"_House.txt";
 	
 	public static void main(String[] args) {
-		System.out.println("SinYi Main");
+		System.out.println("SinYi Start");
 		SinYi house = new SinYi();
-		
-		house.readHouse(sinyiFile, sinyiData);
-		house.getSinYi(sinyiFile, sinyiData);
+	
+		for (int i = 0; i < houseList.length; i++) {
+			setCityZip(houseList[i]);
+			System.out.println("Yahoo " + houseList[i]);
+
+			String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+getCityZip()+"_House.txt";
+			String[][] sinyiData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
+
+			house.readHouse(sinyiFile, sinyiData);
+			house.getSinYi(sinyiFile, sinyiData);
+		}
 		System.out.println("SinYi Done");
 	}
 	
@@ -37,7 +43,8 @@ public class SinYi extends PCHouse {
 
 			boolean found = true;
 			for (int i = 1; found && i <= sinyiPageCount; i++) {
-				found = procSinYi(w, i);
+				found = procSinYi(w, i, data);
+				System.out.println("Page " + i);
 			}
 			postProc(w, data, constDataCount);
 			
@@ -49,15 +56,14 @@ public class SinYi extends PCHouse {
 		}	
 	}
 	
-	private boolean procSinYi(Writer w, int fileCount) {
+	private boolean procSinYi(Writer w, int fileCount, String[][] data) {
 		boolean found = true;
 		StringBuffer doc = new StringBuffer();
-        File f = new File("C:\\logs\\house\\" + constCityZip + "_" + fileCount + ".html");
-
+        File f = new File("C:\\logs\\house\\" + getCityZip() + "_" + fileCount + ".html");
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-			        new FileInputStream("C:\\logs\\house\\" + constCityZip + "_" + fileCount + ".html"), "UTF-8"));
+			        new FileInputStream("C:\\logs\\house\\" + getCityZip() + "_" + fileCount + ".html"), "UTF-8"));
 			
 			String sCurrentLine;
 			while ((sCurrentLine = br.readLine()) != null) {
@@ -75,7 +81,7 @@ public class SinYi extends PCHouse {
 		int boxInd = doc.indexOf("item_titlebox");
 		while (nameInd > 0) {
 			if (nameInd != boxInd) {
-				parseSinYi(doc, w, nameInd);
+				parseSinYi(doc, w, nameInd, data);
 			}
 			boxInd = doc.indexOf("item_titlebox", nameInd+20);
 			nameInd = doc.indexOf("item_title", nameInd+20);
@@ -84,7 +90,7 @@ public class SinYi extends PCHouse {
 		return found;
 	}
 
-	private void parseSinYi(StringBuffer doc, Writer w, int nameInd) {
+	private void parseSinYi(StringBuffer doc, Writer w, int nameInd, String[][] data) {
 		int start = doc.indexOf("html-attribute-value", nameInd) + 22;
 		int end = doc.indexOf(" ", start);		
 		
@@ -92,7 +98,7 @@ public class SinYi extends PCHouse {
 			String id = doc.substring(end+2, end+9);
 
 			String[] info = new String[constInfoSize];
-			boolean skip = checkID(id, sinyiData, constDataCount, info);
+			boolean skip = checkID(id, data, constDataCount, info);
 			if (!skip) {
 				// title
 				String title = doc.substring(start, end);

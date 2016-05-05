@@ -58,7 +58,7 @@ public class House591 extends SinYi {
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
 			for (int i = 0; i < housePageCount; i++) {
-				String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (i*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[constCityZip-100] + "&kind=9&price=" + priceAr[priceInd];
+				String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (i*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[getCityZip()-100] + "&kind=9&price=" + priceAr[priceInd];
 				procHouse591(w, url, data);
 				System.out.println("Page " + i);
 			}

@@ -51,17 +51,16 @@ public class PCHouse {
 		250,  50, 101, 101, 101, 101, 101, 101, 101, 101
 		};
 
-//	protected static int[] houseList = {235};
+	protected static int[] houseList = {100, 234, 235, 241};
 //	protected static int[] houseList = {234, 235, 242, 244};
-	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
-	protected static int constCityZip = 221;
-	protected static int cityZip = 221;
+//	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
+//	protected static int constCityZip = 221;
+	protected static int cityZip = 234;
 	
 	protected static int constFieldCount = 17;
 	protected static int constExtraCount = 4;
 	protected static int shareLinkCount = 2;
 	protected static int constDataCount = 2;
-	protected static int constPageCount = 30;
 	public static int constInfoSize = 7;
 	
 	protected static String watchMark = "W";
