@@ -30,7 +30,7 @@ import org.jsoup.Jsoup;
 
 public class PCHouse {
 
-	protected static int TIMEOUT = 10000;
+	protected static int TIMEOUT = 15000;
 	
 	protected static int[] constZip = {
 		  1,   2,   2,   2,   3,   4,   5,   1,   6, 101,
@@ -50,7 +50,8 @@ public class PCHouse {
 		240,  43,  44,  45,  46, 101, 101,  47,  48, 101,
 		250,  50, 101, 101, 101, 101, 101, 101, 101, 101
 		};
-	
+
+//	protected static int[] houseList = {235};
 //	protected static int[] houseList = {234, 235, 242, 244};
 	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
 	protected static int constCityZip = 221;

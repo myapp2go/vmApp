@@ -26,37 +26,40 @@ public class House591 extends SinYi {
 	private static int[] areaAr = {2, 3, 4};
 	private static int[] ageAr = {1, 2, 3, 4};
 
-	protected static String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591_" + constCityZip + "_" + priceAr[priceInd] + "_House.txt";
-
-	protected static String[][] houseData = new String[constFieldCount][housePageCount*housePageSize*constExtraCount];
-
 	public static void main(String[] args) {	
 		System.out.println("House591 MAIN");
 		House591 house = new House591();
 		
-		house.readHouse(houseFile, houseData);
-		house.getHouse591(houseFile, houseData);
+		for (int i = 0; i < houseList.length; i++) {
+			setCityZip(houseList[i]);
+			if (houseList[i] < 117) {
+				houseRegionId = 1;
+			}
+			System.out.println("House591 " + houseList[i]);
+			
+			houseTotalCount = getHouseTotalCount();
+			housePageCount = houseTotalCount / housePageSize + 1;
+
+			String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591_" + getCityZip() + "_" + priceAr[priceInd] + "_House.txt";
+			String[][] houseData = new String[constFieldCount][housePageCount*housePageSize*constExtraCount];
+			
+			house.readHouse(houseFile, houseData);
+			house.getHouse591(houseFile, houseData);
+		}
+
 		System.out.println("House591 Done");
 	}
 	
 	void getHouse591(String name, String[][] data) {
 		try {
 			shareLinkCount = 2;
-			if (constCityZip < 117) {
-				houseRegionId = 1;
-			}
 			
 			File f = new File(name);
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
-			String urlBase = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[constCityZip-100] + "&kind=9&price=" + priceAr[priceInd];
-			String doc = procHouse591(w, urlBase);
-			houseTotalCount = getHouseTotalCount(doc);
-			housePageCount = houseTotalCount / housePageSize + 1;
-			
-			for (int i = 1; i < housePageCount; i++) {
+			for (int i = 0; i < housePageCount; i++) {
 				String url = "https://m.591.com.tw/mobile-list.html?firstRow=" + (i*housePageSize) + "&totalRows=" + houseTotalCount + "&%1=&version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[constCityZip-100] + "&kind=9&price=" + priceAr[priceInd];
-				procHouse591(w, url);
+				procHouse591(w, url, data);
 				System.out.println("Page " + i);
 			}
 			
@@ -70,8 +73,7 @@ public class House591 extends SinYi {
 		}	
 	}
 
-
-	protected String procHouse591(Writer w, String url) {
+	protected String procHouse591(Writer w, String url, String[][] data) {
 		String doc = "";
 			
 		try {
@@ -81,7 +83,7 @@ public class House591 extends SinYi {
 			int count = 0;
 			while (nameInd > 0 && count < 50) {
 				count++;
-				parseHouse591(doc, w, nameInd);
+				parseHouse591(doc, w, nameInd, data);
 
 				nameInd = doc.indexOf(" data-house-id", nameInd+20);
 			}
@@ -93,14 +95,14 @@ public class House591 extends SinYi {
 		return doc;
 	}
 
-	private void parseHouse591(String doc, Writer w, int ind) {
+	private void parseHouse591(String doc, Writer w, int ind, String[][] data) {
 		try {
 			int start = ind+16;
 			int end = doc.indexOf("\"", start);
 			String id = doc.substring(start, end);	
 			String[] info = new String[constInfoSize];
 
-			boolean skip = checkID(id, houseData, constDataCount, info);
+			boolean skip = checkID(id, data, constDataCount, info);
 			if (!skip) {
 				if (info[1] == null || info[2] == null) {
 					getMoreInfo(id, info);
@@ -221,12 +223,24 @@ public class House591 extends SinYi {
 		return false;
 	}
 	
-	private int getHouseTotalCount(String doc) {
-		int start = doc.indexOf("total_count") + 10;
-		start = doc.indexOf("value", start) + 7;
-		int end = doc.indexOf("\"", start);
-		String val =  doc.substring(start, end);
+	private static int getHouseTotalCount() {
+		int ret = 1;
+		String doc = "";
+		String url = "https://m.591.com.tw/mobile-list.html?version=1&type=sale&regionid=" + houseRegionId + "&sectionidStr=" + constZip[getCityZip()-100] + "&kind=9&price=" + priceAr[priceInd];
 		
-		return Integer.valueOf(val);
+		try {
+			doc = Jsoup.connect(url).timeout(TIMEOUT).get().html();
+			
+			int start = doc.indexOf("total_count") + 10;
+			start = doc.indexOf("value", start) + 7;
+			int end = doc.indexOf("\"", start);
+			String val =  doc.substring(start, end);
+			ret = Integer.valueOf(val);
+		} catch (IOException e) {
+			ret = 1;
+		}
+		
+		return ret;
 	}
+	
 }
