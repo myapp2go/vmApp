@@ -1,19 +1,19 @@
-﻿
-P	S2929273	6F/15F	8,518萬元	8,518萬元	3年	4房2廳	71.51坪	71.51坪	71.51坪	台北市中山區-長安東路二段	長安一品:台北市中心交通便利	Sun Apr 03 04:25:45 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2929273	=HYPERLINK(N2)	
-P	S2936125	6F/12F	5,099萬元	5,099萬元	35年	4房2廳	57.3坪	57.3坪	57.3坪	台北市大安區-安和路二段	日光大廈~正安和路上邊間面樹海~全新拉皮	Sun Apr 03 04:25:46 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2936125	=HYPERLINK(N3)	
-P	S3011252	4F/4F	3,368萬元	3,368萬元	42年	4房3廳	31.92坪	31.92坪	31.92坪	台北市松山區-民生東路四段	民生藝樹頂家--福斯地產	Sun Apr 03 04:25:46 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3011252	=HYPERLINK(N4)	
-P	S3016394	5F/12F	2,600萬元	2,600萬元	26年	3房2廳	38.2坪	38.2坪	38.2坪	台北市南港區-興華路	南港環球購物中心即將在今年第三季完工	Sun Apr 03 04:25:47 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3016394	=HYPERLINK(N5)	
-P	S3043214	1F/1F	18,993萬元	18,993萬元	11年	5房2廳	412坪	412坪	412坪	台北市文山區-指南路三段	貓纜田園-綠意盎然，視野寬廣，景觀怡人	Sun Apr 03 04:25:48 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3043214	=HYPERLINK(N6)	
-N	S2960657	10F/14F	850萬元	850萬元	8年	1房1廳	10.02坪	10.02坪	10.02坪	摩登站前 台北市中正區-開封街一段	[售]台北車站.新光三越優質學區電梯樓	Sun Apr 03 04:25:48 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2960657	=HYPERLINK(N7)	
-P	S3003412	3F/5F	1,120萬元	1,120萬元	11年	3房1廳	10.7坪	10.7坪	10.7坪	忠孝新生捷運 台北市中正區-臨沂街	【我最便宜】忠孝新生捷運電梯3房	Sun Apr 03 04:25:49 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3003412	=HYPERLINK(N8)	
-N	S3020261	10F/14F	850萬元	850萬元	9年	1房1廳	10.004坪	10.004坪	10.004坪	摩登站前 台北市中正區-開封街一段	三大捷運交匯，博愛特區超低總價小資宅來了	Sun Apr 03 04:25:49 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3020261	=HYPERLINK(N9)	
-N	S3037260	5F/10F	1,080萬元	1,080萬元	38年	1房1廳	14.22坪	14.22坪	14.22坪	泰華商業大樓 台北市中正區-博愛路	～博愛站前美廈～適設籍收租～置產首選～	Sun Apr 03 04:25:50 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3037260	=HYPERLINK(N10)	
-N	S2968020	8F/14F	1,200萬元	1,200萬元	7年	1房1廳	12.53坪	12.53坪	12.53坪	中正香榭 台北市中正區-和平西路一段	中正香榭設籍美屋-台灣房屋南京龍江店	Sun Apr 03 04:25:51 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2968020	=HYPERLINK(N11)	
-N	S2955874	11F/11F	980萬元	980萬元	30年	1房1廳	11.5坪	11.5坪	11.5坪	台北市中正區-羅斯福路一段	豪宅阿亮~建中學區黃金套房	Sun Apr 03 04:25:51 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2955874	=HYPERLINK(N12)	
-N	S2971167	6F/7F	890萬元	890萬元	36年	2房1廳	13.09坪	13.09坪	13.09坪	台北市中正區-中華路二段	青年公園2房華廈（新婚家庭最愛）	Sun Apr 03 04:25:52 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2971167	=HYPERLINK(N13)	
-P	S2966103	2F/4F	1,070萬元	1,070萬元	49年	1房1廳	10.54坪	10.54坪	10.54坪	台北市中正區-林森南路	附小中正學區明亮公寓	Sun Apr 03 04:25:52 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2966103	=HYPERLINK(N14)	
-N	S3037828	14F/15F	980萬元	980萬元	9年	1房1廳	9.88坪	9.88坪	9.88坪	師大麗緻 台北市中正區-羅斯福路二段	新貴單身最愛~古亭雙捷運出口~漂亮小豪邸	Sun Apr 03 04:25:53 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3037828	=HYPERLINK(N15)	
-N	S2930623	10F/11F	1,080萬元	1,080萬元	20年	1房1廳	12.43坪	12.43坪	12.43坪	中正金鑽 台北市中正區-南昌路二段	古亭捷運捷運高樓景觀	Sun Apr 03 04:25:54 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2930623	=HYPERLINK(N16)	
-N	S2836163	5F/7F	850萬元	850萬元	36年	2房1廳	13.23坪	13.23坪	13.23坪	國盛國宅 台北市中正區-中華路二段	中正區-國盛國宅-電梯-精緻2房	Sun Apr 03 04:25:54 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2836163	=HYPERLINK(N17)	
-N	S2956018	11F/13F	1,088萬元	1,088萬元	18年	1房1廳	11.61坪	11.61坪	11.61坪	台北市中正區-汀州路三段	台大鐘鼎高樓兩房買賣雙方各1%6610	Sun Apr 03 04:25:55 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2956018	=HYPERLINK(N18)	
-N	S2952352	8F/14F	1,200萬元	1,200萬元	7年	1房1廳	12.53坪	12.53坪	12.53坪	中正香榭 台北市中正區-和平西路一段	中正香榭設籍美屋-台灣房屋南京龍江洪德汾	Sun Apr 03 04:25:56 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2952352	=HYPERLINK(N19)	
+
+S	S2929273	6F/15F	8,518萬元	8,518萬元	3年	4房2廳	71.51坪	71.51坪	71.51坪	台北市中山區-長安東路二段	長安一品:台北市中心交通便利	Sun Apr 03 04:25:45 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2929273	=HYPERLINK(N2)	Wed May 04 22:25:30 PDT 2016	
+S	S2936125	6F/12F	5,099萬元	5,099萬元	35年	4房2廳	57.3坪	57.3坪	57.3坪	台北市大安區-安和路二段	日光大廈~正安和路上邊間面樹海~全新拉皮	Sun Apr 03 04:25:46 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2936125	=HYPERLINK(N3)	Wed May 04 22:25:30 PDT 2016	
+S	S3011252	4F/4F	3,368萬元	3,368萬元	42年	4房3廳	31.92坪	31.92坪	31.92坪	台北市松山區-民生東路四段	民生藝樹頂家--福斯地產	Sun Apr 03 04:25:46 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3011252	=HYPERLINK(N4)	Wed May 04 22:25:30 PDT 2016	
+S	S3016394	5F/12F	2,600萬元	2,600萬元	26年	3房2廳	38.2坪	38.2坪	38.2坪	台北市南港區-興華路	南港環球購物中心即將在今年第三季完工	Sun Apr 03 04:25:47 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3016394	=HYPERLINK(N5)	Wed May 04 22:25:30 PDT 2016	
+S	S3043214	1F/1F	18,993萬元	18,993萬元	11年	5房2廳	412坪	412坪	412坪	台北市文山區-指南路三段	貓纜田園-綠意盎然，視野寬廣，景觀怡人	Sun Apr 03 04:25:48 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3043214	=HYPERLINK(N6)	Wed May 04 22:25:30 PDT 2016	
+S	S2960657	10F/14F	850萬元	850萬元	8年	1房1廳	10.02坪	10.02坪	10.02坪	摩登站前 台北市中正區-開封街一段	[售]台北車站.新光三越優質學區電梯樓	Sun Apr 03 04:25:48 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2960657	=HYPERLINK(N7)	Wed May 04 22:25:30 PDT 2016	
+S	S3003412	3F/5F	1,120萬元	1,120萬元	11年	3房1廳	10.7坪	10.7坪	10.7坪	忠孝新生捷運 台北市中正區-臨沂街	【我最便宜】忠孝新生捷運電梯3房	Sun Apr 03 04:25:49 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3003412	=HYPERLINK(N8)	Wed May 04 22:25:30 PDT 2016	
+S	S3020261	10F/14F	850萬元	850萬元	9年	1房1廳	10.004坪	10.004坪	10.004坪	摩登站前 台北市中正區-開封街一段	三大捷運交匯，博愛特區超低總價小資宅來了	Sun Apr 03 04:25:49 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3020261	=HYPERLINK(N9)	Wed May 04 22:25:30 PDT 2016	
+S	S3037260	5F/10F	1,080萬元	1,080萬元	38年	1房1廳	14.22坪	14.22坪	14.22坪	泰華商業大樓 台北市中正區-博愛路	～博愛站前美廈～適設籍收租～置產首選～	Sun Apr 03 04:25:50 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3037260	=HYPERLINK(N10)	Wed May 04 22:25:30 PDT 2016	
+S	S2968020	8F/14F	1,200萬元	1,200萬元	7年	1房1廳	12.53坪	12.53坪	12.53坪	中正香榭 台北市中正區-和平西路一段	中正香榭設籍美屋-台灣房屋南京龍江店	Sun Apr 03 04:25:51 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2968020	=HYPERLINK(N11)	Wed May 04 22:25:30 PDT 2016	
+S	S2955874	11F/11F	980萬元	980萬元	30年	1房1廳	11.5坪	11.5坪	11.5坪	台北市中正區-羅斯福路一段	豪宅阿亮~建中學區黃金套房	Sun Apr 03 04:25:51 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2955874	=HYPERLINK(N12)	Wed May 04 22:25:30 PDT 2016	
+S	S2971167	6F/7F	890萬元	890萬元	36年	2房1廳	13.09坪	13.09坪	13.09坪	台北市中正區-中華路二段	青年公園2房華廈（新婚家庭最愛）	Sun Apr 03 04:25:52 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2971167	=HYPERLINK(N13)	Wed May 04 22:25:30 PDT 2016	
+S	S2966103	2F/4F	1,070萬元	1,070萬元	49年	1房1廳	10.54坪	10.54坪	10.54坪	台北市中正區-林森南路	附小中正學區明亮公寓	Sun Apr 03 04:25:52 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2966103	=HYPERLINK(N14)	Wed May 04 22:25:30 PDT 2016	
+S	S3037828	14F/15F	980萬元	980萬元	9年	1房1廳	9.88坪	9.88坪	9.88坪	師大麗緻 台北市中正區-羅斯福路二段	新貴單身最愛~古亭雙捷運出口~漂亮小豪邸	Sun Apr 03 04:25:53 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S3037828	=HYPERLINK(N15)	Wed May 04 22:25:30 PDT 2016	
+S	S2930623	10F/11F	1,080萬元	1,080萬元	20年	1房1廳	12.43坪	12.43坪	12.43坪	中正金鑽 台北市中正區-南昌路二段	古亭捷運捷運高樓景觀	Sun Apr 03 04:25:54 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2930623	=HYPERLINK(N16)	Wed May 04 22:25:30 PDT 2016	
+S	S2836163	5F/7F	850萬元	850萬元	36年	2房1廳	13.23坪	13.23坪	13.23坪	國盛國宅 台北市中正區-中華路二段	中正區-國盛國宅-電梯-精緻2房	Sun Apr 03 04:25:54 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2836163	=HYPERLINK(N17)	Wed May 04 22:25:30 PDT 2016	
+S	S2956018	11F/13F	1,088萬元	1,088萬元	18年	1房1廳	11.61坪	11.61坪	11.61坪	台北市中正區-汀州路三段	台大鐘鼎高樓兩房買賣雙方各1%6610	Sun Apr 03 04:25:55 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2956018	=HYPERLINK(N18)	Wed May 04 22:25:30 PDT 2016	
+S	S2952352	8F/14F	1,200萬元	1,200萬元	7年	1房1廳	12.53坪	12.53坪	12.53坪	中正香榭 台北市中正區-和平西路一段	中正香榭設籍美屋-台灣房屋南京龍江洪德汾	Sun Apr 03 04:25:56 PDT 2016	https://m.591.com.tw/mobile-detail.html?houseId=S2952352	=HYPERLINK(N19)	Wed May 04 22:25:30 PDT 2016	
