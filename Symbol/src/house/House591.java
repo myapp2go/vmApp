@@ -40,7 +40,7 @@ public class House591 extends SinYi {
 			houseTotalCount = getHouseTotalCount();
 			housePageCount = houseTotalCount / housePageSize + 1;
 
-			String houseFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\house591_" + getCityZip() + "_" + priceAr[priceInd] + "_House.txt";
+			String houseFile = "C:\\Users\\" + GITLOC + "\\git\\vmApp\\Symbol\\src\\data\\house591_" + getCityZip() + "_" + priceAr[priceInd] + "_House.txt";
 			String[][] houseData = new String[constFieldCount][housePageCount*housePageSize*constExtraCount];
 			
 			house.readHouse(houseFile, houseData);

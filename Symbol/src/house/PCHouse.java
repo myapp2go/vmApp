@@ -1,6 +1,6 @@
 package house;
 /**
- * File get from GIT need to convert tp UTF-8 format
+ * File get from GIT need to convert to UTF-8 format
  * File for excel *.csv need to save as unicode
  * 
  * 1. read passMARK -> passIDMark
@@ -30,6 +30,8 @@ import org.jsoup.Jsoup;
 
 public class PCHouse {
 
+	protected static String GITLOC = "mspau";
+	
 	protected static int TIMEOUT = 15000;
 	
 	protected static int[] constZip = {
@@ -51,7 +53,7 @@ public class PCHouse {
 		250,  50, 101, 101, 101, 101, 101, 101, 101, 101
 		};
 
-	protected static int[] houseList = {100, 234, 235, 241};
+	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116, 234, 235, 242, 244};
 //	protected static int[] houseList = {234, 235, 242, 244};
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
 //	protected static int constCityZip = 221;

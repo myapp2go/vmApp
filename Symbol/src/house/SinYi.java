@@ -26,7 +26,7 @@ public class SinYi extends PCHouse {
 			setCityZip(houseList[i]);
 			System.out.println("Yahoo " + houseList[i]);
 
-			String sinyiFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+getCityZip()+"_House.txt";
+			String sinyiFile = "C:\\Users\\" + GITLOC + "\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+getCityZip()+"_House.txt";
 			String[][] sinyiData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
 
 			house.readHouse(sinyiFile, sinyiData);

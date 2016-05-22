@@ -26,7 +26,7 @@ public class HouseYahoo extends House591 {
 			System.out.println("Yahoo " + houseList[i]);
 			
 			yahooPageCount = house.getHousePageCount();
-			String yahooFile = "C:\\Users\\mspau\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + getCityZip() + "_House.txt";
+			String yahooFile = "C:\\Users\\" + GITLOC + "\\git\\vmApp\\Symbol\\src\\data\\houseYahoo_" + getCityZip() + "_House.txt";
 			String[][] yahooData = new String[constFieldCount][yahooPageCount*yahooPageSize*constExtraCount];
 				
 			house.readHouse(yahooFile, yahooData);
