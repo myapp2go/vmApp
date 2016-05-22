@@ -1,0 +1,11 @@
+LEG 58
+
+OXY 29
+
+TROW 11
+
+WBA 31
+
+164643 IRA
+
+amlp 232

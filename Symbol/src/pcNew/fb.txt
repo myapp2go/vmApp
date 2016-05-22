@@ -1,0 +1,30 @@
+git clone git://github.com/facebook/facebook-android-sdk.git
+
+keytool.exe -exportcert -alias androiddebugkey -keystore "C:\Users\paul\.android\debug.keystore" | "C:\tools\openssl\bin\openssl" sha1 -binary | C:\tools\openssl\bin\openssl base64
+
+keytool -export -alias androiddebugkey -keystore "C:\Users\paul\.android\debug.keystore" | C:\tools\openssl\bin\openssl.exe sha1 -binary | C:\tools\openssl\bin\openssl.exe enc -a -e
+password : android
+UIs/fFmg/vJQwcdmP++jOu0RFLs=
+
+
+http://www.androidhive.info/2012/03/android-facebook-connect-tutorial/
+
+https://code.google.com/p/openssl-for-windows/downloads/detail?name=openssl-0.9.8k_WIN32.zip&can=2&q=
+
+add C:\applications\openssl\bin to env PATH
+
+keytool -exportcert -alias androiddebugkey -keystore "C:\Users\paul\.android\debug.keystore" | openssl sha1 -binary | openssl base64
+password android
+4VB+CaVyTduDAanlbdTec6a3LqE=
+
+APPID 369813666558221
+
+git clone git://github.com/tejas123/android-facebook-integration-tutorial.git
+
+https://developers.facebook.com/docs/android/downloads
+
+https://dl.google.com/android/adt/adt-bundle-windows-x86_64-20140702.zip
+
+second
+KrdYfFDf5uP096Sh54V6m15GDXs=
+APPID 904139002957708

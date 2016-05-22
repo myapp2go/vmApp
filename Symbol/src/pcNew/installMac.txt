@@ -1,0 +1,23 @@
+1. install OS, option clean HD
+2. password empty
+3. Update software (java 1.5, 1.6, 1,7)
+4. install eclipse (jee), tomcat, maven move to documents
+5. create .bash_profile
+6. update maven config
+7. /Users/paulchen/Documents/workspace
+8. /Users/paulchen/.m2
+9. eclipse software update
+10. import tutorials
+11. Edit Resource.java (config.property)
+12. File - Property - Add lib/Jar
+13. show Server View
+14. File - New - Other - Server
+15. setup tomcat
+16. install mysql
+17. From Eclipse - new connection profile (icon next to sql command)
+18. install MS office
+19. install CS4
+
+20. Firefox 3.6.28.dmg
+29. uninstall_flash_player_osx_10,4,dmg
+30. flashplayer10_1r102_64_ub_mac.dmg

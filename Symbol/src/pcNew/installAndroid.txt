@@ -1,0 +1,18 @@
+1. http://developer.android.com/sdk/index.html
+X adt-bundle-windows-x86_64-20140702.zip.z37s3i9
+
+X ANDROID_SDK_HOME
+X C:\applications\android-sdk-windows
+
+installer_r23.0.2-windows.exe 
+ANDROID_SDK_HOME 
+C:\applications\adt-bundle-windows-x86_64-20140702\sdk
+C:\dlsrc\adt-bundle-windows-x86_64-20140702\sdk
+C:\Program Files (x86)\Android\android-sdk
+
+from eclipse
+Android SDK Manager -> install
+
+http://www.codedata.com.tw/mobile/android-tutorial-the-1st-class-2-android-sdk/
+
+http://androidtutorialforbeginners.com/option-menu-and-action-bar/

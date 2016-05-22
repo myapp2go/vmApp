@@ -1,0 +1,43 @@
+Check if JSTL version is supported for this servlet version: 2.5->1.2 JSTL or 2.4->1.1 JSTL
+
+Eclipse deploy -  classNotFound
+    right click on your project and choose properties.
+    click on Deployement Assembly.
+    click add
+    click on "Java Build Path Entries"
+    select Maven Dependencies"
+    click Finish.
+
+Hibernate:
+@Entity is required for annonation
+
+reference to class, need to define @OneToOne or @OneToMany
+
+Need to use AnnotationConfiguration not the Configuration to build sessionFactory
+ 
+Required
+	@Id
+	@GeneratedValue
+	@Column(name="uid")
+	private Integer id;
+
+openshift
+rhc port-forward -a springtravel
+
+eclipse db property
+database
+jdbc:mysql://127.0.0.1:3307/springtravel
+adminiJZeUZq
+f1BkbnY2zIVR
+
+portlet
+mvn archetype:generate (300, 374)
+
+mvn dependency:sources
+
+build app for tomcat
+mvn -Dwtpversion=1.0 -DdownloadSources=true eclipse:eclipse
+
+http://springtravel-paulchen522.rhcloud.com
+
+mvn eclipse:clean eclipse:eclipse
