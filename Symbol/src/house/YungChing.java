@@ -78,22 +78,37 @@ public class YungChing extends PCHouse {
 
 		int nameInd = doc.indexOf("m-list-item");
 		int boxInd = -99; doc.indexOf("item_titlebox");
+		String yearArray[][][] = new String[2][2][100];
+		yearArray[0][0][0] = "99";
+		int yearIndex = 1;
 		while (nameInd > 0) {
 //			if (nameInd != boxInd) {
-				parseYungChing(doc, w, nameInd, data);
+				parseYungChing(doc, w, nameInd, data, yearArray, yearIndex);
+				yearIndex++;
 //			}
+				
 //			boxInd = doc.indexOf("item_titlebox", nameInd+20);
 			nameInd = doc.indexOf("m-list-item", nameInd+20);
+		}
+		
+		try {
+			for (int i = 0; i < yearIndex; i++) {			
+				w.append(yearArray[1][1][i]);
+				w.append("\r\n");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		return found;
 	}
 
-	private void parseYungChing(StringBuffer doc, Writer w, int nameInd, String[][] data) {
+	private void parseYungChing(StringBuffer doc, Writer w, int nameInd, String[][] data, String yearArray[][][], int yearIndex) {
 		int start = doc.indexOf("title", nameInd) + 7;
 		int end = doc.indexOf("\" ", start);		
 		
-		try {
+
 			String id = doc.substring(end+2, end+9);
 
 			String[] info = new String[constInfoSize];
@@ -108,8 +123,9 @@ public class YungChing extends PCHouse {
 				start = doc.indexOf("<li", start);
 				start = doc.indexOf("<li", start+5);
 				end = doc.indexOf("</li", start+5);
-				String year = doc.substring(start + 4, start + 9);
-			
+				String yearStr = doc.substring(start + 4, start + 9);
+				String year = yearStr.replaceAll("[^.0-9]", "");
+				
 				// floor
 				start = doc.indexOf("<li", start + 12);
 				end = doc.indexOf("</li", start+5);
@@ -132,14 +148,39 @@ public class YungChing extends PCHouse {
 				start = doc.indexOf("<li", start + 12);
 				String room = doc.substring(start + 4, start + 18);	
 
-				result.append(title + '\t');
+				start = doc.indexOf("price-num", start + 12);
+				end = doc.indexOf("</span", start+5);
+				String price = doc.substring(start + 11, end);	
+				
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				int mark = title.indexOf(" ");
+				result.append(title.substring(0, mark) + '\t');
+				result.append(price + '\t');
 				result.append(year + '\t');
-				result.append(land + '\t');
+				result.append(title.substring(mark+1, title.length()) + '\t');
 				result.append(land_main + '\t');
+				result.append('\t');
+				result.append('\t');
 				result.append(land_record + '\t');
+				result.append(land + '\t');
 				result.append(room + '\t');
-				w.append(result);
-				w.append("\r\n");
+
+				
+				sortYear(yearArray, year, price, result.toString(), yearIndex);
+				
+//				sortUear(yearArray);
+//				w.append(result);
+//				w.append("\r\n");
 /*
 				// date
 				if (info[5] != null) {
@@ -158,9 +199,37 @@ public class YungChing extends PCHouse {
 				}
 				*/
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+
+	}
+
+	private void sortYear(String[][][] yearArray, String year, String price,
+			String result, int yearIndex) {
+		Float yearVal = Float.valueOf(year);
+		
+		String old = yearArray[0][0][0];
+		Float oldVal = Float.valueOf(old);
+		int index = 0;
+		while (yearVal > oldVal && oldVal != 99.0) {
+			index++;
+			old = yearArray[0][0][index];
+			oldVal = Float.valueOf(old);
 		}
+		
+		for (int i = yearIndex; i > index; i--) {
+			yearArray[0][0][i] = yearArray[0][0][i-1];
+			yearArray[0][1][i] = yearArray[0][1][i-1];
+			yearArray[1][1][i] = yearArray[1][1][i-1];
+		}
+		
+		yearArray[0][0][index] = year;
+		yearArray[0][1][index] = price;
+		yearArray[1][1][index] = result;
+	}
+
+	private float toYearNum(String year) {
+		// TODO Auto-generated method stub
+		java.lang.Character.isDigit(year.charAt(0));
+		return 0;
 	}
 
 	private boolean checkyear(String floorNum) {
