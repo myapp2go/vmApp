@@ -53,8 +53,9 @@ public class PCHouse {
 		250,  50, 101, 101, 101, 101, 101, 101, 101, 101
 		};
 
-	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116, 234, 235, 242, 244};
+//	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116, 234, 235, 242, 244};
 //	protected static int[] houseList = {234, 235, 242, 244};
+	protected static int[] houseList = {234};
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
 //	protected static int constCityZip = 221;
 	protected static int cityZip = 234;
@@ -226,6 +227,30 @@ public class PCHouse {
 
 	public static void setCityZip(int cityZip) {
 		PCHouse.cityZip = cityZip;
+	}
+	
+	private void sortYear(String[][][] yearArray, String year, String price,
+			String result, int yearIndex) {
+		Float yearVal = Float.valueOf(year);
+		
+		String old = yearArray[0][0][0];
+		Float oldVal = Float.valueOf(old);
+		int index = 0;
+		while (yearVal > oldVal && oldVal != 99.0) {
+			index++;
+			old = yearArray[0][0][index];
+			oldVal = Float.valueOf(old);
+		}
+		
+		for (int i = yearIndex; i > index; i--) {
+			yearArray[0][0][i] = yearArray[0][0][i-1];
+			yearArray[0][1][i] = yearArray[0][1][i-1];
+			yearArray[1][1][i] = yearArray[1][1][i-1];
+		}
+		
+		yearArray[0][0][index] = year;
+		yearArray[0][1][index] = price;
+		yearArray[1][1][index] = result;
 	}
 }
 
