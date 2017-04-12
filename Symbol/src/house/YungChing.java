@@ -118,6 +118,11 @@ public class YungChing extends PCHouse {
 				StringBuffer result = new StringBuffer();
 				String title = doc.substring(start, end);
 
+				// ID
+				start = doc.indexOf("item-description", end);
+				start = doc.indexOf(">", start);
+				String itemId = doc.substring(start + 1, start + 8);
+				
 				// year
 				start = doc.indexOf("item-info-detail", end);
 				start = doc.indexOf("<li", start);
@@ -167,14 +172,17 @@ public class YungChing extends PCHouse {
 				result.append(title.substring(0, mark) + '\t');
 				result.append(price + '\t');
 				result.append(year + '\t');
-				result.append(title.substring(mark+1, title.length()) + '\t');
+				result.append(title.substring(mark+7, title.length()) + '\t');
 				result.append(land_main + '\t');
 				result.append('\t');
 				result.append('\t');
 				result.append(land_record + '\t');
 				result.append(land + '\t');
 				result.append(room + '\t');
-
+				result.append('\t');
+				result.append('\t');
+				result.append('\t');
+				result.append(itemId + '\t');
 				
 				sortYear(yearArray, year, price, result.toString(), yearIndex);
 				
