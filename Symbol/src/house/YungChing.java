@@ -112,7 +112,7 @@ public class YungChing extends PCHouse {
 			String id = doc.substring(end+2, end+9);
 
 			String[] info = new String[constInfoSize];
-			boolean skip = false; checkID(id, data, constDataCount, info);
+			boolean skip = false; // checkID(id, data, constDataCount, info);
 			if (!skip) {
 				// title
 				StringBuffer result = new StringBuffer();
@@ -209,7 +209,7 @@ public class YungChing extends PCHouse {
 			}
 
 	}
-
+/*
 	private void sortYear(String[][][] yearArray, String year, String price,
 			String result, int yearIndex) {
 		Float yearVal = Float.valueOf(year);
@@ -233,7 +233,7 @@ public class YungChing extends PCHouse {
 		yearArray[0][1][index] = price;
 		yearArray[1][1][index] = result;
 	}
-
+*/
 	private float toYearNum(String year) {
 		// TODO Auto-generated method stub
 		java.lang.Character.isDigit(year.charAt(0));

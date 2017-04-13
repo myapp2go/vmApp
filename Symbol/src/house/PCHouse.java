@@ -229,7 +229,7 @@ public class PCHouse {
 		PCHouse.cityZip = cityZip;
 	}
 	
-	private void sortYear(String[][][] yearArray, String year, String price,
+	public void sortYear(String[][][] yearArray, String year, String price,
 			String result, int yearIndex) {
 		Float yearVal = Float.valueOf(year);
 		
