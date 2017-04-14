@@ -77,18 +77,18 @@ public class CTHouse extends PCHouse {
 		}
 
 		int nameInd = doc.indexOf("objlist__item");
-		int boxInd = -99; doc.indexOf("item_titlebox");
+		int boxInd = doc.indexOf("objlist__ItemWrap end");
 		String yearArray[][][] = new String[2][2][100];
 		yearArray[0][0][0] = "99";
 		int yearIndex = 1;
 		while (nameInd > 0) {
-//			if (nameInd != boxInd) {
+			if (boxInd - nameInd > 500) {
 				parseCTHouse(doc, w, nameInd, data, yearArray, yearIndex);
 				yearIndex++;
-//			}
+			}
 				
 //			boxInd = doc.indexOf("item_titlebox", nameInd+20);
-			nameInd = doc.indexOf("objlist__item", nameInd+20);
+			nameInd = doc.indexOf("objlist__item", nameInd+300);
 		}
 		
 		try {
