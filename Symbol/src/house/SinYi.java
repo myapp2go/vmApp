@@ -94,7 +94,7 @@ public class SinYi extends PCHouse {
 		}
 		
 		try {
-			for (int i = 0; i < yearIndex; i++) {			
+			for (int i = 0; i < yearIndex-1; i++) {			
 				w.append(yearArray[1][1][i]);
 				w.append("\r\n");
 			}
@@ -122,8 +122,14 @@ public class SinYi extends PCHouse {
 				start = doc.indexOf("title", start) + 7;
 				end = doc.indexOf("\"", start+10);
 				// title
-				String title = doc.substring(start, end);
-
+				String tmp = doc.substring(start, end);
+				int idMark = tmp.indexOf("-");
+				String title = tmp;
+				if (idMark > 0) {
+					title = tmp.substring(0, idMark-1);
+					id = tmp.substring(idMark+2, tmp.length());
+				}
+				
 				// address
 				start = doc.indexOf("detail_line1", end);
 				start = doc.indexOf("span>", start);
@@ -165,6 +171,15 @@ public class SinYi extends PCHouse {
 				start = doc.indexOf("num", end) + 5;
 				end = doc.indexOf("<", start);
 				String floorNum = doc.substring(start, end);
+				
+				// item_community
+				start = doc.indexOf("item_community", end) + 5;
+				String item_community = "";
+				if (start - end < 300) {
+					end = doc.indexOf("<", start);
+					item_community = doc.substring(start+11, end);
+				}
+				
 /*
 				// room
 				start = doc.indexOf("num", end) + 22;
@@ -210,17 +225,17 @@ public class SinYi extends PCHouse {
 				result.append(year + '\t');
 				result.append(address + '\t');
 				result.append(land_main + '\t');
-				result.append('\t');
+				result.append(floorNum + '\t');
 				result.append('\t');
 				result.append(land_record + '\t');
 				result.append(land + '\t');
 				result.append(room + '\t');
-				result.append('\t');
+				result.append(item_community + '\t');
 				result.append('\t');
 				result.append('\t');
 				result.append(id + '\t');
-
-				System.out.println(result);
+				result.append(priceOld + '\t');
+				
 				sortYear(yearArray, year, price, result.toString(), yearIndex);
 /*				
 				// mode

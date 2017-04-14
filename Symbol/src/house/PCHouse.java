@@ -58,7 +58,7 @@ public class PCHouse {
 	protected static int[] houseList = {234};
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
 //	protected static int constCityZip = 221;
-	protected static int cityZip = 234;
+	protected static int cityZip;
 	
 	protected static int constFieldCount = 17;
 	protected static int constExtraCount = 4;
