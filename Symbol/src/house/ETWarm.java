@@ -172,11 +172,11 @@ public class ETWarm extends PCHouse {
 				result.append('\t');
 				result.append('\t');
 				result.append('\t');
-				int mark = title.indexOf(" ");
+//				int mark = title.charAt('\t');
 				result.append(title + '\t');
 				result.append(price + '\t');
 				result.append(year + '\t');
-				result.append(title + '\t');
+				result.append(title.substring(title.length() - 6, title.length()) + '\t');
 				result.append(land_main + '\t');
 				result.append('\t');
 				result.append('\t');

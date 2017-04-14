@@ -175,7 +175,7 @@ public class CTHouse extends PCHouse {
 				start = doc.indexOf("price--real", end);
 				start = doc.indexOf(">", start);
 				end = doc.indexOf("</", start+5);
-				String price = doc.substring(start + 1, end);	
+				String price = doc.substring(start + 4, end);	
 				
 				result.append('\t');
 				result.append('\t');
