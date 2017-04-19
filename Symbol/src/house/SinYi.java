@@ -77,20 +77,22 @@ public class SinYi extends PCHouse {
 			return found;
 		}
 
-		int nameInd = doc.indexOf("search_result_list");
-		nameInd = doc.indexOf("item_title");
+		int nameInd = doc.indexOf("item_titlebox");
+//		nameInd = doc.indexOf("item_title");
 //		System.out.println(doc.substring(nameInd, nameInd+200));
 		int boxInd = doc.indexOf("item_titlebox", nameInd+10);
 		String yearArray[][][] = new String[2][2][100];
 		yearArray[0][0][0] = "99";
 		int yearIndex = 1;
 		while (nameInd > 0) {
-			if (nameInd != boxInd) {
+//			if (nameInd != boxInd) {
 				parseSinYi(doc, w, nameInd, data, yearArray, yearIndex);
 				yearIndex++;
-			}
+//			}
 			boxInd = doc.indexOf("item_titlebox", nameInd+20);
-			nameInd = doc.indexOf("item_title", nameInd+20);
+			// skip end tag
+			nameInd = doc.indexOf("item_titlebox", nameInd+20);
+			nameInd = doc.indexOf("item_titlebox", nameInd+20);
 		}
 		
 		try {
@@ -107,7 +109,7 @@ public class SinYi extends PCHouse {
 	}
 
 	private void parseSinYi(StringBuffer doc, Writer w, int nameInd, String[][] data, String yearArray[][][], int yearIndex) {
-		int start = doc.indexOf("search_result_item", nameInd) + 22;
+		int start = doc.indexOf("item_title", nameInd) + 22;
 		int end = doc.indexOf(" ", start);		
 		
 //		try {
@@ -188,9 +190,9 @@ public class SinYi extends PCHouse {
 				String room = ""; //doc.substring(start, end);
 
 				start = doc.indexOf("detail_price", end);
-				// price_old
-				start = doc.indexOf("price_old", start);
+				// price_old				
 				int comp = doc.indexOf("price_new", start);
+				start = doc.indexOf("price_old", start);
 				String priceOld = "XXX";
 				if (start > 0 && start < comp) {
 					start += 11;
@@ -203,7 +205,6 @@ public class SinYi extends PCHouse {
 				start = doc.indexOf("num", start) + 5;
 				end = doc.indexOf("<", start);
 				String price = doc.substring(start, end);
-				
 //				String changePrice = priceChange(price, info);
 
 				String land_record = " ";
