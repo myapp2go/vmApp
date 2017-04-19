@@ -121,7 +121,7 @@ public class SinYi extends PCHouse {
 			if (!skip) {
 				StringBuffer result = new StringBuffer();
 
-				start = doc.indexOf("title", start) + 7;
+				start = doc.indexOf("title", start) + 12;
 				end = doc.indexOf("\"", start+10);
 				// title
 				String tmp = doc.substring(start, end);
@@ -136,7 +136,7 @@ public class SinYi extends PCHouse {
 				start = doc.indexOf("detail_line1", end);
 				start = doc.indexOf("span>", start);
 				end = doc.indexOf("<", start);
-				String address = doc.substring(start + 5, end);
+				String address = doc.substring(start + 11, end);
 				
 				// size 1
 				start = doc.indexOf("detail_line2", end);
