@@ -175,11 +175,11 @@ public class SinYi extends PCHouse {
 				String floorNum = doc.substring(start, end);
 				
 				// item_community
-				start = doc.indexOf("item_community", end) + 5;
+				int commInd = doc.indexOf("item_community", end) + 5;
 				String item_community = "";
-				if (start - end < 300) {
-					end = doc.indexOf("<", start);
-					item_community = doc.substring(start+11, end);
+				if (commInd > 5 && commInd - end < 300) {
+					end = doc.indexOf("<", commInd);
+					item_community = doc.substring(commInd+11, end);
 				}
 				
 /*
@@ -191,18 +191,18 @@ public class SinYi extends PCHouse {
 
 				start = doc.indexOf("detail_price", end);
 				// price_old				
-				int comp = doc.indexOf("price_new", start);
-				start = doc.indexOf("price_old", start);
+				int newInd = doc.indexOf("price_new", start);
+				int oldInd = doc.indexOf("price_old", start);
 				String priceOld = "XXX";
-				if (start > 0 && start < comp) {
-					start += 11;
-					end = doc.indexOf("<", start);
-					priceOld = doc.substring(start, end);
+				if (oldInd > 0 && oldInd < newInd) {
+					oldInd += 11;
+					end = doc.indexOf("<", oldInd);
+					priceOld = doc.substring(oldInd, end);
 				}
 
 				// price_new
-				start = comp;
-				start = doc.indexOf("num", start) + 5;
+//				start = newInd;
+				start = doc.indexOf("num", newInd) + 5;
 				end = doc.indexOf("<", start);
 				String price = doc.substring(start, end);
 //				String changePrice = priceChange(price, info);
