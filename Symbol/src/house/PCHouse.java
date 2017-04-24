@@ -291,11 +291,21 @@ public class PCHouse {
 				System.out.println("Page " + i);
 			}
 			
-			for (int i = 0; i < yearIndex-1; i++) {			
-				w.append(yearArray[1][1][i]);
-				w.append("\r\n");
+			for (int i = 0; i < yearIndex-1; i++) {	
+				if (yearArray[1][1][i] != null) {
+					w.append(yearArray[1][1][i]);
+					w.append("\r\n");
+				}
 			}
-				
+
+			for (int i = 0; !found && i < constDataCount; i++) {
+				if (updateMark.equals(data[0][i].substring(0, 1))) {
+					
+				} else {
+					w.append("S\t" + data[1][i] + "\r\n");
+				}			
+			}
+			
 //			postProc(w, data, constDataCount);
 			
 			w.close();
