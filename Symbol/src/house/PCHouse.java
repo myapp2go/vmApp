@@ -64,6 +64,7 @@ public class PCHouse {
 	protected static int constExtraCount = 4;
 	protected static int shareLinkCount = 2;
 	protected static int constDataCount = 2;
+	protected static int maxPageCount = 20;
 	public static int constInfoSize = 7;
 	
 	protected static String watchMark = "W";
@@ -253,6 +254,68 @@ public class PCHouse {
 		yearArray[0][0][index] = year;
 		yearArray[0][1][index] = price;
 		yearArray[1][1][index] = result;
+	}
+	
+	void getDataFromFile(String name, String[][] data, String srcFileName) {
+		try {
+			shareLinkCount = 2;
+			
+			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
+
+			boolean found = true;
+			String yearArray[][][] = new String[2][2][100];
+			yearArray[0][0][0] = "99";
+			int yearIndex = 1;
+			int count = 1;
+			for (int i = 1; count > 0 && i <= maxPageCount; i++) {
+				count = getSrcData(w, i, data, yearArray, yearIndex, srcFileName);
+				yearIndex += count;
+				System.out.println("Page " + i);
+			}
+			
+			for (int i = 0; i < yearIndex-1; i++) {			
+				w.append(yearArray[1][1][i]);
+				w.append("\r\n");
+			}
+				
+//			postProc(w, data, constDataCount);
+			
+			w.close();
+		} catch (UnsupportedEncodingException | FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}	
+	}
+
+	protected int getSrcData(Writer w, int fileCount, String[][] data, String yearArray[][][], int yearIndex, String srcFileName) {
+		boolean found = true;
+		StringBuffer doc = new StringBuffer();
+        File f = new File("C:\\logs\\house\\" + getCityZip() + srcFileName + fileCount + ".html");
+		
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+			        new FileInputStream("C:\\logs\\house\\" + getCityZip() + srcFileName + fileCount + ".html"), "UTF-8"));
+			
+			String sCurrentLine;
+			while ((sCurrentLine = br.readLine()) != null) {
+				doc.append(sCurrentLine);
+			}
+		} catch (FileNotFoundException e1) {
+			found = false;
+			return 0;
+		} catch (IOException e1) {
+			found = false;
+			return 0;
+		}
+		
+		int count = getHouseData(w, doc, data, yearArray, yearIndex);
+		return count;		
+	}
+
+	protected int getHouseData(Writer w, StringBuffer doc, String[][] data, String yearArray[][][], int yearIndex) {
+
+		return 0;		
 	}
 }
 

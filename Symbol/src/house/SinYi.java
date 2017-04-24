@@ -21,6 +21,7 @@ public class SinYi extends PCHouse {
 	public static void main(String[] args) {
 		System.out.println("SinYi Start");
 		SinYi house = new SinYi();
+		String srcFileName = "_sy_";
 	
 		for (int i = 0; i < houseList.length; i++) {
 			setCityZip(houseList[i]);
@@ -29,12 +30,12 @@ public class SinYi extends PCHouse {
 			String sinyiFile = "C:\\Users\\" + GITLOC + "\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+getCityZip()+"_House.txt";
 			String[][] sinyiData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
 
-			house.readHouse(sinyiFile, sinyiData);
-			house.getSinYi(sinyiFile, sinyiData);
+//			house.readHouse(sinyiFile, sinyiData);
+			house.getDataFromFile(sinyiFile, sinyiData, srcFileName);
 		}
 		System.out.println("SinYi Done");
 	}
-	
+/*	
 	void getSinYi(String name, String[][] data) {
 		try {
 			shareLinkCount = 2;
@@ -66,8 +67,9 @@ public class SinYi extends PCHouse {
 			e1.printStackTrace();
 		}	
 	}
-	
-	private int procSinYi(Writer w, int fileCount, String[][] data, String yearArray[][][], int yearIndex) {
+*/	
+	protected int getHouseData(Writer w, StringBuffer doc, String[][] data, String yearArray[][][], int yearIndex) {
+/*
 		boolean found = true;
 		StringBuffer doc = new StringBuffer();
         File f = new File("C:\\logs\\house\\" + getCityZip() + "_sy_" + fileCount + ".html");
@@ -87,7 +89,7 @@ public class SinYi extends PCHouse {
 			found = false;
 			return 0;
 		}
-
+*/
 		int nameInd = doc.indexOf("item_titlebox");
 		int boxInd = doc.indexOf("item_titlebox", nameInd+10);
 //		String yearArray[][][] = new String[2][2][100];
