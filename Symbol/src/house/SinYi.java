@@ -30,7 +30,7 @@ public class SinYi extends PCHouse {
 			String sinyiFile = "C:\\Users\\" + GITLOC + "\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+getCityZip()+"_House.txt";
 			String[][] sinyiData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
 
-//			house.readHouse(sinyiFile, sinyiData);
+			house.readHouse(sinyiFile, sinyiData);
 			house.getDataFromFile(sinyiFile, sinyiData, srcFileName);
 		}
 		System.out.println("SinYi Done");
@@ -131,6 +131,8 @@ public class SinYi extends PCHouse {
 					id = tmp.substring(idMark+2, tmp.length());
 				}
 				
+				String retMark = checkNewID(id, data, constDataCount, info);
+				
 				// address
 				start = doc.indexOf("detail_line1", end);
 				start = doc.indexOf("span>", start);
@@ -208,7 +210,8 @@ public class SinYi extends PCHouse {
 
 				String land_record = " ";
 				
-				result.append('\t');
+				result.append(retMark + '\t');
+				result.append(id + '\t');
 				result.append('\t');
 				result.append('\t');
 				result.append('\t');
@@ -233,7 +236,6 @@ public class SinYi extends PCHouse {
 				result.append(item_community + '\t');
 				result.append('\t');
 				result.append('\t');
-				result.append(id + '\t');
 				result.append(priceOld + '\t');
 				
 				sortYear(yearArray, year, price, result.toString(), yearIndex);

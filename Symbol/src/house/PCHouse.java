@@ -95,10 +95,8 @@ public class PCHouse {
 			while ((sCurrentLine = br.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
 				int field = 0;
-				System.out.println("**HH ");
 				while (st.hasMoreElements() && field < constFieldCount) {
 					data[field][line] = st.nextElement().toString();
-					System.out.println("** " + data[field][line]);
 					field++;
 				}
 				line++;
@@ -194,6 +192,26 @@ public class PCHouse {
 				
 		return skip;
 	}
+	
+	protected String checkNewID(String id, String[][] data, int lineCount, String[] info) {
+		boolean skip = false;
+		info[0] = newMark;
+		boolean found = false;
+		String retMark = newMark;
+		for (int i = 0; !found && i < lineCount; i++) {
+			if (id.equals(data[1][i])) {
+				if (updateMark.equals(data[0][i].substring(0, 1))) {
+					retMark = data[0][i];
+					data[0][i] = deleteMark;
+				} else {
+					retMark = updateMark +  data[0][i];
+				}	
+				found = true;
+			}
+		}
+				
+		return retMark;
+	}	
 	
 	protected String priceChange(String price, String[] info) {
 		String changePrice = "";
