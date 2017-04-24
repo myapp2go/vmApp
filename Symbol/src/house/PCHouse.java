@@ -94,8 +94,10 @@ public class PCHouse {
 			while ((sCurrentLine = br.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(sCurrentLine, "\t");
 				int field = 0;
+				System.out.println("**HH ");
 				while (st.hasMoreElements() && field < constFieldCount) {
 					data[field][line] = st.nextElement().toString();
+					System.out.println("** " + data[field][line]);
 					field++;
 				}
 				line++;

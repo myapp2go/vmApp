@@ -29,7 +29,7 @@ public class SinYi extends PCHouse {
 			String sinyiFile = "C:\\Users\\" + GITLOC + "\\git\\vmApp\\Symbol\\src\\data\\sinyi_"+getCityZip()+"_House.txt";
 			String[][] sinyiData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
 
-//			house.readHouse(sinyiFile, sinyiData);
+			house.readHouse(sinyiFile, sinyiData);
 			house.getSinYi(sinyiFile, sinyiData);
 		}
 		System.out.println("SinYi Done");
@@ -42,11 +42,22 @@ public class SinYi extends PCHouse {
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
 			boolean found = true;
-			for (int i = 1; found && i <= sinyiPageCount; i++) {
-				found = procSinYi(w, i, data);
+			String yearArray[][][] = new String[2][2][100];
+			yearArray[0][0][0] = "99";
+			int yearIndex = 1;
+			int count = 0;
+			for (int i = 1; count > 0 && i <= sinyiPageCount; i++) {
+				count = procSinYi(w, i, data, yearArray, yearIndex);
+				yearIndex += count;
 				System.out.println("Page " + i);
 			}
-			postProc(w, data, constDataCount);
+			
+			for (int i = 0; i < yearIndex-1; i++) {			
+				w.append(yearArray[1][1][i]);
+				w.append("\r\n");
+			}
+				
+//			postProc(w, data, constDataCount);
 			
 			w.close();
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
@@ -56,7 +67,7 @@ public class SinYi extends PCHouse {
 		}	
 	}
 	
-	private boolean procSinYi(Writer w, int fileCount, String[][] data) {
+	private int procSinYi(Writer w, int fileCount, String[][] data, String yearArray[][][], int yearIndex) {
 		boolean found = true;
 		StringBuffer doc = new StringBuffer();
         File f = new File("C:\\logs\\house\\" + getCityZip() + "_sy_" + fileCount + ".html");
@@ -71,41 +82,27 @@ public class SinYi extends PCHouse {
 			}
 		} catch (FileNotFoundException e1) {
 			found = false;
-			return found;
+			return 0;
 		} catch (IOException e1) {
 			found = false;
-			return found;
+			return 0;
 		}
 
 		int nameInd = doc.indexOf("item_titlebox");
-//		nameInd = doc.indexOf("item_title");
-//		System.out.println(doc.substring(nameInd, nameInd+200));
 		int boxInd = doc.indexOf("item_titlebox", nameInd+10);
-		String yearArray[][][] = new String[2][2][100];
-		yearArray[0][0][0] = "99";
-		int yearIndex = 1;
+//		String yearArray[][][] = new String[2][2][100];
+//		yearArray[0][0][0] = "99";
+//		int yearIndex = 1;
 		while (nameInd > 0) {
-//			if (nameInd != boxInd) {
-				parseSinYi(doc, w, nameInd, data, yearArray, yearIndex);
-				yearIndex++;
-//			}
+			parseSinYi(doc, w, nameInd, data, yearArray, yearIndex);
+			yearIndex++;
 			boxInd = doc.indexOf("item_titlebox", nameInd+20);
 			// skip end tag
 			nameInd = doc.indexOf("item_titlebox", nameInd+20);
 			nameInd = doc.indexOf("item_titlebox", nameInd+20);
 		}
 		
-		try {
-			for (int i = 0; i < yearIndex-1; i++) {			
-				w.append(yearArray[1][1][i]);
-				w.append("\r\n");
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return found;
+		return yearIndex;
 	}
 
 	private void parseSinYi(StringBuffer doc, Writer w, int nameInd, String[][] data, String yearArray[][][], int yearIndex) {

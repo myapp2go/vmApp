@@ -174,7 +174,7 @@ public class YungChing extends PCHouse {
 				result.append(year + '\t');
 				result.append(title.substring(mark+7, title.length()) + '\t');
 				result.append(land_main + '\t');
-				result.append('\t');
+				result.append(floor + '\t');
 				result.append('\t');
 				result.append(land_record + '\t');
 				result.append(land + '\t');
