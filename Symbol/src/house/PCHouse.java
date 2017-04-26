@@ -55,7 +55,7 @@ public class PCHouse {
 
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116, 234, 235, 242, 244};
 //	protected static int[] houseList = {234, 235, 242, 244};
-	protected static int[] houseList = {234};
+	protected static int[] houseList = {251};
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
 //	protected static int constCityZip = 221;
 	protected static int cityZip;
@@ -252,15 +252,21 @@ public class PCHouse {
 	
 	public void sortYear(String[][][] yearArray, String year, String price,
 			String result, int yearIndex) {
-		Float yearVal = Float.valueOf(year);
-		
+		float yearVal = Float.valueOf(year);
+		int priceVal = Integer.valueOf(price);
+
+
 		String old = yearArray[0][0][0];
-		Float oldVal = Float.valueOf(old);
+		String oldPrice = yearArray[0][1][0];
+		float oldVal = Float.valueOf(old);
+		int oldPriceVal = Integer.valueOf(oldPrice);
 		int index = 0;
-		while (yearVal > oldVal && oldVal != 99.0) {
+		while (oldVal != 99.0 && ((yearVal > oldVal) || ((yearVal == oldVal) && (priceVal > oldPriceVal)))) {
 			index++;
 			old = yearArray[0][0][index];
 			oldVal = Float.valueOf(old);
+			oldPrice = yearArray[0][1][index];
+			oldPriceVal = Integer.valueOf(oldPrice);
 		}
 		
 		for (int i = yearIndex; i > index; i--) {
@@ -283,6 +289,7 @@ public class PCHouse {
 			boolean found = true;
 			String yearArray[][][] = new String[2][2][100];
 			yearArray[0][0][0] = "99";
+			yearArray[0][1][0] = "9999";
 			int yearIndex = 1;
 			int count = 1;
 			for (int i = 1; count > 0 && i <= maxPageCount; i++) {
