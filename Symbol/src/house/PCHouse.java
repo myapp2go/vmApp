@@ -55,7 +55,7 @@ public class PCHouse {
 
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116, 234, 235, 242, 244};
 //	protected static int[] houseList = {234, 235, 242, 244};
-	protected static int[] houseList = {251};
+	protected static int[] houseList = {235};
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
 //	protected static int constCityZip = 221;
 	protected static int cityZip;
@@ -326,11 +326,11 @@ public class PCHouse {
 	protected int getSrcData(Writer w, int fileCount, String[][] data, String yearArray[][][], int yearIndex, String srcFileName) {
 		boolean found = true;
 		StringBuffer doc = new StringBuffer();
-        File f = new File("C:\\logs\\house\\" + getCityZip() + srcFileName + fileCount + ".html");
+//        File f = new File("C:\\logs\\house\\" + getCityZip() + srcFileName + fileCount + ".html");
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
-			        new FileInputStream("C:\\logs\\house\\" + getCityZip() + srcFileName + fileCount + ".html"), "UTF-8"));
+			        new FileInputStream("C:\\logs\\house\\" + getCityZip() + "_" + srcFileName + fileCount + ".html"), "UTF-8"));
 			
 			String sCurrentLine;
 			while ((sCurrentLine = br.readLine()) != null) {
