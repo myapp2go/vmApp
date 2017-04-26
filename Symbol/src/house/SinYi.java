@@ -115,7 +115,6 @@ public class SinYi extends PCHouse {
 			}
 
 			// price_new
-			// start = newInd;
 			start = doc.indexOf("num", newInd) + 5;
 			end = doc.indexOf("<", start);
 			String price = doc.substring(start, end);
