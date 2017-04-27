@@ -16,11 +16,11 @@ public class SinYi extends PCHouse {
 
 	protected int getHouseData(Writer w, StringBuffer doc, String[][] data, String yearArray[][][], int yearIndex) {
 		int nameInd = doc.indexOf("item_titlebox");
-		int boxInd = doc.indexOf("item_titlebox", nameInd+10);
+//		int boxInd = doc.indexOf("item_titlebox", nameInd+10);
 		while (nameInd > 0) {
 			parseSinYi(doc, w, nameInd, data, yearArray, yearIndex);
 			yearIndex++;
-			boxInd = doc.indexOf("item_titlebox", nameInd+20);
+//			boxInd = doc.indexOf("item_titlebox", nameInd+20);
 			// skip end tag
 			nameInd = doc.indexOf("item_titlebox", nameInd+20);
 			nameInd = doc.indexOf("item_titlebox", nameInd+20);
