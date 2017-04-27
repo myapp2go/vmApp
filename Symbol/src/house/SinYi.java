@@ -8,21 +8,10 @@ public class SinYi extends PCHouse {
 	private static int sinyiPageSize = 30;
 	
 	public static void main(String[] args) {
-		System.out.println("SinYi Start");
 		SinYi house = new SinYi();
 		String srcFileName = "sinyi_";
-	
-		for (int i = 0; i < houseList.length; i++) {
-			setCityZip(houseList[i]);
-			System.out.println("SinYi " + houseList[i]);
-
-			String realtorFile = "C:\\Users\\" + GITLOC + "\\git\\vmApp\\Symbol\\src\\data\\"+srcFileName+getCityZip()+"_House.txt";
-			String[][] realtorData = new String[constFieldCount][sinyiPageCount*sinyiPageSize*constExtraCount];
-
-			house.readHouse(realtorFile, realtorData);
-			house.getDataFromFile(realtorFile, realtorData, srcFileName);
-		}
-		System.out.println("SinYi Done");
+		
+		startHouse(house, srcFileName);
 	}
 
 	protected int getHouseData(Writer w, StringBuffer doc, String[][] data, String yearArray[][][], int yearIndex) {
@@ -153,11 +142,6 @@ public class SinYi extends PCHouse {
 
 			sortYear(yearArray, year, price, result.toString(), yearIndex);
 		}
-	}
-
-	private boolean checkyear(String floorNum) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

@@ -55,7 +55,7 @@ public class PCHouse {
 
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116, 234, 235, 242, 244};
 //	protected static int[] houseList = {234, 235, 242, 244};
-	protected static int[] houseList = {251};
+	protected static int[] houseList = {234};
 //	protected static int[] houseList = {100, 103, 104, 105, 106, 108, 110, 111, 112, 114, 115, 116};
 //	protected static int constCityZip = 221;
 	protected static int cityZip;
@@ -287,7 +287,7 @@ public class PCHouse {
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
 			boolean found = true;
-			String yearArray[][][] = new String[2][2][100];
+			String yearArray[][][] = new String[2][2][300];
 			yearArray[0][0][0] = "99";
 			yearArray[0][1][0] = "9999";
 			int yearIndex = 1;
@@ -298,6 +298,7 @@ public class PCHouse {
 				System.out.println("Page " + i);
 			}
 			
+			System.out.println("YY " + yearIndex);
 			for (int i = 0; i < yearIndex-1; i++) {	
 				if (yearArray[1][1][i] != null) {
 					w.append(yearArray[1][1][i]);
@@ -348,6 +349,25 @@ public class PCHouse {
 		return count;		
 	}
 
+	private static int realtorPageCount = 50;
+	private static int realtorPageSize = 30;
+	
+	protected static void startHouse(PCHouse house, String srcFileName) {
+		System.out.println(srcFileName + " Start");
+		
+		for (int i = 0; i < houseList.length; i++) {
+			setCityZip(houseList[i]);
+			System.out.println(srcFileName + houseList[i]);
+
+			String realtorFile = "C:\\Users\\" + GITLOC + "\\git\\vmApp\\Symbol\\src\\data\\"+srcFileName+getCityZip()+"_House.txt";
+			String[][] realtorData = new String[constFieldCount][realtorPageCount*realtorPageSize*constExtraCount];
+
+			house.readHouse(realtorFile, realtorData);
+			house.getDataFromFile(realtorFile, realtorData, srcFileName);
+		}
+		System.out.println(srcFileName + " Done");	
+	}
+	
 	protected int getHouseData(Writer w, StringBuffer doc, String[][] data, String yearArray[][][], int yearIndex) {
 
 		return 0;		
