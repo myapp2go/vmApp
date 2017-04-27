@@ -26,11 +26,13 @@ public class CTHouse extends PCHouse {
 	
 	protected int getHouseData(Writer w, StringBuffer doc, String[][] data, String yearArray[][][], int yearIndex) {
 		int nameInd = doc.indexOf("objlist__item");
-		while (nameInd > 0) {
-				parseCTHouse(doc, w, nameInd, data, yearArray, yearIndex);
-				yearIndex++;
+		int objEnd = doc.indexOf("objlist__ItemWrap", nameInd+10);
+		while (nameInd > 0 && nameInd < objEnd) {
+			parseCTHouse(doc, w, nameInd, data, yearArray, yearIndex);
+			yearIndex++;
 
-				nameInd = doc.indexOf("objlist__item", nameInd+300);
+			nameInd = doc.indexOf("objlist__item", nameInd+300);
+			nameInd = doc.indexOf("objlist__item", nameInd+10);
 		}
 		
 		return yearIndex;
@@ -38,7 +40,7 @@ public class CTHouse extends PCHouse {
 
 	private void parseCTHouse(StringBuffer doc, Writer w, int nameInd,
 			String[][] data, String yearArray[][][], int yearIndex) {
-		int start = doc.indexOf("objlist__item", nameInd) + 7;
+		int start = nameInd;
 		int end = doc.indexOf("\" ", start);
 
 		String[] info = new String[constInfoSize];
