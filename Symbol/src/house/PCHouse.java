@@ -287,7 +287,7 @@ public class PCHouse {
 			Writer w = new OutputStreamWriter(new FileOutputStream(name), "UTF-8");
 
 			boolean found = true;
-			String yearArray[][][] = new String[2][2][300];
+			String yearArray[][][] = new String[2][2][600];
 			yearArray[0][0][0] = "99";
 			yearArray[0][1][0] = "9999";
 			int yearIndex = 1;

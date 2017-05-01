@@ -76,12 +76,16 @@ public class ETWarm extends PCHouse {
 			start = doc.indexOf("<li>", start + 5);
 			end = doc.indexOf("</", start + 5);
 			String year = doc.substring(start + 4, end - 1);
-
+			char dig = year.charAt(0);
+			if (!Character.isDigit(dig)) {
+				year = "0";
+			}
+			
 			// skip land
 			start = doc.indexOf("<li>", end);
 			end = doc.indexOf("</", start + 5);
 			String land_record = doc.substring(start + 4, end);
-			char dig = land_record.charAt(1);
+			dig = land_record.charAt(1);
 			if (!Character.isDigit(dig)) {
 				start = doc.indexOf("<li>", start + 5);
 				end = doc.indexOf("</", start + 5);
@@ -97,7 +101,11 @@ public class ETWarm extends PCHouse {
 			end = doc.indexOf("</", start + 5);
 			String price = doc.substring(start + 7, end);
 			price = price.replace(",", "");
-			
+			dig = price.charAt(1);
+			if (!Character.isDigit(dig)) {
+				price = "0";
+			}
+System.out.println("PP " + year + " * " + price);			
 			result.append('\t');
 			result.append('\t');
 			result.append('\t');
