@@ -39,12 +39,16 @@ public class ETWarm extends PCHouse {
 
 	private void parseETWarm(StringBuffer doc, Writer w, int nameInd,
 			String[][] data, String yearArray[][][], int yearIndex) {
-		int start = doc.indexOf("obj_info", nameInd) + 7;
-		int end = doc.indexOf("\" ", start);
-
-		String id = ""; // doc.substring(end+2, end+9);
-
+		int start = doc.indexOf("id=", nameInd) + 3;
+		int end = doc.indexOf("\"", start);
+		String id = doc.substring(start, end);
+		
 		String[] info = new String[constInfoSize];
+		String retMark = checkNewID(id, data, constDataCount, info);
+		
+		start = doc.indexOf("obj_info", nameInd) + 7;
+		end = doc.indexOf("\" ", start);
+				
 		boolean skip = false; // checkID(id, data, constDataCount, info);
 		if (!skip) {
 			// title
@@ -105,8 +109,9 @@ public class ETWarm extends PCHouse {
 			if (!Character.isDigit(dig)) {
 				price = "0";
 			}
-System.out.println("PP " + year + " * " + price);			
-			result.append('\t');
+			
+			result.append(retMark + '\t');
+			result.append(id + '\t');
 			result.append('\t');
 			result.append('\t');
 			result.append('\t');
@@ -123,7 +128,7 @@ System.out.println("PP " + year + " * " + price);
 			result.append(year + '\t');
 			result.append(title.substring(title.length() - 6, title.length()) + '\t');
 			result.append(land_main + '\t');
-			result.append('\t');
+			result.append(floor + '\t');
 			result.append('\t');
 			result.append(land_record + '\t');
 			result.append(land + '\t');
@@ -131,7 +136,6 @@ System.out.println("PP " + year + " * " + price);
 			result.append('\t');
 			result.append('\t');
 			result.append('\t');
-			result.append(id + '\t');
 			result.append(priceOld + '\t');
 
 			sortYear(yearArray, year, price, result.toString(), yearIndex);
