@@ -65,7 +65,7 @@ public class SinYi extends PCHouse {
 
 			start = doc.indexOf("num", start) + 5;
 			end = doc.indexOf("<", start);
-			String land = doc.substring(start, end);
+			String land_record = doc.substring(start, end);
 
 			// size 2
 			start = doc.indexOf("num", end) + 5;
@@ -110,7 +110,7 @@ public class SinYi extends PCHouse {
 			price = price.replace(",", "");
 			// String changePrice = priceChange(price, info);
 
-			String land_record = " ";
+			String land = " ";
 
 			result.append(retMark + '\t');
 			result.append(id + '\t');
